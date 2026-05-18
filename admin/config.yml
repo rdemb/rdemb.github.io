@@ -1,0 +1,109 @@
+backend:
+  name: github
+  repo: rdemb/REPLACE_WITH_REPO
+  branch: main
+
+media_folder: "assets/img/uploads"
+public_folder: "/assets/img/uploads"
+
+publish_mode: editorial_workflow
+
+slug:
+  encoding: "ascii"
+  clean_accents: true
+
+collections:
+  - name: "posts_pl"
+    label: "Wpisy PL"
+    folder: "_posts/pl"
+    create: true
+    delete: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Language", name: "lang", widget: "hidden", default: "pl"}
+      - {label: "Kind", name: "kind", widget: "select", options: ["project", "reflection", "note"], default: "note"}
+      - {label: "Project", name: "project", widget: "string", required: false}
+      - {label: "Excerpt", name: "excerpt", widget: "text", required: false}
+      - {label: "Body", name: "body", widget: "markdown"}
+
+  - name: "posts_en"
+    label: "Posts EN"
+    folder: "_posts/en"
+    create: true
+    delete: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Language", name: "lang", widget: "hidden", default: "en"}
+      - {label: "Kind", name: "kind", widget: "select", options: ["project", "reflection", "note"], default: "note"}
+      - {label: "Project", name: "project", widget: "string", required: false}
+      - {label: "Excerpt", name: "excerpt", widget: "text", required: false}
+      - {label: "Body", name: "body", widget: "markdown"}
+
+  - name: "pages"
+    label: "Pages"
+    files:
+      - label: "Home PL"
+        name: "home_pl"
+        file: "index.html"
+        fields:
+          - {label: "Body", name: "body", widget: "markdown"}
+      - label: "Home EN"
+        name: "home_en"
+        file: "en/index.html"
+        fields:
+          - {label: "Body", name: "body", widget: "markdown"}
+      - label: "MOCPS PL"
+        name: "mocps_pl"
+        file: "mocps.md"
+        fields:
+          - {label: "Body", name: "body", widget: "markdown"}
+      - label: "MOCPS EN"
+        name: "mocps_en"
+        file: "en/mocps.md"
+        fields:
+          - {label: "Body", name: "body", widget: "markdown"}
+      - label: "About PL"
+        name: "about_pl"
+        file: "about.md"
+        fields:
+          - {label: "Body", name: "body", widget: "markdown"}
+      - label: "About EN"
+        name: "about_en"
+        file: "en/about.md"
+        fields:
+          - {label: "Body", name: "body", widget: "markdown"}
+
+  - name: "project_pages"
+    label: "Project pages"
+    folder: "projects"
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Layout", name: "layout", widget: "hidden", default: "page"}
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Language", name: "lang", widget: "select", options: ["pl", "en"], default: "pl"}
+      - {label: "Permalink", name: "permalink", widget: "string", hint: "Example: /new-project/ or /en/new-project/"}
+      - {label: "Body", name: "body", widget: "markdown"}
+
+  - name: "settings"
+    label: "Settings"
+    files:
+      - label: "Navigation"
+        name: "navigation"
+        file: "_data/navigation.yml"
+        fields:
+          - label: "PL"
+            name: "pl"
+            widget: "list"
+            fields:
+              - {label: "Title", name: "title", widget: "string"}
+              - {label: "URL", name: "url", widget: "string"}
+          - label: "EN"
+            name: "en"
+            widget: "list"
+            fields:
+              - {label: "Title", name: "title", widget: "string"}
+              - {label: "URL", name: "url", widget: "string"}

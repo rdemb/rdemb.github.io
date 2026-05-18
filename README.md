@@ -1,25 +1,42 @@
 # rdemb-site
 
-Minimal static research website for Rafał Dembski.
+Minimal bilingual blog and research site for Rafał Dembski.
 
-This is a local-only rebuild prepared for a future GitHub Pages repository. It is intentionally static and framework-free:
+This is a local-only rebuild prepared for a future GitHub Pages repository. It uses a small custom Jekyll theme inspired by simple technical blogs:
 
-- no npm dependency
-- no external JavaScript framework
+- no npm build step
 - no analytics or tracking
-- custom Minima-inspired CSS
-- static HTML works under `python3 -m http.server`
-- Markdown and layout files are present for GitHub Pages/Jekyll compatibility
+- simple typography and narrow text column
+- Polish and English versions
+- posts in `_posts/pl` and `_posts/en`
+- Decap CMS admin panel in `admin/`
 
 ## Local preview
 
+GitHub Pages will render the Jekyll templates. If Jekyll is not installed locally, the raw files are still editable, but Liquid loops will not be rendered by `python3 -m http.server`.
+
 ```bash
-python3 -m http.server 8099
+bundle exec jekyll serve
 ```
 
-Then open `http://127.0.0.1:8099/`.
+When Jekyll is unavailable, edit Markdown directly and rely on GitHub Pages to build after push.
 
-## Scope
+## Admin panel
+
+The admin panel lives at `/admin/` and uses Decap CMS. Before public deployment, update:
+
+```yaml
+backend:
+  repo: rdemb/REPLACE_WITH_REPO
+```
+
+in `admin/config.yml`.
+
+The panel can create/delete posts, edit main pages, and edit navigation data in `_data/navigation.yml`.
+
+See `DEPLOY.md` for deploy-key and GitHub setup notes.
+
+## Scope and claims
 
 The first project is MOCPS — Motion-Grounded Object-Centric Predictive State. The copy is based on local research files from `/opt/algotrading/jepa-petri-dish` and keeps the claims narrow:
 

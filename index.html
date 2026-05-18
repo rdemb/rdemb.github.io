@@ -1,73 +1,40 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Rafal Dembski</title>
-    <meta name="description" content="Independent research notes on algorithms, world-model diagnostics, and object-centric predictive state.">
-    <link rel="stylesheet" href="assets/css/main.css">
-  </head>
-  <body>
-    <header class="site-header">
-      <div class="wrap header-wrap">
-        <a class="site-title" href="index.html">Rafal Dembski</a>
-        <nav class="site-nav" aria-label="Primary navigation">
-          <a href="index.html">Home</a>
-          <a href="projects.html">Projects</a>
-          <a href="research.html">Research</a>
-          <a href="about.html">About</a>
-          <a href="contact.html">Contact</a>
-        </nav>
-      </div>
-    </header>
-    <main class="wrap main-content">
-      <section class="hero">
-        <p class="eyebrow">Research notebook</p>
-        <h1>Rafał Dembski</h1>
-        <p>Independent research notes on algorithms, world models, and object-centric predictive state.</p>
-        <p>Building tiny, reproducible CPU-first experiments for understanding when predictive latent representations actually beat simple baselines.</p>
-      </section>
+---
+layout: default
+title: "Home"
+lang: pl
+en_url: /en/
+---
 
-      <section>
-        <h2>Primary project</h2>
-        <div class="project-card">
-          <p class="eyebrow">MOCPS</p>
-          <h3><a href="projects/mocps.html">Motion-Grounded Object-Centric Predictive State</a></h3>
-          <p>A tiny CPU-friendly research diagnostic for motion-grounded object-centric predictive state learning.</p>
-          <div class="badges">
-            <span class="badge">CPU-first</span>
-            <span class="badge">Toy diagnostic</span>
-            <span class="badge">No benchmark claim</span>
-            <span class="badge">No generator labels in training</span>
-          </div>
-        </div>
-      </section>
+<section>
+  <h1>Rafał Dembski</h1>
+  <p class="intro">Hobbystycznie programuję, analizuję rynki finansowe i prowadzę małe eksperymenty z modelami predykcyjnymi. Na co dzień day trade, po godzinach buduję rzeczy, które pomagają mi lepiej rozumieć algorytmy.</p>
+  <p class="muted">Ten blog jest miejscem na projekty, notatki techniczne i luźniejsze refleksje. Bez wielkich deklaracji, bez marketingu, z naciskiem na jawne ograniczenia i proste baseline'y.</p>
+</section>
 
-      <section class="result-box" aria-labelledby="mocps-result">
-        <h2 id="mocps-result">Current MOCPS result</h2>
-        <ul>
-          <li>Cold run: <strong>200/200</strong> against persistence on the covered diagnostic surface</li>
-          <li>Mean MAE: <strong>1.574 px</strong></li>
-          <li>Mean persistence MAE: <strong>3.903 px</strong></li>
-          <li>No generator labels in encoder or predictor training</li>
-          <li>Toy diagnostic only</li>
-        </ul>
-        <p class="note">This is not a benchmark, not SOTA, not evidence of physics understanding, and not a claim that JEPA works.</p>
-      </section>
+<section class="project-callout">
+  <h2><a href="{{ '/mocps/' | relative_url }}">MOCPS — Motion-Grounded Object-Centric Predictive State</a></h2>
+  <p>Pierwszy większy projekt na tej stronie: mały CPU-friendly diagnostyk do badania, kiedy motion-grounded object-centric state pozwala predykcyjnym latentom pokonać prostą persystencję.</p>
+  <div class="badges">
+    <span class="badge">CPU-first</span>
+    <span class="badge">Toy diagnostic</span>
+    <span class="badge">200/200 cold run</span>
+    <span class="badge">No benchmark claim</span>
+  </div>
+</section>
 
-      <section>
-        <h2>Recent notes</h2>
-        <ul>
-          <li><a href="research/mocps-evidence.html">MOCPS evidence chain</a></li>
-          <li><a href="research/experiment-matrix.html">Compact experiment matrix</a></li>
-        </ul>
-      </section>
-    </main>
-    <footer class="site-footer">
-      <div class="wrap">
-        <p>Independent research notes. Toy diagnostics, explicit baselines, no broad claims.</p>
-        <p><a href="https://github.com/rdemb">@rdemb</a></p>
-      </div>
-    </footer>
-  </body>
-</html>
+<section>
+  <h2>Ostatnie wpisy</h2>
+  <ul class="post-list">
+    {% assign posts = site.posts | where: "lang", "pl" %}
+    {% for post in posts limit: 8 %}
+      <li>
+        <span class="post-date">{{ post.date | date: "%Y-%m-%d" }}</span>
+        <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+      </li>
+    {% endfor %}
+  </ul>
+</section>
+
+<section class="note-box">
+  <p>MOCPS nie jest benchmarkiem, nie jest SOTA, nie jest dowodem rozumienia fizyki i nie jest twierdzeniem, że JEPA działa. To wąski wynik diagnostyczny w małych światach proceduralnych.</p>
+</section>

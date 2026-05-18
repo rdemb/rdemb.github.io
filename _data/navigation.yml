@@ -1,0 +1,18 @@
+pl:
+  - title: "Home"
+    url: "/"
+  - title: "MOCPS"
+    url: "/mocps/"
+  - title: "Refleksje"
+    url: "/refleksje/"
+  - title: "About"
+    url: "/about/"
+en:
+  - title: "Home"
+    url: "/en/"
+  - title: "MOCPS"
+    url: "/en/mocps/"
+  - title: "Reflections"
+    url: "/en/reflections/"
+  - title: "About"
+    url: "/en/about/"

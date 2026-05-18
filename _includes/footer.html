@@ -1,6 +1,10 @@
 <footer class="site-footer">
-  <div class="wrap">
-    <p>Independent research notes. Toy diagnostics, explicit baselines, no broad claims.</p>
-    <p><a href="https://github.com/rdemb">@rdemb</a></p>
-  </div>
+  <p>
+    {% if page.lang == "en" %}
+      Personal notebook. Small experiments, loose reflections, explicit caveats.
+    {% else %}
+      Osobisty notatnik. Małe eksperymenty, luźne refleksje, jawne ograniczenia.
+    {% endif %}
+  </p>
+  <p><a href="https://github.com/rdemb">@rdemb</a></p>
 </footer>

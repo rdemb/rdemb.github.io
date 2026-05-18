@@ -1,12 +1,17 @@
 <header class="site-header">
-  <div class="wrap header-wrap">
-    <a class="site-title" href="{{ '/' | relative_url }}">Rafal Dembski</a>
-    <nav class="site-nav" aria-label="Primary navigation">
-      <a href="{{ '/' | relative_url }}">Home</a>
-      <a href="{{ '/projects.html' | relative_url }}">Projects</a>
-      <a href="{{ '/research.html' | relative_url }}">Research</a>
-      <a href="{{ '/about.html' | relative_url }}">About</a>
-      <a href="{{ '/contact.html' | relative_url }}">Contact</a>
-    </nav>
+  <div class="site-title">
+    <a href="{% if page.lang == 'en' %}{{ '/en/' | relative_url }}{% else %}{{ '/' | relative_url }}{% endif %}">{{ site.title }}</a>
   </div>
+  <nav class="site-nav" aria-label="Primary navigation">
+    {% assign lang = page.lang | default: "pl" %}
+    {% assign nav_items = site.data.navigation[lang] %}
+    {% for item in nav_items %}
+      <a href="{{ item.url | relative_url }}">{{ item.title }}</a>
+    {% endfor %}
+    {% if lang == "en" %}
+      <a class="lang-link" href="{{ page.pl_url | default: '/' | relative_url }}">PL</a>
+    {% else %}
+      <a class="lang-link" href="{{ page.en_url | default: '/en/' | relative_url }}">EN</a>
+    {% endif %}
+  </nav>
 </header>
