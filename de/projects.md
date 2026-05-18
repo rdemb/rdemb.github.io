@@ -10,6 +10,16 @@ permalink: /de/projekte/
 Projekte landen hier erst, wenn sie Code, ein Resultat und klare Grenzen haben. Ich will keine Liste von Ambitionen. Lieber ein kleines Experiment, das man prüfen kann, als eine große Beschreibung ohne Griff.
 
 <div class="card-grid">
+  <a class="content-card project-card" href="{{ '/de/aai/' | relative_url }}">
+    <span class="card-kicker">market intelligence</span>
+    <h2>AAI</h2>
+    <p>Adaptive Auction Intelligence. Ein lokales Paradigma für Auktion, Mikrostruktur, Ausführungskosten und Evidence Review in Operator-Entscheidungen.</p>
+    <span class="badge-row">
+      <span class="badge">no-edge first</span>
+      <span class="badge">local-first</span>
+      <span class="badge">not advice</span>
+    </span>
+  </a>
   <a class="content-card project-card" href="{{ '/de/mocps/' | relative_url }}">
     <span class="card-kicker">aktives projekt</span>
     <h2>MOCPS</h2>
@@ -23,5 +33,5 @@ Projekte landen hier erst, wenn sie Code, ein Resultat und klare Grenzen haben. 
 </div>
 
 <section class="note-box">
-  <p>Weitere Projekte füge ich erst hinzu, wenn sie mehr als einen Namen haben: minimalen Code, ein Resultat und eine ehrliche Grenze der Interpretation.</p>
+  <p>Öffentliche Projektseiten bleiben auf der Ebene von Paradigma, Architektur und Grenzen. Ich veröffentliche keine privaten Logs, Signale, Entry-Level oder Inhalte, die als Empfehlung verstanden werden könnten.</p>
 </section>
