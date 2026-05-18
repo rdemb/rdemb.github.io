@@ -78,7 +78,7 @@ Angefragte world/horizon-Paare außerhalb der unterstützten Stabilitätsfläche
 
 ## v0.6.1 — dynamic moving-distractor stress test
 
-Der neueste Test fügte eine schwierigere Welt hinzu: ein bewegtes Target und ein ähnlich heller bewegter Distraktor. Die MOCPS-Architektur wurde für diesen Fall nicht geändert und nicht darauf optimiert.
+Dieser Test fügte eine schwierigere Welt hinzu: ein bewegtes Target und ein ähnlich heller bewegter Distraktor. Die MOCPS-Architektur wurde für diesen Fall nicht geändert und nicht darauf optimiert.
 
 Die Frage war einfach: kann single-object MOCPS mehr als ein bewegtes Objekt handhaben?
 
@@ -149,6 +149,23 @@ v0.8 testete trainable two-slot MOCPS mit zwei ähnlichen bewegten Objekten, die
 Interpretation: das feed-forward trainable assignment erhält die Identität nach dem Crossing nicht. Es verhält sich wie die current-left Heuristik: vor dem left/right-Tausch funktioniert es, danach wählt es das andere Objekt. Der nächste Schritt ist Memory oder recurrent slot identity.
 
 Einschränkung: Das bleibt eine Toy-Diagnostik; kein vollständiges trainable Slot Attention, kein Benchmark, kein SOTA und keine Behauptung zu AGI, Physikverständnis, einem allgemeinen World Model oder breiter Multi-Object-Robustheit.
+
+## v0.8.1 — Memory-slot identity audit
+
+v0.8.1 prüfte, ob einfache Slot-Memory dort reicht, wo feed-forward assignment beim Crossing bricht. Der Slot startet mit der image-derived links startenden Komponente und nutzt danach nur beobachtete Komponenten-Historie: vorherigen Zentroid, Geschwindigkeit und Masse.
+
+| Variante | Ergebnis vs persistence | mean MAE | assignment nach crossing |
+| --- | :---: | ---: | ---: |
+| trainable two-slot | 10/20 | 5.586 px | 0.000 |
+| current-left baseline | 10/20 | 5.586 px | 0.000 |
+| nearest memory | 20/20 | 0.423 px | 1.000 |
+| velocity memory | 20/20 | 0.423 px | 1.000 |
+| learned memory scorer | 20/20 | 0.423 px | 1.000 |
+| target oracle | 20/20 | 0.423 px | 1.000 |
+
+Interpretation: in dieser geprüften Toy-Welt war der v0.8-Fehler ein Identitäts-Memory-Fehler, kein Trajektorien-Prediction-Fehler. Die einfachste Zentroid-Kontinuität reichte; Velocity-Memory und der kleine learned scorer verbesserten nearest memory nicht.
+
+Einschränkung: Das bleibt eine Diagnostik. Es ist kein vollständiges trainable Slot Attention, kein Benchmark, kein SOTA, kein AGI, kein Physikverständnis, kein allgemeines World Model und keine breite Multi-Object-Robustheit.
 
 ## Baselines und Referenzen
 
@@ -222,14 +239,14 @@ Das beendet die Forschung nicht. Es schließt nur die erste stabile Etappe ab: e
 Die nächsten Tests sollten schwieriger und unbequemer sein:
 
 - moving distractor: die erste geprüfte Version bricht das aktuelle single-object MOCPS; der Selection Audit zeigt, dass korrekte Target-Auswahl das geprüfte Grid repariert
-- crossing objects: v0.8 bricht feed-forward trainable assignment nach dem left/right-Tausch
+- crossing objects: v0.8 bricht feed-forward trainable assignment nach dem left/right-Tausch; v0.8.1 repariert den geprüften Crossing-Fall mit Slot-Memory
 - partial occlusion
 - acceleration statt konstanter Geschwindigkeit
 - noisy background
 - mehr als ein bewegtes Objekt
 - Transfer zwischen world variants
 
-Die nächste Forschungsrichtung ist nicht weiteres Tuning desselben single-object Rezepts, sondern Memory oder recurrent slot identity für multi-object state.
+Die nächste Forschungsrichtung ist ein schärferer Crossing-Test: exact overlap, partial occlusion und danach recurrent slot identity, falls einfache Memory nicht mehr reicht.
 
 ## Was das nicht bedeutet
 

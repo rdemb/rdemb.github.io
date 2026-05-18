@@ -78,7 +78,7 @@ Requested world/horizon pairs outside the supported stability surface were expli
 
 ## v0.6.1 — dynamic moving-distractor stress test
 
-The latest test added a harder world: one moving target and one similarly bright moving distractor. The MOCPS architecture was not changed or tuned for this case.
+This test added a harder world: one moving target and one similarly bright moving distractor. The MOCPS architecture was not changed or tuned for this case.
 
 The question was simple: can single-object MOCPS handle more than one moving object?
 
@@ -149,6 +149,23 @@ v0.8 tested trainable two-slot MOCPS on two similar moving objects that exchange
 Interpretation: the feed-forward trainable assignment does not preserve identity after crossing. It behaves like the current-left heuristic: it works before the left/right swap, then selects the other object after the swap. The next step is memory or recurrent slot identity.
 
 Caveat: this is still a toy diagnostic; not full trainable Slot Attention, not a benchmark, not SOTA, and not a claim about AGI, physics understanding, a general world model, or broad multi-object robustness.
+
+## v0.8.1 — Memory-slot identity audit
+
+v0.8.1 checked whether simple slot memory is enough where feed-forward assignment broke under crossing. The slot starts from the image-derived left-starting component, then uses only observed component history: previous centroid, velocity, and mass.
+
+| variant | result vs persistence | mean MAE | assignment after crossing |
+| --- | :---: | ---: | ---: |
+| trainable two-slot | 10/20 | 5.586 px | 0.000 |
+| current-left baseline | 10/20 | 5.586 px | 0.000 |
+| nearest memory | 20/20 | 0.423 px | 1.000 |
+| velocity memory | 20/20 | 0.423 px | 1.000 |
+| learned memory scorer | 20/20 | 0.423 px | 1.000 |
+| target oracle | 20/20 | 0.423 px | 1.000 |
+
+Interpretation: in this checked toy world, the v0.8 failure was an identity-memory failure, not a trajectory-prediction failure. The simplest centroid continuity was enough; velocity memory and the small learned scorer did not improve over nearest memory.
+
+Caveat: this is still a diagnostic. It is not full trainable Slot Attention, a benchmark, SOTA, AGI, physics understanding, a general world model, or broad multi-object robustness.
 
 ## Baselines and references
 
@@ -222,14 +239,14 @@ This does not finish the research. It closes the first stable stage: there is no
 The next tests should be harder and less comfortable:
 
 - moving distractor: the first checked version breaks current single-object MOCPS; the selection audit shows that correct target selection fixes the checked grid
-- crossing objects: v0.8 breaks feed-forward trainable assignment after the left/right swap
+- crossing objects: v0.8 breaks feed-forward trainable assignment after the left/right swap; v0.8.1 fixes the checked crossing case with slot memory
 - partial occlusion
 - acceleration instead of constant velocity
 - noisy background
 - more than one moving object
 - transfer between world variants
 
-The nearest research direction is not further tuning of the same single-object recipe, but memory or recurrent slot identity for multi-object state.
+The nearest research direction is a sharper crossing test: exact overlap, partial occlusion, and then recurrent slot identity if simple memory stops being enough.
 
 ## What this does not mean
 
