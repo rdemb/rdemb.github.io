@@ -1,6 +1,6 @@
 backend:
   name: github
-  repo: rdemb/REPLACE_WITH_REPO
+  repo: rdemb/rdemb.github.io
   branch: main
 
 media_folder: "assets/img/uploads"

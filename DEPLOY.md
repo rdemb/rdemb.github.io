@@ -24,7 +24,7 @@ In the future GitHub repository:
 After the GitHub repository exists:
 
 ```bash
-git remote add origin git@github.com:rdemb/<NEW_REPO>.git
+git remote add origin git@github.com:rdemb/rdemb.github.io.git
 GIT_SSH_COMMAND='ssh -i .deploy/rdemb_site_deploy_key -o IdentitiesOnly=yes' git push -u origin main
 ```
 
@@ -36,7 +36,7 @@ The admin panel is in `admin/` and uses Decap CMS. Before deploy, update:
 
 ```yaml
 backend:
-  repo: rdemb/REPLACE_WITH_REPO
+  repo: rdemb/rdemb.github.io
 ```
 
 in `admin/config.yml`.

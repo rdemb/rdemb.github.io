@@ -27,7 +27,7 @@ The admin panel lives at `/admin/` and uses Decap CMS. Before public deployment,
 
 ```yaml
 backend:
-  repo: rdemb/REPLACE_WITH_REPO
+  repo: rdemb/rdemb.github.io
 ```
 
 in `admin/config.yml`.
