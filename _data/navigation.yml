@@ -16,3 +16,12 @@ en:
     url: "/en/reflections/"
   - title: "About"
     url: "/en/about/"
+de:
+  - title: "Home"
+    url: "/de/"
+  - title: "MOCPS"
+    url: "/de/mocps/"
+  - title: "Reflexionen"
+    url: "/de/reflexionen/"
+  - title: "About"
+    url: "/de/about/"

@@ -3,6 +3,8 @@ title: "MOCPS: cold run 200/200"
 lang: pl
 kind: project
 project: mocps
+en_url: /en/2026/05/18/mocps-cold-run/
+de_url: /de/2026/05/18/mocps-cold-run/
 excerpt: "Cold reproducibility dla MOCPS: 200/200 przeciw persystencji na pokrytej powierzchni diagnostycznej."
 ---
 

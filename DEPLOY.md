@@ -45,6 +45,7 @@ The panel is configured for:
 
 - Polish posts
 - English posts
+- German posts
 - main pages
 - navigation entries
 - media uploads under `assets/img/uploads`

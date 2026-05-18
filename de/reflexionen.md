@@ -1,16 +1,16 @@
 ---
 layout: page
-title: "Reflections"
-lang: en
+title: "Reflexionen"
+lang: de
 pl_url: /refleksje/
-de_url: /de/reflexionen/
-permalink: /en/reflections/
+en_url: /en/reflections/
+permalink: /de/reflexionen/
 ---
 
-Looser posts: programming, markets, models, work discipline, and notes from building.
+Freie Beiträge: Programmierung, Märkte, Modelle, Arbeitsdisziplin und Notizen aus dem Bauen.
 
 <ul class="post-list">
-  {% assign posts = site.posts | where: "lang", "en" | where: "kind", "reflection" %}
+  {% assign posts = site.posts | where: "lang", "de" | where: "kind", "reflection" %}
   {% for post in posts %}
     <li>
       <span class="post-date">{{ post.date | date: "%Y-%m-%d" }}</span>

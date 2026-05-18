@@ -1,0 +1,41 @@
+---
+layout: default
+title: "Home"
+lang: de
+pl_url: /
+en_url: /en/
+---
+
+<section>
+  <h1>Rafał Dembski</h1>
+  <p class="intro">Ich programmiere als Hobby, analysiere Finanzmärkte und baue kleine Diagnostik-Experimente für prädiktive Modelle. Day Trading ist meine tägliche Arbeit; nach Feierabend baue ich kleine Experimente, um Algorithmen klarer zu verstehen.</p>
+  <p class="muted">Dieser Blog ist ein Ort für Projekte, technische Notizen und freiere Reflexionen. Keine großen Versprechen, keine Marketingschicht, sondern klare Einschränkungen und einfache Baselines.</p>
+</section>
+
+<section class="project-callout">
+  <h2><a href="{{ '/de/mocps/' | relative_url }}">MOCPS — Motion-Grounded Object-Centric Predictive State</a></h2>
+  <p>Das erste größere Projekt auf dieser Seite: eine kleine CPU-freundliche Diagnostik, um zu prüfen, wann motion-grounded object-centric state prädiktiven Latents hilft, Persistenz zu schlagen.</p>
+  <div class="badges">
+    <span class="badge">CPU-first</span>
+    <span class="badge">Toy diagnostic</span>
+    <span class="badge">200/200 cold run</span>
+    <span class="badge">No benchmark claim</span>
+  </div>
+</section>
+
+<section>
+  <h2>Neueste Beiträge</h2>
+  <ul class="post-list">
+    {% assign posts = site.posts | where: "lang", "de" %}
+    {% for post in posts limit: 8 %}
+      <li>
+        <span class="post-date">{{ post.date | date: "%Y-%m-%d" }}</span>
+        <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+      </li>
+    {% endfor %}
+  </ul>
+</section>
+
+<section class="note-box">
+  <p>MOCPS ist kein Benchmark, kein SOTA, kein Beleg für Physikverständnis und keine Behauptung, dass JEPA funktioniert. Es ist ein enges diagnostisches Resultat in kleinen prozeduralen Welten.</p>
+</section>

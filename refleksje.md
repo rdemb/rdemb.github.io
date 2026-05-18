@@ -3,6 +3,7 @@ layout: page
 title: "Refleksje"
 lang: pl
 en_url: /en/reflections/
+de_url: /de/reflexionen/
 permalink: /refleksje/
 ---
 

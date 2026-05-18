@@ -2,6 +2,8 @@
 title: "Po co ten blog"
 lang: pl
 kind: reflection
+en_url: /en/2026/05/18/why-this-blog/
+de_url: /de/2026/05/18/warum-dieser-blog/
 excerpt: "Miejsce na projekty, luźne refleksje i zapis małych eksperymentów bez udawania większych claimów."
 ---
 

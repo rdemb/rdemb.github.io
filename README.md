@@ -7,8 +7,8 @@ This is a local GitHub Pages site using a small custom Jekyll theme inspired by 
 - no npm build step
 - no analytics or tracking
 - simple typography and narrow text column
-- Polish and English versions
-- posts in `_posts/pl` and `_posts/en`
+- Polish, English, and German versions
+- posts in `_posts/pl`, `_posts/en`, and `_posts/de`
 - Decap CMS admin panel in `admin/`
 
 ## Local preview

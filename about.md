@@ -3,6 +3,7 @@ layout: page
 title: "About"
 lang: pl
 en_url: /en/about/
+de_url: /de/about/
 permalink: /about/
 ---
 

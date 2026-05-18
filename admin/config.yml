@@ -41,6 +41,20 @@ collections:
       - {label: "Excerpt", name: "excerpt", widget: "text", required: false}
       - {label: "Body", name: "body", widget: "markdown"}
 
+  - name: "posts_de"
+    label: "Beiträge DE"
+    folder: "_posts/de"
+    create: true
+    delete: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Language", name: "lang", widget: "hidden", default: "de"}
+      - {label: "Kind", name: "kind", widget: "select", options: ["project", "reflection", "note"], default: "note"}
+      - {label: "Project", name: "project", widget: "string", required: false}
+      - {label: "Excerpt", name: "excerpt", widget: "text", required: false}
+      - {label: "Body", name: "body", widget: "markdown"}
+
   - name: "pages"
     label: "Pages"
     files:
@@ -54,6 +68,11 @@ collections:
         file: "en/index.html"
         fields:
           - {label: "Body", name: "body", widget: "markdown"}
+      - label: "Home DE"
+        name: "home_de"
+        file: "de/index.html"
+        fields:
+          - {label: "Body", name: "body", widget: "markdown"}
       - label: "MOCPS PL"
         name: "mocps_pl"
         file: "mocps.md"
@@ -62,6 +81,11 @@ collections:
       - label: "MOCPS EN"
         name: "mocps_en"
         file: "en/mocps.md"
+        fields:
+          - {label: "Body", name: "body", widget: "markdown"}
+      - label: "MOCPS DE"
+        name: "mocps_de"
+        file: "de/mocps.md"
         fields:
           - {label: "Body", name: "body", widget: "markdown"}
       - label: "About PL"
@@ -74,6 +98,11 @@ collections:
         file: "en/about.md"
         fields:
           - {label: "Body", name: "body", widget: "markdown"}
+      - label: "About DE"
+        name: "about_de"
+        file: "de/about.md"
+        fields:
+          - {label: "Body", name: "body", widget: "markdown"}
 
   - name: "project_pages"
     label: "Project pages"
@@ -84,7 +113,7 @@ collections:
     fields:
       - {label: "Layout", name: "layout", widget: "hidden", default: "page"}
       - {label: "Title", name: "title", widget: "string"}
-      - {label: "Language", name: "lang", widget: "select", options: ["pl", "en"], default: "pl"}
+      - {label: "Language", name: "lang", widget: "select", options: ["pl", "en", "de"], default: "pl"}
       - {label: "Permalink", name: "permalink", widget: "string", hint: "Example: /new-project/ or /en/new-project/"}
       - {label: "Body", name: "body", widget: "markdown"}
 
@@ -103,6 +132,12 @@ collections:
               - {label: "URL", name: "url", widget: "string"}
           - label: "EN"
             name: "en"
+            widget: "list"
+            fields:
+              - {label: "Title", name: "title", widget: "string"}
+              - {label: "URL", name: "url", widget: "string"}
+          - label: "DE"
+            name: "de"
             widget: "list"
             fields:
               - {label: "Title", name: "title", widget: "string"}

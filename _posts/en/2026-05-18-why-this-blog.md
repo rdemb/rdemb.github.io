@@ -2,6 +2,8 @@
 title: "Why this blog exists"
 lang: en
 kind: reflection
+pl_url: /pl/2026/05/18/po-co-ten-blog/
+de_url: /de/2026/05/18/warum-dieser-blog/
 excerpt: "A place for projects, loose reflections, and small experiments without pretending they prove more than they do."
 ---
 

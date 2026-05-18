@@ -1,6 +1,6 @@
 <header class="site-header">
   <div class="site-title">
-    <a href="{% if page.lang == 'en' %}{{ '/en/' | relative_url }}{% else %}{{ '/' | relative_url }}{% endif %}">{{ site.title }}</a>
+    <a href="{% if page.lang == 'en' %}{{ '/en/' | relative_url }}{% elsif page.lang == 'de' %}{{ '/de/' | relative_url }}{% else %}{{ '/' | relative_url }}{% endif %}">{{ site.title }}</a>
   </div>
   <nav class="site-nav" aria-label="Primary navigation">
     {% assign lang = page.lang | default: "pl" %}
@@ -8,10 +8,10 @@
     {% for item in nav_items %}
       <a href="{{ item.url | relative_url }}">{{ item.title }}</a>
     {% endfor %}
-    {% if lang == "en" %}
-      <a class="lang-link" href="{{ page.pl_url | default: '/' | relative_url }}">PL</a>
-    {% else %}
-      <a class="lang-link" href="{{ page.en_url | default: '/en/' | relative_url }}">EN</a>
-    {% endif %}
+    <span class="lang-switch" aria-label="Language selector">
+      <a href="{{ page.pl_url | default: '/' | relative_url }}" aria-label="Polski"><span aria-hidden="true">🇵🇱</span><span class="lang-code">PL</span></a>
+      <a href="{{ page.en_url | default: '/en/' | relative_url }}" aria-label="English"><span aria-hidden="true">🇬🇧</span><span class="lang-code">EN</span></a>
+      <a href="{{ page.de_url | default: '/de/' | relative_url }}" aria-label="Deutsch"><span aria-hidden="true">🇩🇪</span><span class="lang-code">DE</span></a>
+    </span>
   </nav>
 </header>
