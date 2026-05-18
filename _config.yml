@@ -19,8 +19,16 @@ defaults:
 
 exclude:
   - README.md
+  - SECURITY.md
+  - DEPLOY.md
+  - docs
+  - scripts
   - vendor
   - node_modules
   - .bundle
   - .deploy
+  - .codex
+  - .agents
+  - .env
+  - .env.*
   - Gemfile.lock

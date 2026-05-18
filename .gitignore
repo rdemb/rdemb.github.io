@@ -1,9 +1,34 @@
+# Generated site/build output
 _site/
 .jekyll-cache/
 .sass-cache/
 .bundle/
 vendor/
 node_modules/
-.DS_Store
-*.log
+
+# Local deploy material and secrets
 .deploy/
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+id_rsa
+id_ed25519
+
+# Local agent/editor state
+.codex/
+.agents/
+.lab_tasks/
+.vscode/
+.idea/
+
+# Caches and logs
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+__pycache__/
+*.log
+
+# OS noise
+.DS_Store

@@ -1,6 +1,6 @@
-# rdemb-site
+# rdemb.github.io
 
-Minimal bilingual blog and research site for Rafał Dembski.
+Minimal multilingual blog and research site for Rafał Dembski.
 
 This is a local GitHub Pages site using a small custom Jekyll theme inspired by simple technical blogs:
 
@@ -9,7 +9,7 @@ This is a local GitHub Pages site using a small custom Jekyll theme inspired by 
 - simple typography and narrow text column
 - Polish, English, and German versions
 - posts in `_posts/pl`, `_posts/en`, and `_posts/de`
-- Decap CMS admin panel in `admin/`
+- no public admin panel or browser CMS
 
 ## Local preview
 
@@ -21,18 +21,17 @@ bundle exec jekyll serve
 
 When Jekyll is unavailable, edit Markdown directly and rely on GitHub Pages to build after push.
 
-## Admin panel
+## Content maintenance
 
-The admin panel lives at `/admin/` and uses Decap CMS:
+Content is managed directly in the repository:
 
-```yaml
-backend:
-  repo: rdemb/rdemb.github.io
-```
+- posts: `_posts/pl`, `_posts/en`, `_posts/de`
+- main pages: `index.html`, `mocps.md`, `refleksje.md`, `about.md`
+- English pages: `en/`
+- German pages: `de/`
+- navigation: `_data/navigation.yml`
 
-The panel can create/delete posts, edit main pages, and edit navigation data in `_data/navigation.yml`.
-
-See `DEPLOY.md` for deploy-key and GitHub setup notes.
+See `docs/CONTENT_MAINTENANCE.md` for the safe editing workflow. This keeps the public site static and avoids exposing a CMS/admin surface.
 
 ## Scope and claims
 

@@ -1,53 +1,54 @@
-# Deploy notes
+# Deploy Notes
 
-This repository is local-only for now. No remote is configured.
+This repository deploys to GitHub Pages through GitHub Actions.
 
 ## Deploy key
 
-A local deploy key was generated outside git:
+A local deploy key exists outside git:
 
 ```text
 .deploy/rdemb_site_deploy_key
 .deploy/rdemb_site_deploy_key.pub
 ```
 
-Only the `.pub` content should be added to GitHub.
+Only the `.pub` content belongs in GitHub deploy-key settings. The private key must never be committed or pasted into issues, docs, comments, or chat.
 
-In the future GitHub repository:
+Expected GitHub setting:
 
 1. Open `Settings -> Deploy keys`.
 2. Add the public key from `.deploy/rdemb_site_deploy_key.pub`.
-3. Enable `Allow write access` if this machine should push with that key.
+3. Enable `Allow write access` only for this trusted machine.
 
-## Remote
+## Push
 
-After the GitHub repository exists:
+The remote is expected to be:
 
 ```bash
-git remote add origin git@github.com:rdemb/rdemb.github.io.git
-GIT_SSH_COMMAND='ssh -i .deploy/rdemb_site_deploy_key -o IdentitiesOnly=yes' git push -u origin main
+git@github.com:rdemb/rdemb.github.io.git
 ```
 
-Do not commit `.deploy/`.
+Push with the deploy key:
 
-## Admin panel
-
-The admin panel is in `admin/` and uses Decap CMS. Before deploy, update:
-
-```yaml
-backend:
-  repo: rdemb/rdemb.github.io
+```bash
+GIT_SSH_COMMAND='ssh -i .deploy/rdemb_site_deploy_key -o IdentitiesOnly=yes -o StrictHostKeyChecking=accept-new' git push origin main
 ```
 
-in `admin/config.yml`.
+## Site Management
 
-The panel is configured for:
+There is intentionally no public `/admin/` panel and no browser CMS in this repository. Content is maintained through Markdown/YAML files and normal git review:
 
-- Polish posts
-- English posts
-- German posts
-- main pages
-- navigation entries
-- media uploads under `assets/img/uploads`
+- posts live in `_posts/pl`, `_posts/en`, and `_posts/de`
+- pages live at the repository root plus `en/` and `de/`
+- navigation lives in `_data/navigation.yml`
 
-For GitHub Pages hosting, Decap CMS also needs GitHub authentication to be configured for the final repo. The content model is already present, but auth cannot be completed until the repository exists.
+See `docs/CONTENT_MAINTENANCE.md`.
+
+## Do Not Commit
+
+- `.deploy/`
+- `.env` or `.env.*`
+- `.codex/`
+- `.agents/`
+- local notes with private information
+- market/trading logs
+- screenshots with accounts, balances, keys, emails, or personal data
