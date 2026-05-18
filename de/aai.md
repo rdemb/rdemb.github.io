@@ -7,7 +7,7 @@ en_url: /en/aai/
 permalink: /de/aai/
 ---
 
-AAI, **Adaptive Auction Intelligence**, ist mein Paradigma, den Markt als Auktion zu lesen und nicht als Sammlung einzelner Indikatoren.
+AAI, **Adaptive Auction Intelligence**, ist meine Art, den Markt vor einer Entscheidung zu ordnen. Ich lese den Markt als Auktion, nicht als Sammlung einzelner Indikatoren.
 
 Kurz gesagt: erst Struktur, dann Szenario. Erst Ausführungskosten, Datenfrische und Erinnerung ähnlicher Setups, dann Richtung. Kein Edge ist kein Fehler. Es ist ein Ergebnis.
 
@@ -20,7 +20,7 @@ Kann eine lokale deterministische Market-Intelligence-Schicht einem Operator hel
 - Narrativ von Evidenz,
 - Aktivität von Edge.
 
-Das ist kein autonomer P&L-Bot. AAI ist ein Markt-Reviewer: Es sagt, was die Auktion zeigt, wo Evidenz widersprüchlich ist, was fehlt und wann Nichtstun die sauberere Entscheidung ist.
+Das ist kein autonomer P&L-Bot. AAI ist eine Schicht zur Marktbewertung: Sie beschreibt, was die Auktion zeigt, wo Evidenz widersprüchlich ist, was fehlt und wann Nichtstun die sauberere Entscheidung ist.
 
 ## Paradigma
 
@@ -28,7 +28,7 @@ Die Kernregel lautet:
 
 > No-Edge = No-Trade.
 
-AAI darf leise bleiben. Es darf sagen, dass der breite Kontext interessant ist, aber Preisakzeptanz fehlt. Es darf Konflikte zwischen Auktion, Ausführungskosten, Orderflow und Memory zeigen.
+AAI kann No-Trade zurückgeben. Es kann zeigen, dass der breite Kontext interessant ist, aber Preisakzeptanz fehlt. Es kann auch Konflikte zwischen Auktion, Ausführungskosten, Orderflow und Memory zeigen.
 
 Die Entscheidung wird in Schichten zerlegt:
 
@@ -43,7 +43,7 @@ Keine einzelne Schicht darf so tun, als wäre sie die ganze Wahrheit.
 
 ## Architektur
 
-AAI ist eine lokale analytische Schicht. Der Hot Path ist deterministisch: kein LLM im Runtime, kein externes Sprachmodell als Entscheider, keine versteckte Prosa-Autorität.
+AAI ist eine lokale analytische Schicht. Der Hot Path ist deterministisch: kein LLM im Runtime, kein externes Sprachmodell als Entscheider und keine generierte Prosa als Signal.
 
 ```text
 local market data
@@ -55,7 +55,7 @@ local market data
   -> operator context
 ```
 
-Das Ergebnis ist keine Buy/Sell-Anweisung. Das Ergebnis ist Kontext: Auktionstyp, Arbeitsrichtung falls vorhanden, Konfliktgrad, Ausführungskosten, Datenqualität und Grund für No-Trade, wenn kein Edge da ist.
+Das Ergebnis ist keine Buy/Sell-Anweisung. Das Ergebnis ist Kontext für einen Menschen: Auktionstyp, Arbeitsrichtung falls vorhanden, Konfliktgrad, Ausführungskosten, Datenqualität und Grund für No-Trade, wenn kein Edge da ist.
 
 ## Was ich messe
 
@@ -83,7 +83,7 @@ Die Frage verschiebt sich von "sagt AAI die Richtung voraus?" zu:
 
 ## Projektentscheidung
 
-AAI bleibt Forschungsprojekt und Operator-Werkzeug.
+AAI bleibt Forschungsprojekt und ein Werkzeug, das einen Menschen unterstützt.
 
 Ich veröffentliche keine Signale, Entry-Level, Live-Reports, Logs, privaten Feeds oder Ergebnisse, die als Empfehlung missverstanden werden können. Öffentlich ist das Paradigma: evidence-first, local-first, no-edge-first.
 

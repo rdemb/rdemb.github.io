@@ -7,7 +7,9 @@ de_url: /de/reflexionen/
 permalink: /refleksje/
 ---
 
-Luźniejsze wpisy: programowanie, rynki, modele, dyscyplina pracy i notatki z budowania. Tu nie musi być tabela. Wystarczy myśl, która wraca i da się ją zapisać uczciwie.
+Refleksje są dla tekstów, które nie są pełnymi projektami: programowanie, rynki, praca z modelami, dyscyplina i obserwacje z budowania.
+
+Nie każdy wpis musi mieć tabelę wyników. Ma być jasno: o co chodzi, co zauważyłem i jakie są ograniczenia.
 
 <div class="post-card-grid">
   {% assign posts = site.posts | where: "lang", "pl" | where: "kind", "reflection" %}

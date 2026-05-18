@@ -7,7 +7,9 @@ de_url: /de/mocps/
 permalink: /mocps/
 ---
 
-MOCPS to nazwa v0.5 dla promowanego przepisu diagnostycznego `signed_velocity_only` + predictor400 w małej rodzinie eksperymentów proceduralnych. To nie jest nowa wielka architektura. To uporządkowany, minimalny przepis badawczy, który powstał po serii negatywnych i pozytywnych testów.
+MOCPS to mały projekt badawczy o przewidywaniu ruchu obiektu w prostych światach pikselowych. Pytanie jest wąskie: czy reprezentacja wyciągnięta z obrazu potrafi przewidzieć przyszłą pozycję lepiej niż ostatnia znana pozycja.
+
+Technicznie aktualna wersja to przepis `signed_velocity_only` + predictor400. To nie jest nowa duża architektura. To zawężony, reprodukowalny test, który powstał po serii wyników negatywnych i pozytywnych.
 
 ## Co to jest
 
@@ -24,9 +26,9 @@ Persystencja to mocny, prosty baseline: zakłada, że przyszła pozycja obiektu 
 
 Celem nie jest pokazanie ogólnego world modelu. Celem jest zrozumienie jednego małego pytania:
 
-> kiedy predykcyjny latent naprawdę niesie użyteczny stan obiektu, a kiedy wygląda dobrze tylko dlatego, że baseline był za słaby?
+> kiedy predykcyjny latent naprawdę niesie użyteczny stan obiektu, a kiedy wynik jest tylko efektem zbyt słabego baseline'u?
 
-Dlatego eksperymenty są małe, lokalne i CPU-first. Każdy wynik jest mierzony przeciw prostym baseline’om, a nie przeciw narracji.
+Dlatego eksperymenty są małe, lokalne i CPU-first. Każdy wynik jest mierzony przeciw prostym baseline’om, a nie oceniany po opisie.
 
 ## Mechanizm
 

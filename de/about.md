@@ -7,11 +7,13 @@ en_url: /en/about/
 permalink: /de/about/
 ---
 
-Ich baue kleine rechnerische Experimente und schreibe auf, was ich daraus lerne.
+Ich baue kleine rechnerische Experimente und beschreibe sie ohne Expertenpose.
 
-Day Trading ist Arbeit. Nach Feierabend interessieren mich prädiktive Diagnostik, latente Repräsentationen und der Punkt, an dem ein Modell nützlichen Zustand trägt, statt nur plausibel auszusehen.
+Ich lerne durchs Bauen: eine Idee nehmen, auf einen Test verkleinern, einen Baseline danebenstellen und das Ergebnis notieren. Mich interessiert auch, warum etwas nicht funktioniert.
 
-Diese Seite ist ein Notizbuch: Projekte, Resultate, negative Befunde und die Grenzen darum herum.
+Märkte gehören zu meiner täglichen Arbeit. Daneben schreibe ich Code, teste Modelle und prüfe kleine technische Hypothesen.
+
+Diese Seite ist ein öffentliches Notizbuch: Projekte, positive und negative Resultate, Reflexionen und Grenzen.
 
 Sie ist keine Anlageberatung.
 

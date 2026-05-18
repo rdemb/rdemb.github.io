@@ -7,13 +7,15 @@ en_url: /en/projects/
 permalink: /de/projekte/
 ---
 
-Projekte landen hier erst, wenn sie Code, ein Resultat und klare Grenzen haben. Ich will keine Liste von Ambitionen. Lieber ein kleines Experiment, das man prüfen kann, als eine große Beschreibung ohne Griff.
+Projekte landen hier, wenn sie Code, ein Ergebnis und klare Grenzen haben. Eine Idee ohne Test bleibt eine Notiz, kein Projekt.
+
+Ich bevorzuge ein kleineres Projekt, das prüfbar ist, gegenüber einer großen Beschreibung ohne klares Ergebnis.
 
 <div class="card-grid">
   <a class="content-card project-card" href="{{ '/de/aai/' | relative_url }}">
     <span class="card-kicker">market intelligence</span>
     <h2>AAI</h2>
-    <p>Adaptive Auction Intelligence. Ein lokales Paradigma für Auktion, Mikrostruktur, Ausführungskosten und Evidence Review in Operator-Entscheidungen.</p>
+    <p>Adaptive Auction Intelligence. Eine lokale Art, Auktion, Mikrostruktur, Ausführungskosten und Evidenzqualität vor einer menschlichen Entscheidung zu ordnen.</p>
     <span class="badge-row">
       <span class="badge">no-edge first</span>
       <span class="badge">local-first</span>
@@ -23,7 +25,7 @@ Projekte landen hier erst, wenn sie Code, ein Resultat und klare Grenzen haben. 
   <a class="content-card project-card" href="{{ '/de/mocps/' | relative_url }}">
     <span class="card-kicker">aktives projekt</span>
     <h2>MOCPS</h2>
-    <p>Motion-Grounded Object-Centric Predictive State. Eine kleine Diagnostik für Objektbewegung in kontrollierten Pixelwelten.</p>
+    <p>Motion-Grounded Object-Centric Predictive State. Eine kleine Objektbewegungs-Diagnostik: Kann eine Repräsentation die nächste Position besser vorhersagen als einfache Persistenz?</p>
     <span class="badge-row">
       <span class="badge">CPU-first</span>
       <span class="badge">baseline first</span>
@@ -33,5 +35,5 @@ Projekte landen hier erst, wenn sie Code, ein Resultat und klare Grenzen haben. 
 </div>
 
 <section class="note-box">
-  <p>Öffentliche Projektseiten bleiben auf der Ebene von Paradigma, Architektur und Grenzen. Ich veröffentliche keine privaten Logs, Signale, Entry-Level oder Inhalte, die als Empfehlung verstanden werden könnten.</p>
+  <p>Öffentliche marktbezogene Projektseiten bleiben auf der Ebene von Paradigma, Architektur und Grenzen. Ich veröffentliche keine privaten Logs, Signale, Entry-Level oder Inhalte, die als Empfehlung verstanden werden können.</p>
 </section>

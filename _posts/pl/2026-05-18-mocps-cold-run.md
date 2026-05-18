@@ -5,12 +5,14 @@ kind: project
 project: mocps
 en_url: /en/2026/05/18/mocps-cold-run/
 de_url: /de/2026/05/18/mocps-cold-run/
-excerpt: "Cold reproducibility dla MOCPS: 200/200 przeciw persystencji na pokrytej powierzchni diagnostycznej."
+excerpt: "Cold reproducibility dla MOCPS: ten sam przepis odtworzony od zera, 200/200 przeciw persystencji na sprawdzonym zakresie testu."
 ---
 
-MOCPS ma teraz cold-run evidence bez korzystania z wcześniejszych wierszy audytu predictor400.
+W eksperymentach łatwo przeszacować wynik. Można niechcący oprzeć się na wcześniejszych tabelach, wybrać wygodny zakres albo zapomnieć, że jeden run był wyjątkowo dobry.
 
-Najkrócej:
+Dlatego ten wpis jest o cold runie: uruchomieniu MOCPS od zera na sprawdzonym zakresie testu, bez korzystania z wcześniejszych wierszy audytu predictor400.
+
+Wynik:
 
 - `cold_run: true`
 - `reused_rows: false`
@@ -20,4 +22,6 @@ Najkrócej:
 - failed rows: `0`
 - rows worse than learned_diff: `0`
 
-To nadal jest mały diagnostyk w proceduralnych światach, nie benchmark i nie szeroki claim. Dla mnie najważniejsze jest to, że kanoniczna komenda odtwarza wynik bez specjalnego reuse ścieżek z poprzedniego audytu.
+Persystencja jest tu prostym przeciwnikiem: zakłada, że obiekt zostanie tam, gdzie był ostatnio. Jeśli predykcyjny stan nie potrafi regularnie wygrać z takim baseline'em, to cała reszta opisu nie ma dużej wartości.
+
+Ten wynik nie robi z MOCPS benchmarku ani szerokiego modelu świata. Ważne jest to, że kanoniczna komenda odtwarza wynik bez specjalnego reuse. To dobry punkt startowy do trudniejszych testów.

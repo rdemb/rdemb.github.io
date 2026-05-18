@@ -5,12 +5,14 @@ kind: project
 project: mocps
 pl_url: /pl/2026/05/18/mocps-cold-run/
 de_url: /de/2026/05/18/mocps-cold-run/
-excerpt: "Cold reproducibility for MOCPS: 200/200 against persistence on the covered diagnostic surface."
+excerpt: "Cold reproducibility for MOCPS: the same recipe rerun from scratch, 200/200 against persistence on the checked diagnostic surface."
 ---
 
-MOCPS now has cold-run evidence without relying on reused predictor400 audit rows.
+It is easy to overestimate an experiment. You can reuse a convenient table, pick a comfortable slice, or forget that one run was unusually good.
 
-Short version:
+That is why this note is about a cold run: MOCPS rerun from scratch on the checked surface, without relying on earlier predictor400 audit rows.
+
+Result:
 
 - `cold_run: true`
 - `reused_rows: false`
@@ -20,4 +22,6 @@ Short version:
 - failed rows: `0`
 - rows worse than learned_diff: `0`
 
-This is still a small diagnostic in procedural worlds, not a benchmark and not a broad claim. The important part is that the canonical command reproduces the covered result without a special reuse path.
+Persistence is the simple opponent here: it assumes the object will stay where it was last observed. If a predictive state cannot regularly beat that baseline, the rest of the description is not worth much.
+
+This does not turn MOCPS into a benchmark or a broad world model. The useful part is smaller: the canonical command reproduces the result without a special reuse path. That gives the next harder tests a stable starting point.

@@ -7,7 +7,9 @@ en_url: /en/reflections/
 permalink: /de/reflexionen/
 ---
 
-Freie Beiträge: Programmierung, Märkte, Modelle, Arbeitsdisziplin und Notizen aus dem Bauen. Nicht alles braucht eine Tabelle. Manchmal reicht ein Gedanke, der wiederkommt und ehrlich notiert wird.
+Reflexionen sind für Beiträge, die keine vollständigen Projekte sind: Programmierung, Märkte, Arbeit mit Modellen, Disziplin und Notizen aus dem Bauen.
+
+Nicht jeder Beitrag braucht eine Ergebnistabelle. Trotzdem soll klar sein: worum es geht, was ich beobachtet habe und wo die Grenzen liegen.
 
 <div class="post-card-grid">
   {% assign posts = site.posts | where: "lang", "de" | where: "kind", "reflection" %}

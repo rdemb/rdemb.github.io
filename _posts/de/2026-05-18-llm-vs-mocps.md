@@ -4,14 +4,14 @@ lang: de
 kind: reflection
 pl_url: /pl/2026/05/18/llm-a-mocps/
 en_url: /en/2026/05/18/llm-vs-mocps/
-excerpt: "Ein LLM modelliert Sprache und statistisches Wissen in Text. MOCPS testet einen kleinen prädiktiven Objektzustand in einer kontrollierten Pixelwelt."
+excerpt: "Ein LLM hilft mir beim Denken und Coden. MOCPS ist ein kleiner Bewegungstest. Verschiedene Werkzeuge, verschiedene Fragen."
 ---
 
-Ein LLM und MOCPS leben in sehr unterschiedlichen Maßstäben.
+LLMs und MOCPS landen leicht im selben Topf, weil beide mit Modellen und Vorhersage zu tun haben. Das wäre irreführend.
 
-Ein LLM ist ein großes Sprachmodell. Es lernt, Texttokens aus riesigen Korpora vorherzusagen. Seine Stärke ist Sprache: Zusammenfassung, Code, Dialog, Planung und Mustererkennung in Text. Es ist breit als Sprachinterface, aber sein primäres Medium sind Tokens.
+Ein LLM ist für mich ein Werkzeug für Sprache und Code. Es hilft beim Zusammenfassen, Planen, Fehlersuchen, Ordnen von Experimenten und beim schnelleren Weg von einer Idee zu einem laufenden Entwurf. Sein Medium sind Tokens: Text, Anweisungen, Programmfragmente, Beschreibungen.
 
-MOCPS versucht nicht, dasselbe zu tun. Es ist eine kleine Forschungsdiagnostik. Es läuft in einfachen prozeduralen Welten, in denen eine enge Frage messbar ist: sagt ein object-centric latent state eine zukünftige Position besser vorher als Persistenz?
+MOCPS versucht nicht, so ein Werkzeug zu sein. Es ist eine kleine Forschungsdiagnostik. Es läuft in einfachen Pixelwelten, in denen eine enge Frage messbar ist: Sagt eine Objektrepräsentation eine zukünftige Position besser vorher als Persistenz?
 
 Wichtige Unterschiede:
 
@@ -19,11 +19,11 @@ Wichtige Unterschiede:
 | --- | --- | --- |
 | Medium | Text / Tokens | kleine Pixelbilder |
 | Maßstab | große Modelle und Datensätze | CPU-freundliche Toy-Diagnostik |
-| Ziel | Sprach- und Textmuster-Modellierung | Test eines prädiktiven Objektzustands |
+| Ziel | Arbeit mit Sprache, Code und Textmustern | Test eines prädiktiven Objektzustands |
 | Baseline | aufgabenabhängig | explizite Positionspersistenz |
 | Ergebnis | Antwortqualität / Downstream Tasks | Positions-MAE und Winrate vs Baseline |
 | Claim | breites Sprachinterface | enges diagnostisches Resultat |
 
-Ein LLM kann mir helfen, Code zu schreiben, Experimente zu ordnen und Fehler zu finden. MOCPS ist dagegen das Untersuchungsobjekt: ein kleiner Versuch zu verstehen, wann eine prädiktive Repräsentation wirklich Zustand trägt und wann sie nur plausibel aussieht.
+Die einfachste Trennung ist: Ein LLM hilft mir beim Bauen und Denken; MOCPS ist eines der Dinge, die ich baue und teste.
 
-Ich behandle MOCPS nicht als Konkurrenz zu LLMs. Es stellt eine andere Art von Frage. Ein LLM ist ein Sprachwerkzeug. MOCPS ist ein diagnostisches Mikroskop für object-centric predictive state.
+Ich behandle MOCPS nicht als Konkurrenz zu LLMs. Es stellt eine andere Frage auf einer anderen Skala. Ein LLM ist ein breites Sprachinterface. MOCPS ist ein enger diagnostischer Test: Er soll zeigen, wann ein prädiktiver Objektzustand besser funktioniert als ein einfacher Baseline.

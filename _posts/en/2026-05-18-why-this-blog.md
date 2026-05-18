@@ -4,10 +4,12 @@ lang: en
 kind: reflection
 pl_url: /pl/2026/05/18/po-co-ten-blog/
 de_url: /de/2026/05/18/warum-dieser-blog/
-excerpt: "A place for projects, loose reflections, and small experiments without pretending they prove more than they do."
+excerpt: "Why I want a public notebook: projects, reflections, and small experiments described without larger claims than the result allows."
 ---
 
-I want one place for projects, technical notes, and looser reflections. No product wrapper around every post, no sales language, and no pretending that a small experiment says more than it actually says.
+I want one public place for projects, technical notes, and shorter reflections.
+
+A lot of code looks good at first. A model predicts something, a chart looks reasonable, and the explanation sounds fine. Only the baseline, the rerun, and the negative result show whether the experiment adds anything.
 
 The pattern I care about is small and checkable:
 
@@ -16,4 +18,6 @@ The pattern I care about is small and checkable:
 - minimal code
 - a result that can be reproduced on CPU
 
-This should be a builder's notebook, not a portfolio of only clean wins.
+I do not want every post to become a product or every experiment to become a claim about the world. I want the question, result, and limit to be understandable from the outside.
+
+This should be a builder's notebook, not a portfolio of clean wins. If something failed but narrowed the problem, it still belongs here.

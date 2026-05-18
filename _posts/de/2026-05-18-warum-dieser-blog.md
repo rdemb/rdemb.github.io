@@ -4,10 +4,12 @@ lang: de
 kind: reflection
 pl_url: /pl/2026/05/18/po-co-ten-blog/
 en_url: /en/2026/05/18/why-this-blog/
-excerpt: "Ein Ort für Projekte, freie Reflexionen und kleine Experimente, ohne mehr zu behaupten als sie zeigen."
+excerpt: "Warum ich ein öffentliches Notizbuch will: Projekte, Reflexionen und kleine Experimente ohne größere Claims als das Ergebnis erlaubt."
 ---
 
-Ich möchte einen Ort für Projekte, technische Notizen und freiere Reflexionen haben. Ohne aus jedem Beitrag ein Produkt zu machen, ohne Verkaufssprache und ohne so zu tun, als würde ein kleines Experiment mehr beweisen, als es wirklich beweist.
+Ich möchte einen öffentlichen Ort für Projekte, technische Notizen und kürzere Reflexionen.
+
+Viel Code sieht am Anfang gut aus. Ein Modell sagt etwas voraus, ein Plot wirkt sinnvoll, die Erklärung klingt korrekt. Erst Baseline, Wiederholung und negativer Befund zeigen, ob das Experiment etwas beiträgt.
 
 Das Muster, das mich interessiert, ist klein und prüfbar:
 
@@ -16,4 +18,6 @@ Das Muster, das mich interessiert, ist klein und prüfbar:
 - minimaler Code
 - ein Ergebnis, das auf CPU reproduzierbar ist
 
-Das soll ein Notizbuch des Bauens sein, kein Portfolio nur aus sauberen Erfolgen.
+Ich will nicht aus jedem Beitrag ein Produkt machen und nicht aus jedem Experiment eine Behauptung über die Welt. Frage, Ergebnis und Grenze sollen von außen verständlich sein.
+
+Das soll ein Notizbuch des Bauens sein, kein Portfolio sauberer Erfolge. Wenn etwas scheitert, aber das Problem enger macht, gehört es trotzdem hierher.

@@ -7,7 +7,9 @@ de_url: /de/mocps/
 permalink: /en/mocps/
 ---
 
-MOCPS is the v0.5 name for the promoted `signed_velocity_only` + predictor400 diagnostic recipe in a small procedural experiment family. It is not a large new architecture. It is a cleaned-up research recipe that came out of a long sequence of negative and positive tests.
+MOCPS is a small research project about predicting object motion in simple pixel worlds. The question is narrow: can a representation extracted from images predict a future position better than the last known position?
+
+Technically, the current version is the `signed_velocity_only` + predictor400 recipe. It is not a large new architecture. It is a narrow reproducible test that came out of a sequence of negative and positive results.
 
 ## What it is
 
@@ -24,9 +26,9 @@ Persistence is a strong simple baseline: it assumes the future position is the l
 
 The goal is not to claim a general world model. The goal is to answer one small question:
 
-> when does a predictive latent actually carry useful object state, and when does it only look good because the baseline was weak?
+> when does a predictive latent actually carry useful object state, and when is the result only caused by a weak baseline?
 
-That is why the experiments are small, local, and CPU-first. Every positive result is measured against simple baselines, not against narrative.
+That is why the experiments are small, local, and CPU-first. Every positive result is measured against simple baselines, not judged by description.
 
 ## Mechanism
 

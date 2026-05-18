@@ -7,11 +7,13 @@ de_url: /de/about/
 permalink: /about/
 ---
 
-Buduję małe eksperymenty obliczeniowe i piszę o tym, czego się uczę.
+Buduję małe eksperymenty obliczeniowe i opisuję je bez pozy eksperta.
 
-Na co dzień day trading. Po godzinach: diagnostyki predykcyjne, reprezentacje latentne, pytania o to kiedy reprezentacja niesie stan ruchu, a kiedy tylko wygląda sensownie.
+Uczę się przez budowanie: biorę pomysł, zawężam go do testu, dodaję baseline i zapisuję wynik. Interesuje mnie też to, dlaczego coś nie działa.
 
-Ta strona to notatnik: projekty, wyniki - pozytywne i negatywne - i uczciwy zapis ograniczeń.
+Na co dzień pracuję przy rynku. Poza tym piszę kod, testuję modele i sprawdzam małe hipotezy techniczne.
+
+Ta strona to publiczny notatnik: projekty, wyniki pozytywne i negatywne, refleksje oraz ograniczenia.
 
 Nie jest poradnikiem inwestycyjnym.
 

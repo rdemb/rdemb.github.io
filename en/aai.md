@@ -7,7 +7,7 @@ de_url: /de/aai/
 permalink: /en/aai/
 ---
 
-AAI, or **Adaptive Auction Intelligence**, is my paradigm for reading the market as an auction instead of a pile of indicators.
+AAI, or **Adaptive Auction Intelligence**, is my way to organize the market before a decision. I read the market as an auction, not as a pile of isolated indicators.
 
 The short version: structure first, scenario second. Execution cost, data freshness, and memory of similar setups before direction. No edge is not a failure mode. It is a valid result.
 
@@ -20,7 +20,7 @@ Can a local deterministic market-intelligence layer help an operator separate:
 - narrative from evidence,
 - activity from edge.
 
-This is not an autonomous P&L bot. AAI is a market reviewer: it says what the auction shows, where the evidence conflicts, what is missing, and when doing nothing is the cleaner decision.
+This is not an autonomous P&L bot. AAI is a market-evaluation layer: it describes what the auction shows, where the evidence conflicts, what is missing, and when doing nothing is the cleaner decision.
 
 ## Paradigm
 
@@ -28,7 +28,7 @@ The core rule is:
 
 > No-Edge = No-Trade.
 
-AAI is allowed to stay quiet. It is allowed to say that the broad backdrop is interesting but price acceptance is missing. It is allowed to expose conflict between auction state, execution cost, order flow, and memory.
+AAI can return no-trade. It can show that the broad backdrop is interesting but price acceptance is missing. It can also expose conflict between auction state, execution cost, order flow, and memory.
 
 The decision is split into layers:
 
@@ -43,7 +43,7 @@ No single layer gets to pretend it is the whole truth.
 
 ## Architecture
 
-AAI is a local analytical layer. The hot path is deterministic: no LLM in runtime, no external language model as decision maker, no hidden prose authority.
+AAI is a local analytical layer. The hot path is deterministic: no LLM in runtime, no external language model as decision maker, and no generated prose treated as a signal.
 
 ```text
 local market data
@@ -55,11 +55,11 @@ local market data
   -> operator context
 ```
 
-The output is not a buy/sell command. The output is context: auction type, working direction when one exists, conflict level, execution cost, data quality, and the reason for no-trade when no edge is present.
+The output is not a buy/sell command. The output is context for a human: auction type, working direction when one exists, conflict level, execution cost, data quality, and the reason for no-trade when no edge is present.
 
 ## What I Measure
 
-AAI is not judged by how smart it sounds. I care about metrics that punish storytelling:
+AAI is not judged by the quality of its explanation. I care about metrics that punish storytelling:
 
 - MFE / MAE after entry,
 - win rate across 5 / 15 / 60 minute horizons,
@@ -83,7 +83,7 @@ That changes the question from "does AAI predict direction?" to:
 
 ## Project Decision
 
-AAI remains a research project and operator tool.
+AAI remains a research project and a tool that supports a human.
 
 I do not publish signals, entry levels, live reports, logs, private feeds, or results that can be mistaken for recommendations. The public part is the paradigm: evidence-first, local-first, no-edge-first.
 

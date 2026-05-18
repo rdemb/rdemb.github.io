@@ -7,7 +7,7 @@ de_url: /de/aai/
 permalink: /aai/
 ---
 
-AAI, czyli **Adaptive Auction Intelligence**, to mój paradygmat czytania rynku jako aukcji, a nie jako zbioru pojedynczych wskaźników.
+AAI, czyli **Adaptive Auction Intelligence**, to mój sposób porządkowania rynku przed decyzją. Traktuję rynek jak aukcję, nie jak tablicę pojedynczych wskaźników.
 
 Najkrócej: najpierw struktura rynku, potem scenariusz. Najpierw koszt wykonania, świeżość danych i pamięć podobnych setupów, potem kierunek. Brak przewagi nie jest porażką systemu. Jest wynikiem.
 
@@ -20,7 +20,7 @@ Czy da się zbudować lokalną, deterministyczną warstwę market intelligence, 
 - narrację od dowodu,
 - aktywność od przewagi.
 
-To nie jest próba stworzenia autonomicznego bota P&L. AAI ma być recenzentem rynku: mówi, co widać w aukcji, co jest sprzeczne, czego brakuje i kiedy lepiej nie robić nic.
+To nie jest próba stworzenia autonomicznego bota P&L. AAI ma być warstwą oceny rynku: opisuje, co widać w aukcji, co jest sprzeczne, czego brakuje i kiedy lepiej nie robić nic.
 
 ## Paradygmat
 
@@ -28,7 +28,7 @@ Rdzeń AAI jest prosty:
 
 > No-Edge = No-Trade.
 
-System ma prawo milczeć. Ma prawo powiedzieć, że tło jest ciekawe, ale setup nie ma akceptacji ceny. Ma prawo pokazać konflikt między aukcją, kosztem wykonania, orderflow i pamięcią historycznych przypadków.
+System może zwrócić no-trade. Może wskazać, że tło jest ciekawe, ale setup nie ma akceptacji ceny. Może też pokazać konflikt między aukcją, kosztem wykonania, orderflow i pamięcią historycznych przypadków.
 
 W praktyce AAI rozkłada decyzję na warstwy:
 
@@ -43,7 +43,7 @@ W praktyce AAI rozkłada decyzję na warstwy:
 
 ## Architektura
 
-AAI działa jako lokalna warstwa analityczna. Hot path jest deterministyczny: bez LLM w runtime, bez zewnętrznego modelu językowego jako decydenta, bez ukrytej narracji.
+AAI działa jako lokalna warstwa analityczna. Hot path jest deterministyczny: bez LLM w runtime, bez zewnętrznego modelu językowego jako decydenta i bez tekstowego uzasadnienia traktowanego jak sygnał.
 
 Kanoniczny przepływ wygląda tak:
 
@@ -57,11 +57,11 @@ local market data
   -> operator context
 ```
 
-Wynikiem nie jest komenda "kup" albo "sprzedaj". Wynikiem jest kontekst: typ aukcji, kierunek roboczy jeśli istnieje, poziom konfliktu, koszt wykonania, jakość danych i powód ewentualnego no-trade.
+Wynikiem nie jest komenda "kup" albo "sprzedaj". Wynikiem jest kontekst dla człowieka: typ aukcji, kierunek roboczy jeśli istnieje, poziom konfliktu, koszt wykonania, jakość danych i powód ewentualnego no-trade.
 
 ## Co mierzę
 
-AAI nie jest oceniane po tym, czy brzmi mądrze. Interesują mnie metryki, które karzą storytelling:
+AAI nie jest oceniane po jakości opisu. Interesują mnie metryki, które karzą storytelling:
 
 - MFE / MAE po wejściu,
 - win rate po horyzontach 5 / 15 / 60 minut,
@@ -85,7 +85,7 @@ To przesuwa projekt z pytania "czy AAI przewiduje kierunek?" na lepsze pytanie:
 
 ## Decyzja projektowa
 
-AAI pozostaje projektem badawczym i narzędziem operatora.
+AAI pozostaje projektem badawczym i narzędziem wspierającym człowieka.
 
 Nie publikuję tu sygnałów, poziomów wejścia, live raportów, logów, prywatnych feedów ani wyników, które można pomylić z rekomendacją. Publicznie pokazuję paradygmat: evidence-first, local-first, no-edge-first.
 
