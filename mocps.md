@@ -133,6 +133,21 @@ v0.7.1 sprawdził, czy hard-coded left-slot assignment da się zastąpić małą
 
 Interpretacja: minimalna trenowalna głowa assignment reprodukuje fixed-left two-slot result na tym sprawdzonym świecie i zachowuje naprawę h1/h2 (`10/10`). To nadal jest toy diagnostic: nie pełne trainable Slot Attention, nie benchmark i nie claim o szerokiej multi-object robustness.
 
+## v0.8 — Crossing-objects stress test
+
+v0.8 sprawdził trainable two-slot MOCPS na dwóch podobnych poruszających się obiektach, które zamieniają kolejność left/right. To test tożsamości, nie benchmark.
+
+| wariant | wynik vs persistence | mean MAE | assignment przed/po crossing |
+| --- | :---: | ---: | ---: |
+| fixed initial identity | 20/20 | 0.376 px | 1.000 / 1.000 |
+| trainable two-slot | 10/20 | 5.523 px | 1.000 / 0.000 |
+| current-left baseline | 10/20 | 5.523 px | 1.000 / 0.000 |
+| target oracle | 20/20 | 0.376 px | 1.000 / 1.000 |
+
+Interpretacja: feed-forward trainable assignment nie zachowuje tożsamości po crossing. Zachowuje się jak current-left heuristic: działa przed zamianą stron, a po zamianie wybiera drugi obiekt. Następny krok to memory albo recurrent slot identity.
+
+Zastrzeżenie: to nadal toy diagnostic; nie pełne trainable Slot Attention, nie benchmark, nie SOTA, nie claim o AGI, physics understanding, general world model ani szerokiej multi-object robustness.
+
 ## Baseline’y i odniesienia
 
 | wariant | wynik / obserwacja | sens porównania |
@@ -205,14 +220,14 @@ To nie kończy tematu. To raczej zamyka pierwszy stabilny etap: mam przepis, kt�
 Następne testy powinny być trudniejsze i mniej wygodne:
 
 - moving distractor: pierwsza wersja testu łamie aktualny single-object MOCPS; selection audit pokazuje, że poprawny target selection naprawia checked grid
-- crossing objects
+- crossing objects: v0.8 łamie feed-forward trainable assignment po zamianie left/right
 - częściowe occlusion
 - acceleration zamiast stałej prędkości
 - noisy background
 - więcej niż jeden poruszający się obiekt
 - testy transferu między world variants
 
-Najbliższy kierunek to nie dalsze dostrajanie tego samego single-object przepisu, tylko sprawdzenie multi-object / slot-like state.
+Najbliższy kierunek to nie dalsze dostrajanie tego samego single-object przepisu, tylko memory / recurrent slot identity dla multi-object state.
 
 ## Czego to nie znaczy
 

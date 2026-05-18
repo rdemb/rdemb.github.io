@@ -133,6 +133,21 @@ v0.7.1 checked whether hard-coded left-slot assignment can be replaced by a tiny
 
 Interpretation: a minimal trainable assignment head reproduces the fixed-left two-slot result on this checked world and preserves the h1/h2 fix (`10/10`). This is still a toy diagnostic: not full trainable Slot Attention, not a benchmark, and not a broad multi-object robustness claim.
 
+## v0.8 — Crossing-objects stress test
+
+v0.8 tested trainable two-slot MOCPS on two similar moving objects that exchange left/right order. This is an identity stress test, not a benchmark.
+
+| variant | result vs persistence | mean MAE | assignment before/after crossing |
+| --- | :---: | ---: | ---: |
+| fixed initial identity | 20/20 | 0.376 px | 1.000 / 1.000 |
+| trainable two-slot | 10/20 | 5.523 px | 1.000 / 0.000 |
+| current-left baseline | 10/20 | 5.523 px | 1.000 / 0.000 |
+| target oracle | 20/20 | 0.376 px | 1.000 / 1.000 |
+
+Interpretation: the feed-forward trainable assignment does not preserve identity after crossing. It behaves like the current-left heuristic: it works before the left/right swap, then selects the other object after the swap. The next step is memory or recurrent slot identity.
+
+Caveat: this is still a toy diagnostic; not full trainable Slot Attention, not a benchmark, not SOTA, and not a claim about AGI, physics understanding, a general world model, or broad multi-object robustness.
+
 ## Baselines and references
 
 | variant | result / observation | why it matters |
@@ -205,14 +220,14 @@ This does not finish the research. It closes the first stable stage: there is no
 The next tests should be harder and less comfortable:
 
 - moving distractor: the first checked version breaks current single-object MOCPS; the selection audit shows that correct target selection fixes the checked grid
-- crossing objects
+- crossing objects: v0.8 breaks feed-forward trainable assignment after the left/right swap
 - partial occlusion
 - acceleration instead of constant velocity
 - noisy background
 - more than one moving object
 - transfer between world variants
 
-The nearest research direction is not further tuning of the same single-object recipe, but an audit of multi-object / slot-like state.
+The nearest research direction is not further tuning of the same single-object recipe, but memory or recurrent slot identity for multi-object state.
 
 ## What this does not mean
 

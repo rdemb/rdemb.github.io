@@ -133,6 +133,21 @@ v0.7.1 prüfte, ob die hard-coded left-slot assignment durch einen kleinen train
 
 Interpretation: ein minimaler trainierbarer Assignment-Kopf reproduziert das fixed-left two-slot Ergebnis auf dieser geprüften Welt und erhält den h1/h2-Fix (`10/10`). Das bleibt eine Toy-Diagnostik: kein vollständiges trainable Slot Attention, kein Benchmark und keine breite Multi-Object-Robustheitsbehauptung.
 
+## v0.8 — Crossing-objects stress test
+
+v0.8 testete trainable two-slot MOCPS mit zwei ähnlichen bewegten Objekten, die ihre left/right-Reihenfolge tauschen. Das ist ein Identitäts-Stresstest, kein Benchmark.
+
+| Variante | Ergebnis vs persistence | mean MAE | assignment vor/nach crossing |
+| --- | :---: | ---: | ---: |
+| fixed initial identity | 20/20 | 0.376 px | 1.000 / 1.000 |
+| trainable two-slot | 10/20 | 5.523 px | 1.000 / 0.000 |
+| current-left baseline | 10/20 | 5.523 px | 1.000 / 0.000 |
+| target oracle | 20/20 | 0.376 px | 1.000 / 1.000 |
+
+Interpretation: das feed-forward trainable assignment erhält die Identität nach dem Crossing nicht. Es verhält sich wie die current-left Heuristik: vor dem left/right-Tausch funktioniert es, danach wählt es das andere Objekt. Der nächste Schritt ist Memory oder recurrent slot identity.
+
+Einschränkung: Das bleibt eine Toy-Diagnostik; kein vollständiges trainable Slot Attention, kein Benchmark, kein SOTA und keine Behauptung zu AGI, Physikverständnis, einem allgemeinen World Model oder breiter Multi-Object-Robustheit.
+
 ## Baselines und Referenzen
 
 | Variante | Ergebnis / Beobachtung | Bedeutung |
@@ -205,14 +220,14 @@ Das beendet die Forschung nicht. Es schließt nur die erste stabile Etappe ab: e
 Die nächsten Tests sollten schwieriger und unbequemer sein:
 
 - moving distractor: die erste geprüfte Version bricht das aktuelle single-object MOCPS; der Selection Audit zeigt, dass korrekte Target-Auswahl das geprüfte Grid repariert
-- crossing objects
+- crossing objects: v0.8 bricht feed-forward trainable assignment nach dem left/right-Tausch
 - partial occlusion
 - acceleration statt konstanter Geschwindigkeit
 - noisy background
 - mehr als ein bewegtes Objekt
 - Transfer zwischen world variants
 
-Die nächste Forschungsrichtung ist nicht weiteres Tuning desselben single-object Rezepts, sondern ein Audit von multi-object / slot-like state.
+Die nächste Forschungsrichtung ist nicht weiteres Tuning desselben single-object Rezepts, sondern Memory oder recurrent slot identity für multi-object state.
 
 ## Was das nicht bedeutet
 
