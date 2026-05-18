@@ -7,8 +7,12 @@ de_url: /de/about/
 permalink: /en/about/
 ---
 
-I am a programming hobbyist and a student of financial markets. Day trading is my daily work; after hours I build small experiments that help me understand algorithms, representations, and work discipline more clearly.
+I build small computational experiments and write down what they teach me.
 
-Privately, I am a husband and father.
+Day trading is work. After hours I look at predictive diagnostics, latent representations, and the point where a model carries useful state rather than just looking plausible.
 
-This site is a personal notebook: a place for projects, reflections, and honest notes about what works and what does not. It is not investment advice and does not publish financial recommendations.
+This site is a notebook: projects, results, negative findings, and the limits around them.
+
+It is not investment advice.
+
+[@rdemb](https://github.com/rdemb)

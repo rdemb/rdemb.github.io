@@ -6,35 +6,66 @@ en_url: /en/
 de_url: /de/
 ---
 
-<section>
+<section class="home-hero">
   <h1>rdemb</h1>
-  <p class="intro">Buduję małe eksperymenty — predykcja ruchu obiektów, diagnostyki latentne, pytania o granice prostych baseline'ów. Ten blog to notatnik bez marketingu: wyniki, ograniczenia, kod.</p>
+  <p class="intro">Buduję małe systemy i sprawdzam, gdzie pękają: modele, baseline'y, notatki z rynku i kod, który da się odtworzyć.</p>
+  <p class="muted">Day trading jest pracą. Ta strona jest roboczym stołem: projekty, refleksje, wyniki i ograniczenia bez robienia z każdego wpisu manifestu.</p>
 </section>
 
-<section class="project-callout">
-  <h2><a href="{{ '/mocps/' | relative_url }}">MOCPS — Motion-Grounded Object-Centric Predictive State</a></h2>
-  <p>Pierwszy większy projekt na tej stronie: mały CPU-friendly diagnostyk do badania, kiedy motion-grounded object-centric state pozwala predykcyjnym latentom pokonać prostą persystencję.</p>
-  <div class="badges">
-    <span class="badge">CPU-first</span>
-    <span class="badge">Toy diagnostic</span>
-    <span class="badge">200/200 cold run</span>
-    <span class="badge">No benchmark claim</span>
+<section class="signal-grid" aria-label="Main sections">
+  <a class="signal-card" href="{{ '/projekty/' | relative_url }}">
+    <span>projekty</span>
+    <strong>eksperymenty, które mają wynik</strong>
+    <p>Kod, baseline, porażka albo mały sukces. Bez katalogu samych pomysłów.</p>
+  </a>
+  <a class="signal-card" href="{{ '/refleksje/' | relative_url }}">
+    <span>refleksje</span>
+    <strong>notatki spoza tabel</strong>
+    <p>Programowanie, rynki, dyscyplina pracy i rzeczy, które wracają w głowie.</p>
+  </a>
+  <a class="signal-card" href="{{ '/about/' | relative_url }}">
+    <span>about</span>
+    <strong>krótko, bez persony</strong>
+    <p>Co robię, po co to zapisuję i czego ta strona nie obiecuje.</p>
+  </a>
+</section>
+
+<section>
+  <div class="section-heading">
+    <h2>Projekty</h2>
+    <a href="{{ '/projekty/' | relative_url }}">wszystkie</a>
+  </div>
+  <div class="card-grid">
+    <a class="content-card project-card" href="{{ '/mocps/' | relative_url }}">
+      <span class="card-kicker">diagnostyka predykcyjna</span>
+      <h3>MOCPS</h3>
+      <p>Mały CPU-friendly test ruchu obiektów. Interesuje mnie tu nie wielki claim, tylko to, kiedy prosty stan predykcyjny naprawdę bije persystencję.</p>
+      <span class="badge-row">
+        <span class="badge">CPU-first</span>
+        <span class="badge">toy world</span>
+        <span class="badge">jawne caveaty</span>
+      </span>
+    </a>
   </div>
 </section>
 
 <section>
-  <h2>Ostatnie wpisy</h2>
-  <ul class="post-list">
+  <div class="section-heading">
+    <h2>Ostatnie wpisy</h2>
+    <a href="{{ '/refleksje/' | relative_url }}">refleksje</a>
+  </div>
+  <div class="post-card-grid">
     {% assign posts = site.posts | where: "lang", "pl" %}
-    {% for post in posts limit: 8 %}
-      <li>
-        <span class="post-date">{{ post.date | date: "%Y-%m-%d" }}</span>
-        <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
-      </li>
+    {% for post in posts limit: 6 %}
+      <article class="post-card">
+        <p class="card-meta">{{ post.date | date: "%Y-%m-%d" }}{% if post.kind %} · {{ post.kind }}{% endif %}</p>
+        <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
+        {% if post.excerpt %}<p>{{ post.excerpt | strip_html }}</p>{% endif %}
+      </article>
     {% endfor %}
-  </ul>
+  </div>
 </section>
 
 <section class="note-box">
-  <p>MOCPS nie jest benchmarkiem, nie jest SOTA, nie jest dowodem rozumienia fizyki i nie jest twierdzeniem, że JEPA działa. To wąski wynik diagnostyczny w małych światach proceduralnych.</p>
+  <p>Nie chcę udawać, że każdy eksperyment jest przełomem. Jeśli coś nie działa, też ma tu miejsce, o ile mówi coś konkretnego.</p>
 </section>

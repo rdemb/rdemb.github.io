@@ -1,8 +1,8 @@
 pl:
   - title: "Home"
     url: "/"
-  - title: "MOCPS"
-    url: "/mocps/"
+  - title: "Projekty"
+    url: "/projekty/"
   - title: "Refleksje"
     url: "/refleksje/"
   - title: "About"
@@ -10,8 +10,8 @@ pl:
 en:
   - title: "Home"
     url: "/en/"
-  - title: "MOCPS"
-    url: "/en/mocps/"
+  - title: "Projects"
+    url: "/en/projects/"
   - title: "Reflections"
     url: "/en/reflections/"
   - title: "About"
@@ -19,8 +19,8 @@ en:
 de:
   - title: "Home"
     url: "/de/"
-  - title: "MOCPS"
-    url: "/de/mocps/"
+  - title: "Projekte"
+    url: "/de/projekte/"
   - title: "Reflexionen"
     url: "/de/reflexionen/"
   - title: "About"

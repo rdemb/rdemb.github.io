@@ -45,9 +45,11 @@ Each language has its own list. Add only links that exist in the site.
 
 ## Edit Main Pages
 
-- Polish: `index.html`, `mocps.md`, `refleksje.md`, `about.md`
-- English: `en/index.html`, `en/mocps.md`, `en/reflections.md`, `en/about.md`
-- German: `de/index.html`, `de/mocps.md`, `de/reflexionen.md`, `de/about.md`
+- Polish: `index.html`, `projects.md`, `mocps.md`, `refleksje.md`, `about.md`
+- English: `en/index.html`, `en/projects.md`, `en/mocps.md`, `en/reflections.md`, `en/about.md`
+- German: `de/index.html`, `de/projects.md`, `de/mocps.md`, `de/reflexionen.md`, `de/about.md`
+
+Tone and UI rules live in `docs/SITE_STYLE.md`.
 
 ## Safe Publish Checklist
 

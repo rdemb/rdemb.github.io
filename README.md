@@ -5,9 +5,10 @@ Minimal multilingual research blog. Jekyll, no build step, no tracking.
 ## Structure
 
 - Posts: `_posts/pl/`, `_posts/en/`, `_posts/de/`
-- Pages: `index.html`, `mocps.md`, `refleksje.md`, `about.md`
+- Pages: `index.html`, `projects.md`, `mocps.md`, `refleksje.md`, `about.md`
 - i18n: `en/`, `de/`
 - Nav config: `_data/navigation.yml`
+- Style rules: `docs/SITE_STYLE.md`
 
 ## Local Preview
 

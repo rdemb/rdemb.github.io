@@ -1,15 +1,13 @@
 document.documentElement.classList.add("js");
 (() => {
-  const items = [
-    ["home", "/", "nav"], ["mocps", "/mocps/", "nav"], ["refleksje", "/refleksje/", "blog"],
-    ["about", "/about/", "about"], ["polski", "/", "pl"], ["english", "/en/", "en"], ["deutsch", "/de/", "de"],
-  ];
   const $ = (s) => document.querySelector(s);
   const palette = $("[data-command-palette]");
   const input = $("[data-command-input]");
   const list = $("[data-command-list]");
   const trigger = $("[data-command-open]");
   if (!palette || !input || !list || !trigger) return;
+  const items = [...document.querySelectorAll("[data-command-item]")]
+    .map((item) => [item.dataset.label, item.getAttribute("href"), item.dataset.hint || ""]);
   let active = 0;
   const matches = (text, query) => {
     let at = 0;
@@ -25,9 +23,15 @@ document.documentElement.classList.add("js");
   const render = () => {
     const q = input.value.trim();
     const found = items.filter(([label, , hint]) => !q || matches(`${label} ${hint}`, q));
-    list.innerHTML = found
-      .map(([label, url], i) => `<button class="${i ? "" : "active"}" type="button" data-url="${url}">${label}</button>`)
-      .join("");
+    list.textContent = "";
+    found.forEach(([label, url], i) => {
+      const button = document.createElement("button");
+      button.className = i ? "" : "active";
+      button.type = "button";
+      button.dataset.url = url;
+      button.textContent = label;
+      list.append(button);
+    });
     active = 0;
   };
   const open = () => { palette.hidden = false; input.value = ""; render(); input.focus(); };

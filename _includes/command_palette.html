@@ -1,6 +1,28 @@
+<div data-command-source hidden>
+  <a data-command-item href="{{ '/' | relative_url }}" data-label="home" data-hint="nav"></a>
+  <a data-command-item href="{{ '/projekty/' | relative_url }}" data-label="projekty" data-hint="projects"></a>
+  <a data-command-item href="{{ '/mocps/' | relative_url }}" data-label="mocps" data-hint="project"></a>
+  <a data-command-item href="{{ '/refleksje/' | relative_url }}" data-label="refleksje" data-hint="blog"></a>
+  <a data-command-item href="{{ '/about/' | relative_url }}" data-label="about" data-hint="about"></a>
+  <a data-command-item href="{{ '/' | relative_url }}" data-label="polski" data-hint="language"></a>
+  <a data-command-item href="{{ '/en/' | relative_url }}" data-label="english" data-hint="language"></a>
+  <a data-command-item href="{{ '/en/projects/' | relative_url }}" data-label="projects" data-hint="projects"></a>
+  <a data-command-item href="{{ '/en/mocps/' | relative_url }}" data-label="mocps en" data-hint="project"></a>
+  <a data-command-item href="{{ '/en/reflections/' | relative_url }}" data-label="reflections" data-hint="blog"></a>
+  <a data-command-item href="{{ '/en/about/' | relative_url }}" data-label="about en" data-hint="about"></a>
+  <a data-command-item href="{{ '/de/' | relative_url }}" data-label="deutsch" data-hint="language"></a>
+  <a data-command-item href="{{ '/de/projekte/' | relative_url }}" data-label="projekte" data-hint="projects"></a>
+  <a data-command-item href="{{ '/de/mocps/' | relative_url }}" data-label="mocps de" data-hint="project"></a>
+  <a data-command-item href="{{ '/de/reflexionen/' | relative_url }}" data-label="reflexionen" data-hint="blog"></a>
+  <a data-command-item href="{{ '/de/about/' | relative_url }}" data-label="about de" data-hint="about"></a>
+  {% for post in site.posts limit: 30 %}
+    <a data-command-item href="{{ post.url | relative_url }}" data-label="{{ post.title | escape }}" data-hint="{{ post.lang }} {{ post.kind | default: 'post' }}"></a>
+  {% endfor %}
+</div>
+
 <div class="command-palette" data-command-palette hidden>
-  <div class="command-box" role="dialog" aria-modal="true" aria-label="Command palette">
-    <input class="command-input" type="search" placeholder="go to..." autocomplete="off" data-command-input>
+  <div class="command-box" role="dialog" aria-modal="true" aria-label="Search">
+    <input class="command-input" type="search" placeholder="search..." autocomplete="off" data-command-input>
     <div class="command-list" data-command-list></div>
   </div>
 </div>

@@ -6,36 +6,66 @@ pl_url: /
 de_url: /de/
 ---
 
-<section>
+<section class="home-hero">
   <h1>rdemb</h1>
-  <p class="intro">I program as a hobby, study financial markets, and build small predictive-model diagnostics. Day trading is my daily work; after hours I build small experiments to understand algorithms more clearly.</p>
-  <p class="muted">This blog is a place for projects, technical notes, and looser reflections. No grand claims, no marketing layer, and a preference for explicit limitations and simple baselines.</p>
+  <p class="intro">I build small systems and check where they crack: models, baselines, market notes, and code that can be rerun.</p>
+  <p class="muted">Day trading is work. This site is the bench: projects, reflections, results, and limitations without turning every note into a manifesto.</p>
 </section>
 
-<section class="project-callout">
-  <h2><a href="{{ '/en/mocps/' | relative_url }}">MOCPS — Motion-Grounded Object-Centric Predictive State</a></h2>
-  <p>The first larger project on this site: a small CPU-friendly diagnostic for testing when motion-grounded object-centric state lets predictive latents beat persistence.</p>
-  <div class="badges">
-    <span class="badge">CPU-first</span>
-    <span class="badge">Toy diagnostic</span>
-    <span class="badge">200/200 cold run</span>
-    <span class="badge">No benchmark claim</span>
+<section class="signal-grid" aria-label="Main sections">
+  <a class="signal-card" href="{{ '/en/projects/' | relative_url }}">
+    <span>projects</span>
+    <strong>experiments with evidence</strong>
+    <p>Code, a baseline, a failure, or a small win. No catalog of pure ideas.</p>
+  </a>
+  <a class="signal-card" href="{{ '/en/reflections/' | relative_url }}">
+    <span>reflections</span>
+    <strong>notes outside the tables</strong>
+    <p>Programming, markets, work discipline, and questions that keep coming back.</p>
+  </a>
+  <a class="signal-card" href="{{ '/en/about/' | relative_url }}">
+    <span>about</span>
+    <strong>short, no persona</strong>
+    <p>What I do, why I keep notes, and what this site does not promise.</p>
+  </a>
+</section>
+
+<section>
+  <div class="section-heading">
+    <h2>Projects</h2>
+    <a href="{{ '/en/projects/' | relative_url }}">all</a>
+  </div>
+  <div class="card-grid">
+    <a class="content-card project-card" href="{{ '/en/mocps/' | relative_url }}">
+      <span class="card-kicker">predictive diagnostic</span>
+      <h3>MOCPS</h3>
+      <p>A small CPU-friendly object-motion test. The point is not a big claim; it is checking when a simple predictive state really beats persistence.</p>
+      <span class="badge-row">
+        <span class="badge">CPU-first</span>
+        <span class="badge">toy world</span>
+        <span class="badge">explicit caveats</span>
+      </span>
+    </a>
   </div>
 </section>
 
 <section>
-  <h2>Latest posts</h2>
-  <ul class="post-list">
+  <div class="section-heading">
+    <h2>Latest posts</h2>
+    <a href="{{ '/en/reflections/' | relative_url }}">reflections</a>
+  </div>
+  <div class="post-card-grid">
     {% assign posts = site.posts | where: "lang", "en" %}
-    {% for post in posts limit: 8 %}
-      <li>
-        <span class="post-date">{{ post.date | date: "%Y-%m-%d" }}</span>
-        <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
-      </li>
+    {% for post in posts limit: 6 %}
+      <article class="post-card">
+        <p class="card-meta">{{ post.date | date: "%Y-%m-%d" }}{% if post.kind %} · {{ post.kind }}{% endif %}</p>
+        <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
+        {% if post.excerpt %}<p>{{ post.excerpt | strip_html }}</p>{% endif %}
+      </article>
     {% endfor %}
-  </ul>
+  </div>
 </section>
 
 <section class="note-box">
-  <p>MOCPS is not a benchmark, not SOTA, not evidence of physics understanding, and not a claim that JEPA works. It is a narrow diagnostic result in small procedural worlds.</p>
+  <p>I do not want every experiment to pretend it is a breakthrough. If something fails, it can still belong here when it says something concrete.</p>
 </section>

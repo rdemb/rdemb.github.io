@@ -9,7 +9,7 @@ permalink: /about/
 
 Buduję małe eksperymenty obliczeniowe i piszę o tym, czego się uczę.
 
-Na co dzień day trading. Po godzinach: diagnostyki predykcyjne, reprezentacje latentne, pytania o to kiedy model naprawdę rozumie ruch obiektu, a kiedy tylko wygląda jakby rozumiał.
+Na co dzień day trading. Po godzinach: diagnostyki predykcyjne, reprezentacje latentne, pytania o to kiedy reprezentacja niesie stan ruchu, a kiedy tylko wygląda sensownie.
 
 Ta strona to notatnik: projekty, wyniki - pozytywne i negatywne - i uczciwy zapis ograniczeń.
 

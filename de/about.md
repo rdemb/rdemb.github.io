@@ -7,8 +7,12 @@ en_url: /en/about/
 permalink: /de/about/
 ---
 
-Ich bin Programmier-Hobbyist und beschäftige mich intensiv mit der Analyse von Finanzmärkten. Day Trading ist meine tägliche Arbeit; nach Feierabend baue ich kleine Experimente, die mir helfen, Algorithmen, Repräsentationen und Arbeitsdisziplin besser zu verstehen.
+Ich baue kleine rechnerische Experimente und schreibe auf, was ich daraus lerne.
 
-Privat bin ich Ehemann und Vater.
+Day Trading ist Arbeit. Nach Feierabend interessieren mich prädiktive Diagnostik, latente Repräsentationen und der Punkt, an dem ein Modell nützlichen Zustand trägt, statt nur plausibel auszusehen.
 
-Diese Seite ist ein persönliches Notizbuch: ein Ort für Projekte, Reflexionen und ehrliche Notizen darüber, was funktioniert und was nicht. Sie ist keine Anlageberatung und enthält keine Finanzempfehlungen.
+Diese Seite ist ein Notizbuch: Projekte, Resultate, negative Befunde und die Grenzen darum herum.
+
+Sie ist keine Anlageberatung.
+
+[@rdemb](https://github.com/rdemb)
