@@ -6,12 +6,14 @@
     {% assign lang = page.lang | default: "pl" %}
     {% assign nav_items = site.data.navigation[lang] %}
     {% for item in nav_items %}
-      {% unless forloop.first %}
-        <span class="nav-separator" aria-hidden="true">·</span>
-        <a href="{{ item.url | relative_url }}">{{ item.title | downcase }}</a>
-      {% endunless %}
+      <a href="{{ item.url | relative_url }}">{{ item.title | downcase }}</a>
+      {% unless forloop.last %}<span class="nav-separator" aria-hidden="true">·</span>{% endunless %}
     {% endfor %}
-    <span class="nav-separator nav-command-separator" aria-hidden="true">·</span>
-    <button class="command-trigger" type="button" aria-label="Open command palette" data-command-open>⌘K</button>
+    <span class="lang-switch" aria-label="Language selector">
+      <a href="{{ page.pl_url | default: '/' | relative_url }}">pl</a>
+      <a href="{{ page.en_url | default: '/en/' | relative_url }}">en</a>
+      <a href="{{ page.de_url | default: '/de/' | relative_url }}">de</a>
+    </span>
+    <button class="command-trigger" type="button" aria-label="Open command palette" data-command-open>D</button>
   </nav>
 </header>

@@ -14,7 +14,6 @@ secret_hits="$(
     -- \
     ':(exclude)scripts/public_repo_check.sh' \
     ':(exclude)SECURITY.md' \
-    ':(exclude)docs/CONTENT_MAINTENANCE.md' \
     || true
 )"
 if [ -n "$secret_hits" ]; then

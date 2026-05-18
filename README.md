@@ -1,45 +1,26 @@
 # rdemb.github.io
 
-Minimal multilingual blog and research site for rdemb.
+Minimal multilingual research blog. Jekyll, no build step, no tracking.
 
-This is a local GitHub Pages site using a small custom Jekyll theme inspired by simple technical blogs:
+## Structure
 
-- no npm build step
-- no analytics or tracking
-- simple typography and narrow text column
-- Polish, English, and German versions
-- posts in `_posts/pl`, `_posts/en`, and `_posts/de`
-- no public admin panel or browser CMS
+- Posts: `_posts/pl/`, `_posts/en/`, `_posts/de/`
+- Pages: `index.html`, `mocps.md`, `refleksje.md`, `about.md`
+- i18n: `en/`, `de/`
+- Nav config: `_data/navigation.yml`
 
-## Local preview
-
-GitHub Pages will render the Jekyll templates. If Jekyll is not installed locally, the raw files are still editable, but Liquid loops will not be rendered by `python3 -m http.server`.
+## Local Preview
 
 ```bash
 bundle exec jekyll serve
 ```
 
-When Jekyll is unavailable, edit Markdown directly and rely on GitHub Pages to build after push.
+Without Jekyll: edit Markdown directly, push to trigger GitHub Pages build.
 
-## Content maintenance
+## Scope
 
-Content is managed directly in the repository:
+MOCPS is a small CPU-friendly diagnostic - not a benchmark, not SOTA, not a market prediction tool.
 
-- posts: `_posts/pl`, `_posts/en`, `_posts/de`
-- main pages: `index.html`, `mocps.md`, `refleksje.md`, `about.md`
-- English pages: `en/`
-- German pages: `de/`
-- navigation: `_data/navigation.yml`
+## Hygiene
 
-See `docs/CONTENT_MAINTENANCE.md` for the safe editing workflow. This keeps the public site static and avoids exposing a CMS/admin surface.
-
-## Scope and claims
-
-The first project is MOCPS — Motion-Grounded Object-Centric Predictive State. The copy is based on local research files from `/opt/algotrading/jepa-petri-dish` and keeps the claims narrow:
-
-- toy diagnostic only
-- no benchmark claim
-- no SOTA claim
-- no physics-understanding claim
-- no claim that JEPA works
-- no trading, finance, crypto, or market-prediction claim
+Before pushing: run `scripts/public_repo_check.sh` and verify `git ls-files` contains no private material.

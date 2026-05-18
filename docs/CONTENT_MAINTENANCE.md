@@ -62,7 +62,7 @@ scripts/public_repo_check.sh
 Then push:
 
 ```bash
-GIT_SSH_COMMAND='ssh -i .deploy/rdemb_site_deploy_key -o IdentitiesOnly=yes -o StrictHostKeyChecking=accept-new' git push origin main
+git push origin main
 ```
 
 GitHub Actions will build and deploy the site.

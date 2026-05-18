@@ -6,7 +6,7 @@ html {
 body {
   margin: 0;
   color: #222;
-  background: #fff;
+  background: #fbfbfa;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
   line-height: 1.55;
 }
@@ -23,7 +23,7 @@ body::before {
 }
 
 .container {
-  max-width: 760px;
+  max-width: 790px;
   margin: 0 auto;
   padding: 0 clamp(16px, 4vw, 24px);
 }
@@ -32,8 +32,8 @@ body::before {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 20px;
-  padding: 28px 0 20px;
+  gap: 18px;
+  padding: 24px 0 18px;
   border-bottom: 1px solid #e8e8e8;
 }
 
@@ -47,9 +47,10 @@ body::before {
 
 .site-nav {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: flex-end;
-  gap: 8px;
+  gap: 8px 9px;
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
   font-size: 14px;
   line-height: 1;
@@ -57,7 +58,7 @@ body::before {
 
 .site-nav a {
   color: #555;
-  opacity: 0.62;
+  opacity: 0.72;
   text-decoration: none;
   transition: opacity 150ms ease;
 }
@@ -70,31 +71,40 @@ body::before {
   color: #b8b8b8;
 }
 
-.nav-command-separator,
 .command-trigger {
   display: none;
-}
-
-.js .nav-command-separator {
-  display: inline;
 }
 
 .js .command-trigger {
   display: inline-flex;
 }
 
+.lang-switch {
+  display: inline-flex;
+  gap: 4px;
+  margin-left: 4px;
+}
+
+.lang-switch a {
+  border: 1px solid #e1e1df;
+  border-radius: 999px;
+  padding: 4px 7px;
+  background: #fff;
+}
+
 .command-trigger {
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
-  border: 0;
+  width: 30px;
+  height: 30px;
+  border: 1px solid #222;
+  border-radius: 999px;
   padding: 0;
-  color: #555;
-  background: transparent;
+  color: #fff;
+  background: #222;
   cursor: pointer;
   font: inherit;
-  opacity: 0.62;
+  opacity: 0.86;
   transition: opacity 150ms ease;
 }
 
@@ -244,10 +254,11 @@ th {
 }
 
 .note-box {
-  border-left: 3px solid #888;
-  background: #fafafa;
-  padding: 12px 14px;
-  margin: 18px 0;
+  border-left: 3px solid #777;
+  border-radius: 6px;
+  background: #f5f5f3;
+  padding: 14px 16px;
+  margin: 22px 0;
 }
 
 .badges {
@@ -258,23 +269,31 @@ th {
 }
 
 .badge {
-  border: 1px solid #ddd;
+  border: 1px solid #dededb;
   border-radius: 999px;
-  color: #555;
-  background: #fafafa;
+  color: #4e4e4b;
+  background: #fff;
   font-size: 13px;
-  padding: 3px 9px;
+  padding: 4px 10px;
 }
 
 .project-callout {
-  border: 1px solid #e6e6e6;
-  border-radius: 4px;
-  padding: 16px;
-  margin: 22px 0;
+  border: 1px solid #e4e4e0;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 26px 0;
+  background: #fff;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03);
 }
 
 .project-callout h2 {
   margin-top: 0;
+}
+
+.project-callout h2 a {
+  color: #173f7a;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
 }
 
 .metric-grid {
@@ -329,7 +348,7 @@ th {
   display: grid;
   place-items: start center;
   padding: 12vh 18px 18px;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.64);
   backdrop-filter: blur(10px);
 }
 
@@ -339,8 +358,8 @@ th {
 
 .command-box {
   width: min(480px, 100%);
-  border: 1px solid #333;
-  border-radius: 8px;
+  border: 1px solid #2e2e2e;
+  border-radius: 10px;
   overflow: hidden;
   color: #e0e0e0;
   background: #0a0a0a;
@@ -368,7 +387,7 @@ th {
 .command-list button {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   width: 100%;
   min-height: 44px;
   border: 0;
@@ -382,23 +401,21 @@ th {
 }
 
 .command-list button:hover,
+.command-list button.active,
 .command-list button:focus-visible {
   background: #1a1a1a;
   outline: none;
 }
 
-.command-list small {
-  color: #888;
-}
-
 @media (max-width: 768px) {
-  .site-nav {
-    margin-left: auto;
+  .site-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
   }
 
-  .js .site-nav a,
-  .js .site-nav .nav-separator {
-    display: none;
+  .site-nav {
+    justify-content: flex-start;
   }
 
   .js .command-trigger {
