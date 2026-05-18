@@ -90,6 +90,20 @@ Pytanie było proste: czy single-object MOCPS radzi sobie, gdy rusza się więce
 
 Interpretacja: dynamiczny distractor łamie obecną single-object wersję MOCPS. Najbardziej prawdopodobny problem to object selection: przy dwóch podobnie jasnych poruszających się obiektach masa objectness częściej przechyla się w stronę distractora niż targetu. To jest negatywny wynik i dobry następny kierunek: multi-object / slot-like state.
 
+## v0.6.2 — dynamic-distractor selection audit
+
+Kolejny audyt sprawdził, czy problem z v0.6.1 znika, gdy target jest wybierany poprawnie. To był test diagnostyczny, nie nowa architektura.
+
+| wariant | wynik vs persistence | mean MAE | interpretacja |
+| --- | :---: | ---: | --- |
+| unchanged MOCPS | 11/20 | 3.829 px | single-object selector myli target z distractorem |
+| target oracle | 20/20 | 0.602 px | poprawny target selection naprawia wynik |
+| distractor oracle | 4/20 | 8.856 px | zły obiekt daje zły target prediction |
+| image two-component left slot | 20/20 | 0.602 px | pixel-derived left-starting component wystarcza w tym gridzie |
+| best-of-two oracle | 20/20 | 0.601 px | upper bound diagnostyczny |
+
+Interpretacja: v0.6.1 był przede wszystkim problemem object binding / target selection. Prosty image-derived two-component selector rozwiązuje ten konkretny stress test, ale to nadal diagnostyka, nie claim o gotowym multi-object modelu. Następny krok to minimalny trenowalny multi-object / slot-like MOCPS.
+
 ## Baseline’y i odniesienia
 
 | wariant | wynik / obserwacja | sens porównania |
@@ -161,7 +175,7 @@ To nie kończy tematu. To raczej zamyka pierwszy stabilny etap: mam przepis, kt�
 
 Następne testy powinny być trudniejsze i mniej wygodne:
 
-- moving distractor: pierwsza wersja testu łamie aktualny single-object MOCPS
+- moving distractor: pierwsza wersja testu łamie aktualny single-object MOCPS; selection audit pokazuje, że poprawny target selection naprawia checked grid
 - crossing objects
 - częściowe occlusion
 - acceleration zamiast stałej prędkości

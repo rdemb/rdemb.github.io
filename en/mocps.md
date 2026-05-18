@@ -90,6 +90,20 @@ The question was simple: can single-object MOCPS handle more than one moving obj
 
 Interpretation: the dynamic distractor breaks the current single-object MOCPS recipe. The likely failure mode is object selection: with two similarly bright moving objects, the objectness mass leans more toward the distractor than the target. This is a negative result and a useful next direction: multi-object / slot-like state.
 
+## v0.6.2 — dynamic-distractor selection audit
+
+The next audit checked whether the v0.6.1 failure disappears when the target is selected correctly. This was a diagnostic test, not a new architecture.
+
+| variant | result vs persistence | mean MAE | interpretation |
+| --- | :---: | ---: | --- |
+| unchanged MOCPS | 11/20 | 3.829 px | the single-object selector confuses target and distractor |
+| target oracle | 20/20 | 0.602 px | correct target selection fixes the result |
+| distractor oracle | 4/20 | 8.856 px | selecting the wrong object gives bad target prediction |
+| image two-component left slot | 20/20 | 0.602 px | a pixel-derived left-starting component is enough on this grid |
+| best-of-two oracle | 20/20 | 0.601 px | diagnostic upper bound |
+
+Interpretation: v0.6.1 was primarily an object binding / target selection failure. A simple image-derived two-component selector solves this specific stress test, but this is still a diagnostic result, not a claim of a finished multi-object model. The next step is a minimal trainable multi-object / slot-like MOCPS.
+
 ## Baselines and references
 
 | variant | result / observation | why it matters |
@@ -161,7 +175,7 @@ This does not finish the research. It closes the first stable stage: there is no
 
 The next tests should be harder and less comfortable:
 
-- moving distractor: the first checked version breaks current single-object MOCPS
+- moving distractor: the first checked version breaks current single-object MOCPS; the selection audit shows that correct target selection fixes the checked grid
 - crossing objects
 - partial occlusion
 - acceleration instead of constant velocity

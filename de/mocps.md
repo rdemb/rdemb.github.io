@@ -90,6 +90,20 @@ Die Frage war einfach: kann single-object MOCPS mehr als ein bewegtes Objekt han
 
 Interpretation: der dynamische Distraktor bricht das aktuelle single-object MOCPS-Rezept. Der wahrscheinlichste Fehlermodus ist object selection: bei zwei ähnlich hellen bewegten Objekten liegt die Objectness-Masse stärker beim Distraktor als beim Target. Das ist ein negatives Ergebnis und ein nützlicher nächster Schritt: multi-object / slot-like state.
 
+## v0.6.2 — dynamic-distractor selection audit
+
+Der nächste Audit prüfte, ob der v0.6.1-Fehler verschwindet, wenn das Target korrekt ausgewählt wird. Das war ein diagnostischer Test, keine neue Architektur.
+
+| Variante | Ergebnis vs persistence | mean MAE | Interpretation |
+| --- | :---: | ---: | --- |
+| unchanged MOCPS | 11/20 | 3.829 px | der single-object Selector verwechselt Target und Distraktor |
+| target oracle | 20/20 | 0.602 px | korrekte Target-Auswahl repariert das Ergebnis |
+| distractor oracle | 4/20 | 8.856 px | das falsche Objekt ergibt schlechte Target-Prediction |
+| image two-component left slot | 20/20 | 0.602 px | eine pixel-derived left-starting Komponente reicht in diesem Grid |
+| best-of-two oracle | 20/20 | 0.601 px | diagnostische obere Grenze |
+
+Interpretation: v0.6.1 war primär ein object-binding / target-selection Fehler. Ein einfacher image-derived two-component Selector löst diesen konkreten Stress-Test, aber das ist weiter nur ein diagnostisches Ergebnis, keine Behauptung eines fertigen Multi-Object-Modells. Der nächste Schritt ist ein minimal trainierbares multi-object / slot-like MOCPS.
+
 ## Baselines und Referenzen
 
 | Variante | Ergebnis / Beobachtung | Bedeutung |
@@ -161,7 +175,7 @@ Das beendet die Forschung nicht. Es schließt nur die erste stabile Etappe ab: e
 
 Die nächsten Tests sollten schwieriger und unbequemer sein:
 
-- moving distractor: die erste geprüfte Version bricht das aktuelle single-object MOCPS
+- moving distractor: die erste geprüfte Version bricht das aktuelle single-object MOCPS; der Selection Audit zeigt, dass korrekte Target-Auswahl das geprüfte Grid repariert
 - crossing objects
 - partial occlusion
 - acceleration statt konstanter Geschwindigkeit
