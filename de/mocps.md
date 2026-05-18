@@ -104,6 +104,22 @@ Der nächste Audit prüfte, ob der v0.6.1-Fehler verschwindet, wenn das Target k
 
 Interpretation: v0.6.1 war primär ein object-binding / target-selection Fehler. Ein einfacher image-derived two-component Selector löst diesen konkreten Stress-Test, aber das ist weiter nur ein diagnostisches Ergebnis, keine Behauptung eines fertigen Multi-Object-Modells. Der nächste Schritt ist ein minimal trainierbares multi-object / slot-like MOCPS.
 
+## v0.7 — minimaler two-slot MOCPS Audit
+
+v0.7 machte aus der v0.6.2-Diagnostik eine reproduzierbare minimale two-slot Pipeline. Das ist weiterhin kein vollständig trainierbares Slot Attention. Die Slots werden aus image-derived motion components extrahiert, und das Target in dieser Welt ist die links startende Komponente.
+
+| Variante | Ergebnis vs persistence | mean MAE | Interpretation |
+| --- | :---: | ---: | --- |
+| single-object MOCPS | 11/20 | 3.829 px | der v0.6.1-Baseline bindet das Target weiterhin nicht stabil |
+| image two-component left slot | 20/20 | 0.602 px | der pixel-derived diagnostische Selector funktioniert in diesem Grid |
+| two-slot MOCPS | 20/20 | 0.602 px | die minimale two-slot Pipeline reproduziert das diagnostische Ergebnis |
+| target oracle | 20/20 | 0.602 px | korrekte Target-Auswahl reicht hier aus |
+| distractor oracle | 4/20 | 8.856 px | Auswahl des falschen Objekts bricht die Target-Prediction |
+
+Die kurzen Horizonte h1/h2 verbesserten sich von `1/10` in single-object MOCPS auf `10/10` in two-slot MOCPS, mit assignment accuracy `1.000`.
+
+Interpretation: auf diesem geprüften dynamic-distractor Grid repariert expliziter two-object state den single-object MOCPS-Fehler. Das ist ein positives diagnostisches Ergebnis, aber keine Behauptung allgemeiner Multi-Object-Robustheit und kein fertiges trainierbares Slot-Modell. Der nächste Schritt ist trainable slot assignment, danach crossing objects, occlusion, acceleration und noisy backgrounds.
+
 ## Baselines und Referenzen
 
 | Variante | Ergebnis / Beobachtung | Bedeutung |

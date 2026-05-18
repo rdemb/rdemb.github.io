@@ -104,6 +104,22 @@ The next audit checked whether the v0.6.1 failure disappears when the target is 
 
 Interpretation: v0.6.1 was primarily an object binding / target selection failure. A simple image-derived two-component selector solves this specific stress test, but this is still a diagnostic result, not a claim of a finished multi-object model. The next step is a minimal trainable multi-object / slot-like MOCPS.
 
+## v0.7 — minimal two-slot MOCPS audit
+
+v0.7 turned the v0.6.2 diagnostic into a reproducible minimal two-slot pipeline. This is still not full trainable Slot Attention. The slots are extracted from image-derived motion components, and the target in this world is the left-starting component.
+
+| variant | result vs persistence | mean MAE | interpretation |
+| --- | :---: | ---: | --- |
+| single-object MOCPS | 11/20 | 3.829 px | the v0.6.1 baseline still does not bind the target reliably |
+| image two-component left slot | 20/20 | 0.602 px | the pixel-derived diagnostic selector works on this grid |
+| two-slot MOCPS | 20/20 | 0.602 px | the minimal two-slot pipeline reproduces the diagnostic result |
+| target oracle | 20/20 | 0.602 px | correct target selection is sufficient here |
+| distractor oracle | 4/20 | 8.856 px | selecting the wrong object breaks target prediction |
+
+The short-horizon h1/h2 rows improved from `1/10` in single-object MOCPS to `10/10` in two-slot MOCPS, with assignment accuracy `1.000`.
+
+Interpretation: on this checked dynamic-distractor grid, explicit two-object state fixes the single-object MOCPS failure. This is a positive diagnostic result, not a claim of general multi-object robustness and not a finished trainable slot model. The next step is trainable slot assignment, then crossing objects, occlusion, acceleration, and noisy backgrounds.
+
 ## Baselines and references
 
 | variant | result / observation | why it matters |

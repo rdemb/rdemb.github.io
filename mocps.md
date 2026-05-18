@@ -104,6 +104,22 @@ Kolejny audyt sprawdził, czy problem z v0.6.1 znika, gdy target jest wybierany 
 
 Interpretacja: v0.6.1 był przede wszystkim problemem object binding / target selection. Prosty image-derived two-component selector rozwiązuje ten konkretny stress test, ale to nadal diagnostyka, nie claim o gotowym multi-object modelu. Następny krok to minimalny trenowalny multi-object / slot-like MOCPS.
 
+## v0.7 — minimalny two-slot MOCPS audit
+
+v0.7 zamienił diagnostykę z v0.6.2 w powtarzalny minimalny two-slot pipeline. Nadal nie jest to pełne trenowalne Slot Attention. Sloty są wyciągane z image-derived motion components, a target w tym świecie jest lewym startującym komponentem.
+
+| wariant | wynik vs persistence | mean MAE | interpretacja |
+| --- | :---: | ---: | --- |
+| single-object MOCPS | 11/20 | 3.829 px | baseline z v0.6.1 nadal nie wiąże stabilnie targetu |
+| image two-component left slot | 20/20 | 0.602 px | diagnostyczny selector z pikseli działa w tym gridzie |
+| two-slot MOCPS | 20/20 | 0.602 px | minimalny two-slot pipeline odtwarza wynik diagnostyczny |
+| target oracle | 20/20 | 0.602 px | poprawny target selection jest wystarczający tutaj |
+| distractor oracle | 4/20 | 8.856 px | wybranie złego obiektu psuje target prediction |
+
+Dodatkowo: h1/h2 zostały naprawione z `1/10` w single-object MOCPS do `10/10` w two-slot MOCPS, a assignment accuracy wyniosło `1.000`.
+
+Interpretacja: na tym sprawdzonym dynamic-distractor gridzie explicit two-object state naprawia awarię single-object MOCPS. To jest pozytywny wynik diagnostyczny, ale nie dowód ogólnej multi-object robustness i nie gotowy trenowalny slot model. Następny krok to trainable slot assignment, a potem crossing objects, occlusion, acceleration i noisy backgrounds.
+
 ## Baseline’y i odniesienia
 
 | wariant | wynik / obserwacja | sens porównania |
