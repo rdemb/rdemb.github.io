@@ -7,8 +7,8 @@ de_url: /de/about/
 permalink: /about/
 ---
 
-Jestem hobbystą programowania i analizy rynków finansowych. Na co dzień zajmuję się day tradingiem, a po godzinach buduję małe eksperymenty, które pomagają mi lepiej rozumieć algorytmy, reprezentacje i dyscyplinę pracy.
+Buduję małe eksperymenty, które sprawdzają, kiedy algorytm naprawdę niesie użyteczny stan, a kiedy tylko wygrywa ze słabym baseline'em. Interesują mnie proste testy, negatywne wyniki i kod, który da się uruchomić bez ceremonii.
 
-Prywatnie jestem mężem i ojcem.
+Day trading płaci rachunki; nie chcę robić z tego tożsamości ani poradnika. Poza tym jestem mężem i ojcem.
 
-Ta strona jest osobistym notatnikiem: miejscem na projekty, refleksje i uczciwe zapisy tego, co działa oraz tego, co nie działa. Nie jest poradnikiem inwestycyjnym ani miejscem z rekomendacjami finansowymi.
+Ta strona jest po to, żebym miał gdzie zostawiać projekty, refleksje i uczciwe zapisy tego, co działa oraz tego, co nie działa. Nie jest poradnikiem inwestycyjnym ani miejscem z rekomendacjami finansowymi.

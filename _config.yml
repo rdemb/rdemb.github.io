@@ -1,4 +1,4 @@
-title: "Rafał Dembski"
+title: "rdemb"
 description: "Notes on programming, markets, and small world-model diagnostics."
 url: ""
 baseurl: ""
@@ -7,7 +7,7 @@ permalink: /:categories/:year/:month/:day/:title/
 timezone: Europe/Warsaw
 
 author:
-  name: "Rafał Dembski"
+  name: "rdemb"
   github: "rdemb"
 
 defaults:

@@ -1,6 +1,6 @@
 # rdemb.github.io
 
-Minimal multilingual blog and research site for Rafał Dembski.
+Minimal multilingual blog and research site for rdemb.
 
 This is a local GitHub Pages site using a small custom Jekyll theme inspired by simple technical blogs:
 
