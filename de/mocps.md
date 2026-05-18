@@ -120,6 +120,19 @@ Die kurzen Horizonte h1/h2 verbesserten sich von `1/10` in single-object MOCPS a
 
 Interpretation: auf diesem geprüften dynamic-distractor Grid repariert expliziter two-object state den single-object MOCPS-Fehler. Das ist ein positives diagnostisches Ergebnis, aber keine Behauptung allgemeiner Multi-Object-Robustheit und kein fertiges trainierbares Slot-Modell. Der nächste Schritt ist trainable slot assignment, danach crossing objects, occlusion, acceleration und noisy backgrounds.
 
+## v0.7.1 — Trainable two-slot assignment audit
+
+v0.7.1 prüfte, ob die hard-coded left-slot assignment durch einen kleinen trainierbaren Kopf ersetzt werden kann. Der Scorer wurde nur mit image-derived component pseudo-targets trainiert: Target war die Komponente mit dem kleineren beobachteten initialen x-Zentroid. Generator-Positionen wurden nur für Oracle/Eval/Baseline verwendet.
+
+| Variante | Ergebnis vs persistence | mean MAE | assignment |
+| --- | :---: | ---: | ---: |
+| fixed-left two-slot | 20/20 | 0.602 px | 1.000 |
+| trainable two-slot | 20/20 | 0.602 px | 1.000 |
+| random assignment | 10/20 | 4.609 px | 0.499 |
+| unchanged MOCPS | 11/20 | 3.829 px | n/a |
+
+Interpretation: ein minimaler trainierbarer Assignment-Kopf reproduziert das fixed-left two-slot Ergebnis auf dieser geprüften Welt und erhält den h1/h2-Fix (`10/10`). Das bleibt eine Toy-Diagnostik: kein vollständiges trainable Slot Attention, kein Benchmark und keine breite Multi-Object-Robustheitsbehauptung.
+
 ## Baselines und Referenzen
 
 | Variante | Ergebnis / Beobachtung | Bedeutung |

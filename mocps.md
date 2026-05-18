@@ -120,6 +120,19 @@ Dodatkowo: h1/h2 zostały naprawione z `1/10` w single-object MOCPS do `10/10` w
 
 Interpretacja: na tym sprawdzonym dynamic-distractor gridzie explicit two-object state naprawia awarię single-object MOCPS. To jest pozytywny wynik diagnostyczny, ale nie dowód ogólnej multi-object robustness i nie gotowy trenowalny slot model. Następny krok to trainable slot assignment, a potem crossing objects, occlusion, acceleration i noisy backgrounds.
 
+## v0.7.1 — trainable two-slot assignment audit
+
+v0.7.1 sprawdził, czy hard-coded left-slot assignment da się zastąpić małą trenowalną głową. Scorer był trenowany tylko z image-derived component pseudo-targets: targetem był komponent z mniejszym obserwowanym początkowym centroidem x. Generatorowe pozycje były użyte tylko do oracle/eval/baseline.
+
+| wariant | wynik vs persistence | mean MAE | assignment |
+| --- | :---: | ---: | ---: |
+| fixed-left two-slot | 20/20 | 0.602 px | 1.000 |
+| trainable two-slot | 20/20 | 0.602 px | 1.000 |
+| random assignment | 10/20 | 4.609 px | 0.499 |
+| unchanged MOCPS | 11/20 | 3.829 px | n/a |
+
+Interpretacja: minimalna trenowalna głowa assignment reprodukuje fixed-left two-slot result na tym sprawdzonym świecie i zachowuje naprawę h1/h2 (`10/10`). To nadal jest toy diagnostic: nie pełne trainable Slot Attention, nie benchmark i nie claim o szerokiej multi-object robustness.
+
 ## Baseline’y i odniesienia
 
 | wariant | wynik / obserwacja | sens porównania |
