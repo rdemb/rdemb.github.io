@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MOCPS evidence chain | Rafal Dembski</title>
+    <meta name="description" content="Compact MOCPS evidence summary.">
+    <link rel="stylesheet" href="../assets/css/main.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="wrap header-wrap">
+        <a class="site-title" href="../index.html">Rafal Dembski</a>
+        <nav class="site-nav" aria-label="Primary navigation">
+          <a href="../index.html">Home</a>
+          <a href="../projects.html">Projects</a>
+          <a href="../research.html">Research</a>
+          <a href="../about.html">About</a>
+          <a href="../contact.html">Contact</a>
+        </nav>
+      </div>
+    </header>
+    <main class="wrap main-content">
+      <article class="page">
+        <h1>MOCPS evidence chain</h1>
+        <p class="lead">A compact public summary of the diagnostic path that led to MOCPS.</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Step</th>
+              <th>Result</th>
+              <th>Interpretation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>latent MSE JEPA</td>
+              <td>failed</td>
+              <td>Plain predicted-latent MSE did not beat simple baselines.</td>
+            </tr>
+            <tr>
+              <td>temporal contrastive</td>
+              <td>predicted path failed</td>
+              <td>Target latents improved partly, but the predicted future path remained weak.</td>
+            </tr>
+            <tr>
+              <td>temporal delta</td>
+              <td>failed</td>
+              <td>Delta consistency alone did not provide enough pressure.</td>
+            </tr>
+            <tr>
+              <td>object-state pretext</td>
+              <td>first positive diagnostic</td>
+              <td>Pixel-derived object state created useful object-centric latents in the toy setting.</td>
+            </tr>
+            <tr>
+              <td>soft object token</td>
+              <td>failed</td>
+              <td>A learned soft object token did not recover the hand-designed object-state advantage.</td>
+            </tr>
+            <tr>
+              <td>coordinate-aware brightness</td>
+              <td>works in clean worlds</td>
+              <td>Coordinate basis plus brightness objectness was useful, but brittle.</td>
+            </tr>
+            <tr>
+              <td>objectness stress</td>
+              <td>motion beats brightness under distractors</td>
+              <td>Static bright distractors break brightness objectness; frame motion is more reliable.</td>
+            </tr>
+            <tr>
+              <td>learned diff-motion objectness</td>
+              <td>strong but not perfect</td>
+              <td>Explicit frame-difference input lets a learned head recover motion-grounded selection.</td>
+            </tr>
+            <tr>
+              <td>signed residual</td>
+              <td>60/60</td>
+              <td>Adding signed pixel-motion state as residual input fixed the measured cross-world grid.</td>
+            </tr>
+            <tr>
+              <td>signed velocity ablation</td>
+              <td>strongest minimal signed component</td>
+              <td>Velocity-only signed residual had the best learned mean MAE in the ablation.</td>
+            </tr>
+            <tr>
+              <td>predictor400</td>
+              <td>stabilized remaining path variance</td>
+              <td>More predictor steps fixed the remaining repeated-seed instability.</td>
+            </tr>
+            <tr>
+              <td>MOCPS cold run</td>
+              <td>200/200</td>
+              <td>Canonical reproducible evidence for the covered diagnostic surface.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>Current evidence file</h2>
+        <p>The v0.5.1 cold run reproduced the covered MOCPS result with reuse disabled: <strong>200/200</strong>, mean MAE <strong>1.574 px</strong>, mean persistence MAE <strong>3.903 px</strong>, failed rows <strong>0</strong>, and rows worse than learned_diff <strong>0</strong>.</p>
+
+        <h2>Caveat</h2>
+        <p>This is a toy diagnostic result. It is not a benchmark, not SOTA, not evidence of physics understanding, and not a broad world-modeling claim.</p>
+      </article>
+    </main>
+    <footer class="site-footer">
+      <div class="wrap">
+        <p>Independent research notes. Toy diagnostics, explicit baselines, no broad claims.</p>
+        <p><a href="https://github.com/rdemb">@rdemb</a></p>
+      </div>
+    </footer>
+  </body>
+</html>

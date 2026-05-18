@@ -1,0 +1,28 @@
+title: "Rafal Dembski"
+description: "Independent research notes on algorithms, world-model diagnostics, and object-centric predictive state."
+url: ""
+baseurl: ""
+markdown: kramdown
+permalink: pretty
+exclude:
+  - README.md
+  - vendor
+  - node_modules
+  - .bundle
+  - Gemfile.lock
+
+author:
+  name: "Rafal Dembski"
+  github: "rdemb"
+
+nav:
+  - title: "Home"
+    url: "/"
+  - title: "Projects"
+    url: "/projects.html"
+  - title: "Research"
+    url: "/research.html"
+  - title: "About"
+    url: "/about.html"
+  - title: "Contact"
+    url: "/contact.html"

@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MOCPS | Rafal Dembski</title>
+    <meta name="description" content="Motion-Grounded Object-Centric Predictive State.">
+    <link rel="stylesheet" href="../assets/css/main.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="wrap header-wrap">
+        <a class="site-title" href="../index.html">Rafal Dembski</a>
+        <nav class="site-nav" aria-label="Primary navigation">
+          <a href="../index.html">Home</a>
+          <a href="../projects.html">Projects</a>
+          <a href="../research.html">Research</a>
+          <a href="../about.html">About</a>
+          <a href="../contact.html">Contact</a>
+        </nav>
+      </div>
+    </header>
+    <main class="wrap main-content">
+      <article class="page project-page">
+        <p class="eyebrow">Project</p>
+        <h1>MOCPS — Motion-Grounded Object-Centric Predictive State</h1>
+
+        <h2>One-line summary</h2>
+        <p>A minimal diagnostic recipe for testing whether motion-grounded object-centric state can support predictive latent dynamics better than persistence in tiny procedural worlds.</p>
+
+        <div class="badges">
+          <span class="badge">CPU-first</span>
+          <span class="badge">Toy diagnostic</span>
+          <span class="badge">No benchmark claim</span>
+          <span class="badge">No generator labels in training</span>
+        </div>
+
+        <h2>Problem</h2>
+        <p>Plain latent prediction failed repeatedly in the toy lab:</p>
+        <ul>
+          <li>latent MSE JEPA-style path failed</li>
+          <li>temporal contrastive predicted path failed</li>
+          <li>temporal delta failed</li>
+          <li>soft object token failed</li>
+          <li>weak latents could not be rescued by predictor objectives</li>
+        </ul>
+
+        <h2>Core idea</h2>
+        <p>MOCPS separates the problem into four smaller questions:</p>
+        <ol>
+          <li>objectness: what is the moving object?</li>
+          <li>coordinate-aware token: where is it?</li>
+          <li>signed velocity: which direction is it moving?</li>
+          <li>residual predictor: how does the object-centric state transition?</li>
+        </ol>
+
+        <h2>Mechanism</h2>
+        <pre class="diagram"><code>frames t,t+1
+  -> diff-motion objectness
+  -> coordinate-aware object token
+  -> signed velocity residual
+  -> predictor400
+  -> predicted future state
+  -> probe/eval only</code></pre>
+        <p>Diff-motion objectness selects the moving object. The coordinate-aware token keeps spatial structure. Signed velocity from positive and negative frame differences adds local direction. The predictor400 recipe stabilizes the context-to-future path.</p>
+
+        <h2>Current result</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Metric</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>cold_run</td><td>true</td></tr>
+            <tr><td>reused_rows</td><td>false</td></tr>
+            <tr><td>rows</td><td>200/200 against persistence</td></tr>
+            <tr><td>mean MAE</td><td>1.574 px</td></tr>
+            <tr><td>mean persistence MAE</td><td>3.903 px</td></tr>
+            <tr><td>no_bounce_ball</td><td>50/50</td></tr>
+            <tr><td>bouncing_ball</td><td>50/50</td></tr>
+            <tr><td>moving_ball_distractors</td><td>100/100</td></tr>
+            <tr><td>h1</td><td>50/50</td></tr>
+            <tr><td>h4</td><td>50/50</td></tr>
+            <tr><td>h6</td><td>100/100</td></tr>
+          </tbody>
+        </table>
+        <p class="note">Requested world/horizon pairs outside the supported stability surface were explicitly omitted, not silently counted.</p>
+
+        <h2>What was learned</h2>
+        <ul>
+          <li>objectness is not automatic</li>
+          <li>brightness can fail under static bright distractors</li>
+          <li>motion is a useful objectness signal</li>
+          <li>learned diff-motion objectness needs explicit frame-difference input</li>
+          <li>signed velocity is the strongest signed residual component</li>
+          <li>the analytic signed-motion baseline alone failed, so signed state alone is not sufficient</li>
+          <li>the learned token path still matters</li>
+        </ul>
+
+        <h2>What this is not</h2>
+        <ul>
+          <li>not a benchmark</li>
+          <li>not SOTA</li>
+          <li>not evidence of physics understanding</li>
+          <li>not a claim that JEPA works</li>
+          <li>not a general world model</li>
+          <li>not related to trading, finance, crypto, or market prediction</li>
+        </ul>
+
+        <h2>Next research step</h2>
+        <p>Hard-world stress tests:</p>
+        <ul>
+          <li>moving distractor</li>
+          <li>crossing objects</li>
+          <li>occlusion</li>
+          <li>acceleration</li>
+          <li>noisy background</li>
+        </ul>
+      </article>
+    </main>
+    <footer class="site-footer">
+      <div class="wrap">
+        <p>Independent research notes. Toy diagnostics, explicit baselines, no broad claims.</p>
+        <p><a href="https://github.com/rdemb">@rdemb</a></p>
+      </div>
+    </footer>
+  </body>
+</html>
