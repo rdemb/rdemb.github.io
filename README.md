@@ -2,7 +2,7 @@
 
 Minimal bilingual blog and research site for Rafał Dembski.
 
-This is a local-only rebuild prepared for a future GitHub Pages repository. It uses a small custom Jekyll theme inspired by simple technical blogs:
+This is a local GitHub Pages site using a small custom Jekyll theme inspired by simple technical blogs:
 
 - no npm build step
 - no analytics or tracking
@@ -23,14 +23,12 @@ When Jekyll is unavailable, edit Markdown directly and rely on GitHub Pages to b
 
 ## Admin panel
 
-The admin panel lives at `/admin/` and uses Decap CMS. Before public deployment, update:
+The admin panel lives at `/admin/` and uses Decap CMS:
 
 ```yaml
 backend:
   repo: rdemb/rdemb.github.io
 ```
-
-in `admin/config.yml`.
 
 The panel can create/delete posts, edit main pages, and edit navigation data in `_data/navigation.yml`.
 
