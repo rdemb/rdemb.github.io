@@ -74,6 +74,22 @@ Wynik pochodzi z cold reproducibility run:
 
 Żądane pary world/horizon poza obsługiwaną powierzchnią stabilności były jawnie pominięte, nie policzone po cichu.
 
+## v0.6.1 — dynamic moving-distractor stress test
+
+Najnowszy test dodał trudniejszy świat: jeden poruszający się target i jeden podobnie jasny poruszający się distractor. Architektura MOCPS nie była zmieniana ani dostrajana pod ten przypadek.
+
+Pytanie było proste: czy single-object MOCPS radzi sobie, gdy rusza się więcej niż jeden obiekt?
+
+| horyzont | wynik vs persistence | MOCPS MAE | persistence MAE | target mass | distractor mass |
+| ---: | :---: | ---: | ---: | ---: | ---: |
+| h1 | 0/5 | 4.177 px | 2.189 px | 0.168 | 0.333 |
+| h2 | 1/5 | 3.497 px | 3.273 px | 0.219 | 0.239 |
+| h4 | 5/5 | 3.769 px | 5.429 px | 0.262 | 0.280 |
+| h6 | 5/5 | 3.873 px | 7.478 px | 0.268 | 0.287 |
+| total | 11/20 | 3.829 px | 4.592 px | 0.229 | 0.285 |
+
+Interpretacja: dynamiczny distractor łamie obecną single-object wersję MOCPS. Najbardziej prawdopodobny problem to object selection: przy dwóch podobnie jasnych poruszających się obiektach masa objectness częściej przechyla się w stronę distractora niż targetu. To jest negatywny wynik i dobry następny kierunek: multi-object / slot-like state.
+
 ## Baseline’y i odniesienia
 
 | wariant | wynik / obserwacja | sens porównania |
@@ -145,7 +161,7 @@ To nie kończy tematu. To raczej zamyka pierwszy stabilny etap: mam przepis, kt�
 
 Następne testy powinny być trudniejsze i mniej wygodne:
 
-- moving distractor
+- moving distractor: pierwsza wersja testu łamie aktualny single-object MOCPS
 - crossing objects
 - częściowe occlusion
 - acceleration zamiast stałej prędkości
@@ -153,7 +169,7 @@ Następne testy powinny być trudniejsze i mniej wygodne:
 - więcej niż jeden poruszający się obiekt
 - testy transferu między world variants
 
-Jeżeli MOCPS ma być czymś więcej niż lokalnym diagnostykiem, musi pokazać, gdzie jego objectness, token i signed velocity przestają wystarczać.
+Najbliższy kierunek to nie dalsze dostrajanie tego samego single-object przepisu, tylko sprawdzenie multi-object / slot-like state.
 
 ## Czego to nie znaczy
 

@@ -74,6 +74,22 @@ Das Resultat stammt aus dem Cold-Reproducibility-Run:
 
 Angefragte world/horizon-Paare außerhalb der unterstützten Stabilitätsfläche wurden explizit ausgelassen, nicht still mitgezählt.
 
+## v0.6.1 — dynamic moving-distractor stress test
+
+Der neueste Test fügte eine schwierigere Welt hinzu: ein bewegtes Target und ein ähnlich heller bewegter Distraktor. Die MOCPS-Architektur wurde für diesen Fall nicht geändert und nicht darauf optimiert.
+
+Die Frage war einfach: kann single-object MOCPS mehr als ein bewegtes Objekt handhaben?
+
+| Horizont | Ergebnis vs persistence | MOCPS MAE | persistence MAE | target mass | distractor mass |
+| ---: | :---: | ---: | ---: | ---: | ---: |
+| h1 | 0/5 | 4.177 px | 2.189 px | 0.168 | 0.333 |
+| h2 | 1/5 | 3.497 px | 3.273 px | 0.219 | 0.239 |
+| h4 | 5/5 | 3.769 px | 5.429 px | 0.262 | 0.280 |
+| h6 | 5/5 | 3.873 px | 7.478 px | 0.268 | 0.287 |
+| total | 11/20 | 3.829 px | 4.592 px | 0.229 | 0.285 |
+
+Interpretation: der dynamische Distraktor bricht das aktuelle single-object MOCPS-Rezept. Der wahrscheinlichste Fehlermodus ist object selection: bei zwei ähnlich hellen bewegten Objekten liegt die Objectness-Masse stärker beim Distraktor als beim Target. Das ist ein negatives Ergebnis und ein nützlicher nächster Schritt: multi-object / slot-like state.
+
 ## Baselines und Referenzen
 
 | Variante | Ergebnis / Beobachtung | Bedeutung |
@@ -145,7 +161,7 @@ Das beendet die Forschung nicht. Es schließt nur die erste stabile Etappe ab: e
 
 Die nächsten Tests sollten schwieriger und unbequemer sein:
 
-- moving distractor
+- moving distractor: die erste geprüfte Version bricht das aktuelle single-object MOCPS
 - crossing objects
 - partial occlusion
 - acceleration statt konstanter Geschwindigkeit
@@ -153,7 +169,7 @@ Die nächsten Tests sollten schwieriger und unbequemer sein:
 - mehr als ein bewegtes Objekt
 - Transfer zwischen world variants
 
-Wenn MOCPS mehr als eine lokale Diagnostik werden soll, muss sichtbar werden, wo objectness, token und signed velocity nicht mehr reichen.
+Die nächste Forschungsrichtung ist nicht weiteres Tuning desselben single-object Rezepts, sondern ein Audit von multi-object / slot-like state.
 
 ## Was das nicht bedeutet
 

@@ -74,6 +74,22 @@ The result comes from the cold reproducibility run:
 
 Requested world/horizon pairs outside the supported stability surface were explicitly omitted, not silently counted.
 
+## v0.6.1 — dynamic moving-distractor stress test
+
+The latest test added a harder world: one moving target and one similarly bright moving distractor. The MOCPS architecture was not changed or tuned for this case.
+
+The question was simple: can single-object MOCPS handle more than one moving object?
+
+| horizon | result vs persistence | MOCPS MAE | persistence MAE | target mass | distractor mass |
+| ---: | :---: | ---: | ---: | ---: | ---: |
+| h1 | 0/5 | 4.177 px | 2.189 px | 0.168 | 0.333 |
+| h2 | 1/5 | 3.497 px | 3.273 px | 0.219 | 0.239 |
+| h4 | 5/5 | 3.769 px | 5.429 px | 0.262 | 0.280 |
+| h6 | 5/5 | 3.873 px | 7.478 px | 0.268 | 0.287 |
+| total | 11/20 | 3.829 px | 4.592 px | 0.229 | 0.285 |
+
+Interpretation: the dynamic distractor breaks the current single-object MOCPS recipe. The likely failure mode is object selection: with two similarly bright moving objects, the objectness mass leans more toward the distractor than the target. This is a negative result and a useful next direction: multi-object / slot-like state.
+
 ## Baselines and references
 
 | variant | result / observation | why it matters |
@@ -145,7 +161,7 @@ This does not finish the research. It closes the first stable stage: there is no
 
 The next tests should be harder and less comfortable:
 
-- moving distractor
+- moving distractor: the first checked version breaks current single-object MOCPS
 - crossing objects
 - partial occlusion
 - acceleration instead of constant velocity
@@ -153,7 +169,7 @@ The next tests should be harder and less comfortable:
 - more than one moving object
 - transfer between world variants
 
-If MOCPS is to become more than a local diagnostic, it has to show where its objectness, token, and signed velocity stop being enough.
+The nearest research direction is not further tuning of the same single-object recipe, but an audit of multi-object / slot-like state.
 
 ## What this does not mean
 
