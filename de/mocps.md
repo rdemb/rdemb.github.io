@@ -224,6 +224,16 @@ Interpretation: ein linearer acceleration state reicht nicht. Confidence wurde s
 
 Einschränkung: nur Toy-Diagnostik; kein vollständiges trainable Slot Attention; kein Benchmark, SOTA, AGI, Physikverständnis oder allgemeines World Model.
 
+## v0.10.2 — Dynamics arbitration memory audit
+
+Was sich geändert hat: Ich habe getestet, ob safe fallback / arbitration Beschleunigung nur dann nutzt, wenn die image-derived Evidenz stark genug ist, statt den acceleration state immer zu verwenden.
+
+Ergebnis: safe fallback erhielt die Kontrollfälle `none_control` und `mild_accel` bei `60/60`, mit after-occlusion assignment `1.000` und identity switch rate `0.000`. Bei `strong_accel` verbesserte es after-occlusion assignment von `0.503` auf `0.800` und senkte switch rate von `0.391` auf `0.151`. `direction_change` ist weiter nicht gelöst: winrate stieg auf `45/60`, aber after-occlusion assignment fiel auf `0.718`, und switch rate stieg auf `0.428`. Der diagnostische oracle selector zeigt verbleibendes Potenzial (`50/60`, after `0.924`, switch `0.111`), wenn der Dynamik-Branch korrekt gewählt wird.
+
+Interpretation: Beschleunigung sollte bedingt genutzt werden, nicht immer. Safe fallback ist eine Teilverbesserung für `strong_accel`, aber `direction_change` braucht weiterhin einen besseren Dynamik-Selektor oder reicheren recurrent state.
+
+Einschränkung: nur Toy-Diagnostik; kein vollständiges trainable Slot Attention; kein Benchmark, SOTA, AGI, Physikverständnis oder allgemeines World Model.
+
 ## Baselines und Referenzen
 
 | Variante | Ergebnis / Beobachtung | Bedeutung |

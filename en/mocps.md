@@ -224,6 +224,16 @@ Interpretation: simply adding a linear acceleration state is not enough. Confide
 
 Caveat: toy diagnostic only; not full trainable Slot Attention; not a benchmark, SOTA, AGI, physics understanding, or a general world model.
 
+## v0.10.2 — Dynamics arbitration memory audit
+
+What changed: I tested whether safe fallback / arbitration can use acceleration only when image-derived evidence is strong enough, instead of always using an acceleration state.
+
+Result: safe fallback preserved the `none_control` and `mild_accel` controls at `60/60`, with after-occlusion assignment `1.000` and identity switch rate `0.000`. On `strong_accel`, it improved after-occlusion assignment from `0.503` to `0.800` and reduced switch rate from `0.391` to `0.151`. `direction_change` is still not solved: winrate rose to `45/60`, but after-occlusion assignment fell to `0.718`, and switch rate rose to `0.428`. The diagnostic oracle selector shows remaining upside (`50/60`, after `0.924`, switch `0.111`) if the dynamics branch is selected correctly.
+
+Interpretation: acceleration should be conditional, not always on. Safe fallback is a partial fix for `strong_accel`, but `direction_change` still needs a better dynamics selector or richer recurrent state.
+
+Caveat: toy diagnostic only; not full trainable Slot Attention; not a benchmark, SOTA, AGI, physics understanding, or a general world model.
+
 ## Baselines and references
 
 | variant | result / observation | why it matters |
