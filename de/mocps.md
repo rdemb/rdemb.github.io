@@ -204,6 +204,16 @@ Interpretation: In dieser Constant-Velocity-Toy-Diagnostik zeigte sich bis Läng
 
 Einschränkung: nur Toy-Diagnostik; kein vollständiges trainable Slot Attention; kein Benchmark, SOTA, AGI, Physikverständnis oder allgemeines World Model.
 
+## v0.10 — Acceleration-through-occlusion stress test
+
+Was sich geändert hat: Ich habe learned recurrent slot memory getestet, wenn das verdeckte Objekt nahe an oder während der Okklusion seine Geschwindigkeit ändert.
+
+Ergebnis: Das learned recurrent Gate blieb bei `60/60` für `none_control`, `mild_accel` und `strong_accel`, aber bei `strong_accel` fiel after-occlusion assignment auf `0.503`, und identity switch rate stieg auf `0.391`. Bei `direction_change` fiel das Ergebnis auf `30/60`, mit after-occlusion assignment `0.774`.
+
+Interpretation: Beschleunigung zeigt einen Bottleneck in motion extrapolation / identity binding. Winrate gegen persistence reicht nicht: `strong_accel` bleibt bei `60/60`, verliert aber oft die Identität nach dem Wiederauftauchen. Der nächste Schritt ist ein learned acceleration-aware recurrent state.
+
+Einschränkung: nur Toy-Diagnostik; kein vollständiges trainable Slot Attention; kein Benchmark, SOTA, AGI, Physikverständnis oder allgemeines World Model.
+
 ## Baselines und Referenzen
 
 | Variante | Ergebnis / Beobachtung | Bedeutung |
@@ -267,7 +277,7 @@ Das ist Absicht: eine kleine Diagnostik sollte ohne GPU-Cluster und ohne schwere
 
 ## Aktueller Stand
 
-MOCPS hat jetzt ein stabiles Single-Object-Ergebnis, und der Slot-Memory-Pfad hat das erste positive learned-gate-Ergebnis unter kurzer Okklusion. Das stärkste öffentliche Basisergebnis bleibt der Cold Run: `200/200` gegen Persistenz auf der abgedeckten Fläche.
+MOCPS hat jetzt ein stabiles Single-Object-Ergebnis, und der Slot-Memory-Pfad übersteht Constant-Velocity-Okklusion, aber v0.10 zeigt einen Fehler unter Beschleunigung. Das stärkste öffentliche Basisergebnis bleibt der Cold Run: `200/200` gegen Persistenz auf der abgedeckten Fläche.
 
 Das beendet die Forschung nicht. Es schließt nur die erste stabile Etappe ab: ein Rezept funktioniert auf den bekannten Welten und Baselines; die nächste Frage ist, wo es bricht.
 
@@ -278,12 +288,12 @@ Die nächsten Tests sollten schwieriger und unbequemer sein:
 - moving distractor: die erste geprüfte Version bricht das aktuelle single-object MOCPS; der Selection Audit zeigt, dass korrekte Target-Auswahl das geprüfte Grid repariert
 - crossing objects: v0.8 bricht feed-forward trainable assignment nach dem left/right-Tausch; v0.8.1 repariert den geprüften Crossing-Fall mit Slot-Memory
 - kurze Okklusion: v0.9 trennt einfache Memory von predictive memory; v0.9.1 zeigt ein learned Gate auf dem geprüften Grid
-- längere Okklusion und Beschleunigung statt konstanter Geschwindigkeit
+- acceleration-aware recurrent state nach v0.10
 - noisy background
 - mehr als ein bewegtes Objekt
 - Transfer zwischen world variants
 
-Die nächste Forschungsrichtung ist härtere Okklusion: längeres Verdecken, Beschleunigung und danach ein stärkerer recurrent slot state, falls das kleine Gate nicht mehr reicht.
+Die nächste Forschungsrichtung ist ein learned acceleration-aware recurrent state, danach noisy reappearance.
 
 ## Was das nicht bedeutet
 
