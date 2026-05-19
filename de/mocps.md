@@ -194,6 +194,16 @@ Zusätzliche Checks: identity switch rate `0.000`, gate final update accuracy `1
 
 Interpretation: Das learned Gate reproduziert das handcodierte predictive-memory-Verhalten auf diesem geprüften Grid. Das ist ein positives diagnostisches Ergebnis, kein vollständiges trainable Slot Attention. Der nächste Test sollte längere Okklusion und Beschleunigung hinzufügen.
 
+## v0.9.2 — Long-occlusion memory sweep
+
+Dieser Sweep testete learned recurrent slot memory mit längeren Okklusionsfenstern: `1`, `2`, `3`, `4` und `6` Frames merged observation.
+
+Ergebnis: Das learned recurrent Gate und die handcodierte predictive memory erreichten beide `20/20` bei jeder geprüften Länge. Learned recurrent after-occlusion assignment war `1.000`, identity switch rate war `0.000`, und final confidence fiel von `0.539` bei Länge `1` auf `0.118` bei Länge `6`.
+
+Interpretation: In dieser Constant-Velocity-Toy-Diagnostik zeigte sich bis Länge `6` kein learned memory-horizon Bottleneck. Der nächste Bottleneck wirkt eher wie confidence calibration oder motion extrapolation unter Beschleunigung. Wichtige Einschränkung: frozen velocity memory kann weiter `20/20` gegen persistence zeigen und trotzdem after-occlusion identity verlieren; winrate allein reicht also nicht.
+
+Einschränkung: nur Toy-Diagnostik; kein vollständiges trainable Slot Attention; kein Benchmark, SOTA, AGI, Physikverständnis oder allgemeines World Model.
+
 ## Baselines und Referenzen
 
 | Variante | Ergebnis / Beobachtung | Bedeutung |
