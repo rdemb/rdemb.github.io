@@ -244,6 +244,16 @@ Interpretation: Der nächste Bottleneck ist observation reliability / re-identif
 
 Einschränkung: nur Toy-Diagnostik; kein vollständiges trainable Slot Attention; kein Benchmark, SOTA, AGI, Physikverständnis, kein allgemeines World Model und keine breite noisy-reappearance robustness.
 
+## v0.11.1 — Observation reliability / appearance-memory audit
+
+Was sich geändert hat: Ich habe getestet, ob image-derived reliability gating oder leichte appearance memory transient false components nach dem Wiederauftauchen ablehnen kann.
+
+Ergebnis: Die beste praktische Variante, `handcrafted_reliability_gate`, blieb bei `60/60` auf `false_blob`, verbesserte recovery assignment von `0.659` auf `0.977`, senkte identity switch rate von `0.351` auf `0.031` und senkte false-component selection von `0.276` auf `0.039`. Learned reliability und lightweight appearance memory verbesserten `false_blob` ebenfalls auf recovery `0.977` und switch `0.031`. Controls, pixel noise, flicker und distractor-bright reappearance blieben ohne Regression: recovery `1.000`, switch `0.000`.
+
+Interpretation: false reappearance binding wirkt hier wie ein observation reliability / re-identification Problem, das einfache image-derived Features stark reduzieren können. Negatives Ergebnis: Confidence ist weiterhin kein guter Risikosignal für false blobs, weil die beste praktische Variante bei `false_blob` confidence `0.695` hatte.
+
+Einschränkung: nur Toy-Diagnostik; kein vollständiges trainable Slot Attention; kein Benchmark, SOTA, AGI, Physikverständnis, kein allgemeines World Model und keine breite noisy-reappearance robustness.
+
 ## Baselines und Referenzen
 
 | Variante | Ergebnis / Beobachtung | Bedeutung |
@@ -307,7 +317,7 @@ Das ist Absicht: eine kleine Diagnostik sollte ohne GPU-Cluster und ohne schwere
 
 ## Aktueller Stand
 
-MOCPS hat jetzt ein stabiles Single-Object-Ergebnis, und der Slot-Memory-Pfad übersteht Constant-Velocity-Okklusion. v0.10 zeigte einen Fehler unter Beschleunigung, v0.10.2 brachte eine partielle safe-fallback-Korrektur, und v0.11 zeigte, dass false components beim Wiederauftauchen re-binding weiter brechen. Das stärkste öffentliche Basisergebnis bleibt der Cold Run: `200/200` gegen Persistenz auf der abgedeckten Fläche.
+MOCPS hat jetzt ein stabiles Single-Object-Ergebnis, und der Slot-Memory-Pfad übersteht Constant-Velocity-Okklusion. v0.10 zeigte einen Fehler unter Beschleunigung, v0.10.2 brachte eine partielle safe-fallback-Korrektur, v0.11 zeigte false-component re-binding, und v0.11.1 reduzierte diesen konkreten Failure Mode stark durch image-derived reliability gating. Das stärkste öffentliche Basisergebnis bleibt der Cold Run: `200/200` gegen Persistenz auf der abgedeckten Fläche.
 
 Das beendet die Forschung nicht. Es schließt nur die erste stabile Etappe ab: ein Rezept funktioniert auf den bekannten Welten und Baselines; die nächste Frage ist, wo es bricht.
 
@@ -318,12 +328,12 @@ Die nächsten Tests sollten schwieriger und unbequemer sein:
 - moving distractor: die erste geprüfte Version bricht das aktuelle single-object MOCPS; der Selection Audit zeigt, dass korrekte Target-Auswahl das geprüfte Grid repariert
 - crossing objects: v0.8 bricht feed-forward trainable assignment nach dem left/right-Tausch; v0.8.1 repariert den geprüften Crossing-Fall mit Slot-Memory
 - kurze Okklusion: v0.9 trennt einfache Memory von predictive memory; v0.9.1 zeigt ein learned Gate auf dem geprüften Grid
-- observation reliability / appearance memory nach v0.11
+- schwierigere distractor-like false components nach v0.11.1
 - noisy background
 - mehr als ein bewegtes Objekt
 - Transfer zwischen world variants
 
-Die nächste Forschungsrichtung ist ein image-derived observation reliability head oder leichte appearance memory für false-component re-binding.
+Die nächste Forschungsrichtung ist ein schwierigerer appearance-ambiguity stress test: false components, die echten Objekten ähnlicher sind, plus bessere Confidence-Kalibrierung.
 
 ## Was das nicht bedeutet
 
