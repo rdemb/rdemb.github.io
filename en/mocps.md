@@ -234,6 +234,16 @@ Interpretation: acceleration should be conditional, not always on. Safe fallback
 
 Caveat: toy diagnostic only; not full trainable Slot Attention; not a benchmark, SOTA, AGI, physics understanding, or a general world model.
 
+## v0.11 — Noisy reappearance memory stress test
+
+What changed: I tested whether safe-fallback memory survives noisy or misleading reappearance after occlusion.
+
+Result: safe fallback reached `60/60` winrate in every checked noise mode. That does not mean identity binding was stable. `false_blob` reduced immediate assignment to `0.791`, recovery assignment to `0.659`, raised identity switch rate to `0.351`, and had false-component selection `0.276`. Controls, pixel noise, flicker, and distractor-bright reappearance kept recovery assignment `1.000` and switch rate `0.000`.
+
+Interpretation: the next bottleneck is observation reliability / re-identification, not memory length or another simple dynamics term. Safe fallback needs an image-derived reliability head or lightweight appearance memory to reject transient false components.
+
+Caveat: toy diagnostic only; not full trainable Slot Attention; not a benchmark, SOTA, AGI, physics understanding, a general world model, or broad noisy-reappearance robustness.
+
 ## Baselines and references
 
 | variant | result / observation | why it matters |
@@ -297,7 +307,7 @@ This is deliberate: a small diagnostic should be runnable without a GPU cluster 
 
 ## Current position
 
-MOCPS now has a stable single-object result, and the slot-memory path survives constant-velocity occlusion, but v0.10 shows a failure under acceleration. The strongest public base result is still the cold run: `200/200` against persistence on the covered surface.
+MOCPS now has a stable single-object result, and the slot-memory path survives constant-velocity occlusion. v0.10 showed an acceleration failure, v0.10.2 gave a partial safe-fallback fix, and v0.11 showed that false components at reappearance still break re-binding. The strongest public base result is still the cold run: `200/200` against persistence on the covered surface.
 
 This does not finish the research. It closes the first stable stage: there is now a recipe that works on the known worlds and baselines, so the next question is where it breaks.
 
@@ -308,12 +318,12 @@ The next tests should be harder and less comfortable:
 - moving distractor: the first checked version breaks current single-object MOCPS; the selection audit shows that correct target selection fixes the checked grid
 - crossing objects: v0.8 breaks feed-forward trainable assignment after the left/right swap; v0.8.1 fixes the checked crossing case with slot memory
 - short occlusion: v0.9 separates simple memory from predictive memory; v0.9.1 shows a learned gate on the checked grid
-- acceleration-aware recurrent state after v0.10
+- observation reliability / appearance memory after v0.11
 - noisy background
 - more than one moving object
 - transfer between world variants
 
-The nearest research direction is a learned acceleration-aware recurrent state, then noisy reappearance.
+The nearest research direction is an image-derived observation reliability head or lightweight appearance memory for false-component re-binding.
 
 ## What this does not mean
 
