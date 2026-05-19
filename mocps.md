@@ -214,6 +214,16 @@ Interpretacja: akceleracja ujawnia bottleneck motion extrapolation / identity bi
 
 Zastrzeżenie: toy diagnostic only; nie pełne trainable Slot Attention; nie benchmark, SOTA, AGI, physics understanding ani general world model.
 
+## v0.10.1 — Acceleration-aware memory dynamics
+
+Co się zmieniło: sprawdziłem mały acceleration-aware recurrent state po tym, jak v0.10 pokazało awarie przy strong acceleration i direction change.
+
+Wynik: wariant acceleration-aware nie naprawił problemu. Miał `55/60` na `none_control`, `55/60` na `mild_accel`, `60/60` na `strong_accel` i `45/60` na `direction_change`. After-occlusion assignment wyniosło `0.738`, `0.806`, `0.685`, `0.483`, a identity switch rate wzrosło do `0.493`, `0.416`, `0.501`, `0.702`.
+
+Interpretacja: proste dodanie liniowego acceleration state nie wystarcza. Confidence stało się bardziej czułe na tryb ruchu, ale identity binding po reappearance jest mniej stabilny. Następny krok to richer recurrent state albo learned nonlinear dynamics.
+
+Zastrzeżenie: toy diagnostic only; nie pełne trainable Slot Attention; nie benchmark, SOTA, AGI, physics understanding ani general world model.
+
 ## Baseline’y i odniesienia
 
 | wariant | wynik / obserwacja | sens porównania |

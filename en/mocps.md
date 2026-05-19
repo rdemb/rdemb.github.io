@@ -214,6 +214,16 @@ Interpretation: acceleration exposes a motion-extrapolation / identity-binding b
 
 Caveat: toy diagnostic only; not full trainable Slot Attention; not a benchmark, SOTA, AGI, physics understanding, or a general world model.
 
+## v0.10.1 — Acceleration-aware memory dynamics
+
+What changed: I tested a small acceleration-aware recurrent state after v0.10 exposed failures under strong acceleration and direction change.
+
+Result: the acceleration-aware variant did not fix the problem. It scored `55/60` on `none_control`, `55/60` on `mild_accel`, `60/60` on `strong_accel`, and `45/60` on `direction_change`. After-occlusion assignment was `0.738`, `0.806`, `0.685`, `0.483`, while identity switch rate rose to `0.493`, `0.416`, `0.501`, `0.702`.
+
+Interpretation: simply adding a linear acceleration state is not enough. Confidence became more sensitive to motion mode, but identity binding after reappearance became less stable. The next step is a richer recurrent state or learned nonlinear dynamics.
+
+Caveat: toy diagnostic only; not full trainable Slot Attention; not a benchmark, SOTA, AGI, physics understanding, or a general world model.
+
 ## Baselines and references
 
 | variant | result / observation | why it matters |

@@ -214,6 +214,16 @@ Interpretation: Beschleunigung zeigt einen Bottleneck in motion extrapolation / 
 
 Einschränkung: nur Toy-Diagnostik; kein vollständiges trainable Slot Attention; kein Benchmark, SOTA, AGI, Physikverständnis oder allgemeines World Model.
 
+## v0.10.1 — Acceleration-aware memory dynamics
+
+Was sich geändert hat: Ich habe einen kleinen acceleration-aware recurrent state getestet, nachdem v0.10 Fehler bei strong acceleration und direction change gezeigt hatte.
+
+Ergebnis: Die acceleration-aware Variante reparierte das Problem nicht. Sie erreichte `55/60` bei `none_control`, `55/60` bei `mild_accel`, `60/60` bei `strong_accel` und `45/60` bei `direction_change`. After-occlusion assignment lag bei `0.738`, `0.806`, `0.685`, `0.483`, während identity switch rate auf `0.493`, `0.416`, `0.501`, `0.702` stieg.
+
+Interpretation: ein linearer acceleration state reicht nicht. Confidence wurde stärker vom Bewegungsmodus beeinflusst, aber identity binding nach dem Wiederauftauchen wurde weniger stabil. Der nächste Schritt ist ein reichhaltigerer recurrent state oder learned nonlinear dynamics.
+
+Einschränkung: nur Toy-Diagnostik; kein vollständiges trainable Slot Attention; kein Benchmark, SOTA, AGI, Physikverständnis oder allgemeines World Model.
+
 ## Baselines und Referenzen
 
 | Variante | Ergebnis / Beobachtung | Bedeutung |
