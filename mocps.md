@@ -167,6 +167,33 @@ Interpretacja: w tym sprawdzonym toy świecie problem z v0.8 był problemem pami
 
 Zastrzeżenie: to nadal diagnostyka. Nie jest to pełne trainable Slot Attention, benchmark, SOTA, AGI, physics understanding, general world model ani szeroka multi-object robustness.
 
+## v0.9 — Occlusion memory-slot audit
+
+v0.9 dodał krótką okluzję: dwa podobne obiekty dzielą tę samą ścieżkę y i na chwilę zlewają się w jeden widoczny blob. To rozdziela zwykłą pamięć od pamięci predykcyjnej.
+
+| wariant | wynik vs persistence | mean MAE | assignment po okluzji |
+| --- | :---: | ---: | ---: |
+| trainable two-slot | 15/20 | 3.768 px | 0.000 |
+| nearest / velocity memory | 15/20 | 3.470 px | 0.000 |
+| predictive occlusion memory | 20/20 | 0.422 px | 1.000 |
+| target oracle | 20/20 | 0.422 px | 1.000 |
+
+Interpretacja: prosta ciągłość centroidu wystarcza, gdy oba komponenty są widoczne. Nie wystarcza, gdy obraz scala dwa obiekty w jeden komponent. Predictive memory przewija slot przez niejednoznaczną obserwację i obniża confidence zamiast udawać pełną pewność.
+
+## v0.9.1 — Learned recurrent occlusion gate
+
+v0.9.1 zastąpił ręczną decyzję update/predict małym learned gate. Gate był trenowany z image-derived pseudo-targetów: czy w tej klatce jest wystarczająco komponentów, żeby zaufać obserwacji, czy trzeba przewinąć stan z pamięci.
+
+| wariant | wynik vs persistence | mean MAE | assignment podczas/po okluzji |
+| --- | :---: | ---: | ---: |
+| frozen velocity memory | 15/20 | 3.470 px | 1.000 / 0.000 |
+| predictive occlusion memory | 20/20 | 0.422 px | 1.000 / 1.000 |
+| learned recurrent gate | 20/20 | 0.422 px | 1.000 / 1.000 |
+
+Dodatkowo: identity switch rate `0.000`, gate final update accuracy `1.000`.
+
+Interpretacja: learned gate odtwarza zachowanie ręcznej predictive memory na tym sprawdzonym gridzie. To jest pozytywny wynik diagnostyczny, ale nadal nie pełne trainable Slot Attention. Następny test powinien dodać dłuższą okluzję i akcelerację.
+
 ## Baseline’y i odniesienia
 
 | wariant | wynik / obserwacja | sens porównania |
@@ -230,7 +257,7 @@ To jest celowe: mały eksperyment powinien dać się uruchomić bez klastra GPU 
 
 ## Gdzie jestem teraz
 
-Aktualny stan: MOCPS jest kanonicznym, promowanym wariantem learned diagnostic recipe dla tej małej rodziny diagnostyków. Najsilniejszy publiczny wynik to cold run `200/200` przeciw persystencji na pokrytej powierzchni.
+Aktualny stan: MOCPS ma stabilny single-object wynik, a ścieżka slot-memory ma pierwszy pozytywny learned-gate wynik na krótkiej okluzji. Najsilniejszy publiczny wynik bazowy to cold run `200/200` przeciw persystencji na pokrytej powierzchni.
 
 To nie kończy tematu. To raczej zamyka pierwszy stabilny etap: mam przepis, który działa na znanych światach i baseline’ach, i mogę zacząć pytać, gdzie pęknie.
 
@@ -240,13 +267,13 @@ Następne testy powinny być trudniejsze i mniej wygodne:
 
 - moving distractor: pierwsza wersja testu łamie aktualny single-object MOCPS; selection audit pokazuje, że poprawny target selection naprawia checked grid
 - crossing objects: v0.8 łamie feed-forward trainable assignment po zamianie left/right; v0.8.1 naprawia checked crossing przez pamięć slotu
-- częściowe occlusion
-- acceleration zamiast stałej prędkości
+- krótka okluzja: v0.9 rozdziela zwykłą pamięć od predictive memory; v0.9.1 pokazuje learned gate na checked gridzie
+- dłuższa okluzja i acceleration zamiast stałej prędkości
 - noisy background
 - więcej niż jeden poruszający się obiekt
 - testy transferu między world variants
 
-Najbliższy kierunek to dokładniejsze crossing: exact overlap, partial occlusion i dopiero potem recurrent slot identity, jeśli prosta pamięć przestanie wystarczać.
+Najbliższy kierunek to trudniejsza okluzja: dłuższe zasłonięcie, akceleracja i dopiero potem mocniejszy recurrent slot state, jeśli mały gate przestanie wystarczać.
 
 ## Czego to nie znaczy
 

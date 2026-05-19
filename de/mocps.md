@@ -167,6 +167,33 @@ Interpretation: in dieser geprüften Toy-Welt war der v0.8-Fehler ein Identität
 
 Einschränkung: Das bleibt eine Diagnostik. Es ist kein vollständiges trainable Slot Attention, kein Benchmark, kein SOTA, kein AGI, kein Physikverständnis, kein allgemeines World Model und keine breite Multi-Object-Robustheit.
 
+## v0.9 — Occlusion memory-slot audit
+
+v0.9 fügte kurze Okklusion hinzu: Zwei ähnliche Objekte teilen denselben y-Pfad und verschmelzen kurz zu einem sichtbaren Blob. Das trennt einfache Memory von prädiktiver Memory.
+
+| Variante | Ergebnis vs persistence | mean MAE | assignment nach Okklusion |
+| --- | :---: | ---: | ---: |
+| trainable two-slot | 15/20 | 3.768 px | 0.000 |
+| nearest / velocity memory | 15/20 | 3.470 px | 0.000 |
+| predictive occlusion memory | 20/20 | 0.422 px | 1.000 |
+| target oracle | 20/20 | 0.422 px | 1.000 |
+
+Interpretation: Zentroid-Kontinuität reicht, solange beide Komponenten sichtbar bleiben. Sie reicht nicht, wenn das Bild zwei Objekte in eine Komponente verschmilzt. Predictive Memory rollt den Slot durch die mehrdeutige Beobachtung und senkt die Confidence, statt volle Sicherheit vorzutäuschen.
+
+## v0.9.1 — Learned recurrent occlusion gate
+
+v0.9.1 ersetzte die handcodierte update/predict-Entscheidung durch ein kleines learned Gate. Das Gate wurde mit image-derived Pseudo-Targets trainiert: ob die Frame genug Komponenten zeigt, um der Beobachtung zu vertrauen, oder ob der Zustand aus Memory weitergerollt werden soll.
+
+| Variante | Ergebnis vs persistence | mean MAE | assignment während/nach Okklusion |
+| --- | :---: | ---: | ---: |
+| frozen velocity memory | 15/20 | 3.470 px | 1.000 / 0.000 |
+| predictive occlusion memory | 20/20 | 0.422 px | 1.000 / 1.000 |
+| learned recurrent gate | 20/20 | 0.422 px | 1.000 / 1.000 |
+
+Zusätzliche Checks: identity switch rate `0.000`, gate final update accuracy `1.000`.
+
+Interpretation: Das learned Gate reproduziert das handcodierte predictive-memory-Verhalten auf diesem geprüften Grid. Das ist ein positives diagnostisches Ergebnis, kein vollständiges trainable Slot Attention. Der nächste Test sollte längere Okklusion und Beschleunigung hinzufügen.
+
 ## Baselines und Referenzen
 
 | Variante | Ergebnis / Beobachtung | Bedeutung |
@@ -230,7 +257,7 @@ Das ist Absicht: eine kleine Diagnostik sollte ohne GPU-Cluster und ohne schwere
 
 ## Aktueller Stand
 
-MOCPS ist jetzt das kanonische promovierte learned diagnostic recipe für diese kleine Testfamilie. Das stärkste öffentliche Ergebnis ist der cold run: `200/200` gegen Persistenz auf der abgedeckten Fläche.
+MOCPS hat jetzt ein stabiles Single-Object-Ergebnis, und der Slot-Memory-Pfad hat das erste positive learned-gate-Ergebnis unter kurzer Okklusion. Das stärkste öffentliche Basisergebnis bleibt der Cold Run: `200/200` gegen Persistenz auf der abgedeckten Fläche.
 
 Das beendet die Forschung nicht. Es schließt nur die erste stabile Etappe ab: ein Rezept funktioniert auf den bekannten Welten und Baselines; die nächste Frage ist, wo es bricht.
 
@@ -240,13 +267,13 @@ Die nächsten Tests sollten schwieriger und unbequemer sein:
 
 - moving distractor: die erste geprüfte Version bricht das aktuelle single-object MOCPS; der Selection Audit zeigt, dass korrekte Target-Auswahl das geprüfte Grid repariert
 - crossing objects: v0.8 bricht feed-forward trainable assignment nach dem left/right-Tausch; v0.8.1 repariert den geprüften Crossing-Fall mit Slot-Memory
-- partial occlusion
-- acceleration statt konstanter Geschwindigkeit
+- kurze Okklusion: v0.9 trennt einfache Memory von predictive memory; v0.9.1 zeigt ein learned Gate auf dem geprüften Grid
+- längere Okklusion und Beschleunigung statt konstanter Geschwindigkeit
 - noisy background
 - mehr als ein bewegtes Objekt
 - Transfer zwischen world variants
 
-Die nächste Forschungsrichtung ist ein schärferer Crossing-Test: exact overlap, partial occlusion und danach recurrent slot identity, falls einfache Memory nicht mehr reicht.
+Die nächste Forschungsrichtung ist härtere Okklusion: längeres Verdecken, Beschleunigung und danach ein stärkerer recurrent slot state, falls das kleine Gate nicht mehr reicht.
 
 ## Was das nicht bedeutet
 

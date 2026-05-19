@@ -167,6 +167,33 @@ Interpretation: in this checked toy world, the v0.8 failure was an identity-memo
 
 Caveat: this is still a diagnostic. It is not full trainable Slot Attention, a benchmark, SOTA, AGI, physics understanding, a general world model, or broad multi-object robustness.
 
+## v0.9 — Occlusion memory-slot audit
+
+v0.9 added short occlusion: two similar objects share the same y path and briefly merge into one visible blob. This separates simple memory from predictive memory.
+
+| variant | result vs persistence | mean MAE | assignment after occlusion |
+| --- | :---: | ---: | ---: |
+| trainable two-slot | 15/20 | 3.768 px | 0.000 |
+| nearest / velocity memory | 15/20 | 3.470 px | 0.000 |
+| predictive occlusion memory | 20/20 | 0.422 px | 1.000 |
+| target oracle | 20/20 | 0.422 px | 1.000 |
+
+Interpretation: centroid continuity is enough while both components stay visible. It is not enough when the image merges two objects into one component. Predictive memory rolls the slot through the ambiguous observation and lowers confidence instead of pretending full certainty.
+
+## v0.9.1 — Learned recurrent occlusion gate
+
+v0.9.1 replaced the hand-coded update/predict decision with a small learned gate. The gate was trained from image-derived pseudo-targets: whether the frame exposes enough components to trust the observation, or whether the state should be rolled forward from memory.
+
+| variant | result vs persistence | mean MAE | assignment during/after occlusion |
+| --- | :---: | ---: | ---: |
+| frozen velocity memory | 15/20 | 3.470 px | 1.000 / 0.000 |
+| predictive occlusion memory | 20/20 | 0.422 px | 1.000 / 1.000 |
+| learned recurrent gate | 20/20 | 0.422 px | 1.000 / 1.000 |
+
+Additional checks: identity switch rate `0.000`, gate final update accuracy `1.000`.
+
+Interpretation: the learned gate reproduces the hand-coded predictive-memory behavior on this checked grid. This is a positive diagnostic result, not full trainable Slot Attention. The next test should add longer occlusion and acceleration.
+
 ## Baselines and references
 
 | variant | result / observation | why it matters |
@@ -230,7 +257,7 @@ This is deliberate: a small diagnostic should be runnable without a GPU cluster 
 
 ## Current position
 
-MOCPS is now the canonical promoted learned diagnostic recipe for this small family of tests. The strongest public evidence is the cold run: `200/200` against persistence on the covered surface.
+MOCPS now has a stable single-object result, and the slot-memory path has its first positive learned-gate result under short occlusion. The strongest public base result is still the cold run: `200/200` against persistence on the covered surface.
 
 This does not finish the research. It closes the first stable stage: there is now a recipe that works on the known worlds and baselines, so the next question is where it breaks.
 
@@ -240,13 +267,13 @@ The next tests should be harder and less comfortable:
 
 - moving distractor: the first checked version breaks current single-object MOCPS; the selection audit shows that correct target selection fixes the checked grid
 - crossing objects: v0.8 breaks feed-forward trainable assignment after the left/right swap; v0.8.1 fixes the checked crossing case with slot memory
-- partial occlusion
-- acceleration instead of constant velocity
+- short occlusion: v0.9 separates simple memory from predictive memory; v0.9.1 shows a learned gate on the checked grid
+- longer occlusion and acceleration instead of constant velocity
 - noisy background
 - more than one moving object
 - transfer between world variants
 
-The nearest research direction is a sharper crossing test: exact overlap, partial occlusion, and then recurrent slot identity if simple memory stops being enough.
+The nearest research direction is harder occlusion: longer hiding, acceleration, and then a stronger recurrent slot state if the small gate stops being enough.
 
 ## What this does not mean
 
