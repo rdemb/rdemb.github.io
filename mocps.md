@@ -276,13 +276,9 @@ Zastrzeżenie: nie benchmark; nie broad robustness; nie rozwiązane re-identific
 
 ## v0.13 — Confidence / risk calibration audit
 
-Co się zmieniło: sprawdziłem image-derived risk signals dla observation reliability bez trenowania na generator-position identity-switch albo false-selection labels.
+v0.13 audytuje confidence/risk calibration dla observation reliability. Image-derived reliability i disagreement risk signals identyfikują wiele false-selection i identity-switch risks na sprawdzonym lokalnym gridzie, umożliwiając conservative abstention bez held-out threshold leakage.
 
-Wynik: na held-out hard modes `combined_handcrafted_risk` miał AUROC `0.977` dla identity switch i `0.929` dla false-component selection; `reliability_risk` miał odpowiednio `0.990` i `0.915`. Policy jest confidence-lowering/abstention audit, nie assignment-changing fix: zachowała assignment controls, flagując część ryzykownych hard-mode update'ów.
-
-Interpretacja: risk signals są użyteczne na tym checked gridzie, ale to nadal local toy diagnostic. Reliability poprawia assignment, natomiast confidence calibration, re-identification i appearance memory nie są rozwiązane.
-
-Zastrzeżenie: nie benchmark; nie broad robustness; thresholdy nie były tunowane na held-out hard modes; policy nie poprawia assignment przez zmianę decyzji.
+To nadal toy diagnostic: nie rozwiązuje re-identification, appearance memory, confidence calibration ani broad noisy-reappearance robustness.
 
 ## Baseline’y i odniesienia
 

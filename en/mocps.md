@@ -276,13 +276,9 @@ Caveat: not a benchmark; not broad robustness; not solved re-identification, app
 
 ## v0.13 — Confidence / risk calibration audit
 
-What changed: I audited image-derived risk signals for observation reliability without training on generator-position identity-switch or false-selection labels.
+v0.13 audits confidence/risk calibration for observation reliability. Image-derived reliability and disagreement risk signals identify many false-selection and identity-switch risks on the checked local grid, enabling conservative abstention without held-out threshold leakage.
 
-Result: on held-out hard modes, `combined_handcrafted_risk` reached AUROC `0.977` for identity switch and `0.929` for false-component selection; `reliability_risk` reached `0.990` and `0.915`. The policy is a confidence-lowering/abstention audit, not an assignment-changing fix: it preserved assignment controls while flagging some risky hard-mode updates.
-
-Interpretation: the risk signals are useful on this checked grid, but this remains a local toy diagnostic. Reliability improves assignment, while confidence calibration, re-identification, and appearance memory are not solved.
-
-Caveat: not a benchmark; not broad robustness; thresholds were not tuned on held-out hard modes; the policy does not improve assignment by changing decisions.
+This is still a toy diagnostic: it does not solve re-identification, appearance memory, confidence calibration, or broad noisy-reappearance robustness.
 
 ## Baselines and references
 
