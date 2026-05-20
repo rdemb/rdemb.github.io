@@ -280,6 +280,16 @@ v0.13 auditiert confidence/risk calibration für observation reliability. Image-
 
 Das bleibt eine Toy-Diagnostik: Sie löst weder re-identification, appearance memory, confidence calibration noch breite noisy-reappearance robustness.
 
+## v0.14 — Risk-aware selective update policy audit
+
+v0.14 testet risk-aware selective update policies für observation reliability. Im geprüften lokalen
+Grid half image-derived risk bei der Wahl von `hold_previous_state`: held-out hard switch fiel auf
+`0.000`, und false selection sank leicht gegenüber dem accept baseline, während Controls erhalten
+blieben.
+
+Das bleibt eine Toy-Diagnostik und löst weder re-identification noch confidence calibration oder
+breite noisy-reappearance robustness.
+
 ## Baselines und Referenzen
 
 | Variante | Ergebnis / Beobachtung | Bedeutung |
@@ -343,7 +353,7 @@ Das ist Absicht: eine kleine Diagnostik sollte ohne GPU-Cluster und ohne schwere
 
 ## Aktueller Stand
 
-MOCPS hat jetzt ein stabiles Single-Object-Ergebnis, und der Slot-Memory-Pfad übersteht Constant-Velocity-Okklusion. v0.10 zeigte einen Fehler unter Beschleunigung, v0.10.2 brachte eine partielle safe-fallback-Korrektur, v0.11 zeigte false-component re-binding, v0.11.1 reduzierte diesen konkreten Failure Mode stark durch image-derived reliability gating, v0.12 zeigte partielle Generalisierung auf schwierigere false blobs, v0.12.1 verwarf die easy-false-blob Regression als stabil unter größerer gezielter Stichprobe, und v0.13 fand nützliche image-derived risk signals, ohne confidence calibration zu lösen. Das stärkste öffentliche Basisergebnis bleibt der Cold Run: `200/200` gegen Persistenz auf der abgedeckten Fläche.
+MOCPS hat jetzt ein stabiles Single-Object-Ergebnis, und der Slot-Memory-Pfad übersteht Constant-Velocity-Okklusion. v0.10 zeigte einen Fehler unter Beschleunigung, v0.10.2 brachte eine partielle safe-fallback-Korrektur, v0.11 zeigte false-component re-binding, v0.11.1 reduzierte diesen konkreten Failure Mode stark durch image-derived reliability gating, v0.12 zeigte partielle Generalisierung auf schwierigere false blobs, v0.12.1 verwarf die easy-false-blob Regression als stabil unter größerer gezielter Stichprobe, v0.13 fand nützliche image-derived risk signals, ohne confidence calibration zu lösen, und v0.14 zeigte, dass `hold_previous_state` checked hard-mode update behavior ohne held-out threshold leakage verbessern kann. Das stärkste öffentliche Basisergebnis bleibt der Cold Run: `200/200` gegen Persistenz auf der abgedeckten Fläche.
 
 Das beendet die Forschung nicht. Es schließt nur die erste stabile Etappe ab: ein Rezept funktioniert auf den bekannten Welten und Baselines; die nächste Frage ist, wo es bricht.
 
@@ -354,12 +364,13 @@ Die nächsten Tests sollten schwieriger und unbequemer sein:
 - moving distractor: die erste geprüfte Version bricht das aktuelle single-object MOCPS; der Selection Audit zeigt, dass korrekte Target-Auswahl das geprüfte Grid repariert
 - crossing objects: v0.8 bricht feed-forward trainable assignment nach dem left/right-Tausch; v0.8.1 repariert den geprüften Crossing-Fall mit Slot-Memory
 - kurze Okklusion: v0.9 trennt einfache Memory von predictive memory; v0.9.1 zeigt ein learned Gate auf dem geprüften Grid
-- thresholded risk policies ohne Tuning auf held-out hard modes
+- breiterer Stress für risk-aware update policies ohne Tuning auf held-out hard modes
 - noisy background
 - mehr als ein bewegtes Objekt
 - Transfer zwischen world variants
 
-Die nächste Forschungsrichtung ist, ob risk signals sicherere update policies unterstützen, plus schwierigere appearance-ambiguity checks ohne breite re-identification-Behauptung.
+Die nächste Forschungsrichtung ist breiterer Stress für `hold_previous_state` und niedrigere
+Control-Interventionskosten, ohne breite re-identification-Behauptung.
 
 ## Was das nicht bedeutet
 

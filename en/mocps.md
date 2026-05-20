@@ -280,6 +280,15 @@ v0.13 audits confidence/risk calibration for observation reliability. Image-deri
 
 This is still a toy diagnostic: it does not solve re-identification, appearance memory, confidence calibration, or broad noisy-reappearance robustness.
 
+## v0.14 — Risk-aware selective update policy audit
+
+v0.14 tests risk-aware selective update policies for observation reliability. On the checked local
+grid, image-derived risk helped choose `hold_previous_state`: held-out hard switch fell to `0.000`,
+and false selection edged down versus the accept baseline, while controls stayed preserved.
+
+This remains a toy diagnostic and does not solve re-identification, confidence calibration, or
+broad noisy-reappearance robustness.
+
 ## Baselines and references
 
 | variant | result / observation | why it matters |
@@ -343,7 +352,7 @@ This is deliberate: a small diagnostic should be runnable without a GPU cluster 
 
 ## Current position
 
-MOCPS now has a stable single-object result, and the slot-memory path survives constant-velocity occlusion. v0.10 showed an acceleration failure, v0.10.2 gave a partial safe-fallback fix, v0.11 exposed false-component re-binding, v0.11.1 sharply reduced that specific failure mode with image-derived reliability gating, v0.12 showed partial generalization to harder false blobs, v0.12.1 rejected the easy false-blob regression as stable under larger targeted sampling, and v0.13 found useful image-derived risk signals without solving confidence calibration. The strongest public base result is still the cold run: `200/200` against persistence on the covered surface.
+MOCPS now has a stable single-object result, and the slot-memory path survives constant-velocity occlusion. v0.10 showed an acceleration failure, v0.10.2 gave a partial safe-fallback fix, v0.11 exposed false-component re-binding, v0.11.1 sharply reduced that specific failure mode with image-derived reliability gating, v0.12 showed partial generalization to harder false blobs, v0.12.1 rejected the easy false-blob regression as stable under larger targeted sampling, v0.13 found useful image-derived risk signals without solving confidence calibration, and v0.14 showed that `hold_previous_state` can improve checked hard-mode update behavior without held-out threshold leakage. The strongest public base result is still the cold run: `200/200` against persistence on the covered surface.
 
 This does not finish the research. It closes the first stable stage: there is now a recipe that works on the known worlds and baselines, so the next question is where it breaks.
 
@@ -354,12 +363,13 @@ The next tests should be harder and less comfortable:
 - moving distractor: the first checked version breaks current single-object MOCPS; the selection audit shows that correct target selection fixes the checked grid
 - crossing objects: v0.8 breaks feed-forward trainable assignment after the left/right swap; v0.8.1 fixes the checked crossing case with slot memory
 - short occlusion: v0.9 separates simple memory from predictive memory; v0.9.1 shows a learned gate on the checked grid
-- thresholded risk policies without tuning on held-out hard modes
+- broader stress for risk-aware update policies without tuning on held-out hard modes
 - noisy background
 - more than one moving object
 - transfer between world variants
 
-The nearest research direction is whether risk signals help safer update policies, plus harder appearance-ambiguity checks without making a broad re-identification claim.
+The nearest research direction is broader stress for `hold_previous_state` and lower control
+intervention cost, without making a broad re-identification claim.
 
 ## What this does not mean
 
