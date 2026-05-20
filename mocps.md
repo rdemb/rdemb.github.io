@@ -290,6 +290,16 @@ kontrolach.
 To nadal toy diagnostic: nie rozwiązuje re-identification, confidence calibration ani broad
 noisy-reappearance robustness.
 
+## v0.14.1 — Hold-policy stress audit
+
+v0.14.1 stress-testuje hold-based risk-aware update policy na szerszym checked gridzie.
+`hold_previous_state/conservative` utrzymał hard-mode switch na `0.000` i obniżył control
+intervention cost do `0.090`, ale nie osiągnął celu `0.075`, a część mode-specific
+false-selection issues pozostaje.
+
+To nadal toy diagnostic: nie rozwiązuje re-identification, confidence calibration ani broad
+noisy-reappearance robustness.
+
 ## Baseline’y i odniesienia
 
 | wariant | wynik / obserwacja | sens porównania |
@@ -353,7 +363,7 @@ To jest celowe: mały eksperyment powinien dać się uruchomić bez klastra GPU 
 
 ## Gdzie jestem teraz
 
-Aktualny stan: MOCPS ma stabilny single-object wynik, a ścieżka slot-memory przeszła przez stałoprędkościową okluzję. v0.10 pokazał awarię przy akceleracji, v0.10.2 dał częściową poprawkę przez safe fallback, v0.11 pokazał false-component re-binding, v0.11.1 mocno ograniczył ten konkretny failure mode przez image-derived reliability gating, v0.12 pokazał częściową generalizację na trudniejsze false bloby, v0.12.1 odrzucił easy false-blob regression jako stabilną pod większą targetowaną próbką, v0.13 pokazał użyteczne image-derived risk signals bez rozwiązania confidence calibration, a v0.14 pokazał, że `hold_previous_state` może poprawić checked hard-mode update behavior bez held-out threshold leakage. Najsilniejszy publiczny wynik bazowy to cold run `200/200` przeciw persystencji na pokrytej powierzchni.
+Aktualny stan: MOCPS ma stabilny single-object wynik, a ścieżka slot-memory przeszła przez stałoprędkościową okluzję. v0.10 pokazał awarię przy akceleracji, v0.10.2 dał częściową poprawkę przez safe fallback, v0.11 pokazał false-component re-binding, v0.11.1 mocno ograniczył ten konkretny failure mode przez image-derived reliability gating, v0.12 pokazał częściową generalizację na trudniejsze false bloby, v0.12.1 odrzucił easy false-blob regression jako stabilną pod większą targetowaną próbką, v0.13 pokazał użyteczne image-derived risk signals bez rozwiązania confidence calibration, v0.14 pokazał, że `hold_previous_state` może poprawić checked hard-mode update behavior bez held-out threshold leakage, a v0.14.1 pokazał, że control intervention cost nadal wymaga redukcji. Najsilniejszy publiczny wynik bazowy to cold run `200/200` przeciw persystencji na pokrytej powierzchni.
 
 To nie kończy tematu. To raczej zamyka pierwszy stabilny etap: mam przepis, który działa na znanych światach i baseline’ach, i mogę zacząć pytać, gdzie pęknie.
 
