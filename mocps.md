@@ -274,6 +274,16 @@ Interpretacja: v0.12.1 zachowuje v0.11.1-level identity metrics na easy false-bl
 
 Zastrzeżenie: nie benchmark; nie broad robustness; nie rozwiązane re-identification, appearance memory ani confidence calibration.
 
+## v0.13 — Confidence / risk calibration audit
+
+Co się zmieniło: sprawdziłem image-derived risk signals dla observation reliability bez trenowania na generator-position identity-switch albo false-selection labels.
+
+Wynik: na held-out hard modes `combined_handcrafted_risk` miał AUROC `0.977` dla identity switch i `0.929` dla false-component selection; `reliability_risk` miał odpowiednio `0.990` i `0.915`. Policy jest confidence-lowering/abstention audit, nie assignment-changing fix: zachowała assignment controls, flagując część ryzykownych hard-mode update'ów.
+
+Interpretacja: risk signals są użyteczne na tym checked gridzie, ale to nadal local toy diagnostic. Reliability poprawia assignment, natomiast confidence calibration, re-identification i appearance memory nie są rozwiązane.
+
+Zastrzeżenie: nie benchmark; nie broad robustness; thresholdy nie były tunowane na held-out hard modes; policy nie poprawia assignment przez zmianę decyzji.
+
 ## Baseline’y i odniesienia
 
 | wariant | wynik / obserwacja | sens porównania |
@@ -337,7 +347,7 @@ To jest celowe: mały eksperyment powinien dać się uruchomić bez klastra GPU 
 
 ## Gdzie jestem teraz
 
-Aktualny stan: MOCPS ma stabilny single-object wynik, a ścieżka slot-memory przeszła przez stałoprędkościową okluzję. v0.10 pokazał awarię przy akceleracji, v0.10.2 dał częściową poprawkę przez safe fallback, v0.11 pokazał false-component re-binding, v0.11.1 mocno ograniczył ten konkretny failure mode przez image-derived reliability gating, v0.12 pokazał częściową generalizację na trudniejsze false bloby, a v0.12.1 odrzucił easy false-blob regression jako stabilną pod większą targetowaną próbką. Najsilniejszy publiczny wynik bazowy to cold run `200/200` przeciw persystencji na pokrytej powierzchni.
+Aktualny stan: MOCPS ma stabilny single-object wynik, a ścieżka slot-memory przeszła przez stałoprędkościową okluzję. v0.10 pokazał awarię przy akceleracji, v0.10.2 dał częściową poprawkę przez safe fallback, v0.11 pokazał false-component re-binding, v0.11.1 mocno ograniczył ten konkretny failure mode przez image-derived reliability gating, v0.12 pokazał częściową generalizację na trudniejsze false bloby, v0.12.1 odrzucił easy false-blob regression jako stabilną pod większą targetowaną próbką, a v0.13 pokazał użyteczne image-derived risk signals bez rozwiązania confidence calibration. Najsilniejszy publiczny wynik bazowy to cold run `200/200` przeciw persystencji na pokrytej powierzchni.
 
 To nie kończy tematu. To raczej zamyka pierwszy stabilny etap: mam przepis, który działa na znanych światach i baseline’ach, i mogę zacząć pytać, gdzie pęknie.
 
@@ -348,12 +358,12 @@ Następne testy powinny być trudniejsze i mniej wygodne:
 - moving distractor: pierwsza wersja testu łamie aktualny single-object MOCPS; selection audit pokazuje, że poprawny target selection naprawia checked grid
 - crossing objects: v0.8 łamie feed-forward trainable assignment po zamianie left/right; v0.8.1 naprawia checked crossing przez pamięć slotu
 - krótka okluzja: v0.9 rozdziela zwykłą pamięć od predictive memory; v0.9.1 pokazuje learned gate na checked gridzie
-- confidence/risk calibration dla false selection i identity switch
+- thresholded risk policies bez tuningu na held-out hard modes
 - noisy background
 - więcej niż jeden poruszający się obiekt
 - testy transferu między world variants
 
-Najbliższy kierunek to lepsza kalibracja confidence/risk i trudniejsze appearance-ambiguity checks bez claimu o szerokim re-identification.
+Najbliższy kierunek to sprawdzenie, czy risk signals pomagają w bezpieczniejszych update policies oraz trudniejsze appearance-ambiguity checks bez claimu o szerokim re-identification.
 
 ## Czego to nie znaczy
 

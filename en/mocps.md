@@ -274,6 +274,16 @@ Interpretation: v0.12.1 preserves v0.11.1-level identity metrics on easy false b
 
 Caveat: not a benchmark; not broad robustness; not solved re-identification, appearance memory, or confidence calibration.
 
+## v0.13 — Confidence / risk calibration audit
+
+What changed: I audited image-derived risk signals for observation reliability without training on generator-position identity-switch or false-selection labels.
+
+Result: on held-out hard modes, `combined_handcrafted_risk` reached AUROC `0.977` for identity switch and `0.929` for false-component selection; `reliability_risk` reached `0.990` and `0.915`. The policy is a confidence-lowering/abstention audit, not an assignment-changing fix: it preserved assignment controls while flagging some risky hard-mode updates.
+
+Interpretation: the risk signals are useful on this checked grid, but this remains a local toy diagnostic. Reliability improves assignment, while confidence calibration, re-identification, and appearance memory are not solved.
+
+Caveat: not a benchmark; not broad robustness; thresholds were not tuned on held-out hard modes; the policy does not improve assignment by changing decisions.
+
 ## Baselines and references
 
 | variant | result / observation | why it matters |
@@ -337,7 +347,7 @@ This is deliberate: a small diagnostic should be runnable without a GPU cluster 
 
 ## Current position
 
-MOCPS now has a stable single-object result, and the slot-memory path survives constant-velocity occlusion. v0.10 showed an acceleration failure, v0.10.2 gave a partial safe-fallback fix, v0.11 exposed false-component re-binding, v0.11.1 sharply reduced that specific failure mode with image-derived reliability gating, v0.12 showed partial generalization to harder false blobs, and v0.12.1 rejected the easy false-blob regression as stable under larger targeted sampling. The strongest public base result is still the cold run: `200/200` against persistence on the covered surface.
+MOCPS now has a stable single-object result, and the slot-memory path survives constant-velocity occlusion. v0.10 showed an acceleration failure, v0.10.2 gave a partial safe-fallback fix, v0.11 exposed false-component re-binding, v0.11.1 sharply reduced that specific failure mode with image-derived reliability gating, v0.12 showed partial generalization to harder false blobs, v0.12.1 rejected the easy false-blob regression as stable under larger targeted sampling, and v0.13 found useful image-derived risk signals without solving confidence calibration. The strongest public base result is still the cold run: `200/200` against persistence on the covered surface.
 
 This does not finish the research. It closes the first stable stage: there is now a recipe that works on the known worlds and baselines, so the next question is where it breaks.
 
@@ -348,12 +358,12 @@ The next tests should be harder and less comfortable:
 - moving distractor: the first checked version breaks current single-object MOCPS; the selection audit shows that correct target selection fixes the checked grid
 - crossing objects: v0.8 breaks feed-forward trainable assignment after the left/right swap; v0.8.1 fixes the checked crossing case with slot memory
 - short occlusion: v0.9 separates simple memory from predictive memory; v0.9.1 shows a learned gate on the checked grid
-- confidence/risk calibration for false selection and identity switch
+- thresholded risk policies without tuning on held-out hard modes
 - noisy background
 - more than one moving object
 - transfer between world variants
 
-The nearest research direction is better confidence/risk calibration and harder appearance-ambiguity checks without making a broad re-identification claim.
+The nearest research direction is whether risk signals help safer update policies, plus harder appearance-ambiguity checks without making a broad re-identification claim.
 
 ## What this does not mean
 
