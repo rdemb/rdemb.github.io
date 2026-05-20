@@ -264,6 +264,16 @@ Interpretation: Das ist ein Teilerfolg, keine gelöste re-identification. Reliab
 
 Einschränkung: nur Toy-Diagnostik; lokales checked grid; kein Benchmark; keine breite Robustheit; kein gelöstes appearance memory oder re-identification.
 
+## v0.12.1 — Reliability stability / sample-size audit
+
+Was sich geändert hat: Ich habe die easy-`false_blob`-Schwäche aus v0.12 mit größerer gezielter Stichprobe erneut geprüft (`4 x 16`, 960 Samples pro mode/variant für identity metrics), ohne eine neue Architektur hinzuzufügen.
+
+Ergebnis: Die größere gezielte Stichprobe verwarf eine stabile Regression. `learned_reliability_gate` kam auf easy modes zurück zu recovery `0.980`, switch `0.026` und false-component selection `0.028`. Controls blieben erhalten: recovery `1.000`, switch `0.000`. Representative hard modes verbesserten identity metrics weiter gegenüber `safe_fallback_base`: recovery `0.992` vs `0.748`, switch `0.010` vs `0.256`.
+
+Interpretation: v0.12.1 erhält v0.11.1-level identity metrics auf easy false blobs in diesem gezielten Audit und hält die hard-mode Verbesserung. Confidence/risk wirkt besser als im reduced-sample v0.12 Run, aber confidence calibration bleibt offen. Das bleibt eine lokale Toy-Diagnostik.
+
+Einschränkung: kein Benchmark; keine breite Robustheit; kein gelöstes re-identification, appearance memory oder confidence calibration.
+
 ## Baselines und Referenzen
 
 | Variante | Ergebnis / Beobachtung | Bedeutung |
@@ -327,7 +337,7 @@ Das ist Absicht: eine kleine Diagnostik sollte ohne GPU-Cluster und ohne schwere
 
 ## Aktueller Stand
 
-MOCPS hat jetzt ein stabiles Single-Object-Ergebnis, und der Slot-Memory-Pfad übersteht Constant-Velocity-Okklusion. v0.10 zeigte einen Fehler unter Beschleunigung, v0.10.2 brachte eine partielle safe-fallback-Korrektur, v0.11 zeigte false-component re-binding, v0.11.1 reduzierte diesen konkreten Failure Mode stark durch image-derived reliability gating, und v0.12 zeigte partielle Generalisierung auf schwierigere false blobs bei weiterhin schwacher Confidence-Kalibrierung. Das stärkste öffentliche Basisergebnis bleibt der Cold Run: `200/200` gegen Persistenz auf der abgedeckten Fläche.
+MOCPS hat jetzt ein stabiles Single-Object-Ergebnis, und der Slot-Memory-Pfad übersteht Constant-Velocity-Okklusion. v0.10 zeigte einen Fehler unter Beschleunigung, v0.10.2 brachte eine partielle safe-fallback-Korrektur, v0.11 zeigte false-component re-binding, v0.11.1 reduzierte diesen konkreten Failure Mode stark durch image-derived reliability gating, v0.12 zeigte partielle Generalisierung auf schwierigere false blobs, und v0.12.1 verwarf die easy-false-blob Regression als stabil unter größerer gezielter Stichprobe. Das stärkste öffentliche Basisergebnis bleibt der Cold Run: `200/200` gegen Persistenz auf der abgedeckten Fläche.
 
 Das beendet die Forschung nicht. Es schließt nur die erste stabile Etappe ab: ein Rezept funktioniert auf den bekannten Welten und Baselines; die nächste Frage ist, wo es bricht.
 
@@ -338,13 +348,12 @@ Die nächsten Tests sollten schwieriger und unbequemer sein:
 - moving distractor: die erste geprüfte Version bricht das aktuelle single-object MOCPS; der Selection Audit zeigt, dass korrekte Target-Auswahl das geprüfte Grid repariert
 - crossing objects: v0.8 bricht feed-forward trainable assignment nach dem left/right-Tausch; v0.8.1 repariert den geprüften Crossing-Fall mit Slot-Memory
 - kurze Okklusion: v0.9 trennt einfache Memory von predictive memory; v0.9.1 zeigt ein learned Gate auf dem geprüften Grid
-- easy false-blob stability nach v0.12 mit größerer Stichprobe erneut prüfen
 - confidence/risk calibration für false selection und identity switch
 - noisy background
 - mehr als ein bewegtes Objekt
 - Transfer zwischen world variants
 
-Die nächste Forschungsrichtung ist, easy false-blob stability mit größerer Stichprobe erneut zu prüfen und confidence/risk calibration zu verbessern, ohne eine breite re-identification-Behauptung zu machen.
+Die nächste Forschungsrichtung ist bessere confidence/risk calibration und schwierigere appearance-ambiguity checks, ohne eine breite re-identification-Behauptung zu machen.
 
 ## Was das nicht bedeutet
 

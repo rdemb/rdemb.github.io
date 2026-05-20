@@ -264,6 +264,16 @@ Interpretation: this is a partial success, not solved re-identification. Reliabi
 
 Caveat: toy diagnostic only; local checked grid; not a benchmark; not broad robustness; not solved appearance memory or re-identification.
 
+## v0.12.1 — Reliability stability / sample-size audit
+
+What changed: I rechecked the v0.12 easy `false_blob` weakness with larger targeted sampling (`4 x 16`, 960 samples per mode/variant for identity metrics), without adding a new architecture.
+
+Result: the larger targeted sample rejected a stable regression. `learned_reliability_gate` on easy modes returned to recovery `0.980`, switch `0.026`, and false-component selection `0.028`. Controls stayed preserved: recovery `1.000`, switch `0.000`. Representative hard modes still improved identity metrics over `safe_fallback_base`: recovery `0.992` vs `0.748`, switch `0.010` vs `0.256`.
+
+Interpretation: v0.12.1 preserves v0.11.1-level identity metrics on easy false blobs in this targeted audit and keeps the hard-mode improvement. Confidence/risk looks better than in the reduced-sample v0.12 run, but confidence calibration remains open. This remains a local toy diagnostic.
+
+Caveat: not a benchmark; not broad robustness; not solved re-identification, appearance memory, or confidence calibration.
+
 ## Baselines and references
 
 | variant | result / observation | why it matters |
@@ -327,7 +337,7 @@ This is deliberate: a small diagnostic should be runnable without a GPU cluster 
 
 ## Current position
 
-MOCPS now has a stable single-object result, and the slot-memory path survives constant-velocity occlusion. v0.10 showed an acceleration failure, v0.10.2 gave a partial safe-fallback fix, v0.11 exposed false-component re-binding, v0.11.1 sharply reduced that specific failure mode with image-derived reliability gating, and v0.12 showed partial generalization to harder false blobs while confidence calibration stayed weak. The strongest public base result is still the cold run: `200/200` against persistence on the covered surface.
+MOCPS now has a stable single-object result, and the slot-memory path survives constant-velocity occlusion. v0.10 showed an acceleration failure, v0.10.2 gave a partial safe-fallback fix, v0.11 exposed false-component re-binding, v0.11.1 sharply reduced that specific failure mode with image-derived reliability gating, v0.12 showed partial generalization to harder false blobs, and v0.12.1 rejected the easy false-blob regression as stable under larger targeted sampling. The strongest public base result is still the cold run: `200/200` against persistence on the covered surface.
 
 This does not finish the research. It closes the first stable stage: there is now a recipe that works on the known worlds and baselines, so the next question is where it breaks.
 
@@ -338,13 +348,12 @@ The next tests should be harder and less comfortable:
 - moving distractor: the first checked version breaks current single-object MOCPS; the selection audit shows that correct target selection fixes the checked grid
 - crossing objects: v0.8 breaks feed-forward trainable assignment after the left/right swap; v0.8.1 fixes the checked crossing case with slot memory
 - short occlusion: v0.9 separates simple memory from predictive memory; v0.9.1 shows a learned gate on the checked grid
-- recheck easy false-blob stability with a larger sample count after v0.12
 - confidence/risk calibration for false selection and identity switch
 - noisy background
 - more than one moving object
 - transfer between world variants
 
-The nearest research direction is to recheck easy false-blob stability with a larger sample count and improve confidence/risk calibration without making a broad re-identification claim.
+The nearest research direction is better confidence/risk calibration and harder appearance-ambiguity checks without making a broad re-identification claim.
 
 ## What this does not mean
 
