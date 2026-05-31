@@ -1,0 +1,138 @@
+---
+// GitHub-like file browser for the MOCPS research bundle, rendered at build time.
+// Markdown files are rendered to HTML, .py files are syntax-highlighted, images are shown inline.
+import { Code } from 'astro:components';
+import { createMarkdownProcessor } from '@astrojs/markdown-remark';
+
+interface Props { lang?: 'pl' | 'en' | 'de'; }
+const { lang = 'pl' } = Astro.props;
+
+const UI = {
+  pl: { caption: 'pakiet badawczy', all: 'Pobierz wszystko (.zip)', dl: 'Pobierz',
+        hint: 'Kliknij plik, aby go podejrzeć. Pełne uruchomienie wymaga pakietu jepa_petri (osobne, czyste repo w przygotowaniu).' },
+  en: { caption: 'research bundle', all: 'Download all (.zip)', dl: 'Download',
+        hint: 'Click a file to preview it. A full run needs the jepa_petri package (a separate, clean repo, in preparation).' },
+  de: { caption: 'Forschungspaket', all: 'Alle (.zip)', dl: 'Laden',
+        hint: 'Datei anklicken zum Ansehen. Ein voller Lauf braucht das jepa_petri-Paket (separates, sauberes Repo in Vorbereitung).' },
+}[lang];
+
+// load the bundle text files raw, at build time
+const raw = import.meta.glob('../repo/mocps/*.{md,py}', { query: '?raw', import: 'default', eager: true }) as Record<string, string>;
+const byName: Record<string, string> = {};
+for (const [p, c] of Object.entries(raw)) byName[p.split('/').pop() as string] = c;
+
+const ORDER = ['README.md', 'RESULT_LEARNED_OBJECT_PERMANENCE.md', 'analyze_phase.py', 'separation_margin.py', 'make_figures.py'];
+const md = await createMarkdownProcessor({});
+const size = (s: string) => { const b = Buffer.byteLength(s, 'utf8'); return b > 1024 ? (b / 1024).toFixed(1) + ' KB' : b + ' B'; };
+
+const files = [] as Array<{ name: string; ext: string; size: string; html?: string; code?: string }>;
+for (const name of ORDER) {
+  const content = byName[name];
+  if (!content) continue;
+  const ext = name.split('.').pop() as string;
+  if (ext === 'md') {
+    const fixed = content.replace(/\]\(figures\/fig1_phase\.png\)/g, '](/mocps/fig1_phase.png)')
+                         .replace(/\]\(figures\/fig2_mechanisms\.png\)/g, '](/mocps/fig2_mechanisms.png)');
+    files.push({ name, ext, size: size(content), html: (await md.render(fixed)).code });
+  } else {
+    files.push({ name, ext, size: size(content), code: content });
+  }
+}
+const images = [
+  { name: 'figures/fig1_phase.png', url: '/mocps/fig1_phase.png' },
+  { name: 'figures/fig2_mechanisms.png', url: '/mocps/fig2_mechanisms.png' },
+];
+const ITEMS = [...files.map((f) => ({ kind: f.ext === 'md' ? 'md' : 'py', ...f, url: `/mocps/files/${f.name}` })),
+               ...images.map((im) => ({ kind: 'img', name: im.name, ext: 'png', size: '', url: im.url }))];
+---
+<section class="rb" aria-label="MOCPS research bundle">
+  <header class="rb-head">
+    <span class="rb-name"><svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true"><path fill="currentColor" d="M1.75 1h5.5c.27 0 .52.108.707.293L9.664 3H14.25A1.75 1.75 0 0 1 16 4.75v8.5A1.75 1.75 0 0 1 14.25 15H1.75A1.75 1.75 0 0 1 0 13.25V2.75C0 1.784.784 1 1.75 1Z"/></svg> mocps</span>
+    <span class="rb-cap">{UI.caption}</span>
+    <a class="rb-all" href="/mocps/mocps-research-bundle.zip">{UI.all}</a>
+  </header>
+  <div class="rb-body">
+    <nav class="rb-files" role="tablist">
+      {ITEMS.map((it, i) => (
+        <button class:list={['rb-file', { active: i === 0 }]} data-i={i} role="tab" aria-selected={i === 0 ? 'true' : 'false'}>
+          <span class="rb-ext">{it.ext}</span>
+          <span class="rb-fn">{it.name}</span>
+          {it.size && <span class="rb-sz">{it.size}</span>}
+        </button>
+      ))}
+    </nav>
+    <div class="rb-view">
+      {ITEMS.map((it, i) => (
+        <article class:list={['rb-pane', { on: i === 0 }]} data-i={i}>
+          <div class="rb-bar"><code>{it.name}</code><a href={it.url} download class="rb-dl">{UI.dl}</a></div>
+          {it.kind === 'md' && <div class="rb-md" set:html={(it as any).html} />}
+          {it.kind === 'py' && <div class="rb-code"><Code code={(it as any).code} lang="python" theme="github-dark" /></div>}
+          {it.kind === 'img' && <div class="rb-imgwrap"><img src={it.url} alt={it.name} loading="lazy" /></div>}
+        </article>
+      ))}
+    </div>
+  </div>
+  <p class="rb-hint">{UI.hint}</p>
+</section>
+
+<script>
+  document.querySelectorAll('.rb').forEach((rb) => {
+    const tabs = rb.querySelectorAll('.rb-file');
+    const panes = rb.querySelectorAll('.rb-pane');
+    tabs.forEach((t) => t.addEventListener('click', () => {
+      const i = (t as HTMLElement).dataset.i;
+      tabs.forEach((x) => { x.classList.remove('active'); x.setAttribute('aria-selected', 'false'); });
+      panes.forEach((p) => p.classList.remove('on'));
+      t.classList.add('active'); t.setAttribute('aria-selected', 'true');
+      rb.querySelector(`.rb-pane[data-i="${i}"]`)?.classList.add('on');
+    }));
+  });
+</script>
+
+<style>
+  .rb{border:1px solid var(--line); border-radius:14px; background:var(--surface); overflow:hidden; margin:0 0 2.2rem}
+  .rb-head{display:flex; align-items:center; gap:.6rem; padding:.7rem 1rem; border-bottom:1px solid var(--line); background:var(--surface-2)}
+  .rb-name{display:inline-flex; align-items:center; gap:.4rem; font-family:'JetBrains Mono Variable',monospace; font-weight:600; color:var(--text)}
+  .rb-name svg{color:var(--accent)}
+  .rb-cap{color:var(--muted); font-size:13px}
+  .rb-all{margin-left:auto; text-decoration:none; font-size:13px; font-weight:600; color:#1a1205; background:var(--accent); padding:6px 12px; border-radius:8px; transition:background .15s ease}
+  .rb-all:hover{background:var(--accent-soft)}
+  .rb-body{display:grid; grid-template-columns:minmax(190px,230px) 1fr}
+  .rb-files{border-right:1px solid var(--line); padding:.4rem; display:flex; flex-direction:column; gap:2px; max-height:560px; overflow:auto}
+  .rb-file{display:flex; align-items:center; gap:.5rem; width:100%; text-align:left; background:none; border:0; cursor:pointer; padding:.45rem .55rem; border-radius:8px; color:var(--muted); font-family:'JetBrains Mono Variable',monospace; font-size:12.5px; border-left:2px solid transparent}
+  .rb-file:hover{background:var(--surface-2); color:var(--text)}
+  .rb-file.active{background:var(--surface-2); color:var(--text); border-left-color:var(--accent)}
+  .rb-ext{flex:none; font-size:10px; text-transform:uppercase; letter-spacing:.04em; color:var(--accent); width:30px}
+  .rb-fn{flex:1 1 auto; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+  .rb-sz{flex:none; color:var(--muted); opacity:.7; font-size:11px}
+  .rb-view{min-width:0}
+  .rb-pane{display:none; max-height:560px; overflow:auto}
+  .rb-pane.on{display:block}
+  .rb-bar{position:sticky; top:0; display:flex; align-items:center; justify-content:space-between; gap:1rem; padding:.5rem .9rem; background:var(--surface-2); border-bottom:1px solid var(--line); z-index:1}
+  .rb-bar code{font-family:'JetBrains Mono Variable',monospace; font-size:12.5px; color:var(--muted)}
+  .rb-dl{text-decoration:none; font-size:12px; font-weight:600; color:var(--accent)}
+  .rb-dl:hover{text-decoration:underline}
+  .rb-md{padding:1.1rem 1.3rem; font-size:15px; line-height:1.65; color:var(--text)}
+  .rb-md :global(h1){font-size:22px; margin:.2em 0 .5em}
+  .rb-md :global(h2){font-size:18px; margin:1.3em 0 .5em; font-family:'Space Grotesk Variable',sans-serif}
+  .rb-md :global(h3){font-size:15.5px; margin:1.1em 0 .4em}
+  .rb-md :global(p){margin:.7em 0}
+  .rb-md :global(a){color:var(--accent)}
+  .rb-md :global(table){border-collapse:collapse; font-size:13px; margin:.6em 0; display:block; overflow-x:auto}
+  .rb-md :global(th),.rb-md :global(td){border:1px solid var(--line); padding:4px 9px}
+  .rb-md :global(img){max-width:100%; height:auto; border:1px solid var(--line); border-radius:8px; background:#fff; padding:6px; margin:.6em 0}
+  .rb-md :global(code){font-family:'JetBrains Mono Variable',monospace; font-size:.88em; background:var(--surface-2); border:1px solid var(--line); border-radius:4px; padding:1px 5px}
+  .rb-md :global(pre){border:1px solid var(--line); border-radius:10px; padding:14px; overflow-x:auto; font-size:13px}
+  .rb-md :global(pre code){background:none; border:0; padding:0}
+  .rb-code :global(pre.astro-code){margin:0; padding:1.1rem 1.3rem; font-size:12.8px; line-height:1.6; background:#0d1117 !important; overflow-x:auto}
+  .rb-imgwrap{padding:1.2rem; text-align:center; background:var(--surface-2)}
+  .rb-imgwrap img{max-width:100%; height:auto; background:#fff; padding:10px; border:1px solid var(--line); border-radius:10px}
+  .rb-hint{margin:0; padding:.7rem 1rem; border-top:1px solid var(--line); background:var(--surface-2); color:var(--muted); font-size:12.5px; line-height:1.5}
+  @media (max-width:680px){
+    .rb-body{grid-template-columns:1fr}
+    .rb-files{flex-direction:row; overflow-x:auto; max-height:none; border-right:0; border-bottom:1px solid var(--line)}
+    .rb-file{width:auto; flex:none; border-left:0; border-bottom:2px solid transparent}
+    .rb-file.active{border-left:0; border-bottom-color:var(--accent)}
+    .rb-sz{display:none}
+  }
+</style>

@@ -449,11 +449,3 @@ Zagregowane po separacji widać jeden próg. Powyżej około 6 px nauczony stan 
 ![Dwa mechanizmy porażki: trafność tożsamości względem marginesu separacji](/mocps/fig2_mechanisms.png)
 
 *Dwa mechanizmy są geometryczne i rozłączne. Na lewo od czerwonego pasa obiekty mijają się zbyt blisko, by je rozróżnić (nieusuwalne). Jedyny punkt, gdzie spokojny margines i tak pokonuje fizykę, zmiana kierunku przy L=4, to dokładnie miejsce, gdzie uczenie wygrywa.*
-
-## Materiały do pobrania
-
-Pełny artefakt badawczy, angielski write-up, obie figury, wyczyszczony kod analizy i README, jest spakowany do pobrania:
-
-[Pobierz pakiet badawczy (.zip, 148 KB)](/mocps/mocps-research-bundle.zip)
-
-Pakiet jest do czytania i wglądu w metodę. Uruchomienie end-to-end wymaga pełnego środowiska (pakiet `jepa_petri`), które wydzielę osobno, gdy projekt będzie gotowy do publikacji jako repozytorium.
