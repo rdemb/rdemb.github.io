@@ -431,3 +431,13 @@ Hipoteza się potwierdziła. Wariant z arbitrażem (decyduj: przytrzymaj ostatni
 Najuczciwszy szczegół: przy L=2 i silnym przyśpieszeniu nawet **orakulum** (model z idealną wiedzą o dynamice) osiąga tylko 0,75. Reszta luki nie jest więc winą modelu, tylko zadania: obiekty mijają się zbyt blisko, by je rozróżnić. To granica nieusuwalna, nie błąd, a arbitraż dochodzi blisko tego sufitu.
 
 Pełny łuk: odtworzyłem wynik, zmapowałem diagram fazowy, znalazłem powtarzalną porażkę, zdiagnozowałem jej mechanizm, naprawiłem ją, i pokazałem, ile z reszty jest nie do naprawienia. To dla mnie jest „udowodnić, że działa": nie krzyk, tylko mapa.
+
+
+## Dwa mechanizmy porażki (geometria)
+
+Policzyłem, jak blisko mijają się obiekty w klatce powrotu (margines separacji). To rozdziela dwie zupełnie różne porażki:
+
+- **Separacyjna:** przy silnym przyśpieszeniu i krótkiej okluzji obiekty mijają się o około 3 piksele. Trafne przypisanie wymaga błędu poniżej ~1,5 px. Nawet orakulum dobija tylko do 0,75. Tego nie naprawi żadne uczenie, to granica geometrii.
+- **Dynamiczna:** przy zmianie kierunku za zasłoną separacja jest spokojna (~7,5 px), a baseline i tak pada (0,18), bo ekstrapoluje zły kierunek. Tu nauczony model trafia w 100%. To jedyne miejsce, gdzie uczenie naprawdę bije fizykę.
+
+Pełny techniczny write-up jest w repo projektu (`RESULT_LEARNED_OBJECT_PERMANENCE.md`).

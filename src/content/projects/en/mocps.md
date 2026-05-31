@@ -430,3 +430,13 @@ The hypothesis held. A variant with arbitration (decide: hold the last position 
 The most honest detail: under L=2 and strong acceleration, even the **oracle** (a model with perfect knowledge of the dynamics) only reaches 0.75. So the remaining gap is not the model's fault, it is the task's: the objects pass too close to be told apart. That is an irreducible limit, not a bug, and the arbitration gets close to that ceiling.
 
 The full arc: I reproduced the result, mapped the phase diagram, found a repeatable failure, diagnosed its mechanism, fixed it, and showed how much of the rest cannot be fixed. To me that is what "proving it works" means: not a shout, a map.
+
+
+## Two failure mechanisms (geometry)
+
+I measured how close the objects pass at the reappearance frame (the separation margin). It cleanly separates two very different failures:
+
+- **Separation-limited:** under strong acceleration and short occlusion the objects pass about 3 pixels apart. Correct assignment needs error below ~1.5 px. Even the oracle only reaches 0.75. No amount of learning fixes this, it is a limit of geometry.
+- **Dynamics-limited:** under a direction change while hidden the separation is comfortable (~7.5 px), yet the baseline still fails (0.18) because it extrapolates the wrong direction. Here the learned model is right 100% of the time. This is the only place where learning genuinely beats physics.
+
+The full technical write-up is in the project repo (`RESULT_LEARNED_OBJECT_PERMANENCE.md`).

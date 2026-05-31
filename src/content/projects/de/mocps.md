@@ -431,3 +431,13 @@ Die Hypothese hielt. Eine Variante mit Arbitrierung (entscheide: halte die letzt
 Das ehrlichste Detail: bei L=2 und starker Beschleunigung erreicht selbst das **Orakel** (ein Modell mit perfektem Wissen über die Dynamik) nur 0,75. Die verbleibende Lücke ist also nicht die Schuld des Modells, sondern der Aufgabe: die Objekte passieren zu nah, um sie zu unterscheiden. Das ist eine nicht reduzierbare Grenze, kein Fehler, und die Arbitrierung kommt nah an diese Decke.
 
 Der ganze Bogen: ich reproduzierte das Ergebnis, kartierte das Phasendiagramm, fand ein wiederholbares Versagen, diagnostizierte seinen Mechanismus, behob ihn und zeigte, wie viel vom Rest nicht behoben werden kann. Für mich heißt das „beweisen, dass es funktioniert": kein Geschrei, eine Karte.
+
+
+## Zwei Versagensmechanismen (Geometrie)
+
+Ich habe gemessen, wie nah die Objekte im Wiedererscheinungs-Frame aneinander vorbeiziehen (der Trennungsabstand). Das trennt sauber zwei sehr unterschiedliche Versagen:
+
+- **Trennungsbegrenzt:** bei starker Beschleunigung und kurzer Verdeckung ziehen die Objekte etwa 3 Pixel auseinander vorbei. Korrekte Zuordnung braucht einen Fehler unter ~1,5 px. Selbst das Orakel erreicht nur 0,75. Das behebt kein Lernen, es ist eine Grenze der Geometrie.
+- **Dynamikbegrenzt:** bei einem Richtungswechsel im Verborgenen ist die Trennung bequem (~7,5 px), und doch scheitert die Baseline (0,18), weil sie die falsche Richtung extrapoliert. Hier ist das gelernte Modell zu 100% richtig. Das ist die einzige Stelle, an der Lernen die Physik wirklich schlägt.
+
+Der vollständige technische Bericht liegt im Projekt-Repo (`RESULT_LEARNED_OBJECT_PERMANENCE.md`).
