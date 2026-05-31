@@ -1,0 +1,213 @@
+---
+import '@fontsource/cormorant-garamond/500.css';
+import '@fontsource/cormorant-garamond/600.css';
+// Standalone example: a seasonal restaurant, built on the open-design "warm-editorial"
+// system (light, photo-led, terracotta accent, no gradients, whitespace-led). CC0/PDM photos.
+const I = '/pracownia/restauracja';
+const dishes = [
+  { n: 'Krab z cytrusem', d: 'Świeży krab, fenkuł, oliwa z pierwszego tłoczenia.', p: '64', img: `${I}/dish1.jpg` },
+  { n: 'Makaron z chłopskiego stołu', d: 'Ręcznie robiony makaron, masło szałwiowe, parmezan.', p: '52', img: `${I}/dish2.jpg` },
+  { n: 'Ciasto dnia', d: 'Codziennie inne, zawsze prosto z pieca. Zapytaj kelnera.', p: '28', img: `${I}/dish3.jpg` },
+];
+---
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OLIVA · kuchnia sezonowa</title>
+  <meta name="description" content="OLIVA, restauracja z sezonowym menu. Proste składniki, robione dobrze." />
+  <meta name="robots" content="noindex" />
+</head>
+<body>
+  <a class="ribbon" href="/pracownia/">
+    <span>Przykład realizacji · <b>D&#8209;LOGIC studio</b></span>
+    <span class="ribbon-back">← galeria przykładów</span>
+  </a>
+
+  <header class="hd">
+    <div class="hd-in">
+      <a class="logo" href="#">OLIVA</a>
+      <nav class="hd-nav">
+        <a href="#menu">Menu</a><a href="#hist">O nas</a><a href="#wnetrze">Wnętrze</a><a href="#rez">Kontakt</a>
+      </nav>
+      <a href="#rez" class="btn sm">Rezerwuj stolik</a>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-tx">
+      <span class="tag">Kuchnia sezonowa · Warszawa</span>
+      <h1>Proste składniki,<br />robione dobrze.</h1>
+      <p>Menu zmienia się z porami roku. Bierzemy to, co najlepsze w danym tygodniu, i nie psujemy tego nadmiarem.</p>
+      <div class="hero-cta">
+        <a href="#rez" class="btn">Zarezerwuj stolik</a>
+        <a href="#menu" class="link">Zobacz menu →</a>
+      </div>
+    </div>
+    <div class="hero-img"><img src={`${I}/hero.jpg`} alt="Wnętrze restauracji OLIVA" /></div>
+  </section>
+
+  <div class="bar">
+    <div><span class="bk">Otwarte</span> wt–nd, 12:00–23:00</div>
+    <div><span class="bk">Adres</span> ul. Mokotowska 8, Warszawa</div>
+    <div><span class="bk">Rezerwacje</span> +48 500 100 100</div>
+  </div>
+
+  <section class="menu" id="menu">
+    <div class="sec-head">
+      <span class="eyebrow">Z naszej kuchni</span>
+      <h2>Dania, które wracają na stół</h2>
+    </div>
+    <div class="dishes">
+      {dishes.map((d) => (
+        <article class="dish">
+          <div class="dish-img"><img src={d.img} alt={d.n} loading="lazy" /></div>
+          <div class="dish-row"><h3>{d.n}</h3><span class="price">{d.p} zł</span></div>
+          <p>{d.d}</p>
+        </article>
+      ))}
+    </div>
+    <a href="#rez" class="link center">Pełne menu otrzymasz przy stoliku, zarezerwuj →</a>
+  </section>
+
+  <section class="about" id="hist">
+    <div class="about-img"><img src={`${I}/chef.jpg`} alt="Kuchnia OLIVA" loading="lazy" /></div>
+    <div class="about-tx">
+      <span class="eyebrow sec">Nasza historia</span>
+      <h2>Gotujemy tak, jak sami lubimy jeść.</h2>
+      <p>OLIVA zaczęła się od jednego stołu i przekonania, że dobre jedzenie nie potrzebuje fajerwerków. Współpracujemy z lokalnymi dostawcami, a kartę piszemy co tydzień, ręcznie.</p>
+      <p>Nie udajemy gwiazdki. Chcemy, żebyś wyszedł najedzony i zadowolony, i wrócił w przyszłym tygodniu.</p>
+    </div>
+  </section>
+
+  <section class="amb" id="wnetrze">
+    <img src={`${I}/ambiance.jpg`} alt="Atmosfera wieczoru w OLIVA" loading="lazy" />
+    <blockquote>„Miejsce, do którego wraca się nie tylko dla jedzenia, ale dla wieczoru."</blockquote>
+  </section>
+
+  <section class="rez" id="rez">
+    <div class="rez-tx">
+      <span class="eyebrow">Rezerwacja</span>
+      <h2>Zarezerwuj stolik</h2>
+      <p>Najprościej telefonicznie, ale możesz też zostawić prośbę tutaj, oddzwonimy w ciągu godziny.</p>
+    </div>
+    <form class="rez-form" onsubmit="return false">
+      <div class="f2">
+        <label>Data<input type="date" /></label>
+        <label>Godzina<input type="time" /></label>
+      </div>
+      <div class="f2">
+        <label>Osób<input type="number" min="1" value="2" /></label>
+        <label>Telefon<input type="tel" placeholder="+48" /></label>
+      </div>
+      <label>Imię<input type="text" placeholder="Jak Cię zapowiedzieć?" /></label>
+      <button class="btn full" type="submit">Wyślij prośbę o rezerwację</button>
+    </form>
+  </section>
+
+  <footer class="ft">
+    <div class="ft-in">
+      <div>
+        <div class="logo">OLIVA</div>
+        <p>ul. Mokotowska 8<br />00-640 Warszawa</p>
+      </div>
+      <div><h4>Godziny</h4><p>wt–czw 12–22<br />pt–sob 12–23<br />nd 12–21<br />pon nieczynne</p></div>
+      <div><h4>Kontakt</h4><p>+48 500 100 100<br />stol@oliva.example</p></div>
+      <div><h4>Znajdź nas</h4><p>Instagram<br />Facebook<br />Google Maps</p></div>
+    </div>
+    <div class="ft-bot"><span>© 2026 OLIVA</span><span>Przykład wykonany przez D-LOGIC studio</span></div>
+  </footer>
+
+  <style is:global>
+    :root {
+      --bg:#FAF7F2; --fg:#1C1A17; --acc:#C0512F; --sec:#2F5B4F; --mut:#8A817A; --surf:#FFFFFF; --line:#E7E0D4;
+      --serif:'Cormorant Garamond', 'Times New Roman', serif;
+      --sans:system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { background:var(--bg); color:var(--fg); font-family:var(--sans); line-height:1.6; -webkit-font-smoothing:antialiased; }
+    img { display:block; max-width:100%; }
+    a { color:inherit; text-decoration:none; }
+    h1,h2,h3 { font-family:var(--serif); font-weight:600; line-height:1.12; }
+    h1 { letter-spacing:-.02em; }
+    .btn { display:inline-block; background:var(--acc); color:#fff; padding:14px 22px; border:0; border-radius:12px; font-family:var(--sans); font-size:15px; cursor:pointer; transition:background .2s, transform .2s; }
+    .btn:hover { background:#a5421f; transform:translateY(-1px); }
+    .btn.sm { padding:10px 16px; font-size:14px; }
+    .btn.full { width:100%; padding:16px; font-size:16px; }
+    .link { color:var(--acc); font-size:15px; align-self:center; }
+    .link:hover { text-decoration:underline; }
+    .link.center { display:block; text-align:center; margin-top:40px; }
+    .eyebrow { display:inline-block; font-size:13px; letter-spacing:.14em; text-transform:uppercase; color:var(--acc); margin-bottom:14px; }
+    .eyebrow.sec { color:var(--sec); }
+    .tag { display:inline-block; font-size:13px; letter-spacing:.1em; text-transform:uppercase; color:var(--sec); margin-bottom:18px; }
+
+    .ribbon { display:flex; align-items:center; justify-content:center; gap:18px; background:#1C1A17; color:#e9e2d6; font-size:12.5px; padding:8px 16px; }
+    .ribbon b { color:#fff; } .ribbon-back { color:#cdb39c; }
+
+    .hd { position:sticky; top:0; z-index:40; background:color-mix(in srgb, var(--bg) 90%, transparent); backdrop-filter:blur(8px); border-bottom:1px solid var(--line); }
+    .hd-in { max-width:1200px; margin:0 auto; padding:18px 24px; display:flex; align-items:center; justify-content:space-between; }
+    .logo { font-family:var(--serif); font-size:27px; font-weight:600; letter-spacing:.04em; }
+    .hd-nav { display:flex; gap:28px; font-size:15px; }
+    .hd-nav a:hover { color:var(--acc); }
+
+    .hero { max-width:1200px; margin:0 auto; padding:0 24px; display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center; min-height:78vh; }
+    .hero-tx h1 { font-size:clamp(44px,6vw,80px); margin:0 0 22px; }
+    .hero-tx p { font-size:19px; color:var(--mut); max-width:42ch; margin-bottom:30px; }
+    .hero-cta { display:flex; gap:22px; align-items:center; }
+    .hero-img { aspect-ratio:4/5; border-radius:18px; overflow:hidden; }
+    .hero-img img { width:100%; height:100%; object-fit:cover; }
+
+    .bar { max-width:1200px; margin:8px auto 0; padding:24px; display:grid; grid-template-columns:repeat(3,1fr); gap:20px; border-top:1px solid var(--line); border-bottom:1px solid var(--line); font-size:15px; color:var(--fg); }
+    .bar .bk { color:var(--mut); margin-right:8px; }
+
+    .menu { max-width:1200px; margin:0 auto; padding:96px 24px; }
+    .sec-head { margin-bottom:48px; }
+    .sec-head h2 { font-size:clamp(30px,4vw,52px); }
+    .dishes { display:grid; grid-template-columns:repeat(3,1fr); gap:34px; }
+    .dish-img { aspect-ratio:5/4; border-radius:16px; overflow:hidden; margin-bottom:18px; }
+    .dish-img img { width:100%; height:100%; object-fit:cover; transition:transform .5s ease; }
+    .dish:hover .dish-img img { transform:scale(1.04); }
+    .dish-row { display:flex; align-items:baseline; justify-content:space-between; gap:12px; }
+    .dish-row h3 { font-size:25px; }
+    .price { color:var(--acc); font-size:17px; white-space:nowrap; }
+    .dish p { color:var(--mut); margin-top:8px; font-size:15.5px; }
+
+    .about { max-width:1200px; margin:0 auto; padding:0 24px 96px; display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center; }
+    .about-img { aspect-ratio:1/1; border-radius:18px; overflow:hidden; }
+    .about-img img { width:100%; height:100%; object-fit:cover; }
+    .about-tx h2 { font-size:clamp(28px,3.6vw,46px); margin-bottom:20px; max-width:15ch; }
+    .about-tx p { color:var(--mut); margin-bottom:16px; max-width:48ch; font-size:16px; }
+
+    .amb { position:relative; }
+    .amb img { width:100%; height:62vh; min-height:420px; object-fit:cover; }
+    .amb blockquote { position:absolute; left:0; right:0; bottom:0; max-width:1200px; margin:0 auto; padding:0 24px 56px; font-family:var(--serif); font-size:clamp(26px,3.4vw,44px); color:#fff; max-width:20ch; }
+
+    .rez { max-width:1200px; margin:0 auto; padding:96px 24px; display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center; }
+    .rez-tx h2 { font-size:clamp(30px,4vw,50px); margin-bottom:18px; }
+    .rez-tx p { color:var(--mut); max-width:40ch; font-size:16px; }
+    .rez-form { background:var(--surf); border:1px solid var(--line); border-radius:20px; padding:32px; display:flex; flex-direction:column; gap:16px; }
+    .rez-form .f2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+    .rez-form label { display:flex; flex-direction:column; gap:7px; font-size:13px; color:var(--mut); }
+    .rez-form input { border:0; border-bottom:1px solid var(--line); background:none; padding:9px 2px; font-size:16px; font-family:var(--sans); color:var(--fg); }
+    .rez-form input:focus { outline:none; border-color:var(--acc); }
+
+    .ft { background:var(--fg); color:#cfc6b9; padding:72px 24px 28px; }
+    .ft-in { max-width:1200px; margin:0 auto; display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:30px; }
+    .ft .logo { color:#fff; font-size:30px; margin-bottom:14px; }
+    .ft h4 { font-family:var(--sans); font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:#fff; margin-bottom:12px; }
+    .ft p { font-size:14.5px; line-height:1.85; color:#a59c8e; }
+    .ft-bot { max-width:1200px; margin:46px auto 0; padding-top:22px; border-top:1px solid rgba(255,255,255,.1); display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; font-size:12.5px; color:#8a8174; }
+
+    @media (max-width:860px) {
+      .hd-nav { display:none; }
+      .hero, .about, .rez { grid-template-columns:1fr; gap:34px; }
+      .hero { min-height:0; padding-top:48px; padding-bottom:24px; }
+      .hero-img { aspect-ratio:16/10; }
+      .bar, .dishes, .ft-in { grid-template-columns:1fr; }
+      .dishes { gap:40px; }
+      .ft-in { grid-template-columns:1fr 1fr; }
+    }
+  </style>
+</body>
+</html>
