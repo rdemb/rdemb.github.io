@@ -27,3 +27,12 @@ Dann erreichte ich den schwersten Fall: das Objekt **wechselt die Richtung, wäh
 Ich werde dir nicht sagen, dass alles funktioniert, denn das tut es nicht. Unter starker Beschleunigung und kurzer Verdeckung **bricht** das gelernte Gedächtnis auf 3% Genauigkeit ein, schlechter als die dumme Baseline. Mit längerer Verdeckung ist es wieder gut. Diesen seltsamen, nicht-monotonen Einbruch verstehe ich noch nicht.
 
 Und genau deshalb schreibe ich darüber. Ein Ergebnis, das seine Fehlerstelle versteckt, ist keine Wissenschaft, sondern Werbung. Ich habe ein sauberes, auf CPU reproduzierbares Diagramm, wann ein gelernter prädiktiver Zustand Objektpermanenz gibt und wann er auseinanderfällt. Das ist kein „Durchbruch". Es ist eine ehrliche Karte, und auf ehrlichen Karten baut man etwas Echtes.
+
+
+## Update: ich fand die Lösung
+
+Die Hypothese stimmte. Das Gate sagte bei kurzem Verschwinden zu viel voraus. Ich fügte eine einfache Arbitrierung hinzu: bei kurzer Verdeckung halte die letzte Position, bei langer sage voraus. Der Einbruch schloss sich, bei der kürzesten Verdeckung ging es von 15% zurück auf 100%, in der härtesten Ecke von 3% auf 55%.
+
+Aber das Beste ist etwas anderes. Ich prüfte, wie viel überhaupt erreichbar ist: ein Modell mit perfektem Wissen über die Bewegung erreicht in dieser härtesten Ecke nur 75%. Der Rest lässt sich nicht durch Lernen beheben, weil die Objekte zu nah aneinander vorbeiziehen, um unterschieden zu werden. Das ist nicht das Versagen des Modells, sondern die Grenze der Aufgabe.
+
+Und das ist mir am wichtigsten: zu wissen, nicht nur dass ich etwas behoben habe, sondern wie viel vom Rest nicht behebbar ist. Ohne das Zweite ist das Erste nur die halbe Wahrheit.

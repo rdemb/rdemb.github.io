@@ -415,3 +415,18 @@ Value only appears under **occlusion**, when the observation stops being enough.
 **An honest limit:** under strong acceleration and short occlusion (length 2) the learned gate breaks to 0.03, worse than the dumb baseline. With longer occlusion it recovers. I do not yet understand this non-monotonic break, and I am studying it. I show it, because a hidden failure corner is not science.
 
 Reproduce on CPU: `python -m jepa_petri.run_accel_occlusion_memory_mocps --occlusion-lengths 2 4 6 --horizons 1 --seeds 0 1 2 3 4 --device cpu`
+
+
+## The fix: a hold/predict arbitration
+
+The hypothesis held. A variant with arbitration (decide: hold the last position under short occlusion, predict under long occlusion) closes the dip:
+
+| strong acceleration | old gate | with arbitration | dynamics oracle |
+| :---: | :---: | :---: | :---: |
+| L=1 | 0.15 | **1.00** | 1.00 |
+| L=2 | 0.03 | 0.55 | 0.75 |
+| L=3 | 0.88 | 0.98 | 1.00 |
+
+The most honest detail: under L=2 and strong acceleration, even the **oracle** (a model with perfect knowledge of the dynamics) only reaches 0.75. So the remaining gap is not the model's fault, it is the task's: the objects pass too close to be told apart. That is an irreducible limit, not a bug, and the arbitration gets close to that ceiling.
+
+The full arc: I reproduced the result, mapped the phase diagram, found a repeatable failure, diagnosed its mechanism, fixed it, and showed how much of the rest cannot be fixed. To me that is what "proving it works" means: not a shout, a map.

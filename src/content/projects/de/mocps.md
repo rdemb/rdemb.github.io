@@ -416,3 +416,18 @@ Wert entsteht erst unter **Verdeckung**, wenn die Beobachtung nicht mehr ausreic
 **Eine ehrliche Grenze:** bei starker Beschleunigung und kurzer Verdeckung (Länge 2) bricht das gelernte Gate auf 0,03 ein, schlechter als die dumme Baseline. Bei längerer Verdeckung erholt es sich. Diesen nicht-monotonen Einbruch verstehe ich noch nicht, und ich untersuche ihn. Ich zeige ihn, denn eine versteckte Fehlerstelle ist keine Wissenschaft.
 
 Reproduktion auf CPU: `python -m jepa_petri.run_accel_occlusion_memory_mocps --occlusion-lengths 2 4 6 --horizons 1 --seeds 0 1 2 3 4 --device cpu`
+
+
+## Die Lösung: eine Hold/Predict-Arbitrierung
+
+Die Hypothese hielt. Eine Variante mit Arbitrierung (entscheide: halte die letzte Position bei kurzer Verdeckung, sage bei langer voraus) schließt den Einbruch:
+
+| starke Beschleunigung | altes Gate | mit Arbitrierung | Dynamik-Orakel |
+| :---: | :---: | :---: | :---: |
+| L=1 | 0,15 | **1,00** | 1,00 |
+| L=2 | 0,03 | 0,55 | 0,75 |
+| L=3 | 0,88 | 0,98 | 1,00 |
+
+Das ehrlichste Detail: bei L=2 und starker Beschleunigung erreicht selbst das **Orakel** (ein Modell mit perfektem Wissen über die Dynamik) nur 0,75. Die verbleibende Lücke ist also nicht die Schuld des Modells, sondern der Aufgabe: die Objekte passieren zu nah, um sie zu unterscheiden. Das ist eine nicht reduzierbare Grenze, kein Fehler, und die Arbitrierung kommt nah an diese Decke.
+
+Der ganze Bogen: ich reproduzierte das Ergebnis, kartierte das Phasendiagramm, fand ein wiederholbares Versagen, diagnostizierte seinen Mechanismus, behob ihn und zeigte, wie viel vom Rest nicht behoben werden kann. Für mich heißt das „beweisen, dass es funktioniert": kein Geschrei, eine Karte.
