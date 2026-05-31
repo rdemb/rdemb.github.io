@@ -410,6 +410,10 @@ Value only appears under **occlusion**, when the observation stops being enough.
 | strong acceleration | 2 | 0.75 | 0.67 | **0.03** |
 | strong acceleration | 4–6 | 0.00 | ~1.0 | 0.81–0.98 |
 
+![Phase diagram of the learning advantage across acceleration modes and occlusion lengths](/mocps/fig1_phase.png)
+
+*The phase diagram. Across the whole sweep, learning wins in exactly one cell (direction change, L=4, +0.67, outlined). Everywhere else it either ties the hand-coded memory (yellow, V≈0) or loses in the separation-limited corner (red).*
+
 **The interesting part:** under a direction change while hidden (length 4) the learned memory reaches 1.00, while velocity extrapolation (0.18) and the hand-coded memory (0.33) both fail. This is the only place where learning beats both the physics and the structure: the model keeps the object's identity through a motion that simple extrapolation does not predict. That is what a world model means in miniature.
 
 **An honest limit:** under strong acceleration and short occlusion (length 2) the learned gate breaks to 0.03, worse than the dumb baseline. With longer occlusion it recovers. I do not yet understand this non-monotonic break, and I am studying it. I show it, because a hidden failure corner is not science.
@@ -438,5 +442,9 @@ I measured how close the objects pass at the reappearance frame (the separation 
 
 - **Separation-limited:** under strong acceleration and short occlusion the objects pass about 3 pixels apart. Correct assignment needs error below ~1.5 px. Even the oracle only reaches 0.75. No amount of learning fixes this, it is a limit of geometry.
 - **Dynamics-limited:** under a direction change while hidden the separation is comfortable (~7.5 px), yet the baseline still fails (0.18) because it extrapolates the wrong direction. Here the learned model is right 100% of the time. This is the only place where learning genuinely beats physics.
+
+![Two failure mechanisms: identity accuracy versus the separation margin](/mocps/fig2_mechanisms.png)
+
+*The two mechanisms are geometric and separable. Left of the red band the objects pass too close to disambiguate (irreducible). The one point where a comfortable margin still defeats physics, direction change at L=4, is exactly where learning wins.*
 
 The full technical write-up is in the project repo (`RESULT_LEARNED_OBJECT_PERMANENCE.md`).

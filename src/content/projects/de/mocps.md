@@ -411,6 +411,10 @@ Wert entsteht erst unter **Verdeckung**, wenn die Beobachtung nicht mehr ausreic
 | starke Beschleunigung | 2 | 0,75 | 0,67 | **0,03** |
 | starke Beschleunigung | 4–6 | 0,00 | ~1,0 | 0,81–0,98 |
 
+![Phasendiagramm des Lernvorteils über Beschleunigungsmodi und Verdeckungslängen](/mocps/fig1_phase.png)
+
+*Das Phasendiagramm. Über den gesamten Sweep gewinnt Lernen in genau einer Zelle (Richtungswechsel, L=4, +0,67, umrandet). Überall sonst liegt es entweder gleichauf mit dem handkodierten Speicher (gelb, V≈0) oder verliert in der trennungsbegrenzten Ecke (rot).*
+
 **Das Interessante:** bei einem Richtungswechsel im Verborgenen (Länge 4) erreicht das gelernte Gedächtnis 1,00, während Velocity-Extrapolation (0,18) und das handkodierte Gedächtnis (0,33) beide scheitern. Das ist die einzige Stelle, an der Lernen sowohl die Physik als auch die Struktur schlägt: das Modell hält die Identität durch eine Bewegung, die einfache Extrapolation nicht vorhersagt. Das ist ein Weltmodell im Kleinen.
 
 **Eine ehrliche Grenze:** bei starker Beschleunigung und kurzer Verdeckung (Länge 2) bricht das gelernte Gate auf 0,03 ein, schlechter als die dumme Baseline. Bei längerer Verdeckung erholt es sich. Diesen nicht-monotonen Einbruch verstehe ich noch nicht, und ich untersuche ihn. Ich zeige ihn, denn eine versteckte Fehlerstelle ist keine Wissenschaft.
@@ -439,5 +443,9 @@ Ich habe gemessen, wie nah die Objekte im Wiedererscheinungs-Frame aneinander vo
 
 - **Trennungsbegrenzt:** bei starker Beschleunigung und kurzer Verdeckung ziehen die Objekte etwa 3 Pixel auseinander vorbei. Korrekte Zuordnung braucht einen Fehler unter ~1,5 px. Selbst das Orakel erreicht nur 0,75. Das behebt kein Lernen, es ist eine Grenze der Geometrie.
 - **Dynamikbegrenzt:** bei einem Richtungswechsel im Verborgenen ist die Trennung bequem (~7,5 px), und doch scheitert die Baseline (0,18), weil sie die falsche Richtung extrapoliert. Hier ist das gelernte Modell zu 100% richtig. Das ist die einzige Stelle, an der Lernen die Physik wirklich schlägt.
+
+![Zwei Versagensmechanismen: Identitätsgenauigkeit gegen den Trennungsabstand](/mocps/fig2_mechanisms.png)
+
+*Die zwei Mechanismen sind geometrisch und trennbar. Links vom roten Band passieren die Objekte zu nah, um sie zu unterscheiden (nicht reduzierbar). Der einzige Punkt, an dem ein bequemer Abstand die Physik dennoch schlägt, Richtungswechsel bei L=4, ist genau dort, wo Lernen gewinnt.*
 
 Der vollständige technische Bericht liegt im Projekt-Repo (`RESULT_LEARNED_OBJECT_PERMANENCE.md`).

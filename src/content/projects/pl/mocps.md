@@ -411,6 +411,10 @@ Wartość pojawia się dopiero pod **okluzją**, gdy obserwacja przestaje wystar
 | silne przyśpieszenie | 2 | 0,75 | 0,67 | **0,03** |
 | silne przyśpieszenie | 4–6 | 0,00 | ~1,0 | 0,81–0,98 |
 
+![Diagram fazowy przewagi uczenia w trybach przyśpieszenia i długościach okluzji](/mocps/fig1_phase.png)
+
+*Diagram fazowy. Na całym przemiataniu uczenie wygrywa dokładnie w jednej komórce (zmiana kierunku, L=4, +0,67, obwódka). Wszędzie indziej albo remisuje z pamięcią ręczną (żółć, V≈0), albo przegrywa w rogu ograniczonym separacją (czerwień).*
+
 **Najciekawsze:** przy zmianie kierunku za zasłoną (długość 4) nauczona pamięć osiąga 1,00, a ekstrapolacja prędkości (0,18) oraz pamięć ręczna (0,33) padają. To jedyne miejsce, gdzie uczenie bije i fizykę, i strukturę: model utrzymuje tożsamość obiektu przez ruch, którego prosta ekstrapolacja nie przewiduje. To jest sens „modelu świata" w minimalnej wersji.
 
 **Uczciwa granica:** przy silnym przyśpieszeniu i krótkiej okluzji (długość 2) nauczona brama pęka do 0,03, gorzej niż głupi baseline. Przy dłuższej okluzji wraca. Tego niemonotonicznego załamania jeszcze nie rozumiem i właśnie je badam. Pokazuję je, bo ukryty róg porażki to nie nauka.
@@ -439,5 +443,9 @@ Policzyłem, jak blisko mijają się obiekty w klatce powrotu (margines separacj
 
 - **Separacyjna:** przy silnym przyśpieszeniu i krótkiej okluzji obiekty mijają się o około 3 piksele. Trafne przypisanie wymaga błędu poniżej ~1,5 px. Nawet orakulum dobija tylko do 0,75. Tego nie naprawi żadne uczenie, to granica geometrii.
 - **Dynamiczna:** przy zmianie kierunku za zasłoną separacja jest spokojna (~7,5 px), a baseline i tak pada (0,18), bo ekstrapoluje zły kierunek. Tu nauczony model trafia w 100%. To jedyne miejsce, gdzie uczenie naprawdę bije fizykę.
+
+![Dwa mechanizmy porażki: trafność tożsamości względem marginesu separacji](/mocps/fig2_mechanisms.png)
+
+*Dwa mechanizmy są geometryczne i rozłączne. Na lewo od czerwonego pasa obiekty mijają się zbyt blisko, by je rozróżnić (nieusuwalne). Jedyny punkt, gdzie spokojny margines i tak pokonuje fizykę, zmiana kierunku przy L=4, to dokładnie miejsce, gdzie uczenie wygrywa.*
 
 Pełny techniczny write-up jest w repo projektu (`RESULT_LEARNED_OBJECT_PERMANENCE.md`).
