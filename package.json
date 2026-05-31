@@ -12,6 +12,7 @@
     "@fontsource-variable/inter": "^5.1.0",
     "@fontsource-variable/jetbrains-mono": "^5.1.0",
     "@fontsource-variable/space-grotesk": "^5.1.0",
+    "@fontsource/cormorant-garamond": "^5.2.11",
     "@types/three": "^0.184.1",
     "astro": "^5.5.0",
     "three": "^0.184.0"

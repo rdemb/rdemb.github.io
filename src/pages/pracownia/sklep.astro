@@ -1,20 +1,23 @@
 ---
+import '@fontsource/cormorant-garamond/500.css';
+import '@fontsource/cormorant-garamond/600.css';
 // Standalone example site (boutique e-commerce) for the D-LOGIC examples gallery.
 // Own design language, intentionally different from the D-LOGIC brand, to show range.
+// Visuals are designed (warm duotone fields + line art), not stock photos, so a clothing
+// boutique never shows irrelevant imagery. Real photos come from the client.
 const products = [
-  { n: 'Płaszcz wełniany Oslo', p: '890', s: 'maison-coat' },
-  { n: 'Sweter z merynosa', p: '420', s: 'maison-knit' },
-  { n: 'Koszula lniana', p: '290', s: 'maison-shirt' },
-  { n: 'Spodnie szerokie', p: '360', s: 'maison-trousers' },
-  { n: 'Skórzana torba', p: '740', s: 'maison-bag' },
-  { n: 'Szalik kaszmirowy', p: '280', s: 'maison-scarf' },
+  { n: 'Płaszcz wełniany Oslo', p: '890', g: 'linear-gradient(150deg,#6b3b2a,#321b13)' },
+  { n: 'Sweter z merynosa', p: '420', g: 'linear-gradient(150deg,#7d6a4a,#3d3223)' },
+  { n: 'Koszula lniana', p: '290', g: 'linear-gradient(150deg,#8a5b46,#43271d)' },
+  { n: 'Spodnie szerokie', p: '360', g: 'linear-gradient(150deg,#5f5847,#2f2b21)' },
+  { n: 'Skórzana torba', p: '740', g: 'linear-gradient(150deg,#94553a,#48291b)' },
+  { n: 'Szalik kaszmirowy', p: '280', g: 'linear-gradient(150deg,#7a6552,#3d3228)' },
 ];
 const cats = [
-  { n: 'Odzież', s: 'maison-c1' },
-  { n: 'Akcesoria', s: 'maison-c2' },
-  { n: 'Dom', s: 'maison-c3' },
+  { n: 'Odzież', g: 'linear-gradient(150deg,#6e4030,#2e1a13)' },
+  { n: 'Akcesoria', g: 'linear-gradient(150deg,#86604a,#3a271d)' },
+  { n: 'Dom', g: 'linear-gradient(150deg,#5d5746,#2c2820)' },
 ];
-const img = (seed: string, w: number, h: number) => `https://picsum.photos/seed/${seed}/${w}/${h}?grayscale`;
 ---
 <!doctype html>
 <html lang="pl">
@@ -47,13 +50,14 @@ const img = (seed: string, w: number, h: number) => `https://picsum.photos/seed/
   </header>
 
   <section class="hero">
-    <img src={img('maison-hero', 1700, 1000)} alt="" loading="eager" />
+    <div class="hero-grain"></div>
     <div class="hero-tx">
       <p class="kicker">Kolekcja jesień / zima</p>
       <h1>Rzeczy zrobione<br />dobrze.</h1>
       <p class="sub">Ubrania i przedmioty szyte w Europie, z naturalnych materiałów. Mniej, ale lepiej.</p>
       <a class="btn" href="#kolekcja">Zobacz kolekcję</a>
     </div>
+    <div class="hero-mark">M</div>
   </section>
 
   <div class="strip">
@@ -62,9 +66,9 @@ const img = (seed: string, w: number, h: number) => `https://picsum.photos/seed/
 
   <section class="kat" id="kat">
     {cats.map((c) => (
-      <a class="kat-card" href="#kolekcja">
-        <img src={img(c.s, 700, 880)} alt="" loading="lazy" />
+      <a class="kat-card" href="#kolekcja" style={`background:${c.g}`}>
         <span class="kat-name">{c.n}</span>
+        <span class="kat-go">Zobacz →</span>
       </a>
     ))}
   </section>
@@ -77,7 +81,12 @@ const img = (seed: string, w: number, h: number) => `https://picsum.photos/seed/
     <div class="grid">
       {products.map((pr) => (
         <article class="prod">
-          <div class="prod-img"><img src={img(pr.s, 640, 800)} alt={pr.n} loading="lazy" /><button class="add" data-add aria-label={`Dodaj ${pr.n}`}>Dodaj do koszyka</button></div>
+          <div class="prod-img" style={`background:${pr.g}`}>
+            <svg class="hanger" viewBox="0 0 64 40" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true">
+              <circle cx="32" cy="7" r="3" /><path d="M32 10v3M9 33 32 15 55 33Z" />
+            </svg>
+            <button class="add" data-add aria-label={`Dodaj ${pr.n}`}>Dodaj do koszyka</button>
+          </div>
           <div class="prod-row"><span class="prod-n">{pr.n}</span><span class="prod-p">{pr.p} zł</span></div>
         </article>
       ))}
@@ -85,7 +94,7 @@ const img = (seed: string, w: number, h: number) => `https://picsum.photos/seed/
   </section>
 
   <section class="editorial" id="hist">
-    <div class="ed-img"><img src={img('maison-ed', 1100, 1300)} alt="" loading="lazy" /></div>
+    <div class="ed-art"><span class="ed-mono">M</span></div>
     <div class="ed-tx">
       <p class="kicker">Nasza historia</p>
       <h2>Robimy mniej, żeby robić lepiej.</h2>
@@ -121,8 +130,8 @@ const img = (seed: string, w: number, h: number) => `https://picsum.photos/seed/
   <aside class="drawer" id="drawer" aria-label="Koszyk">
     <div class="dr-head"><span>Twój koszyk</span><button id="cartClose" aria-label="Zamknij">✕</button></div>
     <div class="dr-items">
-      <div class="dr-item"><img src={img('maison-knit', 120, 150)} alt="" /><div><div class="dr-n">Sweter z merynosa</div><div class="dr-meta">Rozmiar M · 1 szt.</div></div><span class="dr-p">420 zł</span></div>
-      <div class="dr-item"><img src={img('maison-scarf', 120, 150)} alt="" /><div><div class="dr-n">Szalik kaszmirowy</div><div class="dr-meta">1 szt.</div></div><span class="dr-p">280 zł</span></div>
+      <div class="dr-item"><span class="dr-th" style="background:linear-gradient(150deg,#7d6a4a,#3d3223)"></span><div><div class="dr-n">Sweter z merynosa</div><div class="dr-meta">Rozmiar M · 1 szt.</div></div><span class="dr-p">420 zł</span></div>
+      <div class="dr-item"><span class="dr-th" style="background:linear-gradient(150deg,#7a6552,#3d3228)"></span><div><div class="dr-n">Szalik kaszmirowy</div><div class="dr-meta">1 szt.</div></div><span class="dr-p">280 zł</span></div>
     </div>
     <div class="dr-foot">
       <div class="dr-sum"><span>Razem</span><b>700 zł</b></div>
@@ -136,6 +145,7 @@ const img = (seed: string, w: number, h: number) => `https://picsum.photos/seed/
       --bg:#F6F1E9; --surf:#FFFFFF; --soft:#EFE7DA; --tx:#221E1A; --mut:#6F665B; --acc:#B25B36; --line:#E4DAC9;
       --serif:'Cormorant Garamond', Georgia, 'Times New Roman', serif;
       --sans:'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
     }
     * { box-sizing:border-box; margin:0; padding:0; }
     body { background:var(--bg); color:var(--tx); font-family:var(--sans); -webkit-font-smoothing:antialiased; }
@@ -160,23 +170,26 @@ const img = (seed: string, w: number, h: number) => `https://picsum.photos/seed/
     .cart-btn { background:none; border:0; font-family:var(--sans); font-size:13.5px; letter-spacing:.05em; text-transform:uppercase; cursor:pointer; color:var(--tx); display:flex; align-items:center; gap:8px; }
     .cart-n { background:var(--acc); color:#fff; border-radius:999px; min-width:20px; height:20px; display:inline-flex; align-items:center; justify-content:center; font-size:11px; }
 
-    .hero { position:relative; height:82vh; min-height:560px; overflow:hidden; }
-    .hero img { width:100%; height:100%; object-fit:cover; filter:brightness(.82) sepia(.12); }
-    .hero-tx { position:absolute; inset:0; display:flex; flex-direction:column; justify-content:center; max-width:1180px; margin:0 auto; padding:0 26px; left:0; right:0; color:#fff; }
+    .hero { position:relative; height:82vh; min-height:560px; overflow:hidden; display:flex; align-items:center;
+      background:radial-gradient(120% 130% at 80% 10%, #7d3f29 0%, #45241a 42%, #1d120d 100%); color:#fff; }
+    .hero-grain { position:absolute; inset:0; background-image:var(--grain); opacity:.10; mix-blend-mode:overlay; pointer-events:none; }
+    .hero-mark { position:absolute; right:-2vw; bottom:-12vh; font-family:var(--serif); font-size:62vh; line-height:1; color:rgba(255,255,255,.05); pointer-events:none; user-select:none; }
+    .hero-tx { position:relative; z-index:2; max-width:1180px; margin:0 auto; padding:0 26px; width:100%; }
     .hero-tx .kicker { color:#f0c9b4; }
     .hero h1 { font-size:clamp(46px,8vw,104px); line-height:.98; }
     .hero .sub { max-width:42ch; margin:22px 0 30px; font-size:clamp(15px,2vw,18px); color:#f2ece2; }
-    .hero .btn { background:#fff; color:#1b1714; align-self:flex-start; }
+    .hero .btn { background:#fff; color:#1b1714; }
     .hero .btn:hover { background:var(--acc); color:#fff; }
 
     .strip { display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:14px; background:var(--tx); color:var(--bg); font-size:12.5px; letter-spacing:.08em; text-transform:uppercase; padding:14px; }
     .strip i { color:var(--acc); font-style:normal; }
 
     .kat { max-width:1180px; margin:78px auto; padding:0 26px; display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
-    .kat-card { position:relative; overflow:hidden; border-radius:3px; aspect-ratio:4/5; }
-    .kat-card img { width:100%; height:100%; object-fit:cover; transition:transform .5s ease; }
-    .kat-card:hover img { transform:scale(1.05); }
-    .kat-name { position:absolute; left:0; right:0; bottom:0; padding:22px; font-family:var(--serif); font-size:27px; color:#fff; background:linear-gradient(transparent, rgba(20,16,12,.66)); }
+    .kat-card { position:relative; overflow:hidden; border-radius:3px; aspect-ratio:4/5; display:flex; align-items:flex-end; }
+    .kat-card::after { content:''; position:absolute; inset:0; background-image:var(--grain); opacity:.07; mix-blend-mode:overlay; }
+    .kat-name { position:relative; z-index:1; padding:22px 22px 6px; font-family:var(--serif); font-size:30px; color:#fff; }
+    .kat-go { position:absolute; z-index:1; left:22px; bottom:18px; font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:rgba(255,255,255,.78); }
+    .kat-card:hover .kat-go { color:#fff; }
 
     .coll { max-width:1180px; margin:0 auto 90px; padding:0 26px; }
     .coll-head { display:flex; align-items:baseline; justify-content:space-between; border-bottom:1px solid var(--line); padding-bottom:18px; margin-bottom:34px; }
@@ -184,10 +197,11 @@ const img = (seed: string, w: number, h: number) => `https://picsum.photos/seed/
     .seeall { font-size:13px; letter-spacing:.05em; text-transform:uppercase; color:var(--mut); }
     .seeall:hover { color:var(--acc); }
     .grid { display:grid; grid-template-columns:repeat(3,1fr); gap:26px 22px; }
-    .prod-img { position:relative; overflow:hidden; aspect-ratio:4/5; background:var(--soft); border-radius:3px; }
-    .prod-img img { width:100%; height:100%; object-fit:cover; transition:transform .5s ease; }
-    .prod:hover .prod-img img { transform:scale(1.04); }
-    .add { position:absolute; left:14px; right:14px; bottom:14px; transform:translateY(120%); opacity:0; transition:all .28s ease; background:#fff; color:var(--tx); border:0; padding:13px; border-radius:2px; font-size:12.5px; letter-spacing:.06em; text-transform:uppercase; cursor:pointer; }
+    .prod-img { position:relative; overflow:hidden; aspect-ratio:4/5; border-radius:3px; display:flex; align-items:center; justify-content:center; color:rgba(255,243,230,.42); }
+    .prod-img::after { content:''; position:absolute; inset:0; background-image:var(--grain); opacity:.08; mix-blend-mode:overlay; }
+    .hanger { width:74px; height:auto; transition:transform .5s ease; }
+    .prod:hover .hanger { transform:translateY(-6px) scale(1.04); }
+    .add { position:absolute; left:14px; right:14px; bottom:14px; transform:translateY(120%); opacity:0; transition:all .28s ease; background:#fff; color:var(--tx); border:0; padding:13px; border-radius:2px; font-size:12.5px; letter-spacing:.06em; text-transform:uppercase; cursor:pointer; z-index:2; }
     .prod:hover .add { transform:none; opacity:1; }
     .add:hover { background:var(--acc); color:#fff; }
     .prod-row { display:flex; justify-content:space-between; align-items:baseline; margin-top:15px; }
@@ -195,7 +209,9 @@ const img = (seed: string, w: number, h: number) => `https://picsum.photos/seed/
     .prod-p { color:var(--mut); font-size:15px; }
 
     .editorial { display:grid; grid-template-columns:1fr 1fr; gap:0; background:var(--soft); }
-    .ed-img img { width:100%; height:100%; object-fit:cover; min-height:420px; }
+    .ed-art { position:relative; min-height:440px; overflow:hidden; background:radial-gradient(120% 120% at 30% 20%, #8a5240 0%, #45241a 55%, #25160f 100%); display:flex; align-items:center; justify-content:center; }
+    .ed-art::after { content:''; position:absolute; inset:0; background-image:var(--grain); opacity:.08; mix-blend-mode:overlay; }
+    .ed-mono { font-family:var(--serif); font-size:clamp(140px,22vw,260px); color:rgba(255,255,255,.10); line-height:1; }
     .ed-tx { padding:clamp(40px,6vw,90px); display:flex; flex-direction:column; justify-content:center; }
     .ed-tx h2 { font-size:clamp(30px,4vw,48px); line-height:1.05; margin:6px 0 20px; max-width:16ch; }
     .ed-tx p { color:var(--mut); line-height:1.75; margin-bottom:14px; max-width:46ch; }
@@ -225,7 +241,7 @@ const img = (seed: string, w: number, h: number) => `https://picsum.photos/seed/
     .dr-head button { background:none; border:0; font-size:18px; cursor:pointer; color:var(--mut); }
     .dr-items { flex:1; overflow:auto; padding:18px 24px; }
     .dr-item { display:grid; grid-template-columns:48px 1fr auto; gap:14px; align-items:center; padding:14px 0; border-bottom:1px solid var(--line); }
-    .dr-item img { width:48px; height:60px; object-fit:cover; border-radius:2px; }
+    .dr-th { width:48px; height:60px; border-radius:2px; display:block; }
     .dr-n { font-family:var(--serif); font-size:16px; }
     .dr-meta { font-size:12.5px; color:var(--mut); margin-top:3px; }
     .dr-p { font-size:14px; }
