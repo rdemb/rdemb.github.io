@@ -3,15 +3,22 @@ import '@fontsource-variable/space-grotesk';
 import '@fontsource-variable/inter';
 import '@fontsource-variable/jetbrains-mono';
 import '../styles/global.css';
+import Share from '../components/Share.astro';
 
-const { lang = 'pl', title, description = '', sw = { pl: '/', en: '/en/', de: '/de/' } } = Astro.props;
+const { lang = 'pl', title, description = '', sw = { pl: '/', en: '/en/', de: '/de/' }, share = true } = Astro.props;
 const base = lang === 'pl' ? '' : `/${lang}`;
 const L = {
-  pl: { work: 'Oferta', lab: 'Lab', blog: 'Notatki', contact: 'Kontakt' },
-  en: { work: 'Work', lab: 'Lab', blog: 'Notes', contact: 'Contact' },
-  de: { work: 'Leistungen', lab: 'Lab', blog: 'Notizen', contact: 'Kontakt' },
+  pl: { about: 'O mnie', work: 'Oferta', projects: 'Projekty', blog: 'Blog', contact: 'Kontakt' },
+  en: { about: 'About', work: 'Services', projects: 'Projects', blog: 'Blog', contact: 'Contact' },
+  de: { about: 'Über mich', work: 'Leistungen', projects: 'Projekte', blog: 'Blog', contact: 'Kontakt' },
 }[lang];
-const blogHref = base + '/blog/';
+const nav = [
+  { href: '/o-mnie/', t: L.about },
+  { href: '/oferta/', t: L.work },
+  { href: base + '/projekty/', t: L.projects },
+  { href: base + '/blog/', t: L.blog },
+  { href: '/#kontakt', t: L.contact },
+];
 ---
 <!doctype html>
 <html lang={lang} data-theme="dark">
@@ -33,47 +40,48 @@ const blogHref = base + '/blog/';
     <header class="nav" id="nav">
       <div class="wrap nav-inner">
         <a href="/" class="brand"><span class="dot"></span>D&#8209;<b>LOGIC</b>&nbsp;<span style="color:var(--muted);font-weight:400">studio</span></a>
-        <nav class="nav-links">
-          <a href="/#oferta">{L.work}</a>
-          <a href={blogHref}>{L.blog}</a>
-          <a href="/#kontakt">{L.contact}</a>
-        </nav>
+        <nav class="nav-links">{nav.map((n) => <a href={n.href}>{n.t}</a>)}</nav>
         <div class="nav-tools">
-          <div class="seg" aria-label="Język / Language">
-            <a href={sw.pl} class={'mono ' + (lang === 'pl' ? 'on' : '')} style="padding:6px 9px;border-radius:6px">PL</a>
-            <a href={sw.en} class={'mono ' + (lang === 'en' ? 'on' : '')} style="padding:6px 9px;border-radius:6px">EN</a>
-            <a href={sw.de} class={'mono ' + (lang === 'de' ? 'on' : '')} style="padding:6px 9px;border-radius:6px">DE</a>
+          <div class="seg" aria-label="Język">
+            <a href={sw.pl} class={lang === 'pl' ? 'on' : ''}>PL</a>
+            <a href={sw.en} class={lang === 'en' ? 'on' : ''}>EN</a>
+            <a href={sw.de} class={lang === 'de' ? 'on' : ''}>DE</a>
           </div>
-          <button class="icon-btn" id="theme" aria-label="Theme">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2M12 20v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M2 12h2M20 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>
-          </button>
+          <button class="icon-btn" id="theme" aria-label="Theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2M12 20v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M2 12h2M20 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg></button>
+          <button class="icon-btn menu-btn" id="hamb" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
         </div>
       </div>
     </header>
-    <main class="wrap page-wrap">
-      <slot />
-    </main>
-    <footer>
-      <div class="wrap">
-        <div class="foot-base" style="margin-top:0;border-top:none">
-          <span class="mono">© 2026 D-LOGIC studio</span>
-          <span class="mono"><a href="mailto:rdem91@gmail.com">rdem91@gmail.com</a> · <a href="https://x.com/takitamrafal" target="_blank" rel="noopener">x</a> · <a href="https://github.com/rdemb" target="_blank" rel="noopener">github</a></span>
-        </div>
+
+    <div class="drawer" id="drawer">
+      <div class="drawer-bg" data-close></div>
+      <div class="drawer-panel">
+        <div class="drawer-head"><span class="mono" style="color:var(--accent)">menu</span><button class="drawer-close" data-close aria-label="X"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+        {nav.map((n) => <a href={n.href} class="dl">{n.t}</a>)}
       </div>
+    </div>
+
+    <main class="wrap page-wrap"><slot />{share && <Share lang={lang} />}</main>
+
+    <footer>
+      <div class="wrap"><div class="foot-base" style="margin-top:0;border-top:none">
+        <span class="mono">© 2026 D-LOGIC studio</span>
+        <span class="mono"><a href="mailto:rdem91@gmail.com">rdem91@gmail.com</a> · <a href="https://x.com/takitamrafal" target="_blank" rel="noopener">x</a> · <a href="https://github.com/rdemb" target="_blank" rel="noopener">github</a></span>
+      </div></div>
     </footer>
+
     <script is:inline>
-      const d = document.documentElement;
-      const sun = '<circle cx="12" cy="12" r="4.2"/><path d="M12 2v2M12 20v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M2 12h2M20 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/>';
-      const moon = '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>';
-      const svg = document.querySelector('#theme svg');
-      if (svg) svg.innerHTML = d.getAttribute('data-theme') === 'dark' ? sun : moon;
-      document.getElementById('theme').addEventListener('click', () => {
-        const t = d.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-        d.setAttribute('data-theme', t); if (svg) svg.innerHTML = t === 'dark' ? sun : moon;
-        try { localStorage.setItem('dlogic-theme', t); } catch (e) {}
-      });
-      const nav = document.getElementById('nav');
-      addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 10), { passive: true });
+      const D = document.documentElement;
+      const sun='<circle cx="12" cy="12" r="4.2"/><path d="M12 2v2M12 20v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M2 12h2M20 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/>';
+      const moon='<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>';
+      const svg=document.querySelector('#theme svg'); if(svg) svg.innerHTML=D.getAttribute('data-theme')==='dark'?sun:moon;
+      document.getElementById('theme').addEventListener('click', function(){ var t=D.getAttribute('data-theme')==='dark'?'light':'dark'; D.setAttribute('data-theme',t); if(svg) svg.innerHTML=t==='dark'?sun:moon; try{localStorage.setItem('dlogic-theme',t);}catch(e){} });
+      const drawer=document.getElementById('drawer'), hamb=document.getElementById('hamb');
+      hamb.addEventListener('click', function(){ drawer.classList.add('open'); document.body.style.overflow='hidden'; });
+      drawer.querySelectorAll('[data-close],.dl').forEach(function(el){ el.addEventListener('click', function(){ drawer.classList.remove('open'); document.body.style.overflow=''; }); });
+      addEventListener('keydown', function(e){ if(e.key==='Escape'){ drawer.classList.remove('open'); document.body.style.overflow=''; } });
+      const nav=document.getElementById('nav');
+      addEventListener('scroll', function(){ nav.classList.toggle('scrolled', scrollY>10); }, {passive:true});
     </script>
   </body>
 </html>

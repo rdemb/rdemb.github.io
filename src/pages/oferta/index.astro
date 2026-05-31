@@ -1,0 +1,117 @@
+---
+import Chrome from '../../components/Chrome.astro';
+import { withUi } from '../../i18n';
+
+const dict = withUi({
+  pl: {
+    'o.eyebrow': 'Oferta', 'o.title': 'Co mogę dla Ciebie zrobić',
+    'o.lead': 'Trzy rzeczy, w których jestem naprawdę dobry. Bez żargonu, z jasnym zakresem i uczciwą wyceną. Jeśli czegoś nie zrobię dobrze, powiem to wprost.',
+    'o.c1.k': '01 · automaty', 'o.c1.t': 'Narzędzia i automaty AI',
+    'o.c1.d': 'Buduję boty, które robią za Ciebie nudną, powtarzalną robotę. Przykład: codziennie sprawdzają ceny konkurencji albo Twoje wyniki i wysyłają Ci krótkie podsumowanie tam, gdzie zaglądasz, na Telegram, Slack albo mail. Działają same, bez Twojego pilnowania.',
+    'o.c1.f': 'Dla kogo: właściciele firm, sklepy, każdy, kto codziennie sprawdza to samo ręcznie.',
+    'o.c2.k': '02 · web', 'o.c2.t': 'Strony i aplikacje',
+    'o.c2.d': 'Robię szybkie, czytelne strony i proste aplikacje. Po polsku, niemiecku i angielsku. Bez gotowców i bałaganu pod spodem. Strona, którą teraz czytasz, jest moją wizytówką i dowodem.',
+    'o.c2.f': 'Dla kogo: firmy i osoby, które chcą wyglądać poważnie i ładować się błyskawicznie.',
+    'o.c3.k': '03 · dane', 'o.c3.t': 'Analiza danych',
+    'o.c3.d': 'Masz dane i nie wiesz, co z nich wynika? Zamieniam je w czytelny panel albo w uczciwą analizę. Mówię wprost, co dane pokazują, a czego nie, bez naciągania wniosków na siłę.',
+    'o.c3.f': 'Dla kogo: każdy, kto podejmuje decyzje na podstawie liczb i chce je rozumieć.',
+    'o.p.eyebrow': 'Jak to wygląda', 'o.p.t': 'Prosto i bez niespodzianek',
+    'o.p1.t': 'Rozmowa', 'o.p1.d': 'Mówisz, co i po co. Ja mówię, czy umiem to zrobić dobrze.',
+    'o.p2.t': 'Wycena i zakres', 'o.p2.d': 'Stała cena za jasno opisaną robotę. Wiesz, za co płacisz.',
+    'o.p3.t': 'Buduję i pokazuję', 'o.p3.d': 'Pracuję, pokazuję postęp, poprawiamy razem.',
+    'o.p4.t': 'Wdrożenie', 'o.p4.d': 'Uruchamiam u Ciebie i zostawiam krótką instrukcję.',
+    'o.pr.t': 'Dowód, że to działa', 'o.pr.d': 'Nie sprzedaję niczego, czego sam nie przetestowałem. Mój bot clawbot chodzi codziennie na żywo i przygotowuje mi briefy z rynku. Możesz go zobaczyć w projektach.',
+    'o.pr.cta': 'Zobacz clawbota',
+    'o.cta.t': 'Brzmi jak coś dla Ciebie?', 'o.cta.l': 'Napisz w dwóch zdaniach, co chcesz zrobić. Odpiszę osobiście, zwykle tego samego dnia.', 'o.cta.b': 'Napisz maila',
+  },
+  en: {
+    'o.eyebrow': 'Services', 'o.title': 'What I can do for you',
+    'o.lead': 'Three things I am genuinely good at. No jargon, a clear scope and honest pricing. If I cannot do something well, I will say so plainly.',
+    'o.c1.k': '01 · automation', 'o.c1.t': 'AI tools and automations',
+    'o.c1.d': 'I build bots that do the boring, repetitive work for you. Example: they check competitor prices or your numbers every day and send you a short summary where you already look, Telegram, Slack or email. They run on their own, no babysitting.',
+    'o.c1.f': 'For: business owners, shops, anyone who checks the same thing by hand every day.',
+    'o.c2.k': '02 · web', 'o.c2.t': 'Websites and apps',
+    'o.c2.d': 'I make fast, clear websites and simple apps. In Polish, German and English. No templates and no mess underneath. The site you are reading is my own card and proof.',
+    'o.c2.f': 'For: companies and people who want to look serious and load instantly.',
+    'o.c3.k': '03 · data', 'o.c3.t': 'Data analysis',
+    'o.c3.d': 'You have data and do not know what it means? I turn it into a clear dashboard or an honest analysis. I say plainly what the data shows and what it does not, without forcing conclusions.',
+    'o.c3.f': 'For: anyone who makes decisions from numbers and wants to understand them.',
+    'o.p.eyebrow': 'How it works', 'o.p.t': 'Simple, with no surprises',
+    'o.p1.t': 'A talk', 'o.p1.d': 'You say what and why. I say whether I can do it well.',
+    'o.p2.t': 'Quote and scope', 'o.p2.d': 'A fixed price for clearly described work. You know what you pay for.',
+    'o.p3.t': 'I build and show', 'o.p3.d': 'I work, show progress, and we fix things together.',
+    'o.p4.t': 'Delivery', 'o.p4.d': 'I launch it for you and leave a short guide.',
+    'o.pr.t': 'Proof that it works', 'o.pr.d': 'I do not sell anything I have not tested myself. My bot clawbot runs live every day and prepares market briefs for me. You can see it in the projects.',
+    'o.pr.cta': 'See clawbot',
+    'o.cta.t': 'Sounds like something for you?', 'o.cta.l': 'Write two sentences about what you want to do. I reply personally, usually the same day.', 'o.cta.b': 'Send an email',
+  },
+  de: {
+    'o.eyebrow': 'Leistungen', 'o.title': 'Was ich für dich tun kann',
+    'o.lead': 'Drei Dinge, in denen ich wirklich gut bin. Kein Jargon, ein klarer Umfang und ehrliche Preise. Wenn ich etwas nicht gut kann, sage ich es offen.',
+    'o.c1.k': '01 · Automatisierung', 'o.c1.t': 'KI-Tools und Automatisierungen',
+    'o.c1.d': 'Ich baue Bots, die die langweilige, sich wiederholende Arbeit für dich erledigen. Beispiel: Sie prüfen täglich Konkurrenzpreise oder deine Zahlen und schicken dir eine kurze Zusammenfassung dorthin, wo du eh hinschaust, Telegram, Slack oder E-Mail. Sie laufen allein, ohne Babysitting.',
+    'o.c1.f': 'Für: Unternehmer, Shops, jeden, der täglich dasselbe von Hand prüft.',
+    'o.c2.k': '02 · Web', 'o.c2.t': 'Websites und Apps',
+    'o.c2.d': 'Ich mache schnelle, klare Websites und einfache Apps. Auf Polnisch, Deutsch und Englisch. Keine Vorlagen und kein Chaos darunter. Die Seite, die du liest, ist meine eigene Karte und der Beweis.',
+    'o.c2.f': 'Für: Firmen und Menschen, die seriös wirken und blitzschnell laden wollen.',
+    'o.c3.k': '03 · Daten', 'o.c3.t': 'Datenanalyse',
+    'o.c3.d': 'Du hast Daten und weißt nicht, was sie bedeuten? Ich mache daraus ein klares Dashboard oder eine ehrliche Analyse. Ich sage klar, was die Daten zeigen und was nicht, ohne Schlüsse zu erzwingen.',
+    'o.c3.f': 'Für: jeden, der aus Zahlen Entscheidungen trifft und sie verstehen will.',
+    'o.p.eyebrow': 'Wie es läuft', 'o.p.t': 'Einfach, ohne Überraschungen',
+    'o.p1.t': 'Ein Gespräch', 'o.p1.d': 'Du sagst was und wozu. Ich sage, ob ich es gut kann.',
+    'o.p2.t': 'Angebot und Umfang', 'o.p2.d': 'Ein Festpreis für klar beschriebene Arbeit. Du weißt, wofür du zahlst.',
+    'o.p3.t': 'Ich baue und zeige', 'o.p3.d': 'Ich arbeite, zeige Fortschritt, wir bessern gemeinsam nach.',
+    'o.p4.t': 'Auslieferung', 'o.p4.d': 'Ich starte es bei dir und hinterlasse eine kurze Anleitung.',
+    'o.pr.t': 'Beweis, dass es funktioniert', 'o.pr.d': 'Ich verkaufe nichts, was ich nicht selbst getestet habe. Mein Bot clawbot läuft täglich live und bereitet mir Markt-Briefs vor. Du kannst ihn in den Projekten sehen.',
+    'o.pr.cta': 'clawbot ansehen',
+    'o.cta.t': 'Klingt nach etwas für dich?', 'o.cta.l': 'Schreib zwei Sätze, was du tun willst. Ich antworte persönlich, meist am selben Tag.', 'o.cta.b': 'E-Mail schreiben',
+  },
+});
+---
+<Chrome title="Oferta, D-LOGIC studio" description="Narzędzia AI, strony internetowe i analiza danych. Po ludzku, z jasnym zakresem i uczciwą wyceną." dict={dict} active="/oferta/">
+  <section style="padding-bottom:40px">
+    <div class="wrap">
+      <div class="sec-head reveal" style="margin-bottom:34px">
+        <span class="eyebrow" data-i18n="o.eyebrow">•</span>
+        <h2 data-i18n="o.title">•</h2>
+        <p data-i18n="o.lead">•</p>
+      </div>
+      <div class="cards">
+        <article class="card reveal"><span class="num" data-i18n="o.c1.k">•</span><h3 data-i18n="o.c1.t">•</h3><p data-i18n="o.c1.d">•</p><p class="mono" style="font-size:13px;color:var(--accent);margin-top:14px" data-i18n="o.c1.f">•</p></article>
+        <article class="card reveal" data-delay="1"><span class="num" data-i18n="o.c2.k">•</span><h3 data-i18n="o.c2.t">•</h3><p data-i18n="o.c2.d">•</p><p class="mono" style="font-size:13px;color:var(--accent);margin-top:14px" data-i18n="o.c2.f">•</p></article>
+        <article class="card reveal" data-delay="2"><span class="num" data-i18n="o.c3.k">•</span><h3 data-i18n="o.c3.t">•</h3><p data-i18n="o.c3.d">•</p><p class="mono" style="font-size:13px;color:var(--accent);margin-top:14px" data-i18n="o.c3.f">•</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="proof">
+    <div class="wrap">
+      <div class="sec-head reveal"><span class="eyebrow" data-i18n="o.p.eyebrow">•</span><h2 data-i18n="o.p.t">•</h2></div>
+      <div class="hub">
+        <div class="hub-card reveal"><span class="k">01</span><h3 data-i18n="o.p1.t">•</h3><p data-i18n="o.p1.d">•</p></div>
+        <div class="hub-card reveal" data-delay="1"><span class="k">02</span><h3 data-i18n="o.p2.t">•</h3><p data-i18n="o.p2.d">•</p></div>
+        <div class="hub-card reveal"><span class="k">03</span><h3 data-i18n="o.p3.t">•</h3><p data-i18n="o.p3.d">•</p></div>
+        <div class="hub-card reveal" data-delay="1"><span class="k">04</span><h3 data-i18n="o.p4.t">•</h3><p data-i18n="o.p4.d">•</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap" style="display:flex;align-items:center;justify-content:space-between;gap:28px;flex-wrap:wrap">
+      <div class="reveal" style="max-width:60ch">
+        <h2 style="font-size:clamp(22px,3vw,30px)" data-i18n="o.pr.t">•</h2>
+        <p class="muted" style="margin-top:14px;font-size:17px" data-i18n="o.pr.d">•</p>
+      </div>
+      <a href="/projekty/clawbot/" class="btn btn-ghost reveal"><span data-i18n="o.pr.cta">•</span><span class="arr">→</span></a>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="wrap"><div class="cta-wrap reveal"><div class="inner">
+      <span class="eyebrow" style="justify-content:center" data-i18n="nav.contact">•</span>
+      <h2 data-i18n="o.cta.t">•</h2>
+      <p data-i18n="o.cta.l">•</p>
+      <div class="hero-cta"><a href="mailto:rdem91@gmail.com" class="btn btn-primary"><span data-i18n="o.cta.b">•</span><span class="arr">→</span></a></div>
+    </div></div></div>
+  </section>
+</Chrome>

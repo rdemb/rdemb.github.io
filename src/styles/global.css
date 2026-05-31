@@ -174,7 +174,6 @@ footer p.tag{color:var(--muted); font-size:14px; max-width:34ch}
   .nav-tools{gap:6px}
   .nav-tools .seg{padding:2px}
   .nav-tools .seg button{padding:6px 7px; font-size:11px; letter-spacing:0}
-  .menu-btn{display:none}
 }
 
 /* ============ STRONY TRESCI (blog / projekty) ============ */
@@ -211,3 +210,49 @@ footer p.tag{color:var(--muted); font-size:14px; max-width:34ch}
 .post-index .x{color:var(--muted); font-size:15px; margin-top:6px; grid-column:2}
 .post-index .t{font-family:'JetBrains Mono Variable',monospace; font-size:11.5px; color:var(--accent); border:1px solid var(--chip-line); background:var(--chip); padding:4px 10px; border-radius:20px; white-space:nowrap; align-self:center}
 @media (max-width:620px){ .post-index a{grid-template-columns:1fr auto} .post-index .d{grid-column:1/-1} .post-index .x{grid-column:1/-1} }
+
+/* ============ HAMBURGER + MOBILE DRAWER ============ */
+.drawer{position:fixed; inset:0; z-index:200; display:none; opacity:0; transition:opacity .3s ease}
+.drawer.open{display:block; opacity:1}
+.drawer-bg{position:absolute; inset:0; background:rgba(0,0,0,.5); backdrop-filter:blur(4px)}
+.drawer-panel{position:absolute; top:0; right:0; height:100%; width:min(82vw,340px); background:var(--surface); border-left:1px solid var(--line); padding:24px 22px; display:flex; flex-direction:column; gap:6px; transform:translateX(100%); transition:transform .34s cubic-bezier(.2,.7,.3,1); overflow-y:auto}
+.drawer.open .drawer-panel{transform:none}
+.drawer-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:18px}
+.drawer-close{width:38px;height:38px;border-radius:8px;border:1px solid var(--line);background:var(--surface-2);color:var(--muted);display:grid;place-items:center}
+.drawer a.dl{font-family:'Space Grotesk Variable',sans-serif; font-size:21px; font-weight:500; color:var(--text); padding:13px 0; border-bottom:1px solid var(--line); transition:color .2s,padding-left .2s}
+.drawer a.dl:hover{color:var(--accent); padding-left:6px}
+.drawer-tools{display:flex; align-items:center; gap:10px; margin-top:20px}
+
+/* ============ SHARE ============ */
+.share{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-top:14px}
+.share .lbl{font-family:'JetBrains Mono Variable',monospace; font-size:12px; color:var(--muted); letter-spacing:.05em}
+.share button,.share a{display:inline-grid; place-items:center; width:38px; height:38px; border-radius:9px; border:1px solid var(--line); background:var(--surface); color:var(--muted); transition:.2s; cursor:pointer}
+.share button:hover,.share a:hover{color:var(--accent); border-color:var(--chip-line); transform:translateY(-2px)}
+.share svg{width:16px;height:16px;fill:currentColor}
+.share .copied{color:var(--live)!important; border-color:var(--live)!important}
+
+/* ============ HUB (home) — karty nawigacyjne ============ */
+.hub{display:grid; grid-template-columns:repeat(2,1fr); gap:18px; margin-top:14px}
+@media (max-width:720px){ .hub{grid-template-columns:1fr} }
+.hub-card{position:relative; display:flex; flex-direction:column; gap:8px; padding:28px; border:1px solid var(--line); border-radius:16px; background:var(--surface); overflow:hidden; transition:transform .35s cubic-bezier(.2,.7,.3,1),border-color .35s,box-shadow .35s}
+.hub-card:hover{transform:translateY(-5px); border-color:var(--chip-line); box-shadow:0 24px 50px -30px var(--shadow)}
+.hub-card .k{font-family:'JetBrains Mono Variable',monospace; font-size:12px; color:var(--accent); letter-spacing:.12em}
+.hub-card h3{font-family:'Space Grotesk Variable',sans-serif; font-size:24px; font-weight:600; letter-spacing:-.01em; display:flex; align-items:center; gap:10px}
+.hub-card p{color:var(--muted); font-size:15.5px}
+.hub-card .go{margin-top:auto; font-family:'JetBrains Mono Variable',monospace; font-size:13px; color:var(--accent); display:inline-flex; align-items:center; gap:7px; transition:gap .25s}
+.hub-card:hover .go{gap:12px}
+.hub-card::after{content:""; position:absolute; right:-40px; top:-40px; width:120px; height:120px; border-radius:50%; background:radial-gradient(circle, var(--chip), transparent 70%); opacity:0; transition:opacity .4s}
+.hub-card:hover::after{opacity:1}
+
+/* ============ ANIM: gradient akcentu na nagłówku hero + shimmer CTA ============ */
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+.btn-primary.sh{background:linear-gradient(110deg,var(--accent) 0%,var(--accent-soft) 30%,var(--accent) 60%); background-size:200% 100%; animation:shimmer 5s linear infinite}
+@media (prefers-reduced-motion:reduce){ .btn-primary.sh{animation:none} .drawer,.drawer-panel{transition:none} }
+
+/* ============ O MNIE ============ */
+.about-lede{font-family:'Space Grotesk Variable',sans-serif; font-size:clamp(20px,3vw,26px); line-height:1.4; letter-spacing:-.01em; color:var(--text); margin-bottom:8px; text-wrap:pretty}
+.about-facts{display:flex; flex-direction:column; border-top:1px solid var(--line); margin-top:30px}
+.about-facts .row{display:grid; grid-template-columns:170px 1fr; gap:20px; padding:16px 2px; border-bottom:1px solid var(--line)}
+.about-facts .row .l{font-family:'JetBrains Mono Variable',monospace; font-size:12.5px; color:var(--accent); letter-spacing:.05em; text-transform:uppercase}
+.about-facts .row .v{color:var(--text); font-size:16px}
+@media (max-width:560px){ .about-facts .row{grid-template-columns:1fr; gap:4px} }

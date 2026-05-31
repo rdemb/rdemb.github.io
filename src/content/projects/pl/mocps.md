@@ -1,5 +1,5 @@
 ---
-title: "MOCPS — Motion-Grounded Object-Centric Predictive State"
+title: "MOCPS, Motion-Grounded Object-Centric Predictive State"
 lang: "pl"
 kind: "project"
 excerpt: ""
@@ -75,7 +75,7 @@ Wynik pochodzi z cold reproducibility run:
 
 Żądane pary world/horizon poza obsługiwaną powierzchnią stabilności były jawnie pominięte, nie policzone po cichu.
 
-## v0.6.1 — dynamic moving-distractor stress test
+## v0.6.1, dynamic moving-distractor stress test
 
 Ten test dodał trudniejszy świat: jeden poruszający się target i jeden podobnie jasny poruszający się distractor. Architektura MOCPS nie była zmieniana ani dostrajana pod ten przypadek.
 
@@ -91,7 +91,7 @@ Pytanie było proste: czy single-object MOCPS radzi sobie, gdy rusza się więce
 
 Interpretacja: dynamiczny distractor łamie obecną single-object wersję MOCPS. Najbardziej prawdopodobny problem to object selection: przy dwóch podobnie jasnych poruszających się obiektach masa objectness częściej przechyla się w stronę distractora niż targetu. To jest negatywny wynik i dobry następny kierunek: multi-object / slot-like state.
 
-## v0.6.2 — dynamic-distractor selection audit
+## v0.6.2, dynamic-distractor selection audit
 
 Kolejny audyt sprawdził, czy problem z v0.6.1 znika, gdy target jest wybierany poprawnie. To był test diagnostyczny, nie nowa architektura.
 
@@ -105,7 +105,7 @@ Kolejny audyt sprawdził, czy problem z v0.6.1 znika, gdy target jest wybierany 
 
 Interpretacja: v0.6.1 był przede wszystkim problemem object binding / target selection. Prosty image-derived two-component selector rozwiązuje ten konkretny stress test, ale to nadal diagnostyka, nie claim o gotowym multi-object modelu. Następny krok to minimalny trenowalny multi-object / slot-like MOCPS.
 
-## v0.7 — minimalny two-slot MOCPS audit
+## v0.7, minimalny two-slot MOCPS audit
 
 v0.7 zamienił diagnostykę z v0.6.2 w powtarzalny minimalny two-slot pipeline. Nadal nie jest to pełne trenowalne Slot Attention. Sloty są wyciągane z image-derived motion components, a target w tym świecie jest lewym startującym komponentem.
 
@@ -121,7 +121,7 @@ Dodatkowo: h1/h2 zostały naprawione z `1/10` w single-object MOCPS do `10/10` w
 
 Interpretacja: na tym sprawdzonym dynamic-distractor gridzie explicit two-object state naprawia awarię single-object MOCPS. To jest pozytywny wynik diagnostyczny, ale nie dowód ogólnej multi-object robustness i nie gotowy trenowalny slot model. Następny krok to trainable slot assignment, a potem crossing objects, occlusion, acceleration i noisy backgrounds.
 
-## v0.7.1 — trainable two-slot assignment audit
+## v0.7.1, trainable two-slot assignment audit
 
 v0.7.1 sprawdził, czy hard-coded left-slot assignment da się zastąpić małą trenowalną głową. Scorer był trenowany tylko z image-derived component pseudo-targets: targetem był komponent z mniejszym obserwowanym początkowym centroidem x. Generatorowe pozycje były użyte tylko do oracle/eval/baseline.
 
@@ -134,7 +134,7 @@ v0.7.1 sprawdził, czy hard-coded left-slot assignment da się zastąpić małą
 
 Interpretacja: minimalna trenowalna głowa assignment reprodukuje fixed-left two-slot result na tym sprawdzonym świecie i zachowuje naprawę h1/h2 (`10/10`). To nadal jest toy diagnostic: nie pełne trainable Slot Attention, nie benchmark i nie claim o szerokiej multi-object robustness.
 
-## v0.8 — Crossing-objects stress test
+## v0.8, Crossing-objects stress test
 
 v0.8 sprawdził trainable two-slot MOCPS na dwóch podobnych poruszających się obiektach, które zamieniają kolejność left/right. To test tożsamości, nie benchmark.
 
@@ -149,7 +149,7 @@ Interpretacja: feed-forward trainable assignment nie zachowuje tożsamości po c
 
 Zastrzeżenie: to nadal toy diagnostic; nie pełne trainable Slot Attention, nie benchmark, nie SOTA, nie claim o AGI, physics understanding, general world model ani szerokiej multi-object robustness.
 
-## v0.8.1 — Memory-slot identity audit
+## v0.8.1, Memory-slot identity audit
 
 v0.8.1 sprawdził, czy prosta pamięć slotu wystarczy tam, gdzie feed-forward assignment pękł przy crossing. Slot startuje od image-derived left-starting component i potem używa tylko historii obserwowanych komponentów: poprzedniego centroidu, prędkości i masy.
 
@@ -166,7 +166,7 @@ Interpretacja: w tym sprawdzonym toy świecie problem z v0.8 był problemem pami
 
 Zastrzeżenie: to nadal diagnostyka. Nie jest to pełne trainable Slot Attention, benchmark, SOTA, AGI, physics understanding, general world model ani szeroka multi-object robustness.
 
-## v0.9 — Occlusion memory-slot audit
+## v0.9, Occlusion memory-slot audit
 
 v0.9 dodał krótką okluzję: dwa podobne obiekty dzielą tę samą ścieżkę y i na chwilę zlewają się w jeden widoczny blob. To rozdziela zwykłą pamięć od pamięci predykcyjnej.
 
@@ -179,7 +179,7 @@ v0.9 dodał krótką okluzję: dwa podobne obiekty dzielą tę samą ścieżkę 
 
 Interpretacja: prosta ciągłość centroidu wystarcza, gdy oba komponenty są widoczne. Nie wystarcza, gdy obraz scala dwa obiekty w jeden komponent. Predictive memory przewija slot przez niejednoznaczną obserwację i obniża confidence zamiast udawać pełną pewność.
 
-## v0.9.1 — Learned recurrent occlusion gate
+## v0.9.1, Learned recurrent occlusion gate
 
 v0.9.1 zastąpił ręczną decyzję update/predict małym learned gate. Gate był trenowany z image-derived pseudo-targetów: czy w tej klatce jest wystarczająco komponentów, żeby zaufać obserwacji, czy trzeba przewinąć stan z pamięci.
 
@@ -193,7 +193,7 @@ Dodatkowo: identity switch rate `0.000`, gate final update accuracy `1.000`.
 
 Interpretacja: learned gate odtwarza zachowanie ręcznej predictive memory na tym sprawdzonym gridzie. To jest pozytywny wynik diagnostyczny, ale nadal nie pełne trainable Slot Attention. Następny test powinien dodać dłuższą okluzję i akcelerację.
 
-## v0.9.2 — Long-occlusion memory sweep
+## v0.9.2, Long-occlusion memory sweep
 
 Ten sweep sprawdził learned recurrent slot memory przy dłuższych oknach okluzji: `1`, `2`, `3`, `4` i `6` klatek merged observation.
 
@@ -203,7 +203,7 @@ Interpretacja: na tym stałoprędkościowym toy diagnostic nie pojawił się bot
 
 Zastrzeżenie: toy diagnostic only; nie pełne trainable Slot Attention; nie benchmark, SOTA, AGI, physics understanding ani general world model.
 
-## v0.10 — Acceleration-through-occlusion stress test
+## v0.10, Acceleration-through-occlusion stress test
 
 Co się zmieniło: sprawdziłem learned recurrent slot memory, gdy ukryty obiekt zmienia prędkość w pobliżu albo w trakcie okluzji.
 
@@ -213,7 +213,7 @@ Interpretacja: akceleracja ujawnia bottleneck motion extrapolation / identity bi
 
 Zastrzeżenie: toy diagnostic only; nie pełne trainable Slot Attention; nie benchmark, SOTA, AGI, physics understanding ani general world model.
 
-## v0.10.1 — Acceleration-aware memory dynamics
+## v0.10.1, Acceleration-aware memory dynamics
 
 Co się zmieniło: sprawdziłem mały acceleration-aware recurrent state po tym, jak v0.10 pokazało awarie przy strong acceleration i direction change.
 
@@ -223,7 +223,7 @@ Interpretacja: proste dodanie liniowego acceleration state nie wystarcza. Confid
 
 Zastrzeżenie: toy diagnostic only; nie pełne trainable Slot Attention; nie benchmark, SOTA, AGI, physics understanding ani general world model.
 
-## v0.10.2 — Dynamics arbitration memory audit
+## v0.10.2, Dynamics arbitration memory audit
 
 Co się zmieniło: sprawdziłem, czy safe fallback / arbitration może używać akceleracji tylko wtedy, gdy image-derived evidence jest wystarczająco dobre, zamiast stosować acceleration state zawsze.
 
@@ -233,7 +233,7 @@ Interpretacja: akceleracja powinna być warunkowa, nie zawsze włączona. Safe f
 
 Zastrzeżenie: toy diagnostic only; nie pełne trainable Slot Attention; nie benchmark, SOTA, AGI, physics understanding ani general world model.
 
-## v0.11 — Noisy reappearance memory stress test
+## v0.11, Noisy reappearance memory stress test
 
 Co się zmieniło: sprawdziłem, czy safe-fallback memory przeżywa noisy albo mylące reappearance po okluzji.
 
@@ -243,7 +243,7 @@ Interpretacja: następny bottleneck to observation reliability / re-identificati
 
 Zastrzeżenie: toy diagnostic only; nie pełne trainable Slot Attention; nie benchmark, SOTA, AGI, physics understanding, general world model ani szeroka noisy-reappearance robustness.
 
-## v0.11.1 — Observation reliability / appearance-memory audit
+## v0.11.1, Observation reliability / appearance-memory audit
 
 Co się zmieniło: sprawdziłem, czy image-derived reliability gating albo lekka appearance memory potrafi odrzucać transient false components po reappearance.
 
@@ -253,7 +253,7 @@ Interpretacja: false reappearance binding wygląda tutaj jak problem observation
 
 Zastrzeżenie: toy diagnostic only; nie pełne trainable Slot Attention; nie benchmark, SOTA, AGI, physics understanding, general world model ani szeroka noisy-reappearance robustness.
 
-## v0.12 — Hard false-blob / appearance-ambiguity stress audit
+## v0.12, Hard false-blob / appearance-ambiguity stress audit
 
 Co się zmieniło: sprawdziłem reliability gating na trudniejszych false blobach podobnych do distractora albo targetu: target-like brightness, target-like motion, near reappearance, persistent blobs, multi false blobs i appearance swap po okluzji.
 
@@ -263,7 +263,7 @@ Interpretacja: to częściowy sukces, nie rozwiązanie re-identification. Reliab
 
 Zastrzeżenie: toy diagnostic only; local checked grid; nie benchmark; nie broad robustness; nie rozwiązane appearance memory ani re-identification.
 
-## v0.12.1 — Reliability stability / sample-size audit
+## v0.12.1, Reliability stability / sample-size audit
 
 Co się zmieniło: ponownie sprawdziłem słabość easy `false_blob` z v0.12 większym targetowanym próbkowaniem (`4 x 16`, 960 próbek na mode/variant dla identity metrics), bez nowej architektury.
 
@@ -273,13 +273,13 @@ Interpretacja: v0.12.1 zachowuje v0.11.1-level identity metrics na easy false-bl
 
 Zastrzeżenie: nie benchmark; nie broad robustness; nie rozwiązane re-identification, appearance memory ani confidence calibration.
 
-## v0.13 — Confidence / risk calibration audit
+## v0.13, Confidence / risk calibration audit
 
 v0.13 audytuje confidence/risk calibration dla observation reliability. Image-derived reliability i disagreement risk signals identyfikują wiele false-selection i identity-switch risks na sprawdzonym lokalnym gridzie, umożliwiając conservative abstention bez held-out threshold leakage.
 
 To nadal toy diagnostic: nie rozwiązuje re-identification, appearance memory, confidence calibration ani broad noisy-reappearance robustness.
 
-## v0.14 — Risk-aware selective update policy audit
+## v0.14, Risk-aware selective update policy audit
 
 v0.14 testuje risk-aware selective update policies dla observation reliability. Na sprawdzonym
 lokalnym gridzie image-derived risk pomógł wybrać `hold_previous_state`: held-out hard switch
@@ -289,7 +289,7 @@ kontrolach.
 To nadal toy diagnostic: nie rozwiązuje re-identification, confidence calibration ani broad
 noisy-reappearance robustness.
 
-## v0.14.1 — Hold-policy stress audit
+## v0.14.1, Hold-policy stress audit
 
 v0.14.1 stress-testuje hold-based risk-aware update policy na szerszym checked gridzie.
 `hold_previous_state/conservative` utrzymał hard-mode switch na `0.000` i obniżył control
@@ -299,7 +299,7 @@ false-selection issues pozostaje.
 To nadal toy diagnostic: nie rozwiązuje re-identification, confidence calibration ani broad
 noisy-reappearance robustness.
 
-## v0.14.2 — Hold-policy Pareto audit
+## v0.14.2, Hold-policy Pareto audit
 
 v0.14.2 mapuje threshold tradeoff dla hold-based risk-aware updates. Na sprawdzonym gridzie
 `hold_previous_state/conservative` pozostaje zero-switch candidate, ale niższy intervention cost

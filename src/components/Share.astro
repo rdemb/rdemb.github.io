@@ -1,0 +1,24 @@
+---
+const { lang = 'pl' } = Astro.props;
+const lbl = { pl: 'udostępnij', en: 'share', de: 'teilen' }[lang] ?? 'udostępnij';
+const done = { pl: 'skopiowano', en: 'copied', de: 'kopiert' }[lang] ?? 'skopiowano';
+---
+<div class="share" data-done={done}>
+  <span class="lbl" data-share-lbl>{lbl}</span>
+  <button data-share-copy title="link" aria-label="link"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+  <a data-share-x target="_blank" rel="noopener" title="X" aria-label="X"><svg viewBox="0 0 24 24"><path d="M18.9 2H22l-7 8 8.2 12h-6.4l-5-7.3L5.8 22H2.6l7.5-8.6L2 2h6.6l4.5 6.6L18.9 2zm-2.2 18h1.8L7.4 4H5.5l11.2 16z"/></svg></a>
+  <a data-share-li target="_blank" rel="noopener" title="LinkedIn" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M4.98 3.5A2.5 2.5 0 1 1 0 3.5a2.5 2.5 0 0 1 4.98 0zM.2 8.2h4.5V24H.2V8.2zM8 8.2h4.3v2.2h.06c.6-1.1 2.06-2.27 4.24-2.27 4.54 0 5.38 2.99 5.38 6.87V24h-4.5v-7.1c0-1.7-.03-3.88-2.37-3.88-2.37 0-2.73 1.85-2.73 3.76V24H8V8.2z"/></svg></a>
+</div>
+<script is:inline>
+  (function(){
+    var url=location.href, title=document.title;
+    var x=document.querySelector('[data-share-x]'); if(x) x.href='https://twitter.com/intent/tweet?text='+encodeURIComponent(title)+'&url='+encodeURIComponent(url);
+    var li=document.querySelector('[data-share-li]'); if(li) li.href='https://www.linkedin.com/sharing/share-offsite/?url='+encodeURIComponent(url);
+    var c=document.querySelector('[data-share-copy]'), box=document.querySelector('.share'), lbl=document.querySelector('[data-share-lbl]');
+    if(c) c.addEventListener('click', function(){
+      var done = box ? box.getAttribute('data-done') : 'ok';
+      function ok(){ c.classList.add('copied'); var o=lbl?lbl.textContent:''; if(lbl) lbl.textContent=done; setTimeout(function(){ c.classList.remove('copied'); if(lbl) lbl.textContent=o; },1500); }
+      if(navigator.clipboard){ navigator.clipboard.writeText(url).then(ok).catch(function(){}); }
+    });
+  })();
+</script>

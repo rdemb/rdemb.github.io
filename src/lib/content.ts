@@ -16,7 +16,7 @@ export async function projectsByLang(lang: Lang) {
 
 export const blogSw = { pl: '/blog/', en: '/en/blog/', de: '/de/blog/' };
 export const postSw = (key: string) => ({ pl: `/blog/${key}/`, en: `/en/blog/${key}/`, de: `/de/blog/${key}/` });
-export const labSw = (key: string) => ({ pl: `/lab/${key}/`, en: `/en/lab/${key}/`, de: `/de/lab/${key}/` });
+export const labSw = (key: string) => ({ pl: `/projekty/${key}/`, en: `/en/projekty/${key}/`, de: `/de/projekty/${key}/` });
 
 export const kindLabel: Record<Lang, Record<string, string>> = {
   pl: { project: 'projekt', reflection: 'refleksja' },
