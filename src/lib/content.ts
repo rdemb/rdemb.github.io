@@ -19,9 +19,9 @@ export const postSw = (key: string) => ({ pl: `/blog/${key}/`, en: `/en/blog/${k
 export const labSw = (key: string) => ({ pl: `/projekty/${key}/`, en: `/en/projekty/${key}/`, de: `/de/projekty/${key}/` });
 
 export const kindLabel: Record<Lang, Record<string, string>> = {
-  pl: { project: 'projekt', reflection: 'refleksja' },
-  en: { project: 'project', reflection: 'reflection' },
-  de: { project: 'Projekt', reflection: 'Reflexion' },
+  pl: { project: 'projekt', reflection: 'refleksja', trading: 'trading' },
+  en: { project: 'project', reflection: 'reflection', trading: 'trading' },
+  de: { project: 'Projekt', reflection: 'Reflexion', trading: 'Trading' },
 };
 
 export const blogText: Record<Lang, { title: string; lead: string; back: string; all: string }> = {
