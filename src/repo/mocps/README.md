@@ -26,9 +26,11 @@ world model. It is an honest map of when a learned predictive state earns its ke
 - `RESULT_LEARNED_OBJECT_PERMANENCE.md` - the full write-up: theory, phase diagram, two mechanisms, the fix, limitations.
 - `figures/fig1_phase.png` - the phase diagram (learning advantage across modes by lengths).
 - `figures/fig2_mechanisms.png` - the two failure modes against the separation margin.
+- `figures/mocps_hero.gif` - a looping animation of the headline scenario (direction change under occlusion).
 - `analyze_phase.py` - computes V(L) = learned minus velocity per cell, with per-seed statistics.
 - `separation_margin.py` - computes the separation margin d_min, the geometry behind the ceiling.
 - `make_figures.py` - regenerates both figures from the run summaries.
+- `make_animation.py` - renders the hero animation from the ground-truth trajectory (no fabricated guesses).
 
 ## Reproduce
 

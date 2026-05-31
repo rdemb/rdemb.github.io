@@ -161,9 +161,13 @@ python -m jepa_petri.run_dynamics_arbitration_memory_mocps \
 python analyze_phase.py runs/phase/summary.json
 python separation_margin.py
 # Figures 1 and 2 (phase diagram + two-mechanism scatter)
-python make_figures.py   # writes figures/fig1_phase.png and figures/fig2_mechanisms.png
+python make_figures.py    # writes figures/fig1_phase.png and figures/fig2_mechanisms.png
+# Hero animation of the headline scenario
+python make_animation.py  # writes figures/mocps_hero.gif
 ```
 
 **Figures.** Figure 1 (the phase diagram) and Figure 2 (the two failure modes, with the separation
 threshold at ≈1 object-diameter) are produced by `make_figures.py` from the run summaries and the
-`separation_margin.py` geometry. They are the two images embedded in §4 and §5.
+`separation_margin.py` geometry. They are the two images embedded in §4 and §5. `make_animation.py`
+renders a faithful schematic of the headline scenario (direction change under occlusion): it shows
+the ground-truth trajectory and the measured outcomes, and fabricates no method's internal guess.

@@ -15,6 +15,14 @@ const lang = Astro.params.lang as Lang;
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 const labW = { en: 'Lab', de: 'Lab' }[lang];
+const heroAlt = {
+  en: 'Animation: two balls cross, one is hidden and changes its motion; on reappearance the target must be re-identified',
+  de: 'Animation: zwei Bälle kreuzen sich, einer wird verdeckt und ändert seine Bewegung; beim Wiederauftauchen muss das Ziel erkannt werden',
+}[lang];
+const heroCap = {
+  en: 'Two identical balls cross, one vanishes and changes its motion. On reappearance, which one is the target? Memoryless: 18%, learned recurrent state: 100%.',
+  de: 'Zwei identische Bälle kreuzen sich, einer verschwindet und ändert seine Bewegung. Welcher ist nach dem Wiederauftauchen das Ziel? Gedächtnislos: 18%, gelernter rekurrenter Zustand: 100%.',
+}[lang];
 ---
 <PageLayout lang={lang} title={`${entry.data.title} · D-LOGIC studio`} description={entry.data.excerpt} sw={labSw(entry.data.key)}>
   <div class="crumbs"><a href="/">D-LOGIC</a> <span>/</span> <a href="/#lab">{labW}</a> <span>/</span> {entry.data.key}</div>
@@ -23,6 +31,12 @@ const labW = { en: 'Lab', de: 'Lab' }[lang];
     <h1>{entry.data.title}</h1>
     {entry.data.excerpt && <p class="excerpt">{entry.data.excerpt}</p>}
   </header>
+  {entry.data.key === 'mocps' && (
+    <figure class="mocps-hero">
+      <img src="/mocps/mocps_hero.gif" alt={heroAlt} />
+      <figcaption>{heroCap}</figcaption>
+    </figure>
+  )}
   {entry.data.key === 'mocps' && <RepoBrowser lang={lang} />}
   <article class="prose"><Content /></article>
   <div class="article-foot"><a class="mono" href="/#lab" style="color:var(--accent)">← lab</a></div>
