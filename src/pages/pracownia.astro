@@ -1,0 +1,170 @@
+---
+import Chrome from '../components/Chrome.astro';
+import { withUi } from '../i18n';
+
+const dict = withUi({
+  pl: {
+    'lab.eyebrow': 'Pracownia',
+    'lab.title': "Rzeczy, których można <span class='hl'>dotknąć.</span>",
+    'lab.lead': 'Interaktywne dema. Każde to dowód, że coś działa, nie obietnica. Zacznij od ruszenia myszką po polu poniżej.',
+    'lab.hint': 'rusz kursorem',
+    'lab.grid.head': 'Co tu powstaje',
+    'lab.c1.k': '01 · 3D / WebGL', 'lab.c1.t': 'Pole sygnału', 'lab.c1.d': 'Interaktywne pole 3D renderowane na żywo w przeglądarce. To, które widzisz na górze. Reaguje na kursor.', 'lab.c1.s': 'na żywo',
+    'lab.c2.k': '02 · dane', 'lab.c2.t': 'Dashboard: wrzuć 1 plik', 'lab.c2.d': 'Wgraj swój CSV i zobacz uczciwą wizualizację z jawną niepewnością. Bez logowania, liczone u Ciebie w przeglądarce.', 'lab.c2.s': 'wkrótce',
+    'lab.c3.k': '03 · web', 'lab.c3.t': 'Strony: od minimalizmu po 3D', 'lab.c3.d': 'Zróżnicowane szablony i realizacje. Czysty minimalizm, immersyjne 3D, wielojęzyczność PL/DE/EN.', 'lab.c3.s': 'wkrótce',
+    'lab.c4.k': '04 · społeczność', 'lab.c4.t': 'Mini-portal dla grup', 'lab.c4.d': 'Lekki portal dla małych społeczności, klubów i firm. Miejsce, ogłoszenia, ludzie. Koncept w budowie.', 'lab.c4.s': 'koncept',
+    'lab.foot': 'Pomysł na coś, czego tu nie ma? Napisz, zbuduję demo.',
+  },
+  en: {
+    'lab.eyebrow': 'Workshop',
+    'lab.title': "Things you can <span class='hl'>touch.</span>",
+    'lab.lead': 'Interactive demos. Each one is proof that something works, not a promise. Start by moving your mouse across the field below.',
+    'lab.hint': 'move your cursor',
+    'lab.grid.head': 'What is being built here',
+    'lab.c1.k': '01 · 3D / WebGL', 'lab.c1.t': 'Signal field', 'lab.c1.d': 'An interactive 3D field rendered live in your browser, the one above. It reacts to the cursor.', 'lab.c1.s': 'live',
+    'lab.c2.k': '02 · data', 'lab.c2.t': 'Dashboard: drop one file', 'lab.c2.d': 'Upload your CSV and see an honest visualization with explicit uncertainty. No login, computed locally in your browser.', 'lab.c2.s': 'soon',
+    'lab.c3.k': '03 · web', 'lab.c3.t': 'Sites: from minimal to 3D', 'lab.c3.d': 'Diverse templates and work. Clean minimalism, immersive 3D, multilingual PL/DE/EN.', 'lab.c3.s': 'soon',
+    'lab.c4.k': '04 · community', 'lab.c4.t': 'A mini portal for groups', 'lab.c4.d': 'A light portal for small communities, clubs and companies. A place, posts, people. A concept in progress.', 'lab.c4.s': 'concept',
+    'lab.foot': 'An idea for something not here yet? Write to me, I will build a demo.',
+  },
+  de: {
+    'lab.eyebrow': 'Werkstatt',
+    'lab.title': "Dinge, die man <span class='hl'>anfassen</span> kann.",
+    'lab.lead': 'Interaktive Demos. Jede ist ein Beweis, dass etwas funktioniert, kein Versprechen. Beweg zuerst die Maus über das Feld unten.',
+    'lab.hint': 'beweg den Cursor',
+    'lab.grid.head': 'Was hier entsteht',
+    'lab.c1.k': '01 · 3D / WebGL', 'lab.c1.t': 'Signalfeld', 'lab.c1.d': 'Ein interaktives 3D-Feld, live im Browser gerendert, das oben. Es reagiert auf den Cursor.', 'lab.c1.s': 'live',
+    'lab.c2.k': '02 · Daten', 'lab.c2.t': 'Dashboard: eine Datei rein', 'lab.c2.d': 'Lade deine CSV hoch und sieh eine ehrliche Visualisierung mit klarer Unsicherheit. Kein Login, lokal im Browser berechnet.', 'lab.c2.s': 'bald',
+    'lab.c3.k': '03 · Web', 'lab.c3.t': 'Seiten: von minimal bis 3D', 'lab.c3.d': 'Vielfältige Vorlagen und Arbeiten. Klares Minimal, immersives 3D, mehrsprachig DE/PL/EN.', 'lab.c3.s': 'bald',
+    'lab.c4.k': '04 · Community', 'lab.c4.t': 'Ein Mini-Portal für Gruppen', 'lab.c4.d': 'Ein leichtes Portal für kleine Communities, Vereine und Firmen. Ein Ort, Beiträge, Menschen. Ein Konzept in Arbeit.', 'lab.c4.s': 'Konzept',
+    'lab.foot': 'Eine Idee für etwas, das hier fehlt? Schreib mir, ich baue eine Demo.',
+  },
+});
+---
+<Chrome title="Pracownia · D-LOGIC studio" description="Interaktywne dema: pole 3D WebGL, dashboard na dane, strony, mini-portal. Dowód, nie obietnica." dict={dict} active="/pracownia/">
+  <section class="lab-hero">
+    <canvas id="field" aria-hidden="true"></canvas>
+    <div class="lab-hero-veil"></div>
+    <div class="wrap lab-hero-text">
+      <span class="eyebrow" data-i18n="lab.eyebrow">•</span>
+      <h1 data-i18n-html="lab.title">•</h1>
+      <p class="lead" data-i18n="lab.lead">•</p>
+      <span class="lab-hint"><span class="pulse"></span><span data-i18n="lab.hint">•</span></span>
+    </div>
+  </section>
+
+  <section class="wrap" style="padding:54px 0 80px">
+    <div class="sec-head reveal"><h2 data-i18n="lab.grid.head">•</h2></div>
+    <div class="lab-grid">
+      <article class="lab-card reveal live">
+        <div class="lab-card-top"><span class="k" data-i18n="lab.c1.k">•</span><span class="badge on" data-i18n="lab.c1.s">•</span></div>
+        <h3 data-i18n="lab.c1.t">•</h3><p data-i18n="lab.c1.d">•</p>
+      </article>
+      <article class="lab-card reveal" data-delay="1">
+        <div class="lab-card-top"><span class="k" data-i18n="lab.c2.k">•</span><span class="badge" data-i18n="lab.c2.s">•</span></div>
+        <h3 data-i18n="lab.c2.t">•</h3><p data-i18n="lab.c2.d">•</p>
+      </article>
+      <article class="lab-card reveal">
+        <div class="lab-card-top"><span class="k" data-i18n="lab.c3.k">•</span><span class="badge" data-i18n="lab.c3.s">•</span></div>
+        <h3 data-i18n="lab.c3.t">•</h3><p data-i18n="lab.c3.d">•</p>
+      </article>
+      <article class="lab-card reveal" data-delay="1">
+        <div class="lab-card-top"><span class="k" data-i18n="lab.c4.k">•</span><span class="badge" data-i18n="lab.c4.s">•</span></div>
+        <h3 data-i18n="lab.c4.t">•</h3><p data-i18n="lab.c4.d">•</p>
+      </article>
+    </div>
+    <p class="lab-foot reveal" data-i18n="lab.foot">•</p>
+  </section>
+
+  <script>
+    import * as THREE from 'three';
+    const canvas = document.getElementById('field') as HTMLCanvasElement | null;
+    if (canvas) {
+      const reduce = matchMedia('(prefers-reduced-motion:reduce)').matches;
+      const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
+      renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
+      const scene = new THREE.Scene();
+      scene.fog = new THREE.FogExp2(0x0c0e12, 0.11);
+      const camera = new THREE.PerspectiveCamera(54, 1, 0.1, 100);
+      camera.position.set(0, 2.4, 6.4);
+
+      const N = 78, S = 15;
+      const count = N * N;
+      const base = new Float32Array(count * 3);
+      let i = 0;
+      for (let x = 0; x < N; x++) for (let z = 0; z < N; z++) {
+        base[i * 3] = (x / (N - 1) - 0.5) * S;
+        base[i * 3 + 1] = 0;
+        base[i * 3 + 2] = (z / (N - 1) - 0.5) * S;
+        i++;
+      }
+      const geo = new THREE.BufferGeometry();
+      geo.setAttribute('position', new THREE.BufferAttribute(base.slice(), 3));
+      const mat = new THREE.PointsMaterial({ color: 0xe8b23a, size: 0.05, transparent: true, opacity: 0.92, sizeAttenuation: true });
+      const points = new THREE.Points(geo, mat);
+      scene.add(points);
+
+      function resize() {
+        const r = canvas!.getBoundingClientRect();
+        renderer.setSize(r.width, r.height, false);
+        camera.aspect = r.width / Math.max(r.height, 1);
+        camera.updateProjectionMatrix();
+      }
+      resize();
+      addEventListener('resize', resize);
+
+      let mx = 0, my = 0, tx = 0, ty = 0;
+      addEventListener('pointermove', (e) => { tx = e.clientX / innerWidth - 0.5; ty = e.clientY / innerHeight - 0.5; });
+
+      const pos = geo.attributes.position.array as Float32Array;
+      let t = 0;
+      function frame() {
+        t += 0.012;
+        mx += (tx - mx) * 0.05; my += (ty - my) * 0.05;
+        for (let k = 0; k < count; k++) {
+          const px = base[k * 3], pz = base[k * 3 + 2];
+          const d = Math.sqrt(px * px + pz * pz);
+          const mxs = mx * 6, mzs = my * 6;
+          const md = Math.sqrt((px - mxs) * (px - mxs) + (pz - mzs) * (pz - mzs));
+          pos[k * 3 + 1] =
+            Math.sin(d * 0.85 - t * 1.6) * 0.55 +
+            Math.sin(px * 0.5 + t) * 0.22 +
+            Math.cos(pz * 0.6 - t * 0.8) * 0.22 +
+            Math.exp(-md * 0.5) * 1.1; // cursor lifts the field
+        }
+        geo.attributes.position.needsUpdate = true;
+        camera.position.x += (mx * 3.4 - camera.position.x) * 0.04;
+        camera.position.y += ((-my * 2.2 + 2.6) - camera.position.y) * 0.04;
+        camera.lookAt(0, 0, 0);
+        points.rotation.y += 0.0007;
+        renderer.render(scene, camera);
+        if (!reduce) requestAnimationFrame(frame);
+      }
+      frame();
+    }
+  </script>
+
+  <style>
+    .lab-hero { position: relative; height: 74vh; min-height: 540px; max-height: 760px; overflow: hidden; border-bottom: 1px solid var(--line); }
+    #field { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+    .lab-hero-veil { position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(120% 90% at 18% 30%, color-mix(in srgb, var(--bg) 70%, transparent) 0%, transparent 55%),
+                  linear-gradient(180deg, transparent 40%, var(--bg) 100%); }
+    .lab-hero-text { position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column; justify-content: center; pointer-events: none; }
+    .lab-hero-text h1 { font-family: 'Space Grotesk Variable', sans-serif; font-weight: 600; font-size: clamp(34px, 6vw, 68px); line-height: 1.04; letter-spacing: -0.02em; margin: 12px 0 0; max-width: 16ch; }
+    .lab-hero-text .lead { font-size: clamp(16px, 2.2vw, 20px); color: var(--muted); max-width: 54ch; margin-top: 18px; }
+    .lab-hint { display: inline-flex; align-items: center; gap: 8px; margin-top: 22px; font-family: 'JetBrains Mono Variable', monospace; font-size: 12.5px; color: var(--accent); text-transform: lowercase; letter-spacing: .04em; }
+    .lab-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+    .lab-card { border: 1px solid var(--line); border-radius: 16px; padding: 24px; background: var(--surface); transition: border-color .2s ease, transform .2s ease; }
+    .lab-card:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); transform: translateY(-2px); }
+    .lab-card.live { border-color: color-mix(in srgb, var(--accent) 55%, var(--line)); background: color-mix(in srgb, var(--accent) 5%, var(--surface)); }
+    .lab-card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .lab-card .k { font-family: 'JetBrains Mono Variable', monospace; font-size: 12px; color: var(--muted); letter-spacing: .03em; }
+    .lab-card h3 { font-family: 'Space Grotesk Variable', sans-serif; font-size: 21px; font-weight: 600; margin: 0 0 8px; }
+    .lab-card p { color: var(--muted); line-height: 1.6; font-size: 15px; margin: 0; }
+    .badge { font-family: 'JetBrains Mono Variable', monospace; font-size: 10.5px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 3px 9px; }
+    .badge.on { color: #1a1205; background: var(--accent); border-color: var(--accent); }
+    .lab-foot { margin-top: 26px; color: var(--muted); font-size: 14.5px; }
+    @media (max-width: 680px) { .lab-grid { grid-template-columns: 1fr; } .lab-hero { height: 64vh; } }
+  </style>
+</Chrome>

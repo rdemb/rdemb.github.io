@@ -1,0 +1,48 @@
+---
+// Live signal panel for the clawbot project page (moved off the home hero).
+const { lang = 'pl' } = Astro.props as { lang?: 'pl' | 'en' | 'de' };
+const T = {
+  pl: { lbl: '// sygnał', live: 'clawbot · online', s1: 'codzienne briefy', s2: 'na żywo', s3: 'bez ściemy' },
+  en: { lbl: '// signal', live: 'clawbot · online', s1: 'daily briefs', s2: 'live', s3: 'no fluff' },
+  de: { lbl: '// Signal', live: 'clawbot · online', s1: 'tägliche Briefs', s2: 'live', s3: 'kein Geschwafel' },
+}[lang];
+---
+<div class="scope reveal" style="margin:0 0 2rem">
+  <div class="scope-head">
+    <span class="lbl">{T.lbl}</span>
+    <span class="live"><span class="pulse"></span>{T.live}</span>
+  </div>
+  <canvas id="scope" aria-hidden="true"></canvas>
+  <div class="scope-foot">
+    <span class="stat">{T.s1}</span><span class="stat">{T.s2}</span><span class="stat">{T.s3}</span>
+  </div>
+</div>
+
+<script>
+  (function () {
+    const cv = document.getElementById('scope') as HTMLCanvasElement | null;
+    if (!cv) return;
+    const ctx = cv.getContext('2d')!;
+    const reduce = matchMedia('(prefers-reduced-motion:reduce)').matches;
+    let W = 0, H = 0, t = 0;
+    const dpr = Math.min(devicePixelRatio || 1, 2);
+    const cssv = (n: string) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+    function size() { const r = cv!.getBoundingClientRect(); W = r.width; H = r.height; cv!.width = W * dpr; cv!.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); }
+    size(); addEventListener('resize', size);
+    function y(x: number) { const nx = x / W; return H * 0.6 - nx * H * 0.12 + Math.sin(nx * Math.PI * 2 * 1.7 + t) * H * 0.16 + Math.sin(nx * Math.PI * 2 * 3.9 + t * 1.7) * H * 0.05; }
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      const w = cssv('--wave'), g = cssv('--wave-ghost'), l = cssv('--line');
+      ctx.strokeStyle = l; ctx.globalAlpha = .5;
+      for (let gy = H * .25; gy < H; gy += H * .25) { ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(W, gy); ctx.stroke(); }
+      ctx.globalAlpha = 1; ctx.strokeStyle = g; ctx.lineWidth = 6; ctx.lineJoin = 'round'; ctx.beginPath();
+      for (let x = 0; x <= W; x += 4) { const yy = y(x) + 8; x === 0 ? ctx.moveTo(x, yy) : ctx.lineTo(x, yy); } ctx.stroke();
+      ctx.shadowColor = w; ctx.shadowBlur = 12; ctx.strokeStyle = w; ctx.lineWidth = 2.2; ctx.beginPath();
+      let lx = 0, ly = 0;
+      for (let x = 0; x <= W; x += 2) { const yy = y(x); x === 0 ? ctx.moveTo(x, yy) : ctx.lineTo(x, yy); lx = x; ly = yy; } ctx.stroke();
+      ctx.shadowBlur = 0; ctx.fillStyle = w; ctx.beginPath(); ctx.arc(lx, ly, 3.4, 0, 7); ctx.fill();
+      t += 0.03; requestAnimationFrame(draw);
+    }
+    if (reduce) { t = 1; draw(); } else draw();
+  })();
+</script>
