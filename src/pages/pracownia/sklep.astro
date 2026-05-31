@@ -1,6 +1,7 @@
 ---
 import '@fontsource/cormorant-garamond/500.css';
 import '@fontsource/cormorant-garamond/600.css';
+import Motion from '../../components/Motion.astro';
 // Standalone example site (boutique e-commerce) for the D-LOGIC examples gallery.
 // Own design language, intentionally different from the D-LOGIC brand, to show range.
 // Visuals are designed (warm duotone fields + line art), not stock photos, so a clothing
@@ -52,21 +53,23 @@ const cats = [
   <section class="hero">
     <div class="hero-grain"></div>
     <div class="hero-tx">
-      <p class="kicker">Kolekcja jesień / zima</p>
-      <h1>Rzeczy zrobione<br />dobrze.</h1>
-      <p class="sub">Ubrania i przedmioty szyte w Europie, z naturalnych materiałów. Mniej, ale lepiej.</p>
-      <a class="btn" href="#kolekcja">Zobacz kolekcję</a>
+      <p class="kicker" data-hero style="--hi:0">Kolekcja jesień / zima</p>
+      <h1 data-hero style="--hi:1">Rzeczy zrobione<br />dobrze.</h1>
+      <p class="sub" data-hero style="--hi:2">Ubrania i przedmioty szyte w Europie, z naturalnych materiałów. Mniej, ale lepiej.</p>
+      <a class="btn" href="#kolekcja" data-hero style="--hi:3" data-magnetic>Zobacz kolekcję</a>
     </div>
     <div class="hero-mark">M</div>
   </section>
 
-  <div class="strip">
-    <span>Darmowa dostawa od 300 zł</span><i>·</i><span>Zwroty w 30 dni</span><i>·</i><span>Szyte w Europie</span><i>·</i><span>Pakowane bez plastiku</span>
+  <div class="strip marquee" aria-hidden="true">
+    <div class="marquee-in">
+      <span>Darmowa dostawa od 300 zł</span><i>·</i><span>Zwroty w 30 dni</span><i>·</i><span>Szyte w Europie</span><i>·</i><span>Pakowane bez plastiku</span><i>·</i><span>Darmowa dostawa od 300 zł</span><i>·</i><span>Zwroty w 30 dni</span><i>·</i><span>Szyte w Europie</span><i>·</i><span>Pakowane bez plastiku</span><i>·</i>
+    </div>
   </div>
 
   <section class="kat" id="kat">
     {cats.map((c) => (
-      <a class="kat-card" href="#kolekcja" style={`background:${c.g}`}>
+      <a class="kat-card" href="#kolekcja" data-reveal style={`background:${c.g}`}>
         <span class="kat-name">{c.n}</span>
         <span class="kat-go">Zobacz →</span>
       </a>
@@ -74,13 +77,13 @@ const cats = [
   </section>
 
   <section class="coll" id="kolekcja">
-    <div class="coll-head">
+    <div class="coll-head" data-reveal>
       <h2>Nowości</h2>
       <a href="#kolekcja" class="seeall">Zobacz wszystko →</a>
     </div>
     <div class="grid">
       {products.map((pr) => (
-        <article class="prod">
+        <article class="prod" data-reveal>
           <div class="prod-img" style={`background:${pr.g}`}>
             <svg class="hanger" viewBox="0 0 64 40" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true">
               <circle cx="32" cy="7" r="3" /><path d="M32 10v3M9 33 32 15 55 33Z" />
@@ -94,8 +97,8 @@ const cats = [
   </section>
 
   <section class="editorial" id="hist">
-    <div class="ed-art"><span class="ed-mono">M</span></div>
-    <div class="ed-tx">
+    <div class="ed-art" data-reveal><span class="ed-mono" data-parallax="0.08">M</span></div>
+    <div class="ed-tx" data-reveal>
       <p class="kicker">Nasza historia</p>
       <h2>Robimy mniej, żeby robić lepiej.</h2>
       <p>Każdą rzecz projektujemy tak, by służyła latami. Współpracujemy z małymi szwalniami w Polsce i Portugalii, wybieramy wełnę, len i kaszmir z certyfikowanych źródeł.</p>
@@ -104,7 +107,7 @@ const cats = [
     </div>
   </section>
 
-  <section class="news">
+  <section class="news" data-reveal>
     <h2>Dołącz do MAISON</h2>
     <p>Zapisz się i odbierz 10% na pierwsze zakupy. Bez spamu, tylko nowe kolekcje.</p>
     <form class="news-form" onsubmit="return false">
@@ -152,7 +155,7 @@ const cats = [
     img { display:block; max-width:100%; }
     a { color:inherit; text-decoration:none; }
     h1,h2,h3,h4 { font-family:var(--serif); font-weight:600; letter-spacing:-.01em; }
-    .btn { display:inline-block; background:var(--tx); color:var(--bg); padding:14px 26px; border:0; border-radius:2px; font-size:14px; letter-spacing:.04em; text-transform:uppercase; cursor:pointer; transition:background .2s; font-family:var(--sans); }
+    .btn { display:inline-block; background:var(--tx); color:var(--bg); padding:14px 26px; border:0; border-radius:2px; font-size:14px; letter-spacing:.04em; text-transform:uppercase; cursor:pointer; transition:background .2s, transform .25s cubic-bezier(.22,1,.36,1); font-family:var(--sans); }
     .btn:hover { background:var(--acc); }
     .btn.ghost { background:transparent; color:var(--tx); border:1px solid var(--tx); }
     .btn.ghost:hover { background:var(--tx); color:var(--bg); }
@@ -183,6 +186,8 @@ const cats = [
 
     .strip { display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:14px; background:var(--tx); color:var(--bg); font-size:12.5px; letter-spacing:.08em; text-transform:uppercase; padding:14px; }
     .strip i { color:var(--acc); font-style:normal; }
+    .strip.marquee { display:block; flex-wrap:nowrap; padding:16px 0; }
+    .strip .marquee-in span { padding:0 20px; }
 
     .kat { max-width:1180px; margin:78px auto; padding:0 26px; display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
     .kat-card { position:relative; overflow:hidden; border-radius:3px; aspect-ratio:4/5; display:flex; align-items:flex-end; }
@@ -272,5 +277,7 @@ const cats = [
       addEventListener('keydown',e=>{if(e.key==='Escape')close();});
     })();
   </script>
+
+  <Motion />
 </body>
 </html>
