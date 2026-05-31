@@ -393,3 +393,26 @@ Control-Interventionskosten, ohne breite re-identification-Behauptung.
 ## Was das nicht bedeutet
 
 Das ist kein Benchmark, kein SOTA, kein Beleg für Physikverständnis, kein allgemeines World Model und keine Behauptung, dass JEPA funktioniert. Es ist ein kleines, klar begrenztes diagnostisches Resultat.
+
+
+## Ergebnis (Mai 2026): ein Phasendiagramm der Objektpermanenz
+
+Ich habe dieses Experiment wiederbelebt und mit echtem Rigor laufen lassen: ein gelerntes rekurrentes Gedächtnis gegen faire Baselines (Konstant-Geschwindigkeits-Extrapolation und ein handkodiertes prädiktives Gedächtnis), bei der Aufgabe, die Identität eines Objekts durch Verdeckung zu halten. Fünf Seeds pro Zelle, alles auf CPU.
+
+Zuerst ehrlich: **bei reiner Positionsvorhersage bringt das gelernte Modell nichts.** Die triviale Konstant-Geschwindigkeits-Baseline ist nahezu perfekt (0,00 px in der Welt ohne Abprallen). „Schlägt Persistenz" (222/222) ist eine Illusion, denn Persistenz nimmt an, das Objekt stehe still, also ist sie ein schwacher Bezug.
+
+Wert entsteht erst unter **Verdeckung**, wenn die Beobachtung nicht mehr ausreicht. Ich messe ihn als Identitäts-Zuordnungsgenauigkeit NACH der Verdeckung (0–1):
+
+| Regime | Verdeckungslänge | Velocity (kein Gedächtnis) | handkodiert | gelernt |
+| --- | :---: | :---: | :---: | :---: |
+| keine / milde Beschleunigung | 2–6 | 0,00 | 1,00 | **1,00** |
+| Richtungswechsel im Verborgenen | 4 | 0,18 | 0,33 | **1,00** |
+| Richtungswechsel im Verborgenen | 6 | 0,00 | 0,50 | 0,57 |
+| starke Beschleunigung | 2 | 0,75 | 0,67 | **0,03** |
+| starke Beschleunigung | 4–6 | 0,00 | ~1,0 | 0,81–0,98 |
+
+**Das Interessante:** bei einem Richtungswechsel im Verborgenen (Länge 4) erreicht das gelernte Gedächtnis 1,00, während Velocity-Extrapolation (0,18) und das handkodierte Gedächtnis (0,33) beide scheitern. Das ist die einzige Stelle, an der Lernen sowohl die Physik als auch die Struktur schlägt: das Modell hält die Identität durch eine Bewegung, die einfache Extrapolation nicht vorhersagt. Das ist ein Weltmodell im Kleinen.
+
+**Eine ehrliche Grenze:** bei starker Beschleunigung und kurzer Verdeckung (Länge 2) bricht das gelernte Gate auf 0,03 ein, schlechter als die dumme Baseline. Bei längerer Verdeckung erholt es sich. Diesen nicht-monotonen Einbruch verstehe ich noch nicht, und ich untersuche ihn. Ich zeige ihn, denn eine versteckte Fehlerstelle ist keine Wissenschaft.
+
+Reproduktion auf CPU: `python -m jepa_petri.run_accel_occlusion_memory_mocps --occlusion-lengths 2 4 6 --horizons 1 --seeds 0 1 2 3 4 --device cpu`

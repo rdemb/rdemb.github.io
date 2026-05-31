@@ -392,3 +392,26 @@ intervention cost, without making a broad re-identification claim.
 ## What this does not mean
 
 This is not a benchmark, not SOTA, not evidence of physics understanding, not a general world model, and not a claim that JEPA works. It is a small, explicitly limited diagnostic result.
+
+
+## Result (May 2026): a phase diagram of object permanence
+
+I revived this experiment and ran it with real rigor: a learned recurrent memory against fair baselines (constant-velocity extrapolation and a hand-coded predictive memory), on the task of keeping an object's identity through occlusion. Five seeds per cell, all on CPU.
+
+Honestly first: **on plain position prediction the learned model gives nothing.** The trivial constant-velocity baseline is near-perfect (0.00 px on the no-bounce world). "Beats persistence" (222/222) is an illusion, because persistence assumes the object stands still, so it is a weak reference.
+
+Value only appears under **occlusion**, when the observation stops being enough. I measure it as identity-assignment accuracy AFTER occlusion (0–1):
+
+| regime | occlusion length | velocity (no memory) | hand-coded memory | learned |
+| --- | :---: | :---: | :---: | :---: |
+| none / mild acceleration | 2–6 | 0.00 | 1.00 | **1.00** |
+| direction change while hidden | 4 | 0.18 | 0.33 | **1.00** |
+| direction change while hidden | 6 | 0.00 | 0.50 | 0.57 |
+| strong acceleration | 2 | 0.75 | 0.67 | **0.03** |
+| strong acceleration | 4–6 | 0.00 | ~1.0 | 0.81–0.98 |
+
+**The interesting part:** under a direction change while hidden (length 4) the learned memory reaches 1.00, while velocity extrapolation (0.18) and the hand-coded memory (0.33) both fail. This is the only place where learning beats both the physics and the structure: the model keeps the object's identity through a motion that simple extrapolation does not predict. That is what a world model means in miniature.
+
+**An honest limit:** under strong acceleration and short occlusion (length 2) the learned gate breaks to 0.03, worse than the dumb baseline. With longer occlusion it recovers. I do not yet understand this non-monotonic break, and I am studying it. I show it, because a hidden failure corner is not science.
+
+Reproduce on CPU: `python -m jepa_petri.run_accel_occlusion_memory_mocps --occlusion-lengths 2 4 6 --horizons 1 --seeds 0 1 2 3 4 --device cpu`

@@ -393,3 +393,26 @@ na kontrolach, bez claimu o szerokim re-identification.
 ## Czego to nie znaczy
 
 To nie jest benchmark, SOTA, dowód rozumienia fizyki, ogólny world model ani twierdzenie, że JEPA działa. To mały, uczciwie ograniczony wynik diagnostyczny.
+
+
+## Wynik (maj 2026): diagram fazowy stałości obiektu
+
+Wskrzesiłem ten eksperyment i puściłem go z prawdziwym rygorem: nauczona pamięć rekurencyjna kontra uczciwe baseline'y (ekstrapolacja stałej prędkości oraz ręcznie kodowana pamięć predykcyjna), na zadaniu utrzymania tożsamości obiektu przez zasłonięcie. Pięć seedów na komórkę, wszystko na CPU.
+
+Najpierw uczciwie: **na zwykłej predykcji pozycji nauczony model nie daje nic.** Trywialny baseline „stała prędkość" jest niemal idealny (0,00 px na świecie bez odbić). „Bije persystencję" (222/222) to iluzja, bo persystencja zakłada, że obiekt stoi w miejscu, więc to słaby punkt odniesienia.
+
+Wartość pojawia się dopiero pod **okluzją**, gdy obserwacja przestaje wystarczać. Mierzę ją jako trafność przypisania tożsamości PO zasłonięciu (0–1):
+
+| reżim | długość okluzji | velocity (bez pamięci) | pamięć ręczna | nauczona |
+| --- | :---: | :---: | :---: | :---: |
+| brak / łagodne przyśp. | 2–6 | 0,00 | 1,00 | **1,00** |
+| zmiana kierunku za zasłoną | 4 | 0,18 | 0,33 | **1,00** |
+| zmiana kierunku za zasłoną | 6 | 0,00 | 0,50 | 0,57 |
+| silne przyśpieszenie | 2 | 0,75 | 0,67 | **0,03** |
+| silne przyśpieszenie | 4–6 | 0,00 | ~1,0 | 0,81–0,98 |
+
+**Najciekawsze:** przy zmianie kierunku za zasłoną (długość 4) nauczona pamięć osiąga 1,00, a ekstrapolacja prędkości (0,18) oraz pamięć ręczna (0,33) padają. To jedyne miejsce, gdzie uczenie bije i fizykę, i strukturę: model utrzymuje tożsamość obiektu przez ruch, którego prosta ekstrapolacja nie przewiduje. To jest sens „modelu świata" w minimalnej wersji.
+
+**Uczciwa granica:** przy silnym przyśpieszeniu i krótkiej okluzji (długość 2) nauczona brama pęka do 0,03, gorzej niż głupi baseline. Przy dłuższej okluzji wraca. Tego niemonotonicznego załamania jeszcze nie rozumiem i właśnie je badam. Pokazuję je, bo ukryty róg porażki to nie nauka.
+
+Reprodukcja na CPU: `python -m jepa_petri.run_accel_occlusion_memory_mocps --occlusion-lengths 2 4 6 --horizons 1 --seeds 0 1 2 3 4 --device cpu`
