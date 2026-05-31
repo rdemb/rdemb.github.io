@@ -1,0 +1,27 @@
+---
+import PageLayout from '../../../layouts/PageLayout.astro';
+import { projectsByLang, labSw, type Lang } from '../../../lib/content';
+import { render } from 'astro:content';
+export async function getStaticPaths() {
+  const out = [];
+  for (const lang of ['en', 'de'] as Lang[]) {
+    const projects = await projectsByLang(lang);
+    for (const p of projects) out.push({ params: { lang, key: p.data.key }, props: { entry: p } });
+  }
+  return out;
+}
+const lang = Astro.params.lang as Lang;
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const labW = { en: 'Lab', de: 'Lab' }[lang];
+---
+<PageLayout lang={lang} title={`${entry.data.title} · D-LOGIC studio`} description={entry.data.excerpt} sw={labSw(entry.data.key)}>
+  <div class="crumbs"><a href="/">D-LOGIC</a> <span>/</span> <a href="/#lab">{labW}</a> <span>/</span> {entry.data.key}</div>
+  <header class="article-head">
+    <span class="meta mono">lab · {entry.data.key}</span>
+    <h1>{entry.data.title}</h1>
+    {entry.data.excerpt && <p class="excerpt">{entry.data.excerpt}</p>}
+  </header>
+  <article class="prose"><Content /></article>
+  <div class="article-foot"><a class="mono" href="/#lab" style="color:var(--accent)">← lab</a></div>
+</PageLayout>

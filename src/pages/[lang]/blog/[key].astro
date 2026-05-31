@@ -1,0 +1,30 @@
+---
+import PageLayout from '../../../layouts/PageLayout.astro';
+import { postsByLang, postSw, blogText, kindLabel, type Lang } from '../../../lib/content';
+import { render } from 'astro:content';
+export async function getStaticPaths() {
+  const out = [];
+  for (const lang of ['en', 'de'] as Lang[]) {
+    const posts = await postsByLang(lang);
+    for (const p of posts) out.push({ params: { lang, key: p.data.key }, props: { entry: p } });
+  }
+  return out;
+}
+const lang = Astro.params.lang as Lang;
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const t = blogText[lang];
+const base = '/' + lang;
+---
+<PageLayout lang={lang} title={`${entry.data.title} · D-LOGIC studio`} description={entry.data.excerpt} sw={postSw(entry.data.key)}>
+  <div class="crumbs"><a href="/">D-LOGIC</a> <span>/</span> <a href={`${base}/blog/`}>{t.title}</a></div>
+  <header class="article-head">
+    <span class="meta mono">{entry.data.date.replaceAll('-', '.')} · {kindLabel[lang][entry.data.kind] ?? entry.data.kind}</span>
+    <h1>{entry.data.title}</h1>
+    {entry.data.excerpt && <p class="excerpt">{entry.data.excerpt}</p>}
+  </header>
+  <article class="prose"><Content /></article>
+  <div class="article-foot">
+    <a class="mono" href={`${base}/blog/`} style="color:var(--accent)">{t.all} →</a>
+  </div>
+</PageLayout>

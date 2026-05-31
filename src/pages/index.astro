@@ -1,0 +1,410 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base>
+<div id="progress"></div>
+
+<header class="nav" id="nav">
+  <div class="wrap nav-inner">
+    <a href="#top" class="brand"><span class="dot"></span>D&#8209;<b>LOGIC</b>&nbsp;<span style="color:var(--muted);font-weight:400">studio</span></a>
+    <nav class="nav-links">
+      <a href="#oferta" data-i18n="nav.work">Oferta</a>
+      <a href="#proof" data-i18n="nav.proof">Clawbot</a>
+      <a href="#lab" data-i18n="nav.lab">Lab</a>
+      <a href="#notes" data-i18n="nav.notes">Notatki</a>
+      <a href="#kontakt" data-i18n="nav.contact">Kontakt</a>
+    </nav>
+    <div class="nav-tools">
+      <div class="seg" id="lang" role="group" aria-label="Język / Language">
+        <button data-lang="pl" class="on">PL</button>
+        <button data-lang="en">EN</button>
+        <button data-lang="de">DE</button>
+      </div>
+      <button class="icon-btn" id="theme" aria-label="Przełącz motyw">
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2M12 20v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M2 12h2M20 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>
+      </button>
+      <button class="icon-btn menu-btn" id="menu" aria-label="Menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow" data-i18n="hero.eyebrow">Solo studio · człowiek + AI</span>
+      <h1 data-i18n-html="hero.title">Buduję narzędzia AI, które<br><span class="hl">naprawdę działają.</span></h1>
+      <p class="lead" data-i18n="hero.lead">Narzędzia AI, strony i produkty danowe. Projektuję je i testuję jak strategie tradingowe: najpierw na sobie, potem dla Ciebie. Uczciwość zamiast hype'u.</p>
+      <div class="hero-cta">
+        <a href="#kontakt" class="btn btn-primary"><span data-i18n="hero.cta1">Zacznijmy projekt</span><span class="arr">→</span></a>
+        <a href="#proof" class="btn btn-ghost"><span data-i18n="hero.cta2">Zobacz clawbot</span></a>
+      </div>
+      <div class="hero-meta">
+        <div class="m"><b>100%</b><span data-i18n="hero.m1">testowane na sobie</span></div>
+        <div class="m"><b>PL·DE·EN</b><span data-i18n="hero.m2">trzy języki</span></div>
+        <div class="m"><b>0</b><span data-i18n="hero.m3">hype'u i ściemy</span></div>
+      </div>
+    </div>
+    <div class="scope reveal">
+      <div class="scope-head">
+        <span class="lbl" data-i18n="scope.lbl">// signal-vs-noise</span>
+        <span class="live"><span class="pulse"></span><span data-i18n="scope.live">clawbot · online</span></span>
+      </div>
+      <canvas id="scope" aria-hidden="true"></canvas>
+      <div class="scope-foot">
+        <span class="stat" data-i18n-html="scope.s1">warstwy <b>3</b></span>
+        <span class="stat" data-i18n-html="scope.s2">kadencja <b>5/dzień</b></span>
+        <span class="stat" data-i18n-html="scope.s3">fallback <b>100%</b></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="oferta">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow" data-i18n="work.eyebrow">Co robię</span>
+      <h2 data-i18n="work.title">Trzy rzeczy, robione dobrze</h2>
+      <p data-i18n="work.lead">Bez agencyjnego przerostu. Pracujesz bezpośrednio ze mną, od pierwszej rozmowy do wdrożenia.</p>
+    </div>
+    <div class="cards">
+      <article class="card reveal">
+        <span class="num">01 · flagowa</span>
+        <h3 data-i18n="work.c1.t">AI Desk</h3>
+        <p data-i18n="work.c1.d">Agent pilnuje tego, co dla Ciebie ważne: cen konkurencji, Twoich metryk, newsów. Wysyła zwięzły, uczciwy brief tam, gdzie już jesteś. Na cronie, z fallbackiem, bez niańczenia.</p>
+        <ul>
+          <li data-i18n="work.c1.l1">monitoring na cronie</li>
+          <li data-i18n="work.c1.l2">brief zamiast szumu</li>
+          <li data-i18n="work.c1.l3">Telegram, Slack, mail</li>
+        </ul>
+      </article>
+      <article class="card reveal">
+        <span class="num">02 · web</span>
+        <h3 data-i18n="work.c2.t">Strony i aplikacje</h3>
+        <p data-i18n="work.c2.d">Szybkie, wielojęzyczne strony i panele po polsku, niemiecku i angielsku. Kod, który da się utrzymać, i UI, które ludzie rozumieją. Strona, którą czytasz, jest dowodem.</p>
+        <ul>
+          <li data-i18n="work.c2.l1">landingi i wizytówki</li>
+          <li data-i18n="work.c2.l2">panele i dashboardy</li>
+          <li data-i18n="work.c2.l3">aplikacje webowe</li>
+        </ul>
+      </article>
+      <article class="card reveal">
+        <span class="num">03 · dane</span>
+        <h3 data-i18n="work.c3.t">Z danych do decyzji</h3>
+        <p data-i18n="work.c3.d">Modele, backtesty, dashboardy. Lata przy rynku nauczyły mnie jednego: liczy się dowód, nie obietnica. Dostajesz analizę z jawnym poziomem pewności, nie pewną ściemę.</p>
+        <ul>
+          <li data-i18n="work.c3.l1">backtesting strategii</li>
+          <li data-i18n="work.c3.l2">analiza i ETL</li>
+          <li data-i18n="work.c3.l3">dashboardy</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="proof" class="proof">
+  <div class="wrap proof-grid">
+    <div class="reveal">
+      <span class="eyebrow" data-i18n="proof.eyebrow">Dowód, nie obietnica</span>
+      <h2 style="font-family:'Space Grotesk Variable';font-weight:600;font-size:clamp(28px,3.6vw,42px);letter-spacing:-.02em;line-height:1.08;margin:16px 0 0" data-i18n="proof.title">Clawbot: quant-desk, który zbudowałem dla siebie</h2>
+      <p style="color:var(--muted);font-size:17.5px;margin-top:18px;max-width:50ch" data-i18n="proof.lead">Codzienne briefy rynkowe na Telegram. Trzy warstwy (quant, kontekst, narracja) nigdy się nie mieszają. Syntezę pisze Claude, z twardym fallbackiem do wersji deterministycznej. Całość chodzi na cronie. To wzorzec każdego AI Desk, który zbuduję dla Ciebie.</p>
+      <div class="metrics">
+        <div class="metric"><b class="tnum" data-count="3">0</b><span data-i18n="proof.k1">warstwy, nigdy zlane</span></div>
+        <div class="metric"><b class="tnum" data-count="2.5" data-dec="1" data-suffix="s">0</b><span data-i18n="proof.k2">czas briefu (Tier 1)</span></div>
+        <div class="metric"><b class="tnum" data-count="5">0</b><span data-i18n="proof.k3">briefy dziennie</span></div>
+        <div class="metric"><b class="tnum" data-count="100" data-suffix="%">0</b><span data-i18n="proof.k4">fallback, nigdy bez briefu</span></div>
+      </div>
+      <div class="limit reveal" data-i18n-html="proof.limit"><b>Uczciwa granica:</b> desk informuje, nie decyduje sam. Kierunek i wejście zostają u człowieka. To cecha, nie ograniczenie: tak buduje się zaufanie.</div>
+    </div>
+    <div class="proof-panel reveal" aria-hidden="true">
+      <div class="row"><span>// status</span><b class="pos">● ONLINE</b></div>
+      <div class="row"><span>tryb</span><b>OBSERVE-ONLY</b></div>
+      <div class="row"><span>warstwy</span><b>quant · kontekst · narracja</b></div>
+      <div class="row"><span>synteza</span><b>Claude + fallback</b></div>
+      <div class="row"><span>kadencja</span><b>5 / dzień · cron</b></div>
+      <div class="row"><span>okno_fade</span><b>NY-pm 18:00-22:00 CET</b></div>
+      <div class="row"><span>kierunek</span><b class="pos">człowiek</b></div>
+      <div class="row"><span>uptime_sesji</span><b class="tnum" id="hb">00:00</b></div>
+    </div>
+  </div>
+</section>
+
+<section id="lab">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow" data-i18n="lab.eyebrow">Lab</span>
+      <h2 data-i18n="lab.title">Co buduję i badam</h2>
+      <p data-i18n="lab.lead">Rzeczy, które robię dla siebie. Czasem stają się produktem, czasem lekcją. Każda z zapisanym wynikiem, także negatywnym.</p>
+    </div>
+    <div class="cards">
+      <article class="card reveal">
+        <span class="num">market intelligence</span>
+        <h3 data-i18n="lab.c1.t">forex-lab</h3>
+        <p data-i18n="lab.c1.d">Czy mój własny edge przeżywa koszty i out-of-sample? Sprawdziłem to rygorystycznie: bootstrap, FDR, walk-forward. Część wyników wyszła negatywna, i to też jest wynik.</p>
+      </article>
+      <a class="card reveal" href="/lab/mocps/">
+        <span class="num">diagnostyka predykcyjna</span>
+        <h3 data-i18n="lab.c2.t">MOCPS</h3>
+        <p data-i18n="lab.c2.d">Kiedy reprezentacja naprawdę przewiduje ruch obiektu lepiej niż ostatnia znana pozycja? Mały, sprawdzalny test, który da się powtórzyć na zwykłym CPU.</p>
+      </a>
+      <a class="card reveal" href="/lab/aai/">
+        <span class="num">market structure</span>
+        <h3 data-i18n="lab.c3.t">AAI</h3>
+        <p data-i18n="lab.c3.d">Adaptive Auction Intelligence: porządkowanie rynku przed decyzją. Najpierw aukcja, koszt wykonania i jakość dowodów, dopiero potem kierunek. Brak przewagi to też wynik.</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section id="notes">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow" data-i18n="notes.eyebrow">Notatki</span>
+      <h2 data-i18n="notes.title">Piszę o tym, co buduję</h2>
+      <p data-i18n="notes.lead">Krótkie zapiski o danych, AI i uczciwym budowaniu. Bez clickbaitu, za to z baseline'em i ograniczeniami.</p>
+    </div>
+    <div class="notes">
+      <a href="/blog/mocps-learned-occlusion-gate/" class="note reveal">
+        <span class="date mono">2026.05.19</span>
+        <span class="ttl" data-i18n="notes.n1.t">MOCPS: learned occlusion gate</span>
+        <span class="tag" data-i18n="notes.n1.g">projekt</span>
+      </a>
+      <a href="/blog/why-this-blog/" class="note reveal">
+        <span class="date mono">2026.05.18</span>
+        <span class="ttl" data-i18n="notes.n2.t">Po co ten blog</span>
+        <span class="tag" data-i18n="notes.n2.g">refleksja</span>
+      </a>
+      <a href="/blog/llm-vs-mocps/" class="note reveal">
+        <span class="date mono">2026.05.18</span>
+        <span class="ttl" data-i18n="notes.n3.t">Czym LLM różni się od MOCPS</span>
+        <span class="tag" data-i18n="notes.n3.g">ai</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section id="kontakt">
+  <div class="wrap">
+    <div class="cta-wrap reveal">
+      <canvas id="cta-scope" aria-hidden="true"></canvas>
+      <div class="inner">
+        <span class="eyebrow" style="justify-content:center" data-i18n="cta.eyebrow">Kontakt</span>
+        <h2 data-i18n="cta.title">Masz coś, co powinno być pilnowane albo zautomatyzowane?</h2>
+        <p data-i18n="cta.lead">Napisz w dwóch, trzech zdaniach, co chcesz zbudować. Odpowiadam osobiście i szczerze, także wtedy, gdy czegoś nie zrobię dobrze.</p>
+        <div class="hero-cta">
+          <a href="mailto:rdem91@gmail.com" class="btn btn-primary"><span data-i18n="cta.btn1">Napisz maila</span><span class="arr">→</span></a>
+          <a href="https://x.com/takitamrafal" target="_blank" rel="noopener" class="btn btn-ghost"><span data-i18n="cta.btn2">Napisz na X</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="brand"><span class="dot"></span>D&#8209;<b>LOGIC</b>&nbsp;<span style="color:var(--muted);font-weight:400">studio</span></div>
+        <p class="tag" data-i18n="foot.tag">Solo studio, człowiek + AI. Narzędzia, web i dane, testowane na sobie.</p>
+      </div>
+      <div class="foot-links">
+        <div class="foot-col">
+          <h4 data-i18n="foot.h1">Studio</h4>
+          <a href="#oferta" data-i18n="nav.work">Oferta</a>
+          <a href="#proof" data-i18n="nav.proof">Clawbot</a>
+          <a href="#lab" data-i18n="nav.lab">Lab</a>
+        </div>
+        <div class="foot-col">
+          <h4 data-i18n="foot.h2">Kontakt</h4>
+          <a href="mailto:rdem91@gmail.com">rdem91@gmail.com</a>
+          <a href="https://x.com/takitamrafal" target="_blank" rel="noopener">x.com/takitamrafal</a>
+          <a href="https://github.com/rdemb" target="_blank" rel="noopener">github.com/rdemb</a>
+        </div>
+      </div>
+    </div>
+    <div class="foot-base">
+      <span>© <span id="yr">2026</span> D-LOGIC studio</span>
+      <span data-i18n="foot.made">Zbudowane uczciwie. Bez szablonów.</span>
+    </div>
+  </div>
+</footer>
+
+<script is:inline>
+const I18N = {
+  pl:{
+    "nav.work":"Oferta","nav.proof":"Clawbot","nav.lab":"Lab","nav.notes":"Notatki","nav.contact":"Kontakt",
+    "hero.eyebrow":"Solo studio · człowiek + AI",
+    "hero.title":"Buduję narzędzia AI, które<br><span class='hl'>naprawdę działają.</span>",
+    "hero.lead":"Narzędzia AI, strony i produkty danowe. Projektuję je i testuję jak strategie tradingowe: najpierw na sobie, potem dla Ciebie. Uczciwość zamiast hype'u.",
+    "hero.cta1":"Zacznijmy projekt","hero.cta2":"Zobacz clawbot",
+    "hero.m1":"testowane na sobie","hero.m2":"trzy języki","hero.m3":"hype'u i ściemy",
+    "scope.lbl":"// signal-vs-noise","scope.live":"clawbot · online",
+    "scope.s1":"warstwy <b>3</b>","scope.s2":"kadencja <b>5/dzień</b>","scope.s3":"fallback <b>100%</b>",
+    "work.eyebrow":"Co robię","work.title":"Trzy rzeczy, robione dobrze","work.lead":"Bez agencyjnego przerostu. Pracujesz bezpośrednio ze mną, od pierwszej rozmowy do wdrożenia.",
+    "work.c1.t":"AI Desk","work.c1.d":"Agent pilnuje tego, co dla Ciebie ważne: cen konkurencji, Twoich metryk, newsów. Wysyła zwięzły, uczciwy brief tam, gdzie już jesteś. Na cronie, z fallbackiem, bez niańczenia.",
+    "work.c1.l1":"monitoring na cronie","work.c1.l2":"brief zamiast szumu","work.c1.l3":"Telegram, Slack, mail",
+    "work.c2.t":"Strony i aplikacje","work.c2.d":"Szybkie, wielojęzyczne strony i panele po polsku, niemiecku i angielsku. Kod, który da się utrzymać, i UI, które ludzie rozumieją. Strona, którą czytasz, jest dowodem.",
+    "work.c2.l1":"landingi i wizytówki","work.c2.l2":"panele i dashboardy","work.c2.l3":"aplikacje webowe",
+    "work.c3.t":"Z danych do decyzji","work.c3.d":"Modele, backtesty, dashboardy. Lata przy rynku nauczyły mnie jednego: liczy się dowód, nie obietnica. Dostajesz analizę z jawnym poziomem pewności, nie pewną ściemę.",
+    "work.c3.l1":"backtesting strategii","work.c3.l2":"analiza i ETL","work.c3.l3":"dashboardy",
+    "proof.eyebrow":"Dowód, nie obietnica","proof.title":"Clawbot: quant-desk, który zbudowałem dla siebie",
+    "proof.lead":"Codzienne briefy rynkowe na Telegram. Trzy warstwy (quant, kontekst, narracja) nigdy się nie mieszają. Syntezę pisze Claude, z twardym fallbackiem do wersji deterministycznej. Całość chodzi na cronie. To wzorzec każdego AI Desk, który zbuduję dla Ciebie.",
+    "proof.k1":"warstwy, nigdy zlane","proof.k2":"czas briefu (Tier 1)","proof.k3":"briefy dziennie","proof.k4":"fallback, nigdy bez briefu",
+    "proof.limit":"<b>Uczciwa granica:</b> desk informuje, nie decyduje sam. Kierunek i wejście zostają u człowieka. To cecha, nie ograniczenie: tak buduje się zaufanie.",
+    "lab.eyebrow":"Lab","lab.title":"Co buduję i badam","lab.lead":"Rzeczy, które robię dla siebie. Czasem stają się produktem, czasem lekcją. Każda z zapisanym wynikiem, także negatywnym.",
+    "lab.c1.t":"forex-lab","lab.c1.d":"Czy mój własny edge przeżywa koszty i out-of-sample? Sprawdziłem to rygorystycznie: bootstrap, FDR, walk-forward. Część wyników wyszła negatywna, i to też jest wynik.",
+    "lab.c2.t":"MOCPS","lab.c2.d":"Kiedy reprezentacja naprawdę przewiduje ruch obiektu lepiej niż ostatnia znana pozycja? Mały, sprawdzalny test, który da się powtórzyć na zwykłym CPU.",
+    "lab.c3.t":"AAI","lab.c3.d":"Adaptive Auction Intelligence: porządkowanie rynku przed decyzją. Najpierw aukcja, koszt wykonania i jakość dowodów, dopiero potem kierunek. Brak przewagi to też wynik.",
+    "notes.eyebrow":"Notatki","notes.title":"Piszę o tym, co buduję","notes.lead":"Krótkie zapiski o danych, AI i uczciwym budowaniu. Bez clickbaitu, za to z baseline'em i ograniczeniami.",
+    "notes.n1.t":"MOCPS: learned occlusion gate","notes.n1.g":"projekt",
+    "notes.n2.t":"Po co ten blog","notes.n2.g":"refleksja",
+    "notes.n3.t":"Czym LLM różni się od MOCPS","notes.n3.g":"ai",
+    "cta.eyebrow":"Kontakt","cta.title":"Masz coś, co powinno być pilnowane albo zautomatyzowane?","cta.lead":"Napisz w dwóch, trzech zdaniach, co chcesz zbudować. Odpowiadam osobiście i szczerze, także wtedy, gdy czegoś nie zrobię dobrze.",
+    "cta.btn1":"Napisz maila","cta.btn2":"Napisz na X",
+    "foot.tag":"Solo studio, człowiek + AI. Narzędzia, web i dane, testowane na sobie.",
+    "foot.h1":"Studio","foot.h2":"Kontakt","foot.made":"Zbudowane uczciwie. Bez szablonów."
+  },
+  en:{
+    "nav.work":"Work","nav.proof":"Clawbot","nav.lab":"Lab","nav.notes":"Notes","nav.contact":"Contact",
+    "hero.eyebrow":"Solo studio · human + AI",
+    "hero.title":"I build AI tools that<br><span class='hl'>actually work.</span>",
+    "hero.lead":"AI tools, websites and data products. I design and test them like trading strategies: on myself first, then for you. Honesty over hype.",
+    "hero.cta1":"Start a project","hero.cta2":"See clawbot",
+    "hero.m1":"tested on myself","hero.m2":"three languages","hero.m3":"hype and fluff",
+    "scope.lbl":"// signal-vs-noise","scope.live":"clawbot · online",
+    "scope.s1":"layers <b>3</b>","scope.s2":"cadence <b>5/day</b>","scope.s3":"fallback <b>100%</b>",
+    "work.eyebrow":"What I do","work.title":"Three things, done well","work.lead":"No agency bloat. You work directly with me, from the first call to deployment.",
+    "work.c1.t":"AI Desk","work.c1.d":"An agent watches what matters to you: competitor prices, your metrics, the news. It sends a short, honest brief where you already are. On a cron, with a fallback, no babysitting.",
+    "work.c1.l1":"monitoring on a cron","work.c1.l2":"a brief, not noise","work.c1.l3":"Telegram, Slack, mail",
+    "work.c2.t":"Sites and apps","work.c2.d":"Fast, multilingual sites and panels in Polish, German and English. Code you can maintain and UI people understand. The site you are reading is the proof.",
+    "work.c2.l1":"landing pages","work.c2.l2":"panels and dashboards","work.c2.l3":"web apps",
+    "work.c3.t":"From data to a decision","work.c3.d":"Models, backtests, dashboards. Years in the markets taught me one thing: proof matters, not promises. You get analysis with an explicit confidence level, not a confident lie.",
+    "work.c3.l1":"strategy backtesting","work.c3.l2":"analysis and ETL","work.c3.l3":"dashboards",
+    "proof.eyebrow":"Proof, not promises","proof.title":"Clawbot: a quant desk I built for myself",
+    "proof.lead":"Daily market briefs on Telegram. Three layers (quant, context, narrative) never blend together. Claude writes the synthesis, with a hard fallback to a deterministic version. The whole thing runs on a cron. This is the pattern of every AI Desk I'll build for you.",
+    "proof.k1":"layers, never blended","proof.k2":"brief time (Tier 1)","proof.k3":"briefs per day","proof.k4":"fallback, never without a brief",
+    "proof.limit":"<b>An honest limit:</b> the desk informs, it does not decide on its own. Direction and entry stay with the human. That is a feature, not a limitation: it is how trust is built.",
+    "lab.eyebrow":"Lab","lab.title":"What I build and study","lab.lead":"Things I make for myself. Sometimes they become a product, sometimes a lesson. Each with the result written down, negative ones too.",
+    "lab.c1.t":"forex-lab","lab.c1.d":"Does my own edge survive costs and out-of-sample? I checked it rigorously: bootstrap, FDR, walk-forward. Some results came out negative, and that is a result too.",
+    "lab.c2.t":"MOCPS","lab.c2.d":"When does a representation actually predict an object's motion better than its last known position? A small, reproducible test that runs on a plain CPU.",
+    "lab.c3.t":"AAI","lab.c3.d":"Adaptive Auction Intelligence: ordering the market before a decision. First the auction, execution cost and quality of evidence, only then direction. No edge is also a result.",
+    "notes.eyebrow":"Notes","notes.title":"I write about what I build","notes.lead":"Short notes on data, AI and honest building. No clickbait, but with a baseline and the limitations.",
+    "notes.n1.t":"MOCPS: learned occlusion gate","notes.n1.g":"project",
+    "notes.n2.t":"Why this blog","notes.n2.g":"reflection",
+    "notes.n3.t":"How an LLM differs from MOCPS","notes.n3.g":"ai",
+    "cta.eyebrow":"Contact","cta.title":"Got something that should be watched or automated?","cta.lead":"Write two or three sentences about what you want to build. I reply personally and honestly, including when I can't do it well.",
+    "cta.btn1":"Send an email","cta.btn2":"Message on X",
+    "foot.tag":"Solo studio, human + AI. Tools, web and data, tested on myself.",
+    "foot.h1":"Studio","foot.h2":"Contact","foot.made":"Built honestly. No templates."
+  },
+  de:{
+    "nav.work":"Leistungen","nav.proof":"Clawbot","nav.lab":"Lab","nav.notes":"Notizen","nav.contact":"Kontakt",
+    "hero.eyebrow":"Solo-Studio · Mensch + KI",
+    "hero.title":"Ich baue KI-Tools, die<br><span class='hl'>wirklich funktionieren.</span>",
+    "hero.lead":"KI-Tools, Websites und Datenprodukte. Ich entwerfe und teste sie wie Trading-Strategien: zuerst an mir selbst, dann für dich. Ehrlichkeit statt Hype.",
+    "hero.cta1":"Projekt starten","hero.cta2":"Clawbot ansehen",
+    "hero.m1":"an mir selbst getestet","hero.m2":"drei Sprachen","hero.m3":"Hype und Geschwafel",
+    "scope.lbl":"// signal-vs-noise","scope.live":"clawbot · online",
+    "scope.s1":"Ebenen <b>3</b>","scope.s2":"Takt <b>5/Tag</b>","scope.s3":"Fallback <b>100%</b>",
+    "work.eyebrow":"Was ich mache","work.title":"Drei Dinge, gut gemacht","work.lead":"Kein Agentur-Ballast. Du arbeitest direkt mit mir, vom ersten Gespräch bis zum Deployment.",
+    "work.c1.t":"AI Desk","work.c1.d":"Ein Agent beobachtet, was für dich zählt: Konkurrenzpreise, deine Kennzahlen, die News. Er schickt einen kurzen, ehrlichen Brief dorthin, wo du eh bist. Per Cron, mit Fallback, ohne Babysitting.",
+    "work.c1.l1":"Monitoring per Cron","work.c1.l2":"ein Brief statt Rauschen","work.c1.l3":"Telegram, Slack, Mail",
+    "work.c2.t":"Websites und Apps","work.c2.d":"Schnelle, mehrsprachige Websites und Panels auf Polnisch, Deutsch und Englisch. Wartbarer Code und UI, das Menschen verstehen. Die Seite, die du liest, ist der Beweis.",
+    "work.c2.l1":"Landingpages","work.c2.l2":"Panels und Dashboards","work.c2.l3":"Web-Apps",
+    "work.c3.t":"Von Daten zur Entscheidung","work.c3.d":"Modelle, Backtests, Dashboards. Jahre an den Märkten lehrten mich eins: Beweise zählen, keine Versprechen. Du bekommst eine Analyse mit explizitem Konfidenzniveau, keine selbstsichere Lüge.",
+    "work.c3.l1":"Strategie-Backtesting","work.c3.l2":"Analyse und ETL","work.c3.l3":"Dashboards",
+    "proof.eyebrow":"Beweis, kein Versprechen","proof.title":"Clawbot: ein Quant-Desk, den ich für mich gebaut habe",
+    "proof.lead":"Tägliche Markt-Briefs auf Telegram. Drei Ebenen (Quant, Kontext, Narrativ) vermischen sich nie. Claude schreibt die Synthese, mit hartem Fallback auf eine deterministische Version. Das Ganze läuft per Cron. Das ist das Muster jedes AI Desk, den ich für dich baue.",
+    "proof.k1":"Ebenen, nie vermischt","proof.k2":"Brief-Zeit (Tier 1)","proof.k3":"Briefs pro Tag","proof.k4":"Fallback, nie ohne Brief",
+    "proof.limit":"<b>Eine ehrliche Grenze:</b> der Desk informiert, er entscheidet nicht allein. Richtung und Einstieg bleiben beim Menschen. Das ist ein Feature, keine Einschränkung: so entsteht Vertrauen.",
+    "lab.eyebrow":"Lab","lab.title":"Was ich baue und untersuche","lab.lead":"Dinge, die ich für mich baue. Mal werden sie ein Produkt, mal eine Lektion. Jede mit dokumentiertem Ergebnis, auch negativem.",
+    "lab.c1.t":"forex-lab","lab.c1.d":"Übersteht mein eigener Edge Kosten und Out-of-Sample? Ich habe es rigoros geprüft: Bootstrap, FDR, Walk-Forward. Ein Teil der Ergebnisse war negativ, und das ist auch ein Ergebnis.",
+    "lab.c2.t":"MOCPS","lab.c2.d":"Wann sagt eine Repräsentation die Bewegung eines Objekts wirklich besser voraus als seine letzte bekannte Position? Ein kleiner, reproduzierbarer Test auf einer normalen CPU.",
+    "lab.c3.t":"AAI","lab.c3.d":"Adaptive Auction Intelligence: den Markt vor der Entscheidung ordnen. Zuerst Auktion, Ausführungskosten und Beweisqualität, erst dann die Richtung. Kein Edge ist auch ein Ergebnis.",
+    "notes.eyebrow":"Notizen","notes.title":"Ich schreibe über das, was ich baue","notes.lead":"Kurze Notizen über Daten, KI und ehrliches Bauen. Kein Clickbait, dafür mit Baseline und Grenzen.",
+    "notes.n1.t":"MOCPS: learned occlusion gate","notes.n1.g":"Projekt",
+    "notes.n2.t":"Wozu dieser Blog","notes.n2.g":"Reflexion",
+    "notes.n3.t":"Wie sich ein LLM von MOCPS unterscheidet","notes.n3.g":"ki",
+    "cta.eyebrow":"Kontakt","cta.title":"Hast du etwas, das beobachtet oder automatisiert werden sollte?","cta.lead":"Schreib in zwei, drei Sätzen, was du bauen willst. Ich antworte persönlich und ehrlich, auch dann, wenn ich es nicht gut kann.",
+    "cta.btn1":"E-Mail schreiben","cta.btn2":"Auf X schreiben",
+    "foot.tag":"Solo-Studio, Mensch + KI. Tools, Web und Daten, an mir selbst getestet.",
+    "foot.h1":"Studio","foot.h2":"Kontakt","foot.made":"Ehrlich gebaut. Keine Templates."
+  }
+};
+
+const docEl = document.documentElement;
+function applyLang(lang){
+  const dict = I18N[lang] || I18N.pl;
+  docEl.lang = lang;
+  document.querySelectorAll("[data-i18n]").forEach(el=>{ const v=dict[el.getAttribute("data-i18n")]; if(v!=null) el.textContent=v; });
+  document.querySelectorAll("[data-i18n-html]").forEach(el=>{ const v=dict[el.getAttribute("data-i18n-html")]; if(v!=null) el.innerHTML=v; });
+  document.querySelectorAll("#lang button").forEach(b=>b.classList.toggle("on", b.dataset.lang===lang));
+  try{ localStorage.setItem("dlogic-lang", lang); }catch(e){}
+}
+document.getElementById("lang").addEventListener("click", e=>{ const b=e.target.closest("button"); if(b) applyLang(b.dataset.lang); });
+
+const sunPath='<circle cx="12" cy="12" r="4.2"/><path d="M12 2v2M12 20v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M2 12h2M20 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/>';
+const moonPath='<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>';
+function applyTheme(t){ docEl.setAttribute("data-theme",t); const s=document.querySelector("#theme svg"); if(s) s.innerHTML=(t==="dark"?sunPath:moonPath); try{ localStorage.setItem("dlogic-theme",t); }catch(e){} }
+document.getElementById("theme").addEventListener("click", ()=>applyTheme(docEl.getAttribute("data-theme")==="dark"?"light":"dark"));
+
+applyLang(localStorage.getItem("dlogic-lang")||"pl");
+applyTheme(docEl.getAttribute("data-theme")||"dark");
+
+const nav=document.getElementById("nav"), prog=document.getElementById("progress");
+function onScroll(){ const st=window.scrollY; nav.classList.toggle("scrolled", st>10); const h=document.documentElement.scrollHeight-window.innerHeight; prog.style.width=(h>0?(st/h)*100:0)+"%"; }
+window.addEventListener("scroll", onScroll, {passive:true}); onScroll();
+document.getElementById("menu").addEventListener("click", ()=>document.getElementById("oferta").scrollIntoView());
+
+const io=new IntersectionObserver(es=>{ es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); } }); }, {threshold:.14, rootMargin:"0px 0px -8% 0px"});
+document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
+
+const reduce=window.matchMedia("(prefers-reduced-motion:reduce)").matches;
+function countUp(el){
+  const target=parseFloat(el.dataset.count), dec=parseInt(el.dataset.dec||"0",10), pre=el.dataset.prefix||"", suf=el.dataset.suffix||"";
+  if(reduce){ el.textContent=pre+target.toFixed(dec)+suf; return; }
+  const dur=1300, t0=performance.now();
+  function step(now){ const p=Math.min((now-t0)/dur,1), e=1-Math.pow(1-p,3); el.textContent=pre+(target*e).toFixed(dec)+suf; if(p<1) requestAnimationFrame(step); }
+  requestAnimationFrame(step);
+}
+const ioC=new IntersectionObserver(es=>{ es.forEach(e=>{ if(e.isIntersecting){ countUp(e.target); ioC.unobserve(e.target); } }); }, {threshold:.5});
+document.querySelectorAll("[data-count]").forEach(el=>ioC.observe(el));
+
+const hb=document.getElementById("hb"); let hbS=0;
+setInterval(()=>{ hbS++; const m=String(Math.floor(hbS/60)).padStart(2,"0"), s=String(hbS%60).padStart(2,"0"); if(hb) hb.textContent=`${m}:${s}`; }, 1000);
+
+function cssVar(n){ return getComputedStyle(docEl).getPropertyValue(n).trim(); }
+function makeScope(canvas, opts={}){
+  if(!canvas) return; const ctx=canvas.getContext("2d");
+  let W,H,dpr=Math.min(window.devicePixelRatio||1,2);
+  function size(){ const r=canvas.getBoundingClientRect(); W=r.width; H=r.height; canvas.width=W*dpr; canvas.height=H*dpr; ctx.setTransform(dpr,0,0,dpr,0,0); }
+  size(); window.addEventListener("resize", size);
+  let t=0;
+  function y(x){ const nx=x/W, base=H*0.62-nx*H*(opts.drift??0.1)*1.2, s=Math.sin(nx*Math.PI*2*(opts.freq??1.6)+t)*H*(opts.amp??0.16), s2=Math.sin(nx*Math.PI*2*(opts.freq??1.6)*2.3+t*1.7)*H*(opts.amp??0.16)*0.32, n=(Math.sin(nx*53+t*3.1)*0.5+Math.sin(nx*97-t*2.2)*0.5)*H*0.012; return base+s+s2+n; }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    const wave=cssVar("--wave"), ghost=cssVar("--wave-ghost"), line=cssVar("--line");
+    ctx.strokeStyle=line; ctx.lineWidth=1; ctx.globalAlpha=.5;
+    for(let gy=H*0.25; gy<H; gy+=H*0.25){ ctx.beginPath(); ctx.moveTo(0,gy); ctx.lineTo(W,gy); ctx.stroke(); }
+    ctx.globalAlpha=1;
+    ctx.strokeStyle=ghost; ctx.lineWidth=6; ctx.lineJoin="round"; ctx.beginPath();
+    for(let x=0;x<=W;x+=4){ const yy=y(x)+8; x===0?ctx.moveTo(x,yy):ctx.lineTo(x,yy);} ctx.stroke();
+    ctx.shadowColor=wave; ctx.shadowBlur=12; ctx.strokeStyle=wave; ctx.lineWidth=2.2; ctx.lineJoin="round"; ctx.beginPath();
+    let lx=0,ly=0;
+    for(let x=0;x<=W;x+=2){ const yy=y(x); x===0?ctx.moveTo(x,yy):ctx.lineTo(x,yy); lx=x; ly=yy; }
+    ctx.stroke(); ctx.shadowBlur=0;
+    ctx.fillStyle=wave; ctx.beginPath(); ctx.arc(lx,ly,3.4,0,Math.PI*2); ctx.fill();
+    ctx.globalAlpha=.25; ctx.beginPath(); ctx.arc(lx,ly,8,0,Math.PI*2); ctx.fill(); ctx.globalAlpha=1;
+    t+=opts.speed??0.03; requestAnimationFrame(draw);
+  }
+  if(reduce){ const wave=cssVar("--wave"); ctx.strokeStyle=wave; ctx.lineWidth=2.2; ctx.beginPath(); for(let x=0;x<=W;x+=2){ const yy=H*0.6-(x/W)*H*0.12+Math.sin(x/W*Math.PI*2*1.6)*H*0.14; x===0?ctx.moveTo(x,yy):ctx.lineTo(x,yy);} ctx.stroke(); }
+  else { requestAnimationFrame(draw); }
+}
+makeScope(document.getElementById("scope"), {amp:0.16,freq:1.7,speed:0.032,drift:0.12});
+makeScope(document.getElementById("cta-scope"), {amp:0.10,freq:1.2,speed:0.018,drift:0.04});
+const yr=document.getElementById("yr"); if(yr) yr.textContent=new Date().getFullYear();
+</script>
+</Base>

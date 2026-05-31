@@ -1,0 +1,25 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import { postsByLang, blogSw, blogText, kindLabel } from '../../lib/content';
+const lang = 'pl';
+const posts = await postsByLang(lang);
+const t = blogText[lang];
+---
+<PageLayout lang={lang} title={`${t.title} · D-LOGIC studio`} description={t.lead} sw={blogSw}>
+  <div class="crumbs"><a href="/">D-LOGIC</a> <span>/</span> {t.title}</div>
+  <header class="article-head">
+    <span class="meta mono">// {t.title.toLowerCase()}</span>
+    <h1>{t.title}</h1>
+    <p class="excerpt">{t.lead}</p>
+  </header>
+  <div class="post-index">
+    {posts.map((p) => (
+      <a href={`/blog/${p.data.key}/`}>
+        <span class="d">{p.data.date.replaceAll('-', '.')}</span>
+        <span class="h">{p.data.title}</span>
+        <span class="t">{kindLabel[lang][p.data.kind] ?? p.data.kind}</span>
+        <span class="x">{p.data.excerpt}</span>
+      </a>
+    ))}
+  </div>
+</PageLayout>

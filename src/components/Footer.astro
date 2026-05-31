@@ -1,0 +1,36 @@
+---
+const { lang = 'pl' } = Astro.props;
+const t = {
+  pl: { tag: 'Studio + lab + notatnik. Uczciwość zamiast hype.', rights: 'Wszystkie wyniki — też negatywne — zapisane.', contact: 'porozmawiajmy' },
+  en: { tag: 'Studio + lab + notebook. Honesty over hype.', rights: 'Every result — negative too — written down.', contact: "let's talk" },
+  de: { tag: 'Studio + Lab + Notizbuch. Ehrlichkeit statt Hype.', rights: 'Jedes Ergebnis — auch negatives — dokumentiert.', contact: 'sprechen wir' },
+}[lang] ?? {};
+const base = lang === 'pl' ? '' : `/${lang}`;
+const year = 2026;
+---
+<footer class="ftr">
+  <div class="container ftr-inner">
+    <div>
+      <a class="brand" href={`${base}/`}><span class="m">◢</span> D-LOGIC·STUDIO</a>
+      <p class="muted ftr-tag">{t.tag}</p>
+    </div>
+    <div class="ftr-right">
+      <a class="ftr-cta" href={`${base}/kontakt/`}>{t.contact} <span aria-hidden="true">→</span></a>
+      <p class="ftr-meta">© {year} · <a href="https://github.com/rdemb">github.com/rdemb</a></p>
+      <p class="ftr-meta muted">{t.rights}</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .ftr { border-top: 1px solid var(--line-soft); padding: 40px 0; margin-top: 40px; }
+  .ftr-inner { display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+  .brand { font-family: var(--font-mono); font-weight: 600; color: var(--text); }
+  .brand .m { color: var(--accent); }
+  .ftr-tag { font-size: 14px; margin-top: 8px; max-width: 36ch; }
+  .ftr-right { text-align: right; }
+  .ftr-cta { font-family: var(--font-mono); font-size: 15px; color: var(--accent); }
+  .ftr-meta { font-family: var(--font-mono); font-size: 12.5px; color: var(--faint); margin-top: 10px; }
+  .ftr-meta a { color: var(--muted); }
+  @media (max-width: 560px) { .ftr-right { text-align: left; } }
+</style>
