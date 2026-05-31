@@ -450,4 +450,10 @@ Nach Trennung aggregiert zeigt sich eine Schwelle. Oberhalb von etwa 6 px hält 
 
 *Die zwei Mechanismen sind geometrisch und trennbar. Links vom roten Band passieren die Objekte zu nah, um sie zu unterscheiden (nicht reduzierbar). Der einzige Punkt, an dem ein bequemer Abstand die Physik dennoch schlägt, Richtungswechsel bei L=4, ist genau dort, wo Lernen gewinnt.*
 
-Der vollständige technische Bericht liegt im Projekt-Repo (`RESULT_LEARNED_OBJECT_PERMANENCE.md`).
+## Downloads
+
+Das vollständige Forschungsartefakt, der englische Bericht, beide Abbildungen, der bereinigte Analysecode und eine README, ist als Download gepackt:
+
+[Forschungspaket herunterladen (.zip, 148 KB)](/mocps/mocps-research-bundle.zip)
+
+Das Paket ist zum Lesen und zum Zeigen der Methode gedacht. Ein Ende-zu-Ende-Lauf braucht die vollständige Umgebung (das `jepa_petri`-Paket), die ich separat herausziehe, sobald das Projekt als Repository veröffentlicht werden kann.

@@ -449,4 +449,10 @@ Aggregated by separation, one threshold appears. Above about 6 px the learned st
 
 *The two mechanisms are geometric and separable. Left of the red band the objects pass too close to disambiguate (irreducible). The one point where a comfortable margin still defeats physics, direction change at L=4, is exactly where learning wins.*
 
-The full technical write-up is in the project repo (`RESULT_LEARNED_OBJECT_PERMANENCE.md`).
+## Downloads
+
+The full research artifact, the English write-up, both figures, the cleaned analysis code and a README, is packaged for download:
+
+[Download the research bundle (.zip, 148 KB)](/mocps/mocps-research-bundle.zip)
+
+The bundle is meant to be read and to show the method. Running it end-to-end needs the full environment (the `jepa_petri` package), which I will extract separately once the project is ready to ship as a repository.
