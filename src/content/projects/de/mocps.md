@@ -444,6 +444,8 @@ Ich habe gemessen, wie nah die Objekte im Wiedererscheinungs-Frame aneinander vo
 - **Trennungsbegrenzt:** bei starker Beschleunigung und kurzer Verdeckung ziehen die Objekte etwa 3 Pixel auseinander vorbei. Korrekte Zuordnung braucht einen Fehler unter ~1,5 px. Selbst das Orakel erreicht nur 0,75. Das behebt kein Lernen, es ist eine Grenze der Geometrie.
 - **Dynamikbegrenzt:** bei einem Richtungswechsel im Verborgenen ist die Trennung bequem (~7,5 px), und doch scheitert die Baseline (0,18), weil sie die falsche Richtung extrapoliert. Hier ist das gelernte Modell zu 100% richtig. Das ist die einzige Stelle, an der Lernen die Physik wirklich schlägt.
 
+Nach Trennung aggregiert zeigt sich eine Schwelle. Oberhalb von etwa 6 px hält der gelernte Zustand im Schnitt 0,96 Genauigkeit gegen 0,14 für Velocity (18 Zellen). In den vier Zellen, wo die Objekte innerhalb von etwa 3 px (ungefähr ein Durchmesser) vorbeiziehen, fällt der gelernte Zustand auf 0,40 und verliert gegen die gedächtnislose Baseline (0,76). Die Schwelle liegt auf der Objektskala, genau dort, wo zwei identische Flecken nicht mehr unterscheidbar sind: darunter gewinnt kein Dynamikmodell, und der klügere Prädiktor fügt nur Varianz hinzu.
+
 ![Zwei Versagensmechanismen: Identitätsgenauigkeit gegen den Trennungsabstand](/mocps/fig2_mechanisms.png)
 
 *Die zwei Mechanismen sind geometrisch und trennbar. Links vom roten Band passieren die Objekte zu nah, um sie zu unterscheiden (nicht reduzierbar). Der einzige Punkt, an dem ein bequemer Abstand die Physik dennoch schlägt, Richtungswechsel bei L=4, ist genau dort, wo Lernen gewinnt.*

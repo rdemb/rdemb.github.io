@@ -444,6 +444,8 @@ Policzyłem, jak blisko mijają się obiekty w klatce powrotu (margines separacj
 - **Separacyjna:** przy silnym przyśpieszeniu i krótkiej okluzji obiekty mijają się o około 3 piksele. Trafne przypisanie wymaga błędu poniżej ~1,5 px. Nawet orakulum dobija tylko do 0,75. Tego nie naprawi żadne uczenie, to granica geometrii.
 - **Dynamiczna:** przy zmianie kierunku za zasłoną separacja jest spokojna (~7,5 px), a baseline i tak pada (0,18), bo ekstrapoluje zły kierunek. Tu nauczony model trafia w 100%. To jedyne miejsce, gdzie uczenie naprawdę bije fizykę.
 
+Zagregowane po separacji widać jeden próg. Powyżej około 6 px nauczony stan trzyma średnio 0,96 trafności wobec 0,14 dla velocity (18 komórek). W czterech komórkach, gdzie obiekty mijają się w około 3 px (mniej więcej jedna średnica), nauczony stan spada do 0,40 i przegrywa z bezpamięciowym baselinem (0,76). Próg leży na skali obiektu, dokładnie tam, gdzie dwie identyczne plamy przestają być rozróżnialne: poniżej żaden model dynamiki nie wygra, a sprytniejszy predyktor tylko dokłada wariancji.
+
 ![Dwa mechanizmy porażki: trafność tożsamości względem marginesu separacji](/mocps/fig2_mechanisms.png)
 
 *Dwa mechanizmy są geometryczne i rozłączne. Na lewo od czerwonego pasa obiekty mijają się zbyt blisko, by je rozróżnić (nieusuwalne). Jedyny punkt, gdzie spokojny margines i tak pokonuje fizykę, zmiana kierunku przy L=4, to dokładnie miejsce, gdzie uczenie wygrywa.*

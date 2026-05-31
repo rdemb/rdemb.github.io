@@ -443,6 +443,8 @@ I measured how close the objects pass at the reappearance frame (the separation 
 - **Separation-limited:** under strong acceleration and short occlusion the objects pass about 3 pixels apart. Correct assignment needs error below ~1.5 px. Even the oracle only reaches 0.75. No amount of learning fixes this, it is a limit of geometry.
 - **Dynamics-limited:** under a direction change while hidden the separation is comfortable (~7.5 px), yet the baseline still fails (0.18) because it extrapolates the wrong direction. Here the learned model is right 100% of the time. This is the only place where learning genuinely beats physics.
 
+Aggregated by separation, one threshold appears. Above about 6 px the learned state holds 0.96 accuracy on average against 0.14 for velocity (18 cells). In the four cells where the objects pass within about 3 px (roughly one diameter), the learned state drops to 0.40 and loses to the memoryless baseline (0.76). The threshold sits at the object scale, exactly where two identical blobs stop being resolvable: below it no dynamics model wins, and the cleverer predictor only adds variance.
+
 ![Two failure mechanisms: identity accuracy versus the separation margin](/mocps/fig2_mechanisms.png)
 
 *The two mechanisms are geometric and separable. Left of the red band the objects pass too close to disambiguate (irreducible). The one point where a comfortable margin still defeats physics, direction change at L=4, is exactly where learning wins.*
