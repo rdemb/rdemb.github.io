@@ -40,7 +40,7 @@ var css=
 "#pqCal{width:100%;height:130px;display:block;border:1px solid var(--line);border-radius:11px;background:var(--panel)}"+
 ".pq-hist{display:flex;flex-direction:column;gap:1px}.pq-row{display:flex;justify-content:space-between;align-items:center;font-family:'JetBrains Mono Variable',monospace;font-size:12px;padding:8px 2px;border-bottom:1px dashed var(--line)}.pq-row .d{color:var(--muted)}.pq-row .r{font-weight:600}.pq-row .hit{color:var(--live)}.pq-row .miss{color:#e06a5a}.pq-row .pend{color:var(--muted)}"+
 ".pq-note{font-family:'JetBrains Mono Variable',monospace;font-size:10.5px;color:var(--muted);line-height:1.6;margin-top:18px}"+
-"@media(max-width:560px){#pqPanel{width:100vw}#pqBtn{left:16px;bottom:auto;top:64px}}";
+"@media(max-width:860px){#pqPanel{width:100vw}#pqBtn{left:16px;bottom:auto;top:62px}}";
 var st=document.createElement("style"); st.textContent=css; document.head.appendChild(st);
 
 /* ---------- DOM ---------- */
