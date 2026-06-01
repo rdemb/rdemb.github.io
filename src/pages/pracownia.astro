@@ -7,8 +7,8 @@ import '@fontsource-variable/jetbrains-mono';
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Pracownia, kolekcja szablonów z CMS · D-LOGIC studio</title>
-<meta name="description" content="Kolekcja 16 premium szablonów stron z gotowym panelem CMS. Klient prowadzi stronę sam, bez programisty. Każdy projekt personalizowany pod markę. PL/DE/EN." />
+<title>Pracownia, żywe szablony stron z CMS · D-LOGIC studio</title>
+<meta name="description" content="Kolekcja 16 żywych szablonów stron z gotowym panelem CMS, do przeklikania na żywo. Klient prowadzi stronę sam. Każdy projekt personalizowany pod markę. PL/DE." />
 <meta name="theme-color" content="#0f0f12" />
 <style is:global>
 /* ============================================================
@@ -196,8 +196,26 @@ img{ display:block; max-width:100%; }
   .admin__cards{ grid-template-columns:1fr 1fr; }
 }
 
-/* --- adaptacje pracowni --- */
-.pcard__cms{cursor:default}
+/* --- pracownia v2 --- */
+.tnav__burger{display:none;background:none;border:1px solid var(--line);border-radius:9px;width:40px;height:40px;color:var(--bone);align-items:center;justify-content:center;cursor:pointer}
+.tnav__burger svg{width:20px;height:20px}
+@media(max-width:820px){
+  .tnav__burger{display:inline-flex}
+  .tnav__right{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:flex-start;gap:.4rem;background:rgba(15,15,18,.97);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);padding:1rem var(--gut) 1.4rem}
+  .tnav.tnav--open .tnav__right{display:flex}
+  .tnav.tnav--open .tnav__link{display:block!important;padding:.5rem 0;font-size:1rem}
+  .tnav__in{position:relative}
+  .lang{margin-top:.6rem}
+}
+.prevframe{position:relative;display:block;width:100%;aspect-ratio:16/10;overflow:hidden;border-radius:12px;border:1px solid var(--line);background:#0c0c0f}
+.prevframe iframe{position:absolute;top:0;left:0;width:1280px;height:800px;border:0;transform-origin:0 0;transform:scale(var(--s,.33));pointer-events:none;background:#fff}
+.prevframe__shade{position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,rgba(12,12,15,.55));opacity:0;transition:opacity .3s}
+.prevframe:hover .prevframe__shade{opacity:1}
+.prevframe__open{position:absolute;left:14px;bottom:12px;font-family:var(--mono);font-size:.74rem;letter-spacing:.04em;color:#fff;background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.25);padding:6px 11px;border-radius:8px;opacity:0;transform:translateY(6px);transition:.3s}
+.prevframe:hover .prevframe__open{opacity:1;transform:none}
+.pcard__cms{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:.74rem;color:var(--accent);border:1px solid var(--line);border-radius:8px;padding:6px 10px;transition:.25s}
+.pcard__cms:hover{border-color:var(--accent);background:rgba(224,163,60,.08)}
+.demo-warn{margin:.6rem 0 0;font-family:var(--mono);font-size:.72rem;color:var(--mut)}
 .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1.4rem}
 @media(max-width:780px){.steps{grid-template-columns:1fr}}
 .step{border:1px solid var(--line);border-radius:14px;padding:1.3rem 1.2rem;background:rgba(236,231,221,.02)}
@@ -206,7 +224,7 @@ img{ display:block; max-width:100%; }
 .step p{color:var(--bone-soft);font-size:.92rem;line-height:1.5}
 .pricetag{margin-top:1.6rem;border-left:2px solid var(--accent);background:rgba(224,163,60,.07);padding:.9rem 1.2rem;border-radius:0 12px 12px 0;color:var(--bone);font-size:.98rem;line-height:1.5}
 .pricetag b{color:var(--accent);font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:.3rem}
-.more-note{margin-top:2.2rem;color:var(--mut);font-size:.9rem;font-family:var(--mono);letter-spacing:.02em}
+.more-note{margin-top:2.2rem;color:var(--mut);font-size:.9rem;font-family:var(--mono)}
 
 </style>
 </head>
@@ -218,9 +236,13 @@ img{ display:block; max-width:100%; }
 <header class="tnav" id="tnav">
   <div class="tnav__in">
     <a href="/" class="brand"><span class="dot"></span>D-LOGIC<b>.</b>studio</a>
+    <button class="tnav__burger" id="burger" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
     <div class="tnav__right">
-      <a href="#prace" class="tnav__link" data-pl="Szablony" data-de="Templates" data-en="Templates">Szablony</a>
-      <a href="#cms" class="tnav__link" data-pl="Zaplecze CMS" data-de="CMS-System" data-en="CMS backend">Zaplecze CMS</a>
+      <a href="/o-mnie/" class="tnav__link" data-pl="O mnie" data-de="Über mich" data-en="About">O mnie</a>
+      <a href="/oferta/" class="tnav__link" data-pl="Oferta" data-de="Leistungen" data-en="Services">Oferta</a>
+      <a href="/pracownia/" class="tnav__link" data-pl="Pracownia" data-de="Werkstatt" data-en="Workshop">Pracownia</a>
+      <a href="/projekty/" class="tnav__link" data-pl="Projekty" data-de="Projekte" data-en="Projects">Projekty</a>
+      <a href="/blog/" class="tnav__link" data-pl="Blog" data-de="Blog" data-en="Blog">Blog</a>
       <a href="#kontakt" class="tnav__link" data-pl="Kontakt" data-de="Kontakt" data-en="Contact">Kontakt</a>
       <div class="lang" data-i18n-toggle>
         <button data-lang="pl">PL</button>
@@ -235,13 +257,13 @@ img{ display:block; max-width:100%; }
   <section class="thero wrap">
     <div class="thero__eyebrow rv"><span class="ln"></span><span data-pl="Pracownia · kolekcja szablonów" data-de="Werkstatt · Template-Kollektion" data-en="Workshop · template collection">Pracownia · kolekcja szablonów</span></div>
     <h1 class="rv" data-pl-html="Strony, które klient <span class='hl'>prowadzi sam.</span>" data-de-html="Websites, die der Kunde <span class='hl'>selbst pflegt.</span>" data-en-html="Sites the client <span class='hl'>runs themselves.</span>">Strony, które klient <span class="hl">prowadzi sam.</span></h1>
-    <p class="thero__lede rv" data-pl="Szesnaście gotowych szablonów dla różnych branż, każdy z działającym panelem CMS. Klient moderuje treść sam, bez programisty. Każdy projekt personalizuję pod Twoją markę; dwa języki w standardzie." data-de="Sechzehn fertige Templates für verschiedene Branchen, jedes mit funktionierendem CMS-Panel. Der Kunde pflegt die Inhalte selbst, ohne Entwickler. Jedes Projekt personalisiere ich auf deine Marke; zwei Sprachen serienmäßig." data-en="Sixteen ready templates for different industries, each with a working CMS panel. The client edits content themselves, no developer. I personalise every project to your brand; bilingual by default.">Szesnaście gotowych szablonów dla różnych branż, każdy z działającym panelem CMS. Klient moderuje treść sam, bez programisty. Każdy projekt personalizuję pod Twoją markę; dwa języki w standardzie.</p>
+    <p class="thero__lede rv" data-pl="Szesnaście żywych szablonów dla różnych branż, każdy z działającym panelem CMS. Kliknij dowolny, żeby otworzyć prawdziwą stronę i jej panel, w PL i DE. Po zakupie personalizuję projekt w całości pod Twoją markę." data-de="Sechzehn echte Templates für verschiedene Branchen, jedes mit funktionierendem CMS-Panel. Klick eines an, um die echte Seite und ihr Panel zu öffnen, in PL und DE. Nach dem Kauf personalisiere ich das Projekt vollständig auf deine Marke." data-en="Sixteen live templates for different industries, each with a working CMS panel. Click any of them to open the real site and its panel, in PL and DE. After purchase I fully personalise the project to your brand.">Szesnaście żywych szablonów dla różnych branż, każdy z działającym panelem CMS. Kliknij dowolny, żeby otworzyć prawdziwą stronę i jej panel, w PL i DE. Po zakupie personalizuję projekt w całości pod Twoją markę.</p>
     <div class="thero__cta rv">
       <a href="#prace" class="btn btn--solid" data-pl="Zobacz szablony →" data-de="Templates ansehen →" data-en="See the templates →">Zobacz szablony →</a>
       <a href="#cms" class="btn btn--ghost" data-pl="Jak działa CMS" data-de="So funktioniert das CMS" data-en="How the CMS works">Jak działa CMS</a>
     </div>
     <div class="thero__stats">
-      <div class="tstat rv"><div class="n">16</div><div class="l" data-pl="szablonów" data-de="Templates" data-en="templates">szablonów</div></div>
+      <div class="tstat rv"><div class="n">16</div><div class="l" data-pl="żywych szablonów" data-de="echte Templates" data-en="live templates">żywych szablonów</div></div>
       <div class="tstat rv"><div class="n"><b>CMS</b></div><div class="l" data-pl="w każdym" data-de="in jedem" data-en="in each">w każdym</div></div>
       <div class="tstat rv"><div class="n">PL<span style="opacity:.4">/</span>DE</div><div class="l" data-pl="dwa języki" data-de="zwei Sprachen" data-en="two languages">dwa języki</div></div>
       <div class="tstat rv"><div class="n">100<b>%</b></div><div class="l" data-pl="responsywne" data-de="responsiv" data-en="responsive">responsywne</div></div>
@@ -252,11 +274,12 @@ img{ display:block; max-width:100%; }
     <div class="shead">
       <div>
         <div class="shead__no">01, <span data-pl="Kolekcja" data-de="Kollektion" data-en="Collection">Kolekcja</span></div>
-        <h2 data-pl="Szesnaście gotowych światów." data-de="Sechzehn fertige Welten." data-en="Sixteen ready worlds.">Szesnaście gotowych światów.</h2>
+        <h2 data-pl="Szesnaście żywych światów." data-de="Sechzehn echte Welten." data-en="Sixteen live worlds.">Szesnaście żywych światów.</h2>
       </div>
-      <p data-pl="Wspólne DNA studia, osobny charakter każdej marki. Każdy szablon z gotowym panelem CMS, a po zakupie personalizowany w całości pod Ciebie." data-de="Gemeinsame Studio-DNA, eigener Charakter pro Marke. Jedes Template mit fertigem CMS, nach dem Kauf vollständig auf dich personalisiert." data-en="Shared studio DNA, distinct character per brand. Each template ships with a ready CMS, and after purchase it is fully personalised to you.">Wspólne DNA studia, osobny charakter każdej marki. Każdy szablon z gotowym panelem CMS, a po zakupie personalizowany w całości pod Ciebie.</p>
+      <p data-pl="Każda kafelka to prawdziwa strona w miniaturze. Kliknij, by otworzyć ją w pełni, a przyciskiem obok wejdziesz do jej panelu CMS." data-de="Jede Kachel ist eine echte Seite in Miniatur. Klick zum Öffnen, mit dem Button daneben gelangst du ins CMS-Panel." data-en="Each tile is a real site in miniature. Click to open it in full; the button beside it opens its CMS panel.">Każda kafelka to prawdziwa strona w miniaturze. Kliknij, by otworzyć ją w pełni, a przyciskiem obok wejdziesz do jej panelu CMS.</p>
     </div>
     <div class="pgrid" id="pgrid"></div>
+    <p class="demo-warn" data-pl="Podglądy ładują się na żywo z serwera demo, daj im chwilę." data-de="Vorschauen laden live vom Demo-Server, gib ihnen einen Moment." data-en="Previews load live from the demo server, give them a moment.">Podglądy ładują się na żywo z serwera demo, daj im chwilę.</p>
   </section>
 
   <section class="cms wrap" id="cms">
@@ -270,6 +293,7 @@ img{ display:block; max-width:100%; }
           <div class="feat"><div class="feat__no">02</div><div><h4 data-pl="Listy i kolekcje" data-de="Listen & Sammlungen" data-en="Lists & collections">Listy i kolekcje</h4><p data-pl="Menu, oferty, wydarzenia, posty, dodawaj i sortuj." data-de="Menüs, Angebote, Events, Beiträge, hinzufügen und sortieren." data-en="Menus, offers, events, posts, add and sort.">Menu, oferty, wydarzenia, posty, dodawaj i sortuj.</p></div></div>
           <div class="feat"><div class="feat__no">03</div><div><h4 data-pl="Role i ustawienia" data-de="Rollen & Einstellungen" data-en="Roles & settings">Role i ustawienia</h4><p data-pl="Statystyki, role użytkowników, rezerwacje, członkowie." data-de="Statistiken, Benutzerrollen, Reservierungen, Mitglieder." data-en="Stats, user roles, reservations, members.">Statystyki, role użytkowników, rezerwacje, członkowie.</p></div></div>
         </div>
+        <div style="margin-top:1.6rem"><a href="#prace" class="btn btn--ghost" data-pl="Otwórz panel w dowolnym szablonie →" data-de="CMS in einem Template öffnen →" data-en="Open a CMS in any template →">Otwórz panel w dowolnym szablonie →</a></div>
       </div>
 
       <div class="admin rv" aria-hidden="true">
@@ -304,7 +328,7 @@ img{ display:block; max-width:100%; }
     <div>
       <div class="shead__no">03, <span data-pl="Oferta" data-de="Angebot" data-en="Offer">Oferta</span></div>
       <h2 style="font-size:clamp(1.9rem,4.4vw,3.4rem);font-weight:800;letter-spacing:-.02em;line-height:1.04;margin:.7rem 0 1rem" data-pl-html="Kupujesz szablon. Dostajesz <span style='color:var(--accent)'>swój projekt.</span>" data-de-html="Du kaufst ein Template. Du bekommst <span style='color:var(--accent)'>dein Projekt.</span>" data-en-html="You buy a template. You get <span style='color:var(--accent)'>your own project.</span>">Kupujesz szablon. Dostajesz <span style="color:var(--accent)">swój projekt.</span></h2>
-      <p style="color:var(--bone-soft);max-width:54ch" data-pl="Szablon to punkt startu, nie produkt z półki. Wybrany projekt personalizuję w całości pod Twoją markę, treści i potrzeby, a w cenie dostajesz gotowy panel CMS, w którym prowadzisz stronę sam." data-de="Das Template ist der Startpunkt, kein Produkt von der Stange. Das gewählte Projekt personalisiere ich vollständig auf deine Marke, Inhalte und Bedürfnisse, und im Preis ist das fertige CMS-Panel enthalten, mit dem du die Seite selbst führst." data-en="A template is a starting point, not an off-the-shelf product. I fully personalise the chosen project to your brand, content and needs, and the price includes a ready CMS panel you run the site with yourself.">Szablon to punkt startu, nie produkt z półki. Wybrany projekt personalizuję w całości pod Twoją markę, treści i potrzeby, a w cenie dostajesz gotowy panel CMS, w którym prowadzisz stronę sam.</p>
+      <p style="color:var(--bone-soft);max-width:54ch" data-pl="Szablon to punkt startu, nie produkt z półki. Wybrany projekt personalizuję w całości pod Twoją markę, treści i potrzeby, a w cenie dostajesz gotowy panel CMS, w którym prowadzisz stronę sam, po polsku i niemiecku." data-de="Das Template ist der Startpunkt, kein Produkt von der Stange. Das gewählte Projekt personalisiere ich vollständig auf deine Marke, Inhalte und Bedürfnisse, und im Preis ist das fertige CMS-Panel enthalten, mit dem du die Seite selbst führst, auf Polnisch und Deutsch." data-en="A template is a starting point, not an off-the-shelf product. I fully personalise the chosen project to your brand, content and needs, and the price includes a ready CMS panel you run the site with yourself, in Polish and German.">Szablon to punkt startu, nie produkt z półki. Wybrany projekt personalizuję w całości pod Twoją markę, treści i potrzeby, a w cenie dostajesz gotowy panel CMS, w którym prowadzisz stronę sam, po polsku i niemiecku.</p>
       <div class="steps">
         <div class="step"><div class="step__no">01</div><h4 data-pl="Wybierasz szablon" data-de="Du wählst ein Template" data-en="You pick a template">Wybierasz szablon</h4><p data-pl="Branża i charakter, który pasuje do Ciebie." data-de="Branche und Charakter, der zu dir passt." data-en="An industry and character that fits you.">Branża i charakter, który pasuje do Ciebie.</p></div>
         <div class="step"><div class="step__no">02</div><h4 data-pl="Personalizuję pod Ciebie" data-de="Ich personalisiere für dich" data-en="I personalise it for you">Personalizuję pod Ciebie</h4><p data-pl="Marka, treści, zdjęcia, funkcje. Indywidualny projekt." data-de="Marke, Inhalte, Bilder, Funktionen. Ein individuelles Projekt." data-en="Brand, content, images, features. An individual project.">Marka, treści, zdjęcia, funkcje. Indywidualny projekt.</p></div>
@@ -338,63 +362,23 @@ img{ display:block; max-width:100%; }
   </div>
 </footer>
 <script is:inline>
-/* ============================================================
-   D-LOGIC · i18n engine (PL / DE)
-   Any element with data-pl / data-de gets its text swapped.
-   For rich nodes use data-pl-html / data-de-html (innerHTML).
-   Persists choice in localStorage('dlogic-lang').
-   ============================================================ */
-(function(global){
-  "use strict";
-  const KEY="dlogic-lang";
-  const SUP=["pl","de","en"];
 
-  function apply(lang){
-    document.documentElement.lang=lang;
-    document.querySelectorAll("[data-pl],[data-de]").forEach(el=>{
-      const v=el.getAttribute("data-"+lang);
-      if(v!=null) el.textContent=v;
-    });
-    document.querySelectorAll("[data-pl-html],[data-de-html]").forEach(el=>{
-      const v=el.getAttribute("data-"+lang+"-html");
-      if(v!=null) el.innerHTML=v;
-    });
-    document.querySelectorAll("[data-pl-ph],[data-de-ph]").forEach(el=>{
-      const v=el.getAttribute("data-"+lang+"-ph");
-      if(v!=null) el.setAttribute("placeholder",v);
-    });
-    document.querySelectorAll("[data-i18n-toggle]").forEach(t=>{
-      t.querySelectorAll("[data-lang]").forEach(b=>b.classList.toggle("is-on",b.getAttribute("data-lang")===lang));
-    });
-    try{ localStorage.setItem(KEY,lang); }catch(e){}
-    document.dispatchEvent(new CustomEvent("langchange",{detail:{lang}}));
-  }
-
-  function init(){
-    let lang="pl";
-    try{ const s=localStorage.getItem(KEY); if(s&&SUP.includes(s)) lang=s; }catch(e){}
-    apply(lang);
-    document.addEventListener("click",e=>{
-      const b=e.target.closest("[data-lang]");
-      if(!b) return;
-      e.preventDefault();
-      apply(b.getAttribute("data-lang"));
-    });
-  }
-
-  global.DLi18n={ apply, get(){ try{return localStorage.getItem(KEY)||"pl";}catch(e){return "pl";} } };
-  if(document.readyState!=="loading") init(); else document.addEventListener("DOMContentLoaded",init);
+/* i18n PL/DE/EN */
+(function(g){"use strict";const KEY="dlogic-lang",SUP=["pl","de","en"];
+function apply(l){document.documentElement.lang=l;
+ document.querySelectorAll("[data-pl],[data-de],[data-en]").forEach(e=>{const v=e.getAttribute("data-"+l);if(v!=null)e.textContent=v;});
+ document.querySelectorAll("[data-pl-html],[data-de-html],[data-en-html]").forEach(e=>{const v=e.getAttribute("data-"+l+"-html");if(v!=null)e.innerHTML=v;});
+ document.querySelectorAll("[data-i18n-toggle]").forEach(t=>t.querySelectorAll("[data-lang]").forEach(b=>b.classList.toggle("is-on",b.getAttribute("data-lang")===l)));
+ try{localStorage.setItem(KEY,l);}catch(e){}}
+function init(){let l="pl";try{const s=localStorage.getItem(KEY);if(s&&SUP.includes(s))l=s;}catch(e){}apply(l);
+ document.addEventListener("click",e=>{const b=e.target.closest("[data-lang]");if(!b)return;e.preventDefault();apply(b.getAttribute("data-lang"));});}
+g.DLi18n={apply,get(){try{return localStorage.getItem(KEY)||"pl";}catch(e){return "pl";}}};
+if(document.readyState!=="loading")init();else document.addEventListener("DOMContentLoaded",init);
 })(window);
 
-/* ============================================================
-   D-LOGIC studio · launcher logic
-   ============================================================ */
-(function(){
-  "use strict";
-  const $=(s,c=document)=>c.querySelector(s);
-  const $$=(s,c=document)=>[...c.querySelectorAll(s)];
-
-  const PROJECTS=[
+(function(){"use strict";
+const $=(s,c=document)=>c.querySelector(s), $$=(s,c=document)=>[...c.querySelectorAll(s)];
+const PROJECTS=[
     { id:"oliva", name:"OLIVA", href:"OLIVA.html", live:true,
       ind:{pl:"Restauracja · kuchnia sezonowa",de:"Restaurant · saisonale Küche"},
       desc:{pl:"Sezonowa karta, kinowy hero, rezerwacja krok po kroku.",de:"Saisonale Karte, filmischer Hero, Reservierung Schritt für Schritt."},
@@ -460,111 +444,80 @@ img{ display:block; max-width:100%; }
       desc:{pl:"Tablica, członkowie, wydarzenia, grupy i czat.",de:"Pinnwand, Mitglieder, Events, Gruppen und Chat."},
       pal:["#4f46e5","#0ea5e9","#f4f5f8"], pp:{bg:"#f4f5f8",bar:"#ffffff",hero:"#eef0f6",acc:"#4f46e5",ink:"#1e2230"} }
   ];
+const _EN={
+ oliva:{ind:"Restaurant · seasonal kitchen",desc:"Seasonal menu, cinematic hero, step-by-step booking."},
+ forma:{ind:"Architecture & interior studio",desc:"Raw grid, concrete and light. Project portfolio."},
+ mare:{ind:"Fashion brand · concept store",desc:"Editorial, big type, shop and lookbook."},
+ horyzont:{ind:"Developer · premium real estate",desc:"Investments, interactive floor plan, prestige and trust."},
+ lumen:{ind:"Aesthetic medicine clinic · SPA",desc:"Calm, treatments, price list and online booking."},
+ meridian:{ind:"Law firm · advisory",desc:"Authority, practice areas, team and contact."},
+ cisza:{ind:"Boutique hotel · guesthouse",desc:"Rooms, mountain mood, book your stay."},
+ grunhof:{ind:"Plant nursery · garden centre",desc:"Seasonal plant catalogue, B2B wholesale, garden design."},
+ swietlik:{ind:"Kindergarten · parent & teacher portal",desc:"Parent/teacher login, groups, notices, messages.",cms:"Parent portal"},
+ ratusz:{ind:"Public institution · citizen portal",desc:"e-Services, issue reporting with status tracking, news.",cms:"Clerk panel"},
+ solaris:{ind:"Photovoltaics · turnkey installs",desc:"Interactive savings calculator, packages, audit.",cms:"Lead panel"},
+ fracht:{ind:"Freight · contract logistics",desc:"Live shipment tracking, quotes, warehouse.",cms:"Dispatcher panel"},
+ zaczyn:{ind:"Craft bakery · sourdough",desc:"Bakery catalogue, holiday pre-order cart.",cms:"Orders panel"},
+ dentis:{ind:"Dentistry · dental clinic",desc:"Prices, team, online appointment booking.",cms:"Front-desk panel"},
+ sloj:{ind:"Joinery · custom furniture",desc:"Furniture configurator with live pricing, project gallery.",cms:"Quotes panel"},
+ kolektyw:{ind:"Community portal · intranet",desc:"Wall, members, events, groups and chat."}
+};
+PROJECTS.forEach(p=>{const e=_EN[p.id];if(e){p.ind.en=e.ind;p.desc.en=e.desc;if(e.cms){p.cmsLabel=p.cmsLabel||{};p.cmsLabel.en=e.cms;}}});
 
-
-  const _EN={
-    oliva:{ind:"Restaurant · seasonal kitchen",desc:"Seasonal menu, cinematic hero, step-by-step booking."},
-    forma:{ind:"Architecture & interior studio",desc:"Raw grid, concrete and light. Project portfolio."},
-    mare:{ind:"Fashion brand · concept store",desc:"Editorial, big type, shop and lookbook."},
-    horyzont:{ind:"Developer · premium real estate",desc:"Investments, interactive floor plan, prestige and trust."},
-    lumen:{ind:"Aesthetic medicine clinic · SPA",desc:"Calm, treatments, price list and online booking."},
-    meridian:{ind:"Law firm · advisory",desc:"Authority, practice areas, team and contact."},
-    cisza:{ind:"Boutique hotel · guesthouse",desc:"Rooms, mountain mood, book your stay."},
-    grunhof:{ind:"Plant nursery · garden centre",desc:"Seasonal plant catalogue, B2B wholesale, garden design."},
-    swietlik:{ind:"Kindergarten · parent & teacher portal",desc:"Parent/teacher login, groups, notices, messages.",cms:"Parent portal"},
-    ratusz:{ind:"Public institution · citizen portal",desc:"e-Services, issue reporting with status tracking, news.",cms:"Clerk panel"},
-    solaris:{ind:"Photovoltaics · turnkey installs",desc:"Interactive savings calculator, packages, audit.",cms:"Lead panel"},
-    fracht:{ind:"Freight · contract logistics",desc:"Live shipment tracking, quotes, warehouse.",cms:"Dispatcher panel"},
-    zaczyn:{ind:"Craft bakery · sourdough",desc:"Bakery catalogue, holiday pre-order cart.",cms:"Orders panel"},
-    dentis:{ind:"Dentistry · dental clinic",desc:"Prices, team, online appointment booking.",cms:"Front-desk panel"},
-    sloj:{ind:"Joinery · custom furniture",desc:"Furniture configurator with live pricing, project gallery.",cms:"Quotes panel"},
-    kolektyw:{ind:"Community portal · intranet",desc:"Wall, members, events, groups and chat."}
-  };
-  PROJECTS.forEach(p=>{ const e=_EN[p.id]; if(e){ p.ind.en=e.ind; p.desc.en=e.desc; if(e.cms){ p.cmsLabel=p.cmsLabel||{}; p.cmsLabel.en=e.cms; } } });
-
-  function lang(){ return (window.DLi18n&&DLi18n.get())||"pl"; }
-
-  function card(p,i){
-    const el=document.createElement("div");
-    el.className="pcard";
-    el.setAttribute("data-live",p.live?"1":"0");
-    const no=String(i+1).padStart(2,"0");
-    const tot=String(PROJECTS.length).padStart(2,"0");
-    const badge=p.live
-      ? `<span class="badge badge--live" data-pl="Gotowy" data-de="Fertig" data-en="Ready">Gotowy</span>`
-      : `<span class="badge badge--soon" data-pl="W produkcji" data-de="In Arbeit" data-en="In progress">W produkcji</span>`;
-    const cmsHref=p.cms||(p.id+"-studio.html");
-    const cmsLabelPl=p.cmsLabel?p.cmsLabel.pl:"Panel CMS";
-    const cmsLabelDe=p.cmsLabel?p.cmsLabel.de:"CMS-Panel";
-    const cmsLabelEn=p.cmsLabel&&p.cmsLabel.en?p.cmsLabel.en:"CMS panel";
-    const actsHTML=`<div class="pcard__acts"><a href="#kontakt" class="pcard__open" data-pl="Poproś o demo →" data-de="Demo anfragen →" data-en="Request a demo →">Poproś o demo →</a><span class="pcard__cms" data-pl="${cmsLabelPl}" data-de="${cmsLabelDe}" data-en="${cmsLabelEn}">${cmsLabelPl}</span></div>`;
-    el.style.setProperty("--pp-bg",p.pp.bg);
-    el.style.setProperty("--pp-2",p.pp.bar);
-    el.style.setProperty("--pp-acc",p.pp.acc);
-    el.style.setProperty("--pp-ink",p.pp.ink);
-    el.innerHTML=`
-      <div class="pcard__top">
-        <span class="pcard__no">${no} / ${tot}</span>
-        ${badge}
-      </div>
-      <div class="prev" style="--pp-bg:${p.pp.bg}">
-        <div class="prev__bar"><i></i><i></i><i></i></div>
-        <div class="prev__hero" style="background:${p.pp.hero}">
-          <span class="prev__kick"></span>
-          <span class="prev__h"></span>
-          <span class="prev__h s"></span>
-          <div class="prev__row"><span></span><span></span><span></span></div>
-        </div>
-        <span class="prev__chip"></span>
-      </div>
-      <div class="pcard__body">
-        <span class="pcard__ind" data-pl="${p.ind.pl}" data-de="${p.ind.de}" data-en="${p.ind.en}">${p.ind.pl}</span>
-        <span class="pcard__name">${p.name}</span>
-        <span class="pcard__desc" data-pl="${p.desc.pl}" data-de="${p.desc.de}" data-en="${p.desc.en}">${p.desc.pl}</span>
-        <div class="pcard__foot">
-          <div class="pcard__pal">${p.pal.map(c=>`<i style="background:${c}"></i>`).join("")}</div>
-          ${actsHTML}
-        </div>
-      </div>`;
-    el.classList.add("rv");
-    el.style.setProperty("transition-delay",(i%2)*0.06+"s");
-    return el;
-  }
-
-  function render(){
-    const grid=$("#pgrid"); if(!grid) return;
-    PROJECTS.forEach((p,i)=>grid.appendChild(card(p,i)));
-    // re-apply current language to freshly injected nodes
-    if(window.DLi18n) DLi18n.apply(lang());
-  }
-
-  function reveals(){
-    const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if(reduce){ $$(".rv").forEach(e=>e.classList.add("in")); return; }
-    const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); } }),{threshold:.08,rootMargin:"0px 0px -4% 0px"});
-    $$(".rv").forEach(el=>io.observe(el));
-    // safety net: above-the-fold content must never stay invisible
-    setTimeout(()=>$$(".rv:not(.in)").forEach(el=>{ const r=el.getBoundingClientRect(); if(r.top<innerHeight*1.05) el.classList.add("in"); }),250);
-  }
-
-  function nav(){
-    const n=$("#tnav");
-    const bar=$("#scrollbar");
-    addEventListener("scroll",()=>{ n.classList.toggle("is-scrolled",scrollY>30);
-      if(bar){ const h=document.documentElement.scrollHeight-innerHeight; bar.style.width=(h>0?(scrollY/h*100):0)+"%"; } },{passive:true});
-  }
-
-  function adminDemo(){
-    const navs=$$(".admin__nav");
-    navs.forEach(a=>a.addEventListener("mouseenter",()=>{ navs.forEach(x=>x.classList.remove("on")); a.classList.add("on"); }));
-  }
-
-  document.addEventListener("DOMContentLoaded",()=>{
-    render();
-    reveals();
-    nav();
-    adminDemo();
-  });
+let BASE="";
+const tot=String(PROJECTS.length).padStart(2,"0");
+function card(p,i){
+ const el=document.createElement("div");el.className="pcard rv";
+ const no=String(i+1).padStart(2,"0");
+ const site=BASE?BASE+"/"+p.href:"#";
+ const cmsFile=p.cms||(p.id+"-studio.html");
+ const cmsUrl=BASE?BASE+"/"+cmsFile:"#";
+ const clp=p.cmsLabel?p.cmsLabel.pl:"Panel CMS",cld=p.cmsLabel?p.cmsLabel.de:"CMS-Panel",cle=p.cmsLabel&&p.cmsLabel.en?p.cmsLabel.en:"CMS panel";
+ el.innerHTML=`
+  <div class="pcard__top"><span class="pcard__no">${no} / ${tot}</span><span class="badge badge--live" data-pl="Gotowy" data-de="Fertig" data-en="Ready">Gotowy</span></div>
+  <a class="prevframe" href="${site}" target="_blank" rel="noopener" aria-label="${p.name}">
+    <iframe loading="lazy" tabindex="-1" title="${p.name}" ${BASE?`src="${site}"`:""} sandbox="allow-scripts allow-same-origin"></iframe>
+    <span class="prevframe__shade"></span>
+    <span class="prevframe__open" data-pl="Otwórz na żywo ↗" data-de="Live öffnen ↗" data-en="Open live ↗">Otwórz na żywo ↗</span>
+  </a>
+  <div class="pcard__body">
+    <span class="pcard__ind" data-pl="${p.ind.pl}" data-de="${p.ind.de}" data-en="${p.ind.en}">${p.ind.pl}</span>
+    <span class="pcard__name">${p.name}</span>
+    <span class="pcard__desc" data-pl="${p.desc.pl}" data-de="${p.desc.de}" data-en="${p.desc.en}">${p.desc.pl}</span>
+    <div class="pcard__foot">
+      <div class="pcard__pal">${p.pal.map(c=>`<i style="background:${c}"></i>`).join("")}</div>
+      <a class="pcard__cms" href="${cmsUrl}" target="_blank" rel="noopener" data-pl="${clp} ↗" data-de="${cld} ↗" data-en="${cle} ↗">${clp} ↗</a>
+    </div>
+  </div>`;
+ el.style.setProperty("transition-delay",(i%2)*0.06+"s");
+ return el;
+}
+function scaleFrames(){ $$(".prevframe").forEach(f=>{ f.style.setProperty("--s",(f.clientWidth/1280).toFixed(4)); const ifr=f.querySelector("iframe"); if(ifr) ifr.style.height=(f.clientHeight/(f.clientWidth/1280))+"px"; }); }
+function render(){
+ const g=$("#pgrid"); if(!g) return;
+ PROJECTS.forEach((p,i)=>g.appendChild(card(p,i)));
+ scaleFrames();
+ if(window.DLi18n) DLi18n.apply(DLi18n.get());
+ reveals();
+}
+function reveals(){
+ const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+ if(reduce){$$(".rv").forEach(e=>e.classList.add("in"));return;}
+ const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target);}}),{threshold:.08,rootMargin:"0px 0px -4% 0px"});
+ $$(".rv").forEach(el=>io.observe(el));
+ setTimeout(()=>$$(".rv:not(.in)").forEach(el=>{if(el.getBoundingClientRect().top<innerHeight*1.1)el.classList.add("in");}),300);
+}
+function nav(){
+ const n=$("#tnav"),bar=$("#scrollbar"),burger=$("#burger");
+ addEventListener("scroll",()=>{n&&n.classList.toggle("is-scrolled",scrollY>30);if(bar){const h=document.documentElement.scrollHeight-innerHeight;bar.style.width=(h>0?scrollY/h*100:0)+"%";}},{passive:true});
+ burger&&burger.addEventListener("click",()=>n.classList.toggle("tnav--open"));
+ $$(".tnav__link").forEach(a=>a.addEventListener("click",()=>n.classList.remove("tnav--open")));
+}
+let rT;addEventListener("resize",()=>{clearTimeout(rT);rT=setTimeout(scaleFrames,150);});
+document.addEventListener("DOMContentLoaded",()=>{
+ nav();
+ fetch("/pracownia-demos.json",{cache:"no-store"}).then(r=>r.json()).then(d=>{BASE=(d&&d.base?d.base:"").replace(/\/$/,"");}).catch(()=>{}).finally(render);
+});
 })();
 
 </script>
