@@ -144,11 +144,16 @@ header.nav{position:fixed;top:0;left:0;right:0;z-index:40;display:flex;align-ite
   .menu-btn{display:flex}
   header.nav.menuopen .nav-links{display:flex;position:absolute;top:60px;left:18px;right:18px;flex-direction:column;align-items:flex-start;gap:15px;background:var(--panel);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--line);border-radius:12px;padding:18px 20px}
 }
+@media (max-width:860px){
+  .hud-title{bottom:178px}
+  .hud-hint{bottom:116px}
+}
 @media (max-width:560px){
   .corner{display:none}
-  .hud-title{left:16px;right:16px;bottom:172px}
+  .hud-title{left:16px;right:16px;bottom:178px}
   .hud-name{font-size:clamp(30px,10vw,44px)}
-  .hud-desc,.hud-hint{display:none}
+  .hud-desc{display:none}
+  .hud-hint{bottom:116px;left:16px}
   .hud-latin{font-size:11px}.hud-sub{font-size:10.5px}
   .hud-metrics{top:58px;right:16px}
   .controls{right:16px;bottom:148px}
