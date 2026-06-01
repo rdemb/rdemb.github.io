@@ -79,7 +79,7 @@ function makeSlime(){
     if(env.pointer.active){ var px=env.pointer.x/W*gw, py=env.pointer.y/H*gh, rad=env.pointer.down?7:4; for(var q2=0;q2<60;q2++){var an=Math.random()*6.283,rr=Math.random()*rad; var gx=(px+Math.cos(an)*rr)|0,gy=(py+Math.sin(an)*rr)|0; if(gx>=0&&gx<gw&&gy>=0&&gy<gh) grid[gy*gw+gx]+=20;} }
   }
   function info(){ return [{k:"flow",v:flowStr()},{k:"vol",v:(MK.vol||0).toFixed(2)},{k:"agenty",v:N}]; }
-  return { meta:{ id:"slime", name:L("Śluzowiec","Slime mold","Schleimpilz"), latin:"Physarum polycephalum",
+  return { meta:{ id:"slime", name:L("Splot","Plexus","Geflecht"), latin:"Physarum polycephalum",
       sub:L("emergentna sieć · napędzana order-flow","emergent network · driven by order-flow","emergentes Netz · vom Orderfluss getrieben"),
       desc:L("Tysiące komórek bez mózgu budują optymalną sieć. Napór kupna/sprzedaży z rynku zakrzywia ich ruch, zmienność rozprasza ślady.","Thousands of brainless cells build an optimal network. Market buy/sell pressure bends their motion, volatility scatters the trails.","Tausende hirnlose Zellen bauen ein optimales Netz. Marktdruck biegt ihre Bewegung, Volatilität streut die Spuren.") },
     init:init, frame:frame, resize:init, info:info };
@@ -109,7 +109,7 @@ function makeMurmur(){
     }
   }
   function info(){ return [{k:"flow",v:flowStr()},{k:"vol",v:(MK.vol||0).toFixed(2)},{k:"ptaki",v:N}]; }
-  return { meta:{ id:"murmur", name:L("Murmuracja","Murmuration","Schwarm"), latin:"boids · Reynolds",
+  return { meta:{ id:"murmur", name:L("Rój","Swarm","Schwarm"), latin:"boids · Reynolds",
       sub:L("rój · spójność z order-flow","flock · cohesion from order-flow","Schwarm · Kohäsion aus Orderfluss"),
       desc:L("Trzy proste reguły rodzą stado. Przewaga kupujących ściąga roj w jednym kierunku, zmienność go rozprasza.","Three simple rules make a flock. Buyer dominance pulls the swarm one way, volatility scatters it.","Drei einfache Regeln ergeben einen Schwarm. Käuferdominanz zieht ihn in eine Richtung, Volatilität streut ihn.") },
     init:init, frame:frame, resize:init, info:info };
@@ -133,7 +133,7 @@ function makeAttractor(){
     if(env.pointer.active){ var rx=(env.pointer.x-cx)/scl, ry=(env.pointer.y-cy)/scl; tA+=rx*0.4; tC+=ry*0.4; }
   }
   function info(){ return [{k:"flow",v:flowStr()},{k:"a",v:A.toFixed(2)},{k:"c",v:C.toFixed(2)}]; }
-  return { meta:{ id:"attractor", name:L("Atraktor","Attractor","Attraktor"), latin:"de Jong · układ dynamiczny",
+  return { meta:{ id:"attractor", name:L("Orbita","Orbit","Orbit"), latin:"de Jong · układ dynamiczny",
       sub:L("chaos deterministyczny · ksztalt z rynku","deterministic chaos · shape from the market","deterministisches Chaos · Form aus dem Markt"),
       desc:L("Cztery liczby i pętla rodzą nieskończony, nigdy nie powtarzający się wzor. Rynek przestawia te liczby , ksztalt żyje z danymi.","Four numbers and a loop yield an infinite, never-repeating pattern. The market shifts those numbers , the shape lives with the data.","Vier Zahlen und eine Schleife ergeben ein unendliches Muster. Der Markt verschiebt sie , die Form lebt mit den Daten.") },
     init:init, frame:frame, resize:init, info:info };
@@ -154,7 +154,7 @@ function makeVortex(){
     ctx.globalCompositeOperation="source-over"; t+=0.016;
   }
   function info(){ return [{k:"flow",v:flowStr()},{k:"vol",v:(MK.vol||0).toFixed(2)},{k:"cząstki",v:N}]; }
-  return { meta:{ id:"vortex", name:L("Pole wirowe","Vortex field","Wirbelfeld"), latin:"curl-noise · pole przepływu",
+  return { meta:{ id:"vortex", name:L("Nurt","Current","Strömung"), latin:"curl-noise · pole przepływu",
       sub:L("prąd = order-flow · turbulencja = zmienność","current = order-flow · turbulence = volatility","Strömung = Orderfluss · Turbulenz = Volatilität"),
       desc:L("Niewidzialne pole sił niesie tysiące cząstek. Przepływ zleceń to prąd, zmienność to turbulencja , dosłownie widzisz nastój rynku.","An invisible force field carries thousands of particles. Order flow is the current, volatility the turbulence , you literally see the market mood.","Ein unsichtbares Kraftfeld trägt tausende Partikel. Orderfluss ist die Strömung, Volatilität die Turbulenz.") },
     init:init, frame:frame, resize:init, info:info };
