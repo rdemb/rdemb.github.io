@@ -1,0 +1,188 @@
+---
+import Chrome from '../components/Chrome.astro';
+import { withUi } from '../i18n';
+
+const dict = withUi({
+  pl: {
+    'za.eyebrow': 'Żywy algorytm',
+    'za.title': "Sztuczne życie, <span class='hl'>na żywo.</span>",
+    'za.lead': 'To nie animacja. To ekosystem stworzeń z genomem, który żyje na moim serwerze całą dobę. Ewoluują, polują, rozmnażają się z mutacją i giną. Patrzysz na prawdziwą selekcję, tę samą dla każdego, kto tu wejdzie.',
+    'za.gen': 'pokolenie', 'za.pop': 'populacja', 'za.births': 'narodziny', 'za.deaths': 'zgony',
+    'za.food': 'jedzenie', 'za.carniv': 'drapieżniki', 'za.size': 'śr. rozmiar', 'za.speed': 'śr. prędkość',
+    'za.offline': 'łączę z organizmem…',
+    'za.legend': 'Kolor wynika z genów: zielony = roślinożerca, czerwony = drapieżnik. Gdy dish zmienia barwę, widzisz ewolucję na żywo.',
+    'za.chart': 'Cechy w czasie — dowód, że to naprawdę ewoluuje',
+    'za.cl1': 'średnia dieta', 'za.cl2': 'odsetek drapieżników', 'za.cl3': 'populacja',
+    'za.rec': 'Rekordy', 'za.r1': 'najstarszy (kroki)', 'za.r2': 'najwięcej potomstwa', 'za.r3': 'szczyt populacji', 'za.r4': 'wymarcia',
+    'za.how.h': 'Jak to działa (uczciwie)',
+    'za.how.b': 'Każde stworzenie ma genom: rozmiar, prędkość, zasięg zmysłów, dietę (roślinożerca↔drapieżnik), metabolizm, próg rozrodu. Nie ma sztucznej funkcji celu — przeżywa i mnoży się ten, czyje geny pasują do środowiska. Z roślinożerców same wyłaniają się drapieżniki, więc wyścig zbrojeń nigdy się nie kończy. Proces liczy się 24/7 na serwerze i zapisuje stan, więc historia jest nieodwracalna: wracasz jutro i organizm jest dalej.',
+  },
+  en: {
+    'za.eyebrow': 'Living algorithm',
+    'za.title': "Artificial life, <span class='hl'>live.</span>",
+    'za.lead': 'This is not an animation. It is an ecosystem of creatures with genomes, living on my server around the clock. They evolve, hunt, reproduce with mutation and die. You are watching real selection, the same for everyone who visits.',
+    'za.gen': 'generation', 'za.pop': 'population', 'za.births': 'births', 'za.deaths': 'deaths',
+    'za.food': 'food', 'za.carniv': 'carnivores', 'za.size': 'avg size', 'za.speed': 'avg speed',
+    'za.offline': 'connecting to the organism…',
+    'za.legend': 'Colour comes from the genes: green = herbivore, red = carnivore. When the dish changes colour, you are seeing evolution live.',
+    'za.chart': 'Traits over time — proof that it really evolves',
+    'za.cl1': 'average diet', 'za.cl2': 'carnivore share', 'za.cl3': 'population',
+    'za.rec': 'Records', 'za.r1': 'oldest (ticks)', 'za.r2': 'most offspring', 'za.r3': 'peak population', 'za.r4': 'extinctions',
+    'za.how.h': 'How it works (honestly)',
+    'za.how.b': 'Each creature has a genome: size, speed, sense range, diet (herbivore↔carnivore), metabolism, reproduction threshold. There is no artificial fitness function — whoever has genes that fit the environment survives and multiplies. Carnivores emerge from herbivores on their own, so the arms race never ends. The process runs 24/7 on the server and saves its state, so the history is irreversible: come back tomorrow and the organism has moved on.',
+  },
+  de: {
+    'za.eyebrow': 'Lebender Algorithmus',
+    'za.title': "Künstliches Leben, <span class='hl'>live.</span>",
+    'za.lead': 'Das ist keine Animation. Es ist ein Ökosystem aus Kreaturen mit Genom, das rund um die Uhr auf meinem Server lebt. Sie entwickeln sich, jagen, vermehren sich mit Mutation und sterben. Du siehst echte Selektion, für jeden Besucher dieselbe.',
+    'za.gen': 'Generation', 'za.pop': 'Population', 'za.births': 'Geburten', 'za.deaths': 'Tode',
+    'za.food': 'Nahrung', 'za.carniv': 'Raubtiere', 'za.size': 'Ø Größe', 'za.speed': 'Ø Tempo',
+    'za.offline': 'verbinde mit dem Organismus…',
+    'za.legend': 'Die Farbe kommt aus den Genen: grün = Pflanzenfresser, rot = Raubtier. Wenn der Dish die Farbe wechselt, siehst du Evolution live.',
+    'za.chart': 'Merkmale über Zeit — Beweis, dass es wirklich evolviert',
+    'za.cl1': 'Ø Ernährung', 'za.cl2': 'Raubtier-Anteil', 'za.cl3': 'Population',
+    'za.rec': 'Rekorde', 'za.r1': 'ältestes (Ticks)', 'za.r2': 'meiste Nachkommen', 'za.r3': 'Spitzen-Population', 'za.r4': 'Aussterben',
+    'za.how.h': 'So funktioniert es (ehrlich)',
+    'za.how.b': 'Jede Kreatur hat ein Genom: Größe, Tempo, Sichtweite, Ernährung (Pflanzen↔Raub), Stoffwechsel, Fortpflanzungsschwelle. Es gibt keine künstliche Zielfunktion — wer Gene passend zur Umgebung hat, überlebt und vermehrt sich. Aus Pflanzenfressern entstehen von selbst Raubtiere, das Wettrüsten endet also nie. Der Prozess läuft 24/7 auf dem Server und speichert seinen Zustand, die Geschichte ist also unumkehrbar: komm morgen wieder, der Organismus ist weiter.',
+  },
+});
+---
+<Chrome title="Żywy algorytm , sztuczne życie na żywo · D-LOGIC studio" description="Ekosystem stworzeń z genomem, ewoluujący na żywo 24/7. Prawdziwa selekcja, nie animacja. Obserwuj pokolenia, drapieżniki, dryf cech." dict={dict} active="">
+  <section class="za">
+    <div class="wrap">
+      <span class="eyebrow" data-i18n="za.eyebrow">•</span>
+      <h1 class="za-h1" data-i18n-html="za.title">•</h1>
+      <p class="za-lead" data-i18n="za.lead">•</p>
+
+      <div class="za-hud">
+        <div class="za-stat"><b id="za-gen">·</b><span data-i18n="za.gen">•</span></div>
+        <div class="za-stat"><b id="za-pop">·</b><span data-i18n="za.pop">•</span></div>
+        <div class="za-stat"><b id="za-carniv">·</b><span data-i18n="za.carniv">•</span></div>
+        <div class="za-stat"><b id="za-births">·</b><span data-i18n="za.births">•</span></div>
+        <div class="za-stat"><b id="za-deaths">·</b><span data-i18n="za.deaths">•</span></div>
+        <div class="za-stat"><b id="za-food">·</b><span data-i18n="za.food">•</span></div>
+        <div class="za-stat"><b id="za-size">·</b><span data-i18n="za.size">•</span></div>
+        <div class="za-stat"><b id="za-speed">·</b><span data-i18n="za.speed">•</span></div>
+      </div>
+
+      <div class="za-stage">
+        <canvas id="petri"></canvas>
+        <div class="za-off" id="petri-off" data-i18n="za.offline">•</div>
+      </div>
+      <p class="za-legend" data-i18n="za.legend">•</p>
+
+      <div class="za-chart-box">
+        <div class="za-chart-head">
+          <span data-i18n="za.chart">•</span>
+          <span class="za-keys">
+            <i class="k k1"></i><span data-i18n="za.cl1">•</span>
+            <i class="k k2"></i><span data-i18n="za.cl2">•</span>
+            <i class="k k3"></i><span data-i18n="za.cl3">•</span>
+          </span>
+        </div>
+        <canvas id="petri-chart"></canvas>
+      </div>
+
+      <div class="za-grid">
+        <div class="za-how">
+          <h3 data-i18n="za.how.h">•</h3>
+          <p data-i18n="za.how.b">•</p>
+        </div>
+        <div class="za-records">
+          <h3 data-i18n="za.rec">•</h3>
+          <div class="za-rec"><span data-i18n="za.r1">•</span><b id="za-oldest">·</b></div>
+          <div class="za-rec"><span data-i18n="za.r2">•</span><b id="za-mostch">·</b></div>
+          <div class="za-rec"><span data-i18n="za.r3">•</span><b id="za-peak">·</b></div>
+          <div class="za-rec"><span data-i18n="za.r4">•</span><b id="za-extinct">·</b></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .za{ padding:64px 0 90px; }
+    .za-h1{ font-family:'Space Grotesk Variable',sans-serif; font-weight:600; font-size:clamp(34px,5.2vw,60px); line-height:1.02; letter-spacing:-.02em; margin:18px 0 0; }
+    .za-h1 :global(.hl){ color:var(--accent); }
+    .za-lead{ color:var(--muted); font-size:clamp(16px,1.7vw,19px); max-width:64ch; margin:18px 0 26px; line-height:1.6; }
+    .za-hud{ display:grid; grid-template-columns:repeat(8,1fr); gap:10px; margin-bottom:18px; }
+    .za-stat{ border:1px solid var(--line); border-radius:12px; background:var(--surface); padding:12px 10px; text-align:center; }
+    .za-stat b{ font-family:'Space Grotesk Variable',sans-serif; font-size:clamp(18px,2.4vw,26px); font-weight:600; color:var(--accent); display:block; line-height:1; font-variant-numeric:tabular-nums; }
+    .za-stat span{ font-family:'JetBrains Mono Variable',monospace; font-size:10.5px; color:var(--muted); margin-top:7px; display:block; letter-spacing:.02em; }
+    .za-stage{ position:relative; width:100%; aspect-ratio:1200/720; border:1px solid var(--line); border-radius:16px; overflow:hidden; background:#0a0b0e; box-shadow:0 30px 70px -40px rgba(0,0,0,.7); }
+    .za-stage canvas{ width:100%; height:100%; display:block; }
+    .za-off{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-family:'JetBrains Mono Variable',monospace; font-size:13px; color:var(--muted); background:var(--bg); }
+    .za-legend{ font-family:'JetBrains Mono Variable',monospace; font-size:12px; color:var(--muted); margin:14px 0 0; }
+    .za-chart-box{ margin-top:34px; border:1px solid var(--line); border-radius:14px; background:var(--surface); padding:18px; }
+    .za-chart-head{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; font-family:'JetBrains Mono Variable',monospace; font-size:12px; color:var(--muted); margin-bottom:12px; }
+    .za-keys{ display:inline-flex; align-items:center; gap:6px; flex-wrap:wrap; }
+    .za-keys .k{ width:11px; height:3px; border-radius:2px; display:inline-block; margin-left:8px; }
+    .za-keys .k1{ background:#E8B23A; } .za-keys .k2{ background:#d23b2e; } .za-keys .k3{ background:#5e8b7e; }
+    #petri-chart{ width:100%; height:150px; display:block; }
+    .za-grid{ display:grid; grid-template-columns:1.5fr 1fr; gap:24px; margin-top:34px; }
+    .za-how h3,.za-records h3{ font-family:'Space Grotesk Variable',sans-serif; font-size:18px; font-weight:600; margin:0 0 12px; }
+    .za-how p{ color:var(--muted); font-size:15px; line-height:1.65; max-width:60ch; }
+    .za-rec{ display:flex; justify-content:space-between; gap:12px; padding:10px 0; border-bottom:1px dashed var(--line); font-family:'JetBrains Mono Variable',monospace; font-size:13px; }
+    .za-rec span{ color:var(--muted); } .za-rec b{ color:var(--text); font-variant-numeric:tabular-nums; }
+    @media (max-width:760px){ .za-hud{ grid-template-columns:repeat(4,1fr); } .za-grid{ grid-template-columns:1fr; } }
+  </style>
+
+  <script slot="page-script" is:inline>
+    (function(){
+      const cv=document.getElementById('petri'); if(!cv) return;
+      const ctx=cv.getContext('2d'); const off=document.getElementById('petri-off');
+      let W=1200,H=720,base=null,food=[],series=[],lastSnap=performance.now(),scale=1,ox=0,oy=0;
+      const cr=new Map(); const $=id=>document.getElementById(id);
+      function fit(){ const r=cv.getBoundingClientRect(),dpr=Math.min(devicePixelRatio||1,2);
+        cv.width=Math.max(1,r.width*dpr); cv.height=Math.max(1,r.height*dpr); ctx.setTransform(dpr,0,0,dpr,0,0);
+        scale=Math.min(r.width/W,r.height/H); ox=(r.width-W*scale)/2; oy=(r.height-H*scale)/2; }
+      addEventListener('resize',fit);
+      function hud(s){ const m={'za-gen':s.gen,'za-pop':s.pop,'za-carniv':s.carnivPct+'%','za-births':s.births,'za-deaths':s.deaths,'za-food':s.food,'za-size':s.avgSize,'za-speed':s.avgSpeed};
+        for(const k in m){ const e=$(k); if(e) e.textContent=m[k]; } }
+      function rec(r){ if(!r)return; const m={'za-oldest':r.oldest,'za-mostch':r.most_children,'za-peak':r.peak_pop,'za-extinct':r.extinct||0};
+        for(const k in m){ const e=$(k); if(e&&m[k]!=null) e.textContent=m[k]; } }
+      function apply(d){ W=d.w||W; H=d.h||H; food=d.food||[]; lastSnap=performance.now();
+        const seen=new Set();
+        for(const c of d.cr){ const id=c[0]; seen.add(id); let o=cr.get(id);
+          if(!o){ o={x:c[1],y:c[2],dx:c[1],dy:c[2],vx:c[3],vy:c[4],r:c[5],hue:c[6],a:0}; cr.set(id,o); }
+          else { o.dx=c[1];o.dy=c[2];o.vx=c[3];o.vy=c[4];o.r=c[5];o.hue=c[6];o.gone=false; } }
+        for(const [id,o] of cr){ if(!seen.has(id)){ o.gone=true; o.a-=0.12; if(o.a<=0) cr.delete(id);} else if(o.a<1) o.a=Math.min(1,o.a+0.16); }
+        if(d.series) series=d.series; if(d.stats) hud(d.stats); if(d.records) rec(d.records);
+        if(off) off.style.display='none'; drawChart();
+      }
+      async function poll(){
+        try{
+          if(!base){ const j=await (await fetch('/pracownia-demos.json',{cache:'no-store'})).json(); base=(j.base||'').replace(/\/+$/,''); }
+          if(base){ const d=await (await fetch(base+'/_live/life.json',{cache:'no-store'})).json(); apply(d); }
+        }catch(e){ if(off){ off.style.display=''; off.textContent='…'; } }
+        setTimeout(poll,800);
+      }
+      function frame(now){
+        const el=Math.min((now-lastSnap)/1000,1.6);
+        ctx.clearRect(0,0,cv.width,cv.height);
+        ctx.fillStyle='rgba(150,170,110,.45)';
+        for(const f of food){ ctx.fillRect(ox+f[0]*scale-1,oy+f[1]*scale-1,2,2); }
+        for(const [id,o] of cr){
+          let px=o.dx+o.vx*el*10, py=o.dy+o.vy*el*10;
+          px=((px%W)+W)%W; py=((py%H)+H)%H;
+          if(Math.abs(px-o.x)>W*0.5) o.x=px; else o.x+=(px-o.x)*0.25;
+          if(Math.abs(py-o.y)>H*0.5) o.y=py; else o.y+=(py-o.y)*0.25;
+          const R=Math.max(1.4,o.r*scale);
+          ctx.globalAlpha=Math.max(0,Math.min(1,o.a==null?1:o.a));
+          ctx.fillStyle='hsl('+o.hue+',68%,'+(o.gone?35:55)+'%)';
+          ctx.beginPath(); ctx.arc(ox+o.x*scale,oy+o.y*scale,R,0,6.283); ctx.fill();
+        }
+        ctx.globalAlpha=1; requestAnimationFrame(frame);
+      }
+      function drawChart(){ const cc=$('petri-chart'); if(!cc||series.length<2) return;
+        const r=cc.getBoundingClientRect(),dpr=Math.min(devicePixelRatio||1,2);
+        cc.width=Math.max(1,r.width*dpr); cc.height=Math.max(1,r.height*dpr);
+        const x=cc.getContext('2d'); x.setTransform(dpr,0,0,dpr,0,0); const w=r.width,h=r.height; x.clearRect(0,0,w,h);
+        const n=series.length, PX=i=>i/(n-1)*w, maxpop=Math.max.apply(null,series.map(p=>p.pop).concat([1]));
+        function ln(get,col){ x.strokeStyle=col; x.lineWidth=1.7; x.beginPath();
+          series.forEach((p,i)=>{ const v=Math.max(0,Math.min(1,get(p))); const y=h-6-v*(h-12); i?x.lineTo(PX(i),y):x.moveTo(PX(i),y); }); x.stroke(); }
+        ln(p=>p.diet,'#E8B23A'); ln(p=>p.carniv,'#d23b2e'); ln(p=>p.pop/maxpop,'#5e8b7e');
+      }
+      fit(); requestAnimationFrame(frame); poll();
+    })();
+  </script>
+</Chrome>
