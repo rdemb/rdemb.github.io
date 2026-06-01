@@ -8,15 +8,16 @@ import Share from '../components/Share.astro';
 const { lang = 'pl', title, description = '', sw = { pl: '/', en: '/en/', de: '/de/' }, share = true } = Astro.props;
 const base = lang === 'pl' ? '' : `/${lang}`;
 const L = {
-  pl: { about: 'O mnie', work: 'Oferta', pracownia: 'Pracownia', projects: 'Projekty', blog: 'Blog', contact: 'Kontakt' },
-  en: { about: 'About', work: 'Services', pracownia: 'Workshop', projects: 'Projects', blog: 'Blog', contact: 'Contact' },
-  de: { about: 'Über mich', work: 'Leistungen', pracownia: 'Werkstatt', projects: 'Projekte', blog: 'Blog', contact: 'Kontakt' },
+  pl: { about: 'O mnie', work: 'Oferta', pracownia: 'Pracownia', projects: 'Projekty', zywy: 'Żywy algorytm', blog: 'Blog', contact: 'Kontakt' },
+  en: { about: 'About', work: 'Services', pracownia: 'Workshop', projects: 'Projects', zywy: 'Living algorithm', blog: 'Blog', contact: 'Contact' },
+  de: { about: 'Über mich', work: 'Leistungen', pracownia: 'Werkstatt', projects: 'Projekte', zywy: 'Lebender Algorithmus', blog: 'Blog', contact: 'Kontakt' },
 }[lang];
 const nav = [
   { href: '/o-mnie/', t: L.about },
   { href: '/oferta/', t: L.work },
   { href: '/pracownia/', t: L.pracownia },
   { href: base + '/projekty/', t: L.projects },
+  { href: '/zywy-algorytm/', t: L.zywy },
   { href: base + '/blog/', t: L.blog },
   { href: '/#kontakt', t: L.contact },
 ];
