@@ -8,3 +8,6 @@ dist/
 .env.*
 *.log
 .DS_Store
+
+# szablon(y) zrodlowe — nie do publicznego repo
+/D-LOGIC Studio.zip
