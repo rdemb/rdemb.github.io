@@ -1,6 +1,7 @@
 ---
 import '@fontsource-variable/space-grotesk';
 import '@fontsource-variable/jetbrains-mono';
+import SiteNav from '../components/SiteNav.astro';
 ---
 <!DOCTYPE html>
 <html lang="pl">
@@ -253,26 +254,7 @@ img{ display:block; max-width:100%; }
 <div class="amb"></div>
 <div class="grain"></div>
 
-<header class="tnav" id="tnav">
-  <div class="tnav__in">
-    <a href="/" class="brand"><span class="glyph">◢</span>D&#8209;<b>LOGIC</b>&nbsp;<span style="color:var(--mut);font-weight:400">studio</span></a>
-    <button class="tnav__burger" id="burger" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
-    <div class="tnav__right">
-      <a href="/o-mnie/" class="tnav__link" data-pl="O mnie" data-de="Über mich" data-en="About">O mnie</a>
-      <a href="/oferta/" class="tnav__link" data-pl="Oferta" data-de="Leistungen" data-en="Services">Oferta</a>
-      <a href="/pracownia/" class="tnav__link" data-pl="Pracownia" data-de="Werkstatt" data-en="Workshop">Pracownia</a>
-      <a href="/projekty/" class="tnav__link" data-pl="Projekty" data-de="Projekte" data-en="Projects">Projekty</a>
-      <a href="/zywy-algorytm/" class="tnav__link" data-pl="Żywy algorytm" data-de="Lebender Algorithmus" data-en="Living algorithm">Żywy algorytm</a>
-      <a href="/blog/" class="tnav__link" data-pl="Blog" data-de="Blog" data-en="Blog">Blog</a>
-      <a href="#kontakt" class="tnav__link" data-pl="Kontakt" data-de="Kontakt" data-en="Contact">Kontakt</a>
-      <div class="lang" data-i18n-toggle>
-        <button data-lang="pl">PL</button>
-        <button data-lang="en">EN</button>
-        <button data-lang="de">DE</button>
-      </div>
-    </div>
-  </div>
-</header>
+<SiteNav mode="client" active="/pracownia/" showTheme={false} />
 
 <main id="top">
   <section class="thero wrap">
@@ -529,10 +511,8 @@ function reveals(){
  setTimeout(()=>$$(".rv:not(.in)").forEach(el=>{if(el.getBoundingClientRect().top<innerHeight*1.1)el.classList.add("in");}),300);
 }
 function nav(){
- const n=$("#tnav"),bar=$("#scrollbar"),burger=$("#burger");
- addEventListener("scroll",()=>{n&&n.classList.toggle("is-scrolled",scrollY>30);if(bar){const h=document.documentElement.scrollHeight-innerHeight;bar.style.width=(h>0?scrollY/h*100:0)+"%";}},{passive:true});
- burger&&burger.addEventListener("click",()=>n.classList.toggle("tnav--open"));
- $$(".tnav__link").forEach(a=>a.addEventListener("click",()=>n.classList.remove("tnav--open")));
+ const bar=$("#scrollbar");
+ addEventListener("scroll",()=>{if(bar){const h=document.documentElement.scrollHeight-innerHeight;bar.style.width=(h>0?scrollY/h*100:0)+"%";}},{passive:true});
 }
 let rT;addEventListener("resize",()=>{clearTimeout(rT);rT=setTimeout(scaleFrames,150);});
 document.addEventListener("DOMContentLoaded",()=>{

@@ -2,6 +2,7 @@
 import '@fontsource-variable/space-grotesk';
 import '@fontsource-variable/inter';
 import '@fontsource-variable/jetbrains-mono';
+import SiteNav from '../components/SiteNav.astro';
 ---
 <!DOCTYPE html>
 <html lang="pl" data-theme="dark">
@@ -307,33 +308,7 @@ footer p.tag{color:var(--muted);font-size:14.5px;max-width:36ch}
 </div>
 
 <!-- ============ NAV ============ -->
-<header class="nav" id="nav">
-  <div class="wrap nav-inner">
-    <a href="#top" class="brand" data-magnetic><span class="glyph">◢</span><span class="word">D-<b>LOGIC</b>·STUDIO</span></a>
-    <nav class="nav-links">
-      <a href="/o-mnie/" data-i18n="nav.about">o mnie</a>
-      <a href="/oferta/" data-i18n="nav.work">oferta</a>
-      <a href="/pracownia/" data-i18n="nav.pracownia">pracownia</a>
-      <a href="/projekty/" data-i18n="nav.projects">projekty</a>
-      <a href="/zywy-algorytm/" data-i18n="nav.zywy">żywy algorytm</a>
-      <a href="/blog/" data-i18n="nav.blog">blog</a>
-      <a href="#kontakt" data-i18n="nav.contact">kontakt</a>
-    </nav>
-    <div class="nav-tools">
-      <div class="seg" id="lang" role="group" aria-label="Język / Language / Sprache">
-        <button data-lang="pl" class="on">pl</button>
-        <button data-lang="en">en</button>
-        <button data-lang="de">de</button>
-      </div>
-      <button class="icon-btn" id="theme" aria-label="Motyw">
-        <svg class="ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2M12 20v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M2 12h2M20 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>
-      </button>
-      <button class="icon-btn menu-btn" id="menu" aria-label="Menu">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
-      </button>
-    </div>
-  </div>
-</header>
+<SiteNav mode="client" active="/" />
 
 <main id="top">
 <!-- ============ HERO ============ -->
@@ -568,7 +543,7 @@ const isTouch = window.matchMedia("(hover:none),(pointer:coarse)").matches;
 /* ================= i18n ================= */
 const I18N = {
  pl:{
-  "nav.about":"o mnie","nav.work":"oferta","nav.pracownia":"pracownia","nav.projects":"projekty","nav.zywy":"żywy algorytm","nav.blog":"blog","nav.contact":"kontakt",
+  "nav.home":"start","nav.about":"o mnie","nav.work":"oferta","nav.pracownia":"pracownia","nav.projects":"projekty","nav.zywy":"żywy algorytm","nav.blog":"blog","nav.contact":"kontakt",
   "hero.eyebrow":"D-LOGIC STUDIO · narzędzia AI · web · dane",
   "hero.t1":"Buduję narzędzia AI, które ","hero.t2":"naprawdę działają.",
   "hero.lead":"I jestem uczciwy co do tego, czego nie potrafią. Testuję je jak własne strategie tradingowe, baseline, koszt, wynik out-of-sample. Najpierw na sobie, potem dla Ciebie.",
@@ -605,7 +580,7 @@ const I18N = {
   "foot.note":"Wszystkie wyniki, też negatywne, zapisane."
  },
  en:{
-  "nav.about":"about","nav.work":"services","nav.pracownia":"workshop","nav.projects":"projects","nav.zywy":"living algorithm","nav.blog":"blog","nav.contact":"contact",
+  "nav.home":"home","nav.about":"about","nav.work":"services","nav.pracownia":"workshop","nav.projects":"projects","nav.zywy":"living algorithm","nav.blog":"blog","nav.contact":"contact",
   "hero.eyebrow":"D-LOGIC STUDIO · AI tools · web · data",
   "hero.t1":"I build AI tools that ","hero.t2":"really work.",
   "hero.lead":"And I'm honest about what they can't do. I test them like my own trading strategies, baseline, cost, out-of-sample result. On myself first, then for you.",
@@ -642,7 +617,7 @@ const I18N = {
   "foot.note":"All results, negative ones too, on the record."
  },
  de:{
-  "nav.about":"über mich","nav.work":"Leistungen","nav.pracownia":"Werkstatt","nav.projects":"Projekte","nav.zywy":"Lebender Algorithmus","nav.blog":"Blog","nav.contact":"Kontakt",
+  "nav.home":"start","nav.about":"über mich","nav.work":"Leistungen","nav.pracownia":"Werkstatt","nav.projects":"Projekte","nav.zywy":"Lebender Algorithmus","nav.blog":"Blog","nav.contact":"Kontakt",
   "hero.eyebrow":"D-LOGIC STUDIO · KI-Tools · Web · Daten",
   "hero.t1":"Ich baue KI-Tools, die ","hero.t2":"wirklich funktionieren.",
   "hero.lead":"Und ich bin ehrlich, was sie nicht können. Ich teste sie wie meine eigenen Trading-Strategien, Baseline, Kosten, Out-of-Sample-Ergebnis. Zuerst an mir, dann für dich.",
@@ -762,10 +737,6 @@ function onScroll(){
   if(prog) prog.style.width=(h>0?(st/h)*100:0)+"%";
 }
 window.addEventListener("scroll", onScroll, {passive:true}); onScroll();
-const menuBtn=document.getElementById("menu");
-menuBtn && menuBtn.addEventListener("click", ()=>{ nav && nav.classList.toggle("navopen"); });
-document.querySelectorAll(".nav-links a").forEach(a=>a.addEventListener("click", ()=>{ nav && nav.classList.remove("navopen"); }));
-
 /* ================= REVEAL ================= */
 const io=new IntersectionObserver((es)=>{
   es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); } });
