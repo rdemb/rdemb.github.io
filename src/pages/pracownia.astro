@@ -207,7 +207,7 @@ img{ display:block; max-width:100%; }
   .tnav__in{position:relative}
   .lang{margin-top:.6rem}
 }
-.prevframe{position:relative;display:block;width:100%;aspect-ratio:16/10;overflow:hidden;border-radius:12px;border:1px solid var(--line);background:#0c0c0f}
+.prevframe{position:relative;display:block;margin:0 1.4rem;aspect-ratio:16/10;overflow:hidden;border-radius:12px;border:1px solid var(--line);background:#0c0c0f}
 .prevframe iframe{position:absolute;top:0;left:0;width:1280px;height:800px;border:0;transform-origin:0 0;transform:scale(var(--s,.33));pointer-events:none;background:#fff}
 .prevframe__shade{position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,rgba(12,12,15,.55));opacity:0;transition:opacity .3s}
 .prevframe:hover .prevframe__shade{opacity:1}
@@ -225,6 +225,12 @@ img{ display:block; max-width:100%; }
 .pricetag{margin-top:1.6rem;border-left:2px solid var(--accent);background:rgba(224,163,60,.07);padding:.9rem 1.2rem;border-radius:0 12px 12px 0;color:var(--bone);font-size:.98rem;line-height:1.5}
 .pricetag b{color:var(--accent);font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:.3rem}
 .more-note{margin-top:2.2rem;color:var(--mut);font-size:.9rem;font-family:var(--mono)}
+@media(max-width:560px){
+  .wrap{padding-left:22px;padding-right:22px}
+  .prevframe{margin:0 1rem}
+  .pcard__body{padding:1.2rem}
+  .thero{padding-top:clamp(96px,22vw,140px)}
+}
 
 </style>
 </head>
