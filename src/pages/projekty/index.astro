@@ -11,6 +11,16 @@ const t = { title: 'Projekty', lead: 'Rzeczy, które zbudowałem i zbadałem. Z 
   <div class="crumbs"><a href="/">D-LOGIC</a> <span>/</span> {t.title}</div>
   <header class="article-head"><span class="meta mono">// {t.title.toLowerCase()}</span><h1>{t.title}</h1><p class="excerpt">{t.lead}</p></header>
   <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:6px">
+    <a class="card" href="/gambit/">
+      <span class="num">gambit · <span style="color:#39d98a">● live</span></span>
+      <h3 style="margin-top:14px">GAMBIT</h3>
+      <p>Osiem neuroróżnorodnych umysłów uczy się grać w szachy. Grają ze sobą 24/7, ewoluują, pamiętają rywali i śnią. Ranking na żywo i partia z wybranym graczem.</p>
+    </a>
+    <a class="card" href="/zywy-algorytm/">
+      <span class="num">order flow · <span style="color:#39d98a">● live</span></span>
+      <h3 style="margin-top:14px">Order Flow</h3>
+      <p>Żywy organizm rynku napędzany realnym przepływem zleceń krypto. Cztery algorytmy, prawdziwy order-flow i warstwa przewidywania.</p>
+    </a>
     {projects.map((p) => (
       <a class="card" href={`/projekty/${p.data.key}/`}>
         <span class="num">{p.data.key}</span>

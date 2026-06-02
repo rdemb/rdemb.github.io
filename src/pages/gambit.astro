@@ -1,0 +1,334 @@
+---
+import '@fontsource-variable/space-grotesk';
+import '@fontsource-variable/jetbrains-mono';
+import SiteNav from '../components/SiteNav.astro';
+---
+<!doctype html>
+<html lang="pl" data-theme="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>GAMBIT · ewoluujące umysły szachowe · D-LOGIC studio</title>
+<meta name="description" content="Osiem neuroróżnorodnych algorytmów uczy się grać w szachy. Grają ze sobą 24/7, ewoluują, pamiętają, śnią. Ranking na żywo i partia z wybranym umysłem." />
+<style>
+:root{
+  --bg:#0c0e12; --bg-2:#12151b; --bg-3:#171b22; --line:#242a34; --line-2:#333b48;
+  --bone:#E7E9EC; --bone-soft:#aab2bf; --mut:#6b7686; --accent:#E8B23A; --accent-2:#d9912f;
+  --sq-l:#2b2f38; --sq-d:#1b1e25; --pc-w:#f1ece0; --pc-b:#11141a;
+  --mono:'JetBrains Mono Variable',ui-monospace,monospace; --sans:'Space Grotesk Variable',system-ui,sans-serif;
+  --ease:cubic-bezier(.22,1,.36,1); --gut:clamp(20px,5vw,72px); --maxw:1280px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--bg);color:var(--bone);line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 var(--gut)}
+.mono{font-family:var(--mono)}
+.eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--accent)}
+section{padding:clamp(48px,7vw,96px) 0}
+h2{font-size:clamp(1.7rem,3.6vw,2.7rem);font-weight:700;letter-spacing:-.02em;line-height:1.05}
+
+/* HERO */
+.hero{padding:calc(74px + clamp(30px,7vw,70px)) 0 clamp(40px,6vw,64px);position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(120% 80% at 80% -10%,rgba(232,178,58,.10),transparent 60%);pointer-events:none}
+.hero__in{position:relative;z-index:1}
+.hero h1{font-size:clamp(2.8rem,9vw,6.4rem);font-weight:700;letter-spacing:-.04em;line-height:.9;margin:.3rem 0 0}
+.hero h1 .am{color:var(--accent)}
+.hero__lede{max-width:54ch;margin-top:1.2rem;color:var(--bone-soft);font-size:clamp(1rem,1.5vw,1.18rem)}
+.hero__stats{display:flex;flex-wrap:wrap;gap:clamp(1.2rem,3vw,3rem);margin-top:2rem}
+.stat{display:flex;flex-direction:column;gap:.2rem}
+.stat b{font-size:clamp(1.4rem,3vw,2.1rem);font-weight:700;font-variant-numeric:tabular-nums}
+.stat span{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mut)}
+.live-dot{width:8px;height:8px;border-radius:50%;background:#39d98a;display:inline-block;box-shadow:0 0 0 0 rgba(57,217,138,.6);animation:pulse 2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(57,217,138,.5)}70%{box-shadow:0 0 0 8px rgba(57,217,138,0)}100%{box-shadow:0 0 0 0 rgba(57,217,138,0)}}
+
+/* SECTION HEAD */
+.shead{display:flex;align-items:flex-end;justify-content:space-between;gap:1.4rem;flex-wrap:wrap;margin-bottom:2rem}
+.shead p{color:var(--bone-soft);max-width:42ch;margin-top:.5rem}
+
+/* BOARDS */
+.boards{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(16px,2.4vw,28px)}
+.bcard{background:var(--bg-2);border:1px solid var(--line);border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:10px;transition:border-color .4s}
+.bcard:hover{border-color:var(--line-2)}
+.bcard__top{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:.92rem}
+.bp{display:flex;align-items:center;gap:.5em;min-width:0}
+.bp__g{width:24px;height:24px;border-radius:7px;display:grid;place-items:center;font-size:.95rem;flex:none}
+.bp__n{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bp__vs{font-family:var(--mono);font-size:.7rem;color:var(--mut)}
+.evalbar{height:5px;border-radius:3px;background:var(--pc-b);overflow:hidden;position:relative}
+.evalbar i{position:absolute;top:0;bottom:0;left:50%;background:var(--pc-w);transition:all .6s var(--ease)}
+.board{display:grid;grid-template-columns:repeat(8,1fr);aspect-ratio:1;border-radius:9px;overflow:hidden;border:1px solid var(--line)}
+.sq{display:grid;place-items:center;font-size:clamp(13px,4.4vw,30px);line-height:1;position:relative}
+.sq.l{background:var(--sq-l)}.sq.d{background:var(--sq-d)}
+.sq .pc{filter:drop-shadow(0 1px 1px rgba(0,0,0,.5))}
+.sq .pc.w{color:var(--pc-w)}.sq .pc.b{color:var(--pc-b);text-shadow:0 0 1px rgba(255,255,255,.25)}
+.sq.hl::after{content:"";position:absolute;inset:0;background:rgba(232,178,58,.22)}
+.bcard__foot{display:flex;align-items:center;justify-content:space-between;font-family:var(--mono);font-size:.72rem;color:var(--mut)}
+.bcard__foot .chk{color:var(--accent-2)}
+
+/* ROSTER */
+.roster{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:clamp(14px,2vw,20px)}
+.mind{background:var(--bg-2);border:1px solid var(--line);border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:.7rem;transition:transform .5s var(--ease),border-color .4s;position:relative;overflow:hidden}
+.mind:hover{transform:translateY(-4px);border-color:var(--line-2)}
+.mind__bar{position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--mc,#888)}
+.mind__top{display:flex;align-items:center;gap:.7rem}
+.mind__g{width:42px;height:42px;border-radius:11px;display:grid;place-items:center;font-size:1.3rem;flex:none;background:color-mix(in oklab,var(--mc,#888) 18%,transparent);border:1px solid color-mix(in oklab,var(--mc,#888) 40%,transparent)}
+.mind__id b{font-size:1.1rem;font-weight:700}
+.mind__id span{font-family:var(--mono);font-size:.66rem;letter-spacing:.05em;color:var(--mut);text-transform:uppercase;display:block}
+.mind__desc{color:var(--bone-soft);font-size:.86rem;min-height:3.6em}
+.mind__stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:.2rem}
+.ms{background:var(--bg-3);border-radius:9px;padding:7px 9px;text-align:center}
+.ms b{font-size:1.05rem;font-weight:700;font-variant-numeric:tabular-nums;display:block}
+.ms span{font-family:var(--mono);font-size:.58rem;letter-spacing:.05em;text-transform:uppercase;color:var(--mut)}
+.mind__foot{display:flex;align-items:center;justify-content:space-between;gap:.5rem;margin-top:.2rem}
+.mood{font-family:var(--mono);font-size:.68rem;padding:.3em .7em;border-radius:999px;background:var(--bg-3);color:var(--bone-soft)}
+.energy{flex:1;height:4px;border-radius:2px;background:var(--bg-3);overflow:hidden;max-width:80px}
+.energy i{display:block;height:100%;background:var(--mc,#888);transition:width .6s}
+.playbtn{font-family:var(--mono);font-size:.7rem;font-weight:600;color:var(--accent);border:1px solid color-mix(in oklab,var(--accent) 45%,transparent);border-radius:8px;padding:.4em .8em;cursor:pointer;background:none;transition:.25s;white-space:nowrap}
+.playbtn:hover{background:var(--accent);color:var(--bg)}
+.playbtn.busy{color:var(--mut);border-color:var(--line);cursor:default}
+
+/* RANKING + CHAT split */
+.split{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(20px,3vw,40px)}
+.rank{width:100%;border-collapse:collapse;font-size:.92rem}
+.rank th{text-align:left;font-family:var(--mono);font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);padding:0 .6rem .7rem;font-weight:500}
+.rank td{padding:.6rem;border-top:1px solid var(--line);vertical-align:middle}
+.rank tr td:first-child{font-family:var(--mono);color:var(--mut);width:2ch}
+.rank .nm{display:flex;align-items:center;gap:.5em;font-weight:600}
+.rank .nm i{width:22px;height:22px;border-radius:6px;display:grid;place-items:center;font-size:.85rem;font-style:normal}
+.rank .elo{font-family:var(--mono);font-weight:700;font-variant-numeric:tabular-nums}
+.rank .wld{font-family:var(--mono);color:var(--bone-soft);font-size:.82rem}
+.chat{background:var(--bg-2);border:1px solid var(--line);border-radius:16px;padding:16px;height:100%;max-height:520px;overflow:hidden;display:flex;flex-direction:column}
+.chat__h{font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);margin-bottom:.8rem;display:flex;align-items:center;gap:.5em}
+.chat__feed{display:flex;flex-direction:column;gap:.7rem;overflow-y:auto;flex:1}
+.cmsg{display:flex;gap:.6rem;font-size:.86rem;animation:fadein .5s var(--ease)}
+@keyframes fadein{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.cmsg i{width:22px;height:22px;border-radius:6px;display:grid;place-items:center;font-size:.8rem;font-style:normal;flex:none}
+.cmsg b{font-weight:600}
+.cmsg .k{font-family:var(--mono);font-size:.6rem;color:var(--mut);text-transform:uppercase;margin-left:.3em}
+.cmsg.dream{color:var(--bone-soft);font-style:italic}
+
+/* PLAY */
+.play{background:linear-gradient(140deg,var(--bg-2),var(--bg-3));border:1px solid var(--line);border-radius:20px;padding:clamp(24px,4vw,44px)}
+.play h2 .am{color:var(--accent)}
+.play p{color:var(--bone-soft);max-width:56ch;margin-top:.7rem}
+.play__form{display:flex;gap:.7rem;flex-wrap:wrap;margin-top:1.6rem;align-items:center}
+.play__form select,.play__form input{font-family:var(--sans);font-size:.95rem;background:var(--bg);border:1px solid var(--line-2);border-radius:10px;padding:.8em 1em;color:var(--bone)}
+.play__form input{flex:1;min-width:200px}
+.btn{font-family:var(--sans);font-weight:600;font-size:.95rem;background:var(--accent);color:var(--bg);border:none;border-radius:10px;padding:.85em 1.5em;cursor:pointer;transition:transform .3s,background .3s}
+.btn:hover{transform:translateY(-2px);background:var(--accent-2)}
+.play__note{font-family:var(--mono);font-size:.72rem;color:var(--mut);margin-top:1rem}
+
+footer{border-top:1px solid var(--line);padding:40px 0;color:var(--mut);font-size:.85rem}
+footer a{color:var(--bone-soft)}
+
+@media(max-width:880px){ .split{grid-template-columns:1fr} .boards{grid-template-columns:1fr} }
+@media(max-width:560px){ .boards{grid-template-columns:1fr 1fr;gap:10px} .bcard{padding:9px;gap:7px} .bp__n{font-size:.72rem} .bcard__top{font-size:.72rem} }
+.loading{opacity:.5}
+</style>
+</head>
+<body>
+<SiteNav mode="client" active="/gambit/" lang="pl" />
+
+<main>
+  <section class="hero"><div class="wrap hero__in">
+    <span class="eyebrow" data-i18n="kicker">Projekt · sztuczne umysły · na żywo</span>
+    <h1>GAMB<span class="am">I</span>T</h1>
+    <p class="hero__lede" data-i18n="lede">Osiem neuroróżnorodnych umysłów uczy się grać w szachy. Grają ze sobą bez przerwy, ewoluują, pamiętają rywali i śnią. Każdy to inny rodzaj geniuszu, nie etykieta. Oglądaj ranking na żywo albo usiądź do partii z wybranym z nich.</p>
+    <div class="hero__stats">
+      <div class="stat"><b id="st-games">—</b><span data-i18n="s.games">rozegranych partii</span></div>
+      <div class="stat"><b id="st-leader">—</b><span data-i18n="s.leader">lider rankingu</span></div>
+      <div class="stat"><b id="st-age">—</b><span data-i18n="s.age">turniej trwa</span></div>
+      <div class="stat"><b><span class="live-dot"></span> <span data-i18n="s.live">na żywo</span></b><span data-i18n="s.boards">4 szachownice · 24/7</span></div>
+    </div>
+  </div></section>
+
+  <section><div class="wrap">
+    <div class="shead"><div><span class="eyebrow" data-i18n="b.eye">Stoły turniejowe</span><h2 data-i18n="b.h">Cztery partie w tej chwili</h2><p data-i18n="b.p">Każdy ruch to realne, legalne szachy. Ósemka sama dobiera sobie przeciwników.</p></div></div>
+    <div class="boards" id="boards"><div class="loading mono">ładowanie pozycji…</div></div>
+  </div></section>
+
+  <section style="background:var(--bg-2)"><div class="wrap">
+    <div class="shead"><div><span class="eyebrow" data-i18n="r.eye">Ósemka umysłów</span><h2 data-i18n="r.h">Każdy gra inaczej, bo myśli inaczej</h2><p data-i18n="r.p">Inny styl poznawczy = inna ewaluacja, głębia, temperatura i skłonność do ryzyka. Z czasem słabsi uczą się od silniejszych i ewoluują we śnie.</p></div></div>
+    <div class="roster" id="roster"></div>
+  </div></section>
+
+  <section><div class="wrap split">
+    <div>
+      <div class="shead"><div><span class="eyebrow" data-i18n="k.eye">Klasyfikacja</span><h2 data-i18n="k.h">Ranking ELO</h2></div></div>
+      <table class="rank"><thead><tr><th>#</th><th data-i18n="k.mind">umysł</th><th>ELO</th><th>W·P·R</th><th data-i18n="k.mood">nastrój</th></tr></thead><tbody id="rankbody"></tbody></table>
+    </div>
+    <div>
+      <div class="chat">
+        <div class="chat__h"><span class="live-dot"></span> <span data-i18n="c.h">eter — co mówią między ruchami</span></div>
+        <div class="chat__feed" id="chat"></div>
+      </div>
+    </div>
+  </div></section>
+
+  <section><div class="wrap">
+    <div class="play">
+      <span class="eyebrow" data-i18n="p.eye">Zagraj z umysłem</span>
+      <h2 data-i18n="p.h">Usiądź do partii z jednym z moich graczy</h2>
+      <p data-i18n="p.p">Wybierz umysł i zagraj prawdziwą partię. Jeśli akurat gra w turnieju, dołączasz do kolejki — dostaniesz maila, gdy zwolni się przy stole i przyjdzie Twoja kolej.</p>
+      <div class="play__form">
+        <select id="pSel" aria-label="umysł"></select>
+        <input id="pMail" type="email" placeholder="twój e-mail" data-i18n-ph="p.mail" />
+        <button class="btn" id="pBtn" data-i18n="p.btn">Zagraj / dołącz do kolejki</button>
+      </div>
+      <div class="play__note" id="pNote" data-i18n="p.note">Twój e-mail służy tylko do powiadomienia o kolejce. Bez spamu, bez kont.</div>
+    </div>
+  </div></section>
+</main>
+
+<footer><div class="wrap" style="display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap">
+  <span>GAMBIT · część <a href="/projekty/">D-LOGIC studio</a></span>
+  <span class="mono" data-i18n="foot">silnik gra non-stop na własnym serwerze · python-chess</span>
+</div></footer>
+
+<script is:inline>
+/* ---------- i18n (spina się z przełącznikiem SiteNav #lang) ---------- */
+const I18N={
+ pl:{kicker:"Projekt · sztuczne umysły · na żywo",
+  lede:"Osiem neuroróżnorodnych umysłów uczy się grać w szachy. Grają ze sobą bez przerwy, ewoluują, pamiętają rywali i śnią. Każdy to inny rodzaj geniuszu, nie etykieta. Oglądaj ranking na żywo albo usiądź do partii z wybranym z nich.",
+  "s.games":"rozegranych partii","s.leader":"lider rankingu","s.age":"turniej trwa","s.live":"na żywo","s.boards":"4 szachownice · 24/7",
+  "b.eye":"Stoły turniejowe","b.h":"Cztery partie w tej chwili","b.p":"Każdy ruch to realne, legalne szachy. Ósemka sama dobiera sobie przeciwników.",
+  "r.eye":"Ósemka umysłów","r.h":"Każdy gra inaczej, bo myśli inaczej","r.p":"Inny styl poznawczy = inna ewaluacja, głębia, temperatura i skłonność do ryzyka. Z czasem słabsi uczą się od silniejszych i ewoluują we śnie.",
+  "k.eye":"Klasyfikacja","k.h":"Ranking ELO","k.mind":"umysł","k.mood":"nastrój",
+  "c.h":"eter — co mówią między ruchami",
+  "p.eye":"Zagraj z umysłem","p.h":"Usiądź do partii z jednym z moich graczy","p.p":"Wybierz umysł i zagraj prawdziwą partię. Jeśli akurat gra w turnieju, dołączasz do kolejki — dostaniesz maila, gdy zwolni się przy stole i przyjdzie Twoja kolej.","p.mail":"twój e-mail","p.btn":"Zagraj / dołącz do kolejki","p.note":"Twój e-mail służy tylko do powiadomienia o kolejce. Bez spamu, bez kont.",
+  foot:"silnik gra non-stop na własnym serwerze · python-chess", min:"min", busy:"przy stole", free:"wolny", play:"zagraj", queue:"w kolejce"},
+ en:{kicker:"Project · artificial minds · live",
+  lede:"Eight neurodiverse minds learn to play chess. They play each other non-stop, evolve, remember rivals and dream. Each is a different kind of genius, not a label. Watch the live ranking or sit down for a game against one of them.",
+  "s.games":"games played","s.leader":"ranking leader","s.age":"tournament running","s.live":"live","s.boards":"4 boards · 24/7",
+  "b.eye":"Tournament tables","b.h":"Four games right now","b.p":"Every move is real, legal chess. The eight pick their own opponents.",
+  "r.eye":"The eight minds","r.h":"Each plays differently, because each thinks differently","r.p":"A different cognitive style = different evaluation, depth, temperature and appetite for risk. Over time the weaker learn from the stronger and evolve in their sleep.",
+  "k.eye":"Standings","k.h":"ELO ranking","k.mind":"mind","k.mood":"mood",
+  "c.h":"the ether — what they say between moves",
+  "p.eye":"Play a mind","p.h":"Sit down for a game against one of my players","p.p":"Pick a mind and play a real game. If it is mid-tournament, you join the queue — you get an email when it frees up and your turn comes.","p.mail":"your email","p.btn":"Play / join the queue","p.note":"Your email is only for the queue notification. No spam, no accounts.",
+  foot:"the engine plays non-stop on its own server · python-chess", min:"min", busy:"at a table", free:"free", play:"play", queue:"queued"},
+ de:{kicker:"Projekt · künstliche Geister · live",
+  lede:"Acht neurodiverse Geister lernen Schach. Sie spielen pausenlos gegeneinander, entwickeln sich, erinnern Rivalen und träumen. Jeder ist eine andere Art Genie, kein Etikett. Verfolge das Live-Ranking oder setz dich zu einer Partie mit einem von ihnen.",
+  "s.games":"gespielte Partien","s.leader":"Ranglistenführer","s.age":"Turnier läuft","s.live":"live","s.boards":"4 Bretter · 24/7",
+  "b.eye":"Turniertische","b.h":"Vier Partien gerade jetzt","b.p":"Jeder Zug ist echtes, legales Schach. Die Acht wählen ihre Gegner selbst.",
+  "r.eye":"Die acht Geister","r.h":"Jeder spielt anders, weil jeder anders denkt","r.p":"Ein anderer kognitiver Stil = andere Bewertung, Tiefe, Temperatur und Risikolust. Mit der Zeit lernen die Schwächeren von den Stärkeren und entwickeln sich im Schlaf.",
+  "k.eye":"Tabelle","k.h":"ELO-Rangliste","k.mind":"Geist","k.mood":"Stimmung",
+  "c.h":"der Äther — was sie zwischen den Zügen sagen",
+  "p.eye":"Spiel einen Geist","p.h":"Setz dich zu einer Partie mit einem meiner Spieler","p.p":"Wähle einen Geist und spiel eine echte Partie. Ist er gerade im Turnier, kommst du in die Warteschlange — du bekommst eine E-Mail, sobald er frei ist und du dran bist.","p.mail":"deine E-Mail","p.btn":"Spielen / in die Schlange","p.note":"Deine E-Mail dient nur der Benachrichtigung. Kein Spam, keine Konten.",
+  foot:"die Engine spielt rund um die Uhr auf eigenem Server · python-chess", min:"Min", busy:"am Tisch", free:"frei", play:"spielen", queue:"in der Schlange"},
+};
+let LANG=(()=>{try{return localStorage.getItem("dlogic-lang")||"pl"}catch(e){return"pl"}})();
+function applyLang(l){
+  LANG=l; try{localStorage.setItem("dlogic-lang",l)}catch(e){}
+  document.documentElement.lang=l;
+  const d=I18N[l]||I18N.pl;
+  document.querySelectorAll("[data-i18n]").forEach(e=>{const v=d[e.getAttribute("data-i18n")];if(v!=null)e.textContent=v;});
+  document.querySelectorAll("[data-i18n-ph]").forEach(e=>{const v=d[e.getAttribute("data-i18n-ph")];if(v!=null)e.setAttribute("placeholder",v);});
+  document.querySelectorAll("[data-pl],[data-de],[data-en]").forEach(e=>{const v=e.getAttribute("data-"+l);if(v!=null)e.textContent=v;});
+  document.querySelectorAll('#lang [data-lang]').forEach(b=>b.classList.toggle("on",b.getAttribute("data-lang")===l));
+  if(window.__G) render(window.__G);
+}
+document.addEventListener("click",e=>{const b=e.target.closest('#lang [data-lang]');if(b){e.preventDefault();applyLang(b.getAttribute("data-lang"));}});
+
+/* ---------- render szachownicy z FEN ---------- */
+const GLYPH={k:"♚",q:"♛",r:"♜",b:"♝",n:"♞",p:"♟"};
+function boardHTML(fen,lastUci){
+  const rows=fen.split(" ")[0].split("/");
+  const from=lastUci&&lastUci.length>=4?lastUci.slice(0,2):null, to=lastUci&&lastUci.length>=4?lastUci.slice(2,4):null;
+  let html="";
+  for(let r=0;r<8;r++){
+    let file=0;
+    for(const ch of rows[r]){
+      if(/\d/.test(ch)){ for(let i=0;i<+ch;i++){ html+=sq(r,file,null); file++; } }
+      else { html+=sq(r,file,ch,from,to); file++; }
+    }
+  }
+  return html;
+}
+function sq(r,f,ch,from,to){
+  const dark=(r+f)%2===1; const coord="abcdefgh"[f]+(8-r);
+  const hl=(coord===from||coord===to)?" hl":"";
+  let pc="";
+  if(ch){const w=ch===ch.toUpperCase();pc=`<span class="pc ${w?'w':'b'}">${GLYPH[ch.toLowerCase()]}</span>`;}
+  return `<div class="sq ${dark?'d':'l'}${hl}">${pc}</div>`;
+}
+
+/* ---------- pobieranie danych ---------- */
+let _base=null;
+async function fetchData(){
+  try{
+    if(_base===null){const j=await (await fetch("/pracownia-demos.json",{cache:"no-store"})).json();_base=(j.base||"").replace(/\/+$/,"");}
+    if(!_base) return null;
+    return await (await fetch(_base+"/_live/chess.json",{cache:"no-store"})).json();
+  }catch(e){return null;}
+}
+
+function render(d){
+  window.__G=d; const t=I18N[LANG]||I18N.pl;
+  const by={}; d.agents.forEach(a=>by[a.id]=a);
+  // hero stats
+  const lead=by[d.ranking[0]];
+  document.getElementById("st-games").textContent=d.totalGames;
+  document.getElementById("st-leader").textContent=lead?lead.glyph+" "+lead.name:"—";
+  document.getElementById("st-age").textContent=Math.max(1,Math.round((d.t-d.since)/60))+" "+t.min;
+  // boards
+  document.getElementById("boards").innerHTML=d.boards.sort((a,b)=>a.id-b.id).map(b=>{
+    const w=by[b.white],bl=by[b.black];const ev=Math.max(-8,Math.min(8,b.evalcp||0));
+    const lw=50+ev/16*100; // pasek przewagi
+    return `<div class="bcard">
+      <div class="bcard__top">
+        <span class="bp"><span class="bp__g" style="background:color-mix(in oklab,${w.color} 20%,transparent);color:${w.color}">${w.glyph}</span><span class="bp__n">${w.name}</span></span>
+        <span class="bp__vs">vs</span>
+        <span class="bp" style="justify-content:flex-end"><span class="bp__n" style="text-align:right">${bl.name}</span><span class="bp__g" style="background:color-mix(in oklab,${bl.color} 20%,transparent);color:${bl.color}">${bl.glyph}</span></span>
+      </div>
+      <div class="evalbar"><i style="left:${Math.min(lw,50)}%;width:${Math.abs(lw-50)}%"></i></div>
+      <div class="board">${boardHTML(b.fen,b.lastUci)}</div>
+      <div class="bcard__foot"><span>${b.ply} ${LANG==='de'?'Halbzüge':(LANG==='en'?'plies':'półruchów')}</span><span>${b.check?'<span class="chk">szach</span> · ':''}${b.lastSan||'—'}</span></div>
+    </div>`;
+  }).join("");
+  // roster
+  document.getElementById("roster").innerHTML=d.agents.map(a=>{
+    const busy=a.playing!=null;
+    return `<div class="mind" style="--mc:${a.color}">
+      <span class="mind__bar"></span>
+      <div class="mind__top"><span class="mind__g">${a.glyph}</span><span class="mind__id"><b>${a.name}</b><span>${a.arch}</span></span></div>
+      <div class="mind__desc">${(a.desc&&(a.desc[LANG]||a.desc.pl))||""}</div>
+      <div class="mind__stats">
+        <div class="ms"><b>${a.elo}</b><span>ELO</span></div>
+        <div class="ms"><b>${a.w}·${a.l}·${a.d}</b><span>W·P·R</span></div>
+        <div class="ms"><b>${Math.round((a.skill||0)*100)}</b><span>skill</span></div>
+      </div>
+      <div class="mind__foot"><span class="mood">${a.mood}</span><span class="energy"><i style="width:${Math.round((a.energy||0)*100)}%"></i></span><button class="playbtn ${busy?'busy':''}" data-play="${a.id}">${busy?t.busy:t.play} →</button></div>
+    </div>`;
+  }).join("");
+  // ranking
+  document.getElementById("rankbody").innerHTML=d.ranking.map((id,i)=>{const a=by[id];return `<tr>
+    <td>${i+1}</td>
+    <td><span class="nm"><i style="background:color-mix(in oklab,${a.color} 22%,transparent);color:${a.color}">${a.glyph}</i>${a.name}</span></td>
+    <td class="elo">${a.elo}</td><td class="wld">${a.w}·${a.l}·${a.d}</td><td class="mood" style="background:none;padding:0;color:var(--bone-soft);font-family:var(--mono);font-size:.78rem">${a.mood}</td></tr>`;}).join("");
+  // chat (najnowsze na dole)
+  const ch=document.getElementById("chat");
+  ch.innerHTML=(d.chat||[]).slice(-16).map(c=>{const a=by[c.by];if(!a)return"";
+    return `<div class="cmsg ${c.kind==='dream'?'dream':''}"><i style="background:color-mix(in oklab,${a.color} 22%,transparent);color:${a.color}">${a.glyph}</i><span><b>${a.name}</b>${c.kind==='dream'?' <span class="k">sen</span>':''} — ${c.msg}</span></div>`;}).join("");
+  ch.scrollTop=ch.scrollHeight;
+  // play select
+  const sel=document.getElementById("pSel");
+  if(sel.dataset.n!=String(d.agents.length)){ sel.dataset.n=String(d.agents.length);
+    sel.innerHTML=d.agents.map(a=>`<option value="${a.id}">${a.glyph} ${a.name} — ${a.arch}</option>`).join(""); }
+}
+
+/* play (na razie kolejka / placeholder do backendu) */
+document.getElementById("pBtn").addEventListener("click",()=>{
+  const t=I18N[LANG]||I18N.pl; const mail=document.getElementById("pMail").value.trim();
+  const note=document.getElementById("pNote");
+  if(!mail||!/.+@.+\..+/.test(mail)){ note.textContent=({pl:"Podaj poprawny e-mail.",en:"Enter a valid email.",de:"Gültige E-Mail eingeben."})[LANG]; return; }
+  note.textContent=({pl:"Zapisuję do kolejki… (uruchamiamy rozgrywkę wkrótce)",en:"Adding you to the queue… (play launching soon)",de:"Du kommst in die Schlange… (Spiel startet bald)"})[LANG];
+});
+document.addEventListener("click",e=>{const b=e.target.closest("[data-play]");if(b){document.getElementById("pSel").value=b.getAttribute("data-play");document.getElementById("play")||document.querySelector(".play").scrollIntoView({behavior:"smooth",block:"center"});document.getElementById("pMail").focus();}});
+
+/* loop */
+async function tick(){const d=await fetchData();if(d)render(d);}
+applyLang(LANG); tick(); setInterval(tick,2200);
+</script>
+</body>
+</html>
