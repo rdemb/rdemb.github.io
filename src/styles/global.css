@@ -165,7 +165,7 @@ footer p.tag{color:var(--muted); font-size:14px; max-width:34ch}
   .note .date{grid-column:1/-1; order:-1}
 }
 @media (max-width:560px){
-  .wrap{padding:0 20px}
+  .wrap{padding:0 26px}
   section{padding:68px 0}
   .hero{padding:48px 0 60px}
   .metrics{grid-template-columns:1fr}
