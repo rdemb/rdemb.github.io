@@ -371,7 +371,7 @@ img{ display:block; max-width:100%; }
 function apply(l){document.documentElement.lang=l;
  document.querySelectorAll("[data-pl],[data-de],[data-en]").forEach(e=>{const v=e.getAttribute("data-"+l);if(v!=null)e.textContent=v;});
  document.querySelectorAll("[data-pl-html],[data-de-html],[data-en-html]").forEach(e=>{const v=e.getAttribute("data-"+l+"-html");if(v!=null)e.innerHTML=v;});
- document.querySelectorAll("[data-i18n-toggle]").forEach(t=>t.querySelectorAll("[data-lang]").forEach(b=>b.classList.toggle("is-on",b.getAttribute("data-lang")===l)));
+ document.querySelectorAll("[data-i18n-toggle]").forEach(t=>t.querySelectorAll("[data-lang]").forEach(b=>b.classList.toggle("on",b.getAttribute("data-lang")===l)));
  try{localStorage.setItem(KEY,l);}catch(e){}}
 function init(){let l="pl";try{const s=localStorage.getItem(KEY);if(s&&SUP.includes(s))l=s;}catch(e){}apply(l);
  document.addEventListener("click",e=>{const b=e.target.closest("[data-lang]");if(!b)return;e.preventDefault();apply(b.getAttribute("data-lang"));});}
