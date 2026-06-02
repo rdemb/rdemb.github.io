@@ -74,7 +74,8 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .boot-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-soft))}
 
 /* ================= CUSTOM CURSOR ================= */
-#cursor{position:fixed;top:0;left:0;z-index:900;pointer-events:none;mix-blend-mode:difference;transform:translate(-50%,-50%);transition:width .2s,height .2s,opacity .3s}
+#cursor{display:none!important} /* animowany kursor usunięty (na życzenie) */
+#cursor.__off{position:fixed;top:0;left:0;z-index:900;pointer-events:none;mix-blend-mode:difference;transform:translate(-50%,-50%);transition:width .2s,height .2s,opacity .3s}
 #cursor .ring{width:30px;height:30px;border:1.5px solid #fff;border-radius:50%;transition:transform .18s ease,opacity .2s}
 #cursor .dot{position:absolute;top:50%;left:50%;width:4px;height:4px;background:#fff;border-radius:50%;transform:translate(-50%,-50%)}
 body.cursor-on{cursor:none}
@@ -512,7 +513,7 @@ footer p.tag{color:var(--muted);font-size:14.5px;max-width:36ch}
           <a href="/oferta/" data-i18n="nav.work">oferta</a>
           <a href="/pracownia/" data-i18n="nav.pracownia">pracownia</a>
           <a href="/projekty/" data-i18n="nav.projects">projekty</a>
-          <a href="/zywy-algorytm/" data-i18n="nav.zywy">żywy algorytm</a>
+          <a href="/zywy-algorytm/" data-i18n="nav.zywy">order flow</a>
           <a href="/blog/" data-i18n="nav.blog">blog</a>
         </div>
         <div class="foot-col">
@@ -532,7 +533,7 @@ footer p.tag{color:var(--muted);font-size:14.5px;max-width:36ch}
 
 <script is:inline>
 /* =================================================================
-   D-LOGIC·STUDIO, interaction + the "living algorithm" engine
+   D-LOGIC·STUDIO, interaction + the "order flow" engine
    ================================================================= */
 (function(){
 "use strict";
@@ -543,7 +544,7 @@ const isTouch = window.matchMedia("(hover:none),(pointer:coarse)").matches;
 /* ================= i18n ================= */
 const I18N = {
  pl:{
-  "nav.home":"start","nav.about":"o mnie","nav.work":"oferta","nav.pracownia":"pracownia","nav.projects":"projekty","nav.zywy":"żywy algorytm","nav.blog":"blog","nav.contact":"kontakt",
+  "nav.home":"start","nav.about":"o mnie","nav.work":"oferta","nav.pracownia":"pracownia","nav.projects":"projekty","nav.zywy":"order flow","nav.blog":"blog","nav.contact":"kontakt",
   "hero.eyebrow":"D-LOGIC STUDIO · narzędzia AI · web · dane",
   "hero.t1":"Buduję narzędzia AI, które ","hero.t2":"naprawdę działają.",
   "hero.lead":"I jestem uczciwy co do tego, czego nie potrafią. Testuję je jak własne strategie tradingowe, baseline, koszt, wynik out-of-sample. Najpierw na sobie, potem dla Ciebie.",
@@ -580,7 +581,7 @@ const I18N = {
   "foot.note":"Wszystkie wyniki, też negatywne, zapisane."
  },
  en:{
-  "nav.home":"home","nav.about":"about","nav.work":"services","nav.pracownia":"workshop","nav.projects":"projects","nav.zywy":"living algorithm","nav.blog":"blog","nav.contact":"contact",
+  "nav.home":"home","nav.about":"about","nav.work":"services","nav.pracownia":"workshop","nav.projects":"projects","nav.zywy":"order flow","nav.blog":"blog","nav.contact":"contact",
   "hero.eyebrow":"D-LOGIC STUDIO · AI tools · web · data",
   "hero.t1":"I build AI tools that ","hero.t2":"really work.",
   "hero.lead":"And I'm honest about what they can't do. I test them like my own trading strategies, baseline, cost, out-of-sample result. On myself first, then for you.",
@@ -617,7 +618,7 @@ const I18N = {
   "foot.note":"All results, negative ones too, on the record."
  },
  de:{
-  "nav.home":"start","nav.about":"über mich","nav.work":"Leistungen","nav.pracownia":"Werkstatt","nav.projects":"Projekte","nav.zywy":"Lebender Algorithmus","nav.blog":"Blog","nav.contact":"Kontakt",
+  "nav.home":"start","nav.about":"über mich","nav.work":"Leistungen","nav.pracownia":"Werkstatt","nav.projects":"Projekte","nav.zywy":"order flow","nav.blog":"Blog","nav.contact":"Kontakt",
   "hero.eyebrow":"D-LOGIC STUDIO · KI-Tools · Web · Daten",
   "hero.t1":"Ich baue KI-Tools, die ","hero.t2":"wirklich funktionieren.",
   "hero.lead":"Und ich bin ehrlich, was sie nicht können. Ich teste sie wie meine eigenen Trading-Strategien, Baseline, Kosten, Out-of-Sample-Ergebnis. Zuerst an mir, dann für dich.",
@@ -781,16 +782,9 @@ setTimeout(()=>document.querySelectorAll("[data-count]").forEach(el=>{ if(el.tex
 
 /* ================= CUSTOM CURSOR + MAGNETIC ================= */
 const cursor=document.getElementById("cursor");
-if(cursor && !isTouch && !reduce){
-  document.body.classList.add("cursor-on");
-  let cx=innerWidth/2, cy=innerHeight/2, tx=cx, ty=cy;
-  window.addEventListener("mousemove", e=>{ tx=e.clientX; ty=e.clientY; }, {passive:true});
-  (function loop(){ cx+=(tx-cx)*0.22; cy+=(ty-cy)*0.22; cursor.style.transform=`translate(${cx}px,${cy}px) translate(-50%,-50%)`; requestAnimationFrame(loop); })();
-  document.querySelectorAll("a,button,[data-magnetic]").forEach(el=>{
-    el.addEventListener("mouseenter",()=>cursor.classList.add("hot"));
-    el.addEventListener("mouseleave",()=>cursor.classList.remove("hot"));
-  });
-  // magnetic pull
+if(false && cursor && !isTouch && !reduce){ /* animowany kursor usunięty (na życzenie) */ }
+if(!isTouch && !reduce){
+  // magnetic pull (zostaje, bez kursora)
   document.querySelectorAll("[data-magnetic]").forEach(el=>{
     el.addEventListener("mousemove", e=>{
       const r=el.getBoundingClientRect();

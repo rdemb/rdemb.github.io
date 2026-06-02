@@ -27,20 +27,30 @@ const {
 const routed = mode === 'routed';
 const base = routed && lang !== 'pl' ? `/${lang}` : '';
 
+// Podstrony sekcji Projekty — wysuwane z menu "Projekty"
+const projects = [
+  { href: '/gambit/',             pl: 'GAMBIT',     en: 'GAMBIT',     de: 'GAMBIT',     live: true },
+  { href: '/zywy-algorytm/',      pl: 'Order Flow', en: 'Order Flow', de: 'Order Flow', live: true },
+  { href: '/projekty/clawbot/',   pl: 'clawbot',    en: 'clawbot',    de: 'clawbot',    routed: true },
+  { href: '/projekty/forex-lab/', pl: 'forex-lab',  en: 'forex-lab',  de: 'forex-lab',  routed: true },
+  { href: '/projekty/aai/',       pl: 'AAI',        en: 'AAI',        de: 'AAI',        routed: true },
+  { href: '/projekty/mocps/',     pl: 'MOCPS',      en: 'MOCPS',      de: 'MOCPS',      routed: true },
+];
 const items = [
   { href: '/',               key: 'nav.home',      pl: 'Start',         en: 'Home',             de: 'Start' },
   { href: '/o-mnie/',        key: 'nav.about',     pl: 'O mnie',        en: 'About',            de: 'Über mich' },
   { href: '/oferta/',        key: 'nav.work',      pl: 'Oferta',        en: 'Services',         de: 'Leistungen' },
   { href: '/pracownia/',     key: 'nav.pracownia', pl: 'Pracownia',     en: 'Workshop',         de: 'Werkstatt' },
-  { href: '/projekty/',      key: 'nav.projects',  pl: 'Projekty',      en: 'Projects',         de: 'Projekte' },
-  { href: '/zywy-algorytm/', key: 'nav.zywy',      pl: 'Order Flow', en: 'Order Flow', de: 'Order Flow' },
-  { href: '/gambit/',       key: 'nav.gambit',    pl: 'GAMBIT',        en: 'GAMBIT',           de: 'GAMBIT' },
+  { href: '/projekty/',      key: 'nav.projects',  pl: 'Projekty',      en: 'Projects',         de: 'Projekte', dd: projects },
   { href: '/blog/',          key: 'nav.blog',      pl: 'Blog',          en: 'Blog',             de: 'Blog' },
   { href: '/#kontakt',       key: 'nav.contact',   pl: 'Kontakt',       en: 'Contact',          de: 'Kontakt' },
 ];
 // W trybie routed projekty/blog maja warianty jezykowe (/en/blog/ itd.)
 const hrefOf = (it) =>
   routed && (it.href === '/projekty/' || it.href === '/blog/') ? base + it.href : it.href;
+// Podstrony content-collection (clawbot itd.) maja warianty jezykowe; gambit/order-flow nie.
+const projHref = (p) => (routed && p.routed && lang !== 'pl') ? `/${lang}${p.href}` : p.href;
+const projText = (p) => (routed ? p[lang] : p.pl);
 // Tekst poczatkowy: routed = z serwera; client = PL (skrypt strony nadpisze przy applyLang)
 const textOf = (it) => (routed ? it[lang] : it.pl);
 const langs = ['pl', 'en', 'de'];
@@ -52,7 +62,22 @@ const langs = ['pl', 'en', 'de'];
     </a>
 
     <nav class="snav-links" aria-label="Główna nawigacja">
-      {items.map((it) => (
+      {items.map((it) => it.dd ? (
+        <div class="snav-dd">
+          <a
+            href={hrefOf(it)}
+            class={`snav-dd-trig${active === it.href || it.dd.some((p) => p.href === active) ? ' snav-on' : ''}`}
+            data-i18n={it.key} data-pl={it.pl} data-en={it.en} data-de={it.de}
+          >{textOf(it)}<span class="snav-caret" aria-hidden="true">▾</span></a>
+          <div class="snav-dd-menu">
+            {it.dd.map((p) => (
+              <a href={projHref(p)} class={`snav-dd-item${active === p.href ? ' snav-on' : ''}`} data-pl={p.pl} data-en={p.en} data-de={p.de}>
+                <span>{projText(p)}</span>{p.live && <span class="snav-live" aria-hidden="true">●</span>}
+              </a>
+            ))}
+          </div>
+        </div>
+      ) : (
         <a
           href={hrefOf(it)}
           class={active === it.href ? 'snav-on' : ''}
@@ -92,7 +117,14 @@ const langs = ['pl', 'en', 'de'];
         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
       </button>
     </div>
-    {items.map((it) => (
+    {items.map((it) => it.dd ? (
+      <>
+        <a href={hrefOf(it)} class={`snav-dl${active === it.href ? ' snav-on' : ''}`} data-i18n={it.key} data-pl={it.pl} data-en={it.en} data-de={it.de}>{textOf(it)}</a>
+        {it.dd.map((p) => (
+          <a href={projHref(p)} class={`snav-dl snav-dl-sub${active === p.href ? ' snav-on' : ''}`} data-pl={p.pl} data-en={p.en} data-de={p.de}><span>{projText(p)}</span>{p.live && <span class="snav-live" aria-hidden="true">●</span>}</a>
+        ))}
+      </>
+    ) : (
       <a
         href={hrefOf(it)}
         class={`snav-dl${active === it.href ? ' snav-on' : ''}`}
@@ -146,6 +178,33 @@ const langs = ['pl', 'en', 'de'];
   .snav-links a:hover::after { width: 100%; }
   .snav-links a.snav-on { color: var(--accent, #E8B23A); }
   .snav-links a.snav-on::after { width: 100%; }
+
+  /* ---- dropdown Projekty ---- */
+  .snav-dd { position: relative; display: flex; align-items: center; }
+  .snav-caret { font-size: 9px; margin-left: 5px; opacity: .6; transition: transform .25s; display: inline-block; }
+  .snav-dd:hover .snav-caret { transform: rotate(180deg); opacity: 1; }
+  .snav-dd::after { content: ""; position: absolute; top: 100%; left: -10px; right: -10px; height: 16px; } /* most hover */
+  .snav-dd-menu {
+    position: absolute; top: calc(100% + 11px); left: 50%; transform: translateX(-50%) translateY(7px);
+    min-width: 184px; padding: 7px; border-radius: 13px; z-index: 110;
+    background: var(--surface, var(--bg-2, #14161A)); border: 1px solid var(--line, rgba(231,233,236,.14));
+    box-shadow: 0 20px 44px -18px rgba(0,0,0,.65);
+    display: flex; flex-direction: column; gap: 1px;
+    opacity: 0; visibility: hidden; transition: opacity .22s ease, transform .22s ease;
+  }
+  .snav-dd:hover .snav-dd-menu, .snav-dd:focus-within .snav-dd-menu { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+  .snav-dd-item {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    font-family: 'JetBrains Mono Variable', ui-monospace, monospace; font-size: 12.5px;
+    color: var(--muted, #9AA1AB); text-decoration: none; padding: 9px 11px; border-radius: 8px;
+    white-space: nowrap; transition: background .18s, color .18s;
+  }
+  .snav-dd-item::after { display: none !important; }
+  .snav-dd-item:hover { background: var(--surface-2, rgba(231,233,236,.06)); color: var(--text, #E7E9EC); }
+  .snav-dd-item.snav-on { color: var(--accent, #E8B23A); }
+  .snav-live { color: var(--live, #4ADE80); font-size: 8px; line-height: 1; }
+  .snav-dl-sub { font-size: 16px; padding: 9px 2px 9px 16px; color: var(--muted, #9AA1AB); border-bottom: 1px solid var(--line, rgba(231,233,236,.08)); display: flex; align-items: center; justify-content: space-between; }
+  .snav-dl-sub:hover { padding-left: 22px; }
 
   .snav-tools { display: flex; align-items: center; gap: 8px; }
   .snav-seg {
