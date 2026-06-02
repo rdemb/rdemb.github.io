@@ -118,12 +118,17 @@ const langs = ['pl', 'en', 'de'];
       </button>
     </div>
     {items.map((it) => it.dd ? (
-      <>
-        <a href={hrefOf(it)} class={`snav-dl${active === it.href ? ' snav-on' : ''}`} data-i18n={it.key} data-pl={it.pl} data-en={it.en} data-de={it.de}>{textOf(it)}</a>
-        {it.dd.map((p) => (
-          <a href={projHref(p)} class={`snav-dl snav-dl-sub${active === p.href ? ' snav-on' : ''}`} data-pl={p.pl} data-en={p.en} data-de={p.de}><span>{projText(p)}</span>{p.live && <span class="snav-live" aria-hidden="true">●</span>}</a>
-        ))}
-      </>
+      <div class={`snav-dl-group${it.dd.some((p) => p.href === active) ? ' open' : ''}`}>
+        <div class="snav-dl-row">
+          <a href={hrefOf(it)} class={`snav-dl${active === it.href ? ' snav-on' : ''}`} data-i18n={it.key} data-pl={it.pl} data-en={it.en} data-de={it.de}>{textOf(it)}</a>
+          <button type="button" class="snav-dl-toggle" aria-label="Rozwiń / zwiń projekty" aria-expanded="false"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button>
+        </div>
+        <div class="snav-dl-subwrap"><div class="snav-dl-subinner">
+          {it.dd.map((p) => (
+            <a href={projHref(p)} class={`snav-dl snav-dl-sub${active === p.href ? ' snav-on' : ''}`} data-pl={p.pl} data-en={p.en} data-de={p.de}><span>{projText(p)}</span>{p.live && <span class="snav-live" aria-hidden="true">●</span>}</a>
+          ))}
+        </div></div>
+      </div>
     ) : (
       <a
         href={hrefOf(it)}
@@ -203,8 +208,17 @@ const langs = ['pl', 'en', 'de'];
   .snav-dd-item:hover { background: var(--surface-2, rgba(231,233,236,.06)); color: var(--text, #E7E9EC); }
   .snav-dd-item.snav-on { color: var(--accent, #E8B23A); }
   .snav-live { color: var(--live, #4ADE80); font-size: 8px; line-height: 1; }
-  .snav-dl-sub { font-size: 16px; padding: 9px 2px 9px 16px; color: var(--muted, #9AA1AB); border-bottom: 1px solid var(--line, rgba(231,233,236,.08)); display: flex; align-items: center; justify-content: space-between; }
-  .snav-dl-sub:hover { padding-left: 22px; }
+  /* drawer: akordeon "Projekty" */
+  .snav-dl-group { display: flex; flex-direction: column; }
+  .snav-dl-row { display: flex; align-items: center; border-bottom: 1px solid var(--line, rgba(231,233,236,.12)); }
+  .snav-dl-row .snav-dl { flex: 1; border-bottom: none; }
+  .snav-dl-toggle { width: 44px; height: 48px; flex: none; display: grid; place-items: center; color: var(--muted, #9AA1AB); transition: transform .28s ease, color .2s; background: none; border: none; cursor: pointer; }
+  .snav-dl-group.open .snav-dl-toggle { transform: rotate(180deg); color: var(--accent, #E8B23A); }
+  .snav-dl-subwrap { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .32s cubic-bezier(.2,.7,.3,1); }
+  .snav-dl-group.open .snav-dl-subwrap { grid-template-rows: 1fr; }
+  .snav-dl-subinner { overflow: hidden; min-height: 0; }
+  .snav-dl-sub { font-size: 16px; padding: 11px 2px 11px 18px; color: var(--muted, #9AA1AB); border-bottom: 1px solid var(--line, rgba(231,233,236,.08)); display: flex; align-items: center; justify-content: space-between; }
+  .snav-dl-sub:hover { padding-left: 24px; color: var(--text, var(--bone, #E7E9EC)); }
 
   .snav-tools { display: flex; align-items: center; gap: 8px; }
   .snav-seg {
@@ -279,6 +293,13 @@ const langs = ['pl', 'en', 'de'];
       var close = function () { drawer.classList.remove('open'); document.body.style.overflow = ''; hamb.setAttribute('aria-expanded', 'false'); };
       hamb.addEventListener('click', open);
       drawer.querySelectorAll('[data-snav-close], .snav-dl').forEach(function (el) { el.addEventListener('click', close); });
+      drawer.querySelectorAll('.snav-dl-toggle').forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+          e.preventDefault(); e.stopPropagation();
+          var grp = btn.closest('.snav-dl-group');
+          if (grp) { var op = grp.classList.toggle('open'); btn.setAttribute('aria-expanded', op ? 'true' : 'false'); }
+        });
+      });
       window.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
     }
     if (nav) {
