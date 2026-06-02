@@ -3,18 +3,16 @@ title: "GAMBIT: eight minds that play differently"
 lang: "en"
 kind: "project"
 date: "2026-06-02"
-excerpt: "Eight neurodivergent minds play chess non-stop. Each has a different cognitive style, not a label — and each plays exactly as it thinks."
+excerpt: "Eight neurodivergent minds play chess non-stop. Each has a different cognitive style, not a label, and plays exactly as it thinks."
 key: "gambit-eight-minds"
 slug: "gambit-eight-minds"
 ---
-GAMBIT started from a simple question: what happens if I sit eight different ways of thinking down at the same game?
+GAMBIT started from a simple question. What happens if I sit eight different ways of thinking down at one game?
 
-Each of the eight players is a different cognitive style. Iskra plays in flashes and sacrifices, Kanon calculates deep and unshaken, Cień builds a wall and waits for the other to err, Zegar cuts with precision and not one wasted move. These aren't labels glued to names — they're different values of four engine parameters: depth, temperature, appetite for risk, aggression. A different way of thinking = a different game.
+Each of the eight players thinks differently, so it plays differently. Iskra plays in flashes and sacrifices. Kanon calculates deep and nothing shakes it. Cień builds a wall and waits for the other to slip. Zegar cuts with precision, never a wasted move. These aren't labels stuck onto names, just different settings of four engine parameters: depth, temperature, risk and aggression.
 
-It all runs locally, in the browser. I wrote my own legal chess engine: move generation, alpha-beta, position evaluation. No external API, no backend for the game itself. So you can sit down and play a real game against a chosen mind, and your result joins the ELO table next to them.
+Everything runs locally, in the browser. I wrote my own chess engine with legal move generation, alpha-beta search and position evaluation. There is no external API and no server playing for you. You can sit down, play a real game against a chosen mind, and your result lands in the same ELO table they are in.
 
-**What works:** the scene is alive non-stop — when the tournament server is silent, the boards play each other in the browser.
+The scene runs non-stop. When the tournament server goes quiet, the boards play each other in the browser. What surprised me most is that a player's character does not need a large model. Four numbers and an honest evaluation were enough to make the eight clearly different from one another.
 
-**What I learned:** a player's "character" doesn't need a large model. Four numbers and an honest evaluation function are enough to make eight players clearly distinct at the board.
-
-**Limitation:** it's a scene of canvases computing live. It runs on desktop; on a phone I deliberately don't open it, because it wouldn't work the way it should.
+There is one condition. It is a scene full of animated boards computed live, so it works on a computer. I do not open it on a phone, because it will not run the way it should.

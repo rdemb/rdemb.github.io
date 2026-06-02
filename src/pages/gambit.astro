@@ -302,13 +302,13 @@ html[data-gambit-mobile] main,html[data-gambit-mobile] footer{display:none!impor
 <SiteNav mode="client" active="/gambit/" />
 
 <!-- MOBILE GATE: GAMBIT to ciezka, animowana scena (4 szachownice + 8 emblematow na <canvas> + silnik na zywo) — na telefonie nie dziala dobrze. Zamiast tego pokazujemy zaproszenie na desktop i NIE ladujemy ciezkich skryptow (patrz loader na koncu body). -->
-<section class="gmg" aria-label="GAMBIT — wersja desktopowa">
+<section class="gmg" aria-label="GAMBIT, wersja desktopowa">
   <span class="gmg-glyph" aria-hidden="true">◢</span>
   <span class="gmg-tag" data-pl="tylko na komputerze" data-en="desktop only" data-de="nur am Computer">tylko na komputerze</span>
   <h1>GAMBIT</h1>
-  <p data-pl="GAMBIT to żywa scena — cztery szachownice, osiem myślących umysłów i silnik liczący na bieżąco. Na telefonie nie zadziała tak, jak powinien. Otwórz tę stronę na komputerze."
-     data-en="GAMBIT is a live scene — four boards, eight thinking minds and an engine calculating in real time. It won't run the way it should on a phone. Please open this page on a desktop."
-     data-de="GAMBIT ist eine lebendige Szene — vier Bretter, acht denkende Geister und eine Engine, die in Echtzeit rechnet. Auf dem Handy läuft es nicht richtig. Bitte öffne diese Seite am Computer.">GAMBIT to żywa scena — cztery szachownice, osiem myślących umysłów i silnik liczący na bieżąco. Na telefonie nie zadziała tak, jak powinien. Otwórz tę stronę na komputerze.</p>
+  <p data-pl="GAMBIT to żywa scena: cztery szachownice, osiem myślących umysłów i silnik liczący na bieżąco. Na telefonie nie zadziała tak, jak powinien. Otwórz tę stronę na komputerze."
+     data-en="GAMBIT is a live scene: four boards, eight thinking minds and an engine calculating in real time. It won't run the way it should on a phone. Please open this page on a desktop."
+     data-de="GAMBIT ist eine lebendige Szene: vier Bretter, acht denkende Geister und eine Engine, die in Echtzeit rechnet. Auf dem Handy läuft es nicht richtig. Bitte öffne diese Seite am Computer.">GAMBIT to żywa scena: cztery szachownice, osiem myślących umysłów i silnik liczący na bieżąco. Na telefonie nie zadziała tak, jak powinien. Otwórz tę stronę na komputerze.</p>
   <a href="/" class="btn btn-ghost gmg-back" data-pl="← Wróć do studia" data-en="← Back to the studio" data-de="← Zurück zum Studio">← Wróć do studia</a>
 </section>
 
@@ -411,7 +411,7 @@ html[data-gambit-mobile] main,html[data-gambit-mobile] footer{display:none!impor
           <div class="field">
             <label data-i18n="play.f.mind">wybrany umysł</label>
             <input type="text" id="pickedName" readonly value="—" />
-            <div class="play-status" id="playStatus"><span class="d"></span><span class="t" data-i18n="play.free">wolny — siadaj do gry</span></div>
+            <div class="play-status" id="playStatus"><span class="d"></span><span class="t" data-i18n="play.free">wolny, siadaj do gry</span></div>
           </div>
           <div class="field">
             <label data-i18n="play.f.nick">twój nick</label>
@@ -465,7 +465,7 @@ html[data-gambit-mobile] main,html[data-gambit-mobile] footer{display:none!impor
         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
       </button>
     </div>
-    <div class="gm-status" id="gmStatus">Twój ruch — grasz białymi</div>
+    <div class="gm-status" id="gmStatus">Twój ruch, grasz białymi</div>
     <div class="gm-board-wrap"><canvas id="gmBoard"></canvas></div>
     <div class="gm-foot">
       <button class="btn btn-ghost" id="gmResign" type="button" data-i18n="gm.resign">Poddaj</button>
