@@ -429,6 +429,18 @@ footer p.tag{color:var(--muted);font-size:14.5px;max-width:36ch}
       <p data-i18n="lab.lead">Rzeczy, które buduję dla siebie. Zapisuję wszystkie wyniki, także te negatywne.</p>
     </div>
     <div class="cards stagger">
+      <div class="tilt"><a class="card lab-card" href="/gambit/">
+        <span class="glare"></span>
+        <span class="state live"><span class="dotlive"></span><span data-i18n="lab.s2">na żywo</span></span>
+        <h3>GAMBIT <span class="arrow">↗</span></h3>
+        <p data-i18n="lab.c4">Osiem neuroróżnorodnych umysłów gra w szachy 24/7 — własny silnik w przeglądarce, ranking ELO na żywo. Możesz usiąść do partii.</p>
+      </a></div>
+      <div class="tilt"><a class="card lab-card" href="/zywy-algorytm/">
+        <span class="glare"></span>
+        <span class="state live"><span class="dotlive"></span><span data-i18n="lab.s2">na żywo</span></span>
+        <h3>Order Flow <span class="arrow">↗</span></h3>
+        <p data-i18n="lab.c5">Rynek jako żywy organizm przepływu zleceń. Cztery algorytmy reagujące na realny order flow — instalacja, nie animacja.</p>
+      </a></div>
       <div class="tilt"><a class="card lab-card" href="/projekty/forex-lab/">
         <span class="glare"></span>
         <span class="state neg" data-i18n="lab.s1">wynik negatywny</span>
@@ -446,6 +458,12 @@ footer p.tag{color:var(--muted);font-size:14.5px;max-width:36ch}
         <span class="state exp" data-i18n="lab.s3">eksperyment</span>
         <h3>MOCPS <span class="arrow">↗</span></h3>
         <p data-i18n="lab.c3">Kiedy reprezentacja naprawdę przewiduje ruch lepiej niż ostatnia znana pozycja? Mały, sprawdzalny test na CPU.</p>
+      </a></div>
+      <div class="tilt"><a class="card lab-card" href="/projekty/aai/">
+        <span class="glare"></span>
+        <span class="state exp" data-i18n="lab.s3">eksperyment</span>
+        <h3>AAI <span class="arrow">↗</span></h3>
+        <p data-i18n="lab.c6">Adaptive Auction Intelligence: rynek jako aukcja, nie tablica wskaźników. Oddziela kontekst od setupu, a setup od egzekucji.</p>
       </a></div>
     </div>
   </div>
@@ -573,6 +591,9 @@ const I18N = {
   "lab.c1":"Jak UCZCIWIE udowodniłem, że mój własny edge nie przeżywa kosztów i out-of-sample. Rygor: bootstrap, FDR, walk-forward.",
   "lab.c2":"Quant-desk na Telegram. Wzorzec każdego AI Desk: 3 warstwy, synteza Claude, twardy fallback, cron.",
   "lab.c3":"Kiedy reprezentacja naprawdę przewiduje ruch lepiej niż ostatnia znana pozycja? Mały, sprawdzalny test na CPU.",
+  "lab.c4":"Osiem neuroróżnorodnych umysłów gra w szachy 24/7 — własny silnik w przeglądarce, ranking ELO na żywo. Możesz usiąść do partii.",
+  "lab.c5":"Rynek jako żywy organizm przepływu zleceń. Cztery algorytmy reagujące na realny order flow — instalacja, nie animacja.",
+  "lab.c6":"Adaptive Auction Intelligence: rynek jako aukcja, nie tablica wskaźników. Oddziela kontekst od setupu, a setup od egzekucji.",
   "notes.eyebrow":"Najnowsze pisanie","notes.title":"Notatnik, projekty i refleksje.",
   "notes.k.proj":"projekt","notes.k.refl":"refleksja","notes.n2":"Po co ten blog","notes.n4":"Czym LLM różni się od MOCPS",
   "cta.eyebrow":"Kontakt","cta.title":"Masz coś, co powinno być pilnowane albo zautomatyzowane?",
@@ -610,6 +631,9 @@ const I18N = {
   "lab.c1":"How I HONESTLY proved my own edge doesn't survive costs and out-of-sample. Rigor: bootstrap, FDR, walk-forward.",
   "lab.c2":"A quant-desk on Telegram. The blueprint of every AI Desk: 3 layers, Claude synthesis, a hard fallback, cron.",
   "lab.c3":"When does a representation actually predict motion better than the last known position? A small, verifiable test on CPU.",
+  "lab.c4":"Eight neurodivergent minds play chess 24/7 — own engine in the browser, live ELO ranking. You can sit down for a game.",
+  "lab.c5":"The market as a living organism of order flow. Four algorithms reacting to real flow — an installation, not an animation.",
+  "lab.c6":"Adaptive Auction Intelligence: the market as an auction, not a panel of indicators. It separates context from setup, setup from execution.",
   "notes.eyebrow":"Latest writing","notes.title":"Notebook, projects and reflections.",
   "notes.k.proj":"project","notes.k.refl":"reflection","notes.n2":"Why this blog","notes.n4":"How an LLM differs from MOCPS",
   "cta.eyebrow":"Contact","cta.title":"Got something that should be watched or automated?",
@@ -647,6 +671,9 @@ const I18N = {
   "lab.c1":"Wie ich EHRLICH bewiesen habe, dass mein eigener Edge Kosten und Out-of-Sample nicht überlebt. Rigorosität: Bootstrap, FDR, Walk-Forward.",
   "lab.c2":"Ein Quant-Desk auf Telegram. Die Blaupause jedes AI Desk: 3 Schichten, Claude-Synthese, harter Fallback, Cron.",
   "lab.c3":"Wann sagt eine Repräsentation Bewegung wirklich besser voraus als die letzte bekannte Position? Ein kleiner, überprüfbarer Test auf CPU.",
+  "lab.c4":"Acht neurodivergente Geister spielen rund um die Uhr Schach — eigene Engine im Browser, Live-ELO. Du kannst mitspielen.",
+  "lab.c5":"Der Markt als lebendiger Organismus des Orderflows. Vier Algorithmen, die auf echten Flow reagieren — eine Installation, keine Animation.",
+  "lab.c6":"Adaptive Auction Intelligence: der Markt als Auktion, nicht als Indikatortafel. Trennt Kontext vom Setup und Setup von der Ausführung.",
   "notes.eyebrow":"Neueste Texte","notes.title":"Notizbuch, Projekte und Reflexionen.",
   "notes.k.proj":"Projekt","notes.k.refl":"Reflexion","notes.n2":"Wozu dieser Blog","notes.n4":"Wie sich ein LLM von MOCPS unterscheidet",
   "cta.eyebrow":"Kontakt","cta.title":"Hast du etwas, das überwacht oder automatisiert werden sollte?",
