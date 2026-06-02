@@ -51,11 +51,12 @@ const T={
   "elo.eyebrow":"Klasyfikacja","elo.title":"Ranking ELO — na żywo","elo.lead":"Wynik aktualizuje się po każdej partii. Nastrój zależy od ostatnich rezultatów — wygrane rozpalają, porażki studzą.",
   "elo.h.mind":"umysł","elo.h.elo":"ELO","elo.h.wpr":"W·P·R","elo.h.mood":"nastrój",
   "eter.title":"eter — co mówią między ruchami","eter.live":"na żywo",
-  "play.eyebrow":"Zagraj z umysłem","play.title":"Usiądź do partii z jednym z moich graczy","play.lead":"Wybierz umysł i zagraj prawdziwą partię. Jeśli akurat gra w turnieju, dołączasz do kolejki — dostaniesz maila, gdy zwolni się przy stole i przyjdzie Twoja kolej.",
-  "play.f.mind":"wybrany umysł","play.f.email":"twój e-mail","play.f.btn":"Zagraj / dołącz do kolejki","play.note":"Twój e-mail służy tylko do powiadomienia o kolejce. Bez spamu, bez kont.",
+  "play.eyebrow":"Zagraj z umysłem","play.title":"Usiądź do partii z jednym z moich graczy","play.lead":"Wybierz umysł i zagraj prawdziwą partię — tu, w przeglądarce. Grasz białymi, on liczy naprawdę. Jeśli akurat gra w turnieju, możesz usiąść do sparingu albo zaczekać. Twój wynik trafia do tabeli ELO pod Twoim nickiem.",
+  "play.f.mind":"wybrany umysł","play.f.email":"twój e-mail","play.f.nick":"twój nick","play.free":"wolny — siadaj do gry","play.busy":"w grze — zagraj sparing lub zaczekaj","play.f.btn":"Zagraj teraz","play.note":"Grasz białymi, bezpośrednio w przeglądarce. Wynik trafia do tabeli ELO — bez konta, bez maila.",
   "foot.tag":"GAMBIT — część studia D-LOGIC. Silnik gra non-stop na własnym serwerze · python-chess.","foot.h1":"Projekt","foot.h2":"Studio","foot.note":"Każdy ruch zapisany. Każda partia liczona.",
   "t.depth":"głębia","t.temp":"temperat.","t.risk":"ryzyko","t.aggr":"agresja",
-  "st.think":"myśli…","st.live":"na żywo","st.mate":"mat","st.draw":"remis","st.win":"wygrana" },
+  "st.think":"myśli…","st.live":"na żywo","st.mate":"mat","st.draw":"remis","st.win":"wygrana",
+  "gm.turn":"Twój ruch — grasz białymi","gm.check":"Szach!","gm.win":"Mat! Wygrywasz 🏆","gm.lose":"Tym razem wygrał umysł.","gm.draw":"Remis.","gm.resign":"Poddaj","gm.new":"Nowa partia","elo.you":"Ty" },
  en:{ "nav.services":"services","nav.lab":"lab","nav.algo":"living algorithm","nav.blog":"blog","nav.contact":"contact",
   "hero.eyebrow":"Project · artificial minds · live","hero.tag":"evolving chess minds",
   "hero.lead":"Eight neurodivergent minds learn to play chess. They play each other non-stop, evolve, remember rivals and dream. Each is a different kind of genius, not a label. Watch the ranking live or sit down for a game with one of them.",
@@ -65,11 +66,12 @@ const T={
   "elo.eyebrow":"Classification","elo.title":"ELO ranking — live","elo.lead":"The score updates after every game. Mood follows recent results — wins ignite, losses cool down.",
   "elo.h.mind":"mind","elo.h.elo":"ELO","elo.h.wpr":"W·L·D","elo.h.mood":"mood",
   "eter.title":"the ether — what they say between moves","eter.live":"live",
-  "play.eyebrow":"Play a mind","play.title":"Sit down for a game with one of my players","play.lead":"Pick a mind and play a real game. If it's in a tournament, you join the queue — you'll get an email when a seat frees up and it's your turn.",
-  "play.f.mind":"chosen mind","play.f.email":"your email","play.f.btn":"Play / join the queue","play.note":"Your email is only used to notify you about the queue. No spam, no accounts.",
+  "play.eyebrow":"Play a mind","play.title":"Sit down for a game with one of my players","play.lead":"Pick a mind and play a real game — right here in your browser. You play White, it calculates for real. If it's busy in a tournament, sit down for a sparring game or wait. Your result joins the ELO table under your nick.",
+  "play.f.mind":"chosen mind","play.f.email":"your email","play.f.nick":"your nick","play.free":"free — sit down","play.busy":"in a game — spar now or wait","play.f.btn":"Play now","play.note":"You play White, right in the browser. Your result joins the ELO table — no account, no email.",
   "foot.tag":"GAMBIT — part of D-LOGIC studio. The engine plays non-stop on its own server · python-chess.","foot.h1":"Project","foot.h2":"Studio","foot.note":"Every move recorded. Every game counted.",
   "t.depth":"depth","t.temp":"temperat.","t.risk":"risk","t.aggr":"aggression",
-  "st.think":"thinking…","st.live":"live","st.mate":"mate","st.draw":"draw","st.win":"win" },
+  "st.think":"thinking…","st.live":"live","st.mate":"mate","st.draw":"draw","st.win":"win",
+  "gm.turn":"Your move — you play White","gm.check":"Check!","gm.win":"Checkmate! You win 🏆","gm.lose":"The mind won this time.","gm.draw":"Draw.","gm.resign":"Resign","gm.new":"New game","elo.you":"you" },
  de:{ "nav.services":"Leistungen","nav.lab":"Lab","nav.algo":"lebender Algorithmus","nav.blog":"Blog","nav.contact":"Kontakt",
   "hero.eyebrow":"Projekt · künstliche Geister · live","hero.tag":"sich entwickelnde Schachgeister",
   "hero.lead":"Acht neurodivergente Geister lernen Schach. Sie spielen ununterbrochen gegeneinander, entwickeln sich, erinnern sich an Rivalen und träumen. Jeder ist eine andere Art Genie, kein Etikett. Verfolge das Ranking live oder setz dich zu einer Partie mit einem von ihnen.",
@@ -79,11 +81,12 @@ const T={
   "elo.eyebrow":"Klassifikation","elo.title":"ELO-Rangliste — live","elo.lead":"Die Wertung aktualisiert sich nach jeder Partie. Die Stimmung folgt den letzten Ergebnissen — Siege entfachen, Niederlagen kühlen ab.",
   "elo.h.mind":"Geist","elo.h.elo":"ELO","elo.h.wpr":"S·N·R","elo.h.mood":"Stimmung",
   "eter.title":"der Äther — was sie zwischen den Zügen sagen","eter.live":"live",
-  "play.eyebrow":"Spiel gegen einen Geist","play.title":"Setz dich zu einer Partie mit einem meiner Spieler","play.lead":"Wähle einen Geist und spiel eine echte Partie. Spielt er gerade ein Turnier, kommst du in die Warteschlange — du bekommst eine E-Mail, wenn ein Platz frei wird.",
-  "play.f.mind":"gewählter Geist","play.f.email":"deine E-Mail","play.f.btn":"Spielen / Warteschlange","play.note":"Deine E-Mail dient nur der Benachrichtigung über die Warteschlange. Kein Spam, keine Konten.",
+  "play.eyebrow":"Spiel gegen einen Geist","play.title":"Setz dich zu einer Partie mit einem meiner Spieler","play.lead":"Wähle einen Geist und spiel eine echte Partie — direkt im Browser. Du spielst Weiß, er rechnet wirklich. Spielt er gerade ein Turnier, setz dich zum Sparring oder warte. Dein Ergebnis kommt unter deinem Nick in die ELO-Tabelle.",
+  "play.f.mind":"gewählter Geist","play.f.email":"deine E-Mail","play.f.nick":"dein Nick","play.free":"frei — setz dich","play.busy":"im Spiel — spar jetzt oder warte","play.f.btn":"Jetzt spielen","play.note":"Du spielst Weiß, direkt im Browser. Dein Ergebnis kommt in die ELO-Tabelle — kein Konto, keine E-Mail.",
   "foot.tag":"GAMBIT — Teil des D-LOGIC Studios. Die Engine spielt rund um die Uhr auf eigenem Server · python-chess.","foot.h1":"Projekt","foot.h2":"Studio","foot.note":"Jeder Zug gespeichert. Jede Partie gezählt.",
   "t.depth":"Tiefe","t.temp":"Temperat.","t.risk":"Risiko","t.aggr":"Aggression",
-  "st.think":"denkt…","st.live":"live","st.mate":"matt","st.draw":"remis","st.win":"Sieg" }
+  "st.think":"denkt…","st.live":"live","st.mate":"matt","st.draw":"remis","st.win":"Sieg",
+  "gm.turn":"Du bist am Zug — du spielst Weiß","gm.check":"Schach!","gm.win":"Matt! Du gewinnst 🏆","gm.lose":"Diesmal gewann der Geist.","gm.draw":"Remis.","gm.resign":"Aufgeben","gm.new":"Neue Partie","elo.you":"du" }
 };
 let lang="pl"; try{ lang=localStorage.getItem("dlogic-lang")||"pl"; }catch(e){}
 function tr(k){ return (T[lang]||T.pl)[k]||(T.pl[k]||k); }
@@ -283,7 +286,7 @@ function Board(opts){
   }
   function finish(){ self.over=true; self.result={over:true,result:'½-½',reason:'nomove'}; if(self.onEnd) self.onEnd(self,self.result); }
 
-  self.tick=function(dt){
+  self.tickSim=function(dt){
     if(self.over) return;
     if(anim){ /* animating: handled in draw; commit when done */
       if(performance.now()-anim.start >= anim.dur){ commit(); }
@@ -305,8 +308,8 @@ function Board(opts){
     checkSq=check?findKing(display,turn):-1;
     self.evalCp=(evalcp||0)*100; anim=null;
   };
-  self.getTurn=function(){ return self._turn||'w'; };
-  self.tick=function(){};  // sim wyłączony — ruchy przychodzą z serwera
+  self.getTurn=function(){ return self.local? state.turn : (self._turn||'w'); };
+  self.tick=function(dt){ if(self.local) self.tickSim(dt); };  // lokalny sim TYLKO w trybie fallback; w trybie serwera ruchy z setServer
   self.draw=function(now){
     const light=cssv('--sq-light'), dark=cssv('--sq-dark'), acc=cssv('--accent');
     const accRGB=(cssv('--accent-rgb')||'232,178,58');
@@ -391,7 +394,7 @@ function pushEter(mind, type){
 }
 
 const appState={ games:0, tourneyH: 0 };
-let SERVER_BASE=null, ELO0_PENDING=true;
+let SERVER_BASE=null, ELO0_PENDING=true, MODE='init', serverTries=0, localBanterTimer=0;
 function applyEter(chat){
   const feed=document.getElementById('eterFeed'); if(!feed) return;
   const bid={}; MINDS.forEach(m=>bid[m.id]=m);
@@ -403,18 +406,23 @@ function applyEter(chat){
   }).join('');
 }
 async function pollServer(){
+  let gotData=false;
   try{
     if(SERVER_BASE===null){ const j=await (await fetch('/pracownia-demos.json',{cache:'no-store'})).json(); SERVER_BASE=(j.base||'').replace(/\/+$/,''); }
-    if(SERVER_BASE){ const d=await (await fetch(SERVER_BASE+'/_live/chess.json',{cache:'no-store'})).json(); applyServer(d); }
+    if(SERVER_BASE){ const d=await (await fetch(SERVER_BASE+'/_live/chess.json',{cache:'no-store'})).json(); applyServer(d); MODE='server'; gotData=true; serverTries=0; }
   }catch(e){}
-  setTimeout(pollServer, 2000);
+  if(gotData){ setTimeout(pollServer,2000); return; }      // serwer zywy — odswiezamy dalej
+  serverTries++;
+  // serwer milczy (martwy tunel / brak base) -> wlacz lokalna symulacje (AI vs AI), jak w referencji
+  if(MODE!=='local' && (serverTries>=2 || !SERVER_BASE)){ startLocalSim(); return; }
+  if(MODE!=='local') setTimeout(pollServer, 2000);
 }
 function applyServer(d){
   if(!d||!d.agents) return;
   const by={}; d.agents.forEach(a=>by[a.id]=a);
   for(const m of MINDS){ const a=by[m.id]; if(!a)continue; m.elo=a.elo; m.w=a.w; m.l=a.l; m.d=a.d; m.mood=a.mood; m.mood01=clamp(((a.streak||0)+3)/6,0,1); m.live=a.playing!=null; }
   if(ELO0_PENDING){ MINDS.forEach(m=>m.elo0=m.elo); ELO0_PENDING=false; }
-  renderElo();
+  renderElo(); refreshPlayStatus();
   (d.boards||[]).slice().sort((x,y)=>x.id-y.id).forEach((sv,i)=>{ const board=boards[i]; if(!board)return; board.white=by[sv.white]||board.white; board.black=by[sv.black]||board.black; board.setServer(sv.fen,sv.lastUci,sv.evalcp,sv.check); board.moveNo=sv.ply; fillBoardCardServer(board._card, board, sv); });
   const lead=by[(d.ranking||[])[0]]; if(lead){ featured=MINDS.find(m=>m.id===lead.id)||featured; const sl=document.getElementById('statLeader'); if(sl)sl.textContent=lead.name; }
   const sg=document.getElementById('statGames'); if(sg)sg.textContent=(d.totalGames||0).toLocaleString('pl');
@@ -505,6 +513,43 @@ function endBoard(card, b, st, used){
   }, 2600);
 }
 
+/* ---------- LOKALNY FALLBACK: gdy VPS milczy, stoly graja AI vs AI w przegladarce ---------- */
+function startLocalSim(){
+  if(MODE==='local') return; MODE='local';
+  const host=document.getElementById('boards'); if(!host) return;
+  boards.length=0; host.innerHTML='';
+  const intervals=[1900,2500,2150,2800]; const used=new Set();
+  for(let i=0;i<4;i++){
+    let pair, guard=0; do{ pair=pickPair(); guard++; }while(guard<8 && (used.has(pair[0].id)||used.has(pair[1].id)));
+    used.add(pair[0].id); used.add(pair[1].id);
+    const card=document.createElement('div'); card.className='board-card';
+    card.innerHTML=
+      '<div class="bc-top"><span class="bc-table">stół 0'+(i+1)+'</span><span class="bc-status"><span class="d"></span><span class="bcs-txt">'+tr('st.live')+'</span></span></div>'+
+      '<div class="bc-players">'+
+        '<div class="player" data-side="w"><div class="av"><canvas></canvas></div><div class="pn"><b></b><span></span></div><span class="side w"></span></div>'+
+        '<div class="player" data-side="b"><div class="av"><canvas></canvas></div><div class="pn"><b></b><span></span></div><span class="side b"></span></div>'+
+      '</div>'+
+      '<div class="board-wrap"><canvas></canvas></div>'+
+      '<div class="evalbar"><i></i></div>'+
+      '<div class="bc-foot"><span data-i18n-skip>ruch <span class="mv">1</span></span><span class="bc-open">— · —</span></div>';
+    host.appendChild(card);
+    const board=Board({ canvas:card.querySelector('.board-wrap canvas'), white:pair[0], black:pair[1], interval:intervals[i], animDur:380,
+      onMove:(b,m)=>{ updateBoardCard(card,b); maybeBanter(b,m); },
+      onEnd:(b,st)=>{ endBoard(card,b,st,used); } });
+    board.local=true; board._card=card;
+    board._avW=addEmblem(card.querySelector('.player[data-side=w] .av canvas'), pair[0]);
+    board._avB=addEmblem(card.querySelector('.player[data-side=b] .av canvas'), pair[1]);
+    fillBoardCard(card, board);
+    boards.push(board);
+  }
+  const sg=document.getElementById('statGames'); if(sg) countUp(sg, appState.games=1240+((Math.random()*60)|0), 1500);
+  const stt=document.getElementById('statTourney'); if(stt) countUp(stt, 312, 1500);
+  for(let k=0;k<3;k++){ pushEter(MINDS[(Math.random()*MINDS.length)|0],'idle'); }
+  if(!localBanterTimer) localBanterTimer=setInterval(()=>{ if(reduce)return; if(Math.random()<0.6) pushEter(MINDS[(Math.random()*MINDS.length)|0],'idle'); }, 5200);
+  if(reduce){ boards.forEach(b=>{ for(let k=0;k<24;k++) b.tickSim(b.interval); b.draw(performance.now()); }); }
+  else setTimeout(()=>{ emblemCanvases.forEach(e=>e.size()); boards.forEach(b=>b.size()); }, 60);
+}
+
 /* minds grid */
 function buildMinds(){
   const host=document.getElementById('mindsGrid'); host.innerHTML='';
@@ -532,15 +577,17 @@ function traitRow(key, v){ return '<div class="trait"><span data-i18n="'+key+'">
 /* ELO table */
 function renderElo(){
   const body=document.getElementById('eloBody'); if(!body) return;
-  const sorted=[...MINDS].sort((a,b)=>b.elo-a.elo);
+  const sorted=[...MINDS, ...(HUMAN?[HUMAN]:[])].sort((a,b)=>b.elo-a.elo);
   const md=MOODS[lang]||MOODS.pl;
   body.innerHTML='';
   sorted.forEach((m,i)=>{
     const tr_=document.createElement('tr');
+    if(m.human) tr_.className='you';
     const delta=m.elo-m.elo0; const dStr= delta===0?'':'<span class="elo-delta '+(delta>0?'up':'dn')+'">'+(delta>0?'▲':'▼')+Math.abs(delta)+'</span>';
+    const youTag = m.human?' <span class="you-tag">'+tr('elo.you')+'</span>':'';
     tr_.innerHTML=
       '<td class="elo-rank '+(i===0?'top':'')+'">'+(i+1)+'</td>'+
-      '<td><div class="elo-name"><div class="av"><canvas></canvas></div><b>'+m.name+'</b></div></td>'+
+      '<td><div class="elo-name"><div class="av"><canvas></canvas></div><b>'+m.name+youTag+'</b></div></td>'+
       '<td style="text-align:right"><span class="elo-elo">'+m.elo+'</span>'+dStr+'</td>'+
       '<td style="text-align:right" class="hide-m"><span class="elo-wpr"><span class="w">'+m.w+'</span>·<span class="l">'+m.l+'</span>·'+m.d+'</span></td>'+
       '<td class="hide-m"><span class="elo-mood" style="color:hsl('+m.hue+',70%,'+(docEl.getAttribute("data-theme")==="light"?40:62)+'%)">'+(m.mood||md.calm)+'</span></td>';
@@ -558,10 +605,12 @@ function buildPicker(){
   MINDS.forEach((m,i)=>{
     const el=document.createElement('button'); el.type='button'; el.className='pick'+(m===picked?' on':'');
     el.innerHTML='<div class="av"><canvas></canvas></div><div class="nm">'+m.name+'</div><div class="chk">✓</div>';
-    el.addEventListener('click',()=>{ picked=m; document.querySelectorAll('.pick').forEach(p=>p.classList.remove('on')); el.classList.add('on'); document.getElementById('pickedName').value=m.name; });
+    el.addEventListener('click',()=>{ picked=m; document.querySelectorAll('.pick').forEach(p=>p.classList.remove('on')); el.classList.add('on'); document.getElementById('pickedName').value=m.name; refreshPlayStatus(); });
     host.appendChild(el); addEmblem(el.querySelector('canvas'), m);
   });
-  document.getElementById('pickedName').value=picked.name;
+  const pn=document.getElementById('pickedName'); if(pn) pn.value=picked.name;
+  const nickIn=document.getElementById('playNick'); if(nickIn && !nickIn.value){ try{ nickIn.value=localStorage.getItem('gambit-nick')||''; }catch(_){} }
+  refreshPlayStatus();
 }
 
 /* ---------- shared RAF ---------- */
@@ -593,10 +642,24 @@ function frame(now){
 function drawStaticEmblems(){ for(const e of emblemCanvases){ drawEmblem(e.ctx, e.W, e.H, e.mind, 1200, e.mind.mood01||0.4, 0); } }
 
 /* ---------- count-up + reveal + chrome ---------- */
+function setLabel(el, txt){
+  if(txt==null) return;
+  // podmien TYLKO pierwszy wezel tekstowy — zachowuje elementy-dzieci (np. strzalke ▾ przy "Projekty")
+  for(const n of el.childNodes){ if(n.nodeType===3){ n.nodeValue=txt; return; } }
+  el.insertBefore(document.createTextNode(txt), el.firstChild);
+}
 function applyLang(l){
   lang=l; docEl.lang=l;
-  document.querySelectorAll('[data-i18n]').forEach(el=>{ const v=tr(el.getAttribute('data-i18n')); if(v!=null) el.textContent=v; });
-  document.querySelectorAll('#lang button').forEach(b=>b.classList.toggle('on',b.dataset.lang===l));
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    // Wspolna nawigacja (SiteNav) niesie data-pl/-en/-de — to ma priorytet.
+    // Slownika T uzywamy TYLKO gdy klucz naprawde istnieje; inaczej nie ruszamy elementu.
+    // (bez tego linki menu pokazywaly surowe klucze: "nav.home", "nav.about", ...).
+    const dv=el.getAttribute('data-'+l);
+    if(dv!=null){ setLabel(el, dv); return; }
+    const k=el.getAttribute('data-i18n'), dict=(T[l]||T.pl);
+    if(Object.prototype.hasOwnProperty.call(dict,k)) setLabel(el, dict[k]);
+  });
+  document.querySelectorAll('#lang button, #lang a').forEach(b=>b.classList.toggle('on',b.dataset.lang===l));
   try{ localStorage.setItem('dlogic-lang',l); }catch(e){}
   refreshMoods();
   // rebuild language-dependent content
@@ -614,7 +677,7 @@ var _tb=document.getElementById('theme'); if(_tb) _tb.addEventListener('click',(
 /* nav scroll + progress */
 const nav=document.getElementById('nav'), prog=document.getElementById('progress');
 if(nav||prog){
-function onScroll(){ const st=scrollY; nav.classList.toggle('scrolled',st>10); const h=document.documentElement.scrollHeight-innerHeight; if(prog)prog.style.width=(h>0?st/h*100:0)+'%'; }
+function onScroll(){ const st=scrollY; if(nav) nav.classList.toggle('scrolled',st>10); const h=document.documentElement.scrollHeight-innerHeight; if(prog)prog.style.width=(h>0?st/h*100:0)+'%'; }
 addEventListener('scroll',onScroll,{passive:true}); onScroll(); }
 var _mb=document.getElementById('menu'); if(_mb) _mb.addEventListener('click',()=>{ const t=document.getElementById('stoly'); if(t) scrollTo({top:t.offsetTop-50,behavior:reduce?'auto':'smooth'}); });
 
@@ -628,21 +691,141 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 /* count-up */
 function countUp(el,target,dur,dec){ if(reduce){ el.textContent=dec?target.toFixed(dec):Math.round(target).toLocaleString('pl'); return; } const t0=performance.now(); (function s(now){ const p=Math.min((now-t0)/dur,1),e=1-Math.pow(1-p,3),v=target*e; el.textContent=dec?v.toFixed(dec):Math.round(v).toLocaleString('pl'); if(p<1)requestAnimationFrame(s); })(t0); }
 
-/* play form */
-document.getElementById('playForm').addEventListener('submit',e=>{
-  e.preventDefault(); const email=document.getElementById('playEmail').value;
-  const msg=document.getElementById('playMsg');
-  const txt={pl:'✓ Zapisano. '+picked.name+' powiadomi Cię na '+email+', gdy zwolni się miejsce przy stole.',
-             en:'✓ Saved. '+picked.name+' will notify you at '+email+' when a seat frees up.',
-             de:'✓ Gespeichert. '+picked.name+' benachrichtigt dich unter '+email+', sobald ein Platz frei wird.'};
-  msg.textContent=txt[lang]||txt.pl; msg.classList.add('show'); e.target.reset(); document.getElementById('pickedName').value=picked.name;
+/* play form — siadamy do partii w przegladarce (bez maila/kolejki) */
+var _pf=document.getElementById('playForm');
+if(_pf) _pf.addEventListener('submit',e=>{
+  e.preventDefault();
+  const fallback = lang==='de'?'Gast':lang==='en'?'Guest':'Gość';
+  const nick=((document.getElementById('playNick')||{}).value||'').trim() || fallback;
+  try{ localStorage.setItem('gambit-nick', nick); }catch(_){}
+  openGame(picked, nick);
 });
+
+/* =====================================================================
+   GRA CZLOWIEK vs UMYSL — pelna partia w przegladarce (lokalny silnik C).
+   Czlowiek gra bialymi (dol planszy), umysl odpowiada przez C.pickMove.
+   Wynik z nickiem trafia do tabeli ELO (HUMAN, trzymany w localStorage).
+   ===================================================================== */
+let HUMAN=null;
+function humanMoods(){ return MOODS[lang]||MOODS.pl; }
+function loadHuman(){
+  try{ const s=JSON.parse(localStorage.getItem('gambit-human')||'null');
+    if(s&&s.name) HUMAN={ id:'__you', name:s.name, human:true, elo:s.elo||1200, w:s.w||0, l:s.l||0, d:s.d||0, elo0:s.elo||1200, emblem:'ribbon', hue:150, mood:s.mood||'' };
+  }catch(e){}
+}
+function ensureHuman(nick){
+  if(HUMAN){ if(nick) HUMAN.name=nick; }
+  else HUMAN={ id:'__you', name:nick||'Gość', human:true, elo:1200, w:0, l:0, d:0, elo0:1200, emblem:'ribbon', hue:150, mood:'' };
+}
+function saveHuman(){ if(!HUMAN)return; try{ localStorage.setItem('gambit-human', JSON.stringify({name:HUMAN.name,elo:HUMAN.elo,w:HUMAN.w,l:HUMAN.l,d:HUMAN.d,mood:HUMAN.mood})); }catch(e){} }
+
+/* status "wolny / w grze" przy wybranym umysle */
+function refreshPlayStatus(){
+  const el=document.getElementById('playStatus'); if(!el)return;
+  const busy=!!(picked&&picked.live);
+  el.className='play-status'+(busy?' busy':'');
+  const t=el.querySelector('.t'); if(t) t.textContent= busy? tr('play.busy') : tr('play.free');
+}
+
+/* stan jednej partii gracza */
+const HG={ g:null, mind:null, sel:-1, legal:[], over:true, anim:null, last:null, check:-1, busyAI:false, _raf:0, W:0, cell:0, dpr:1, canvas:null, ctx:null, modal:null, statusEl:null };
+function setGmStatus(t, cls){ if(HG.statusEl){ HG.statusEl.textContent=t; HG.statusEl.className='gm-status'+(cls?(' '+cls):''); } }
+function gmSize(){ const c=HG.canvas; if(!c)return; const r=c.getBoundingClientRect(); HG.dpr=Math.min(devicePixelRatio||1,2); HG.W=Math.max(8,r.width); c.width=HG.W*HG.dpr; c.height=HG.W*HG.dpr; HG.ctx.setTransform(HG.dpr,0,0,HG.dpr,0,0); HG.cell=HG.W/8; }
+function openGame(mind, nick){
+  ensureHuman(nick); saveHuman();
+  HG.modal=document.getElementById('gmModal'); HG.canvas=document.getElementById('gmBoard'); HG.statusEl=document.getElementById('gmStatus');
+  if(!HG.modal||!HG.canvas) return;
+  HG.ctx=HG.canvas.getContext('2d');
+  HG.mind=mind; HG.g=C.newGame(); HG.sel=-1; HG.legal=[]; HG.over=false; HG.anim=null; HG.last=null; HG.check=-1; HG.busyAI=false;
+  const you=document.getElementById('gmYou'); if(you) you.textContent=HUMAN.name;
+  const mn=document.getElementById('gmMind'); if(mn) mn.textContent=mind.name+' · ELO '+mind.elo;
+  HG.modal.classList.add('open'); document.body.style.overflow='hidden';
+  setGmStatus(tr('gm.turn'));
+  setTimeout(()=>{ gmSize(); drawHG(performance.now()); }, 30);
+  if(!HG._raf) HG._raf=requestAnimationFrame(hgFrame);
+}
+function closeGame(){ if(HG.modal) HG.modal.classList.remove('open'); document.body.style.overflow=''; HG.over=true; if(HG._raf){ cancelAnimationFrame(HG._raf); HG._raf=0; } }
+function hgFrame(now){ HG._raf=requestAnimationFrame(hgFrame); if(HG.anim && now-HG.anim.start>=HG.anim.dur){ const after=HG.anim.after; HG.anim=null; if(after) after(); } drawHG(now); }
+
+function drawHG(now){
+  const ctx=HG.ctx; if(!ctx)return; const cell=HG.cell, W=HG.W;
+  const light=cssv('--sq-light'), dark=cssv('--sq-dark'), accRGB=(cssv('--accent-rgb')||'232,178,58');
+  const isLight=docEl.getAttribute('data-theme')==='light';
+  for(let r=0;r<8;r++)for(let c=0;c<8;c++){ ctx.fillStyle=((r+c)&1)?dark:light; ctx.fillRect(c*cell,r*cell,cell+0.5,cell+0.5); }
+  if(HG.last){ for(const s of [HG.last.from,HG.last.to]){ const c=s&7,r=s>>3; ctx.fillStyle='rgba('+accRGB+',0.16)'; ctx.fillRect(c*cell,r*cell,cell,cell);} }
+  if(HG.check>=0){ const c=HG.check&7,r=HG.check>>3; const pul=0.3+0.25*Math.sin((now||0)*0.006); ctx.fillStyle='rgba(232,103,90,'+pul+')'; ctx.fillRect(c*cell,r*cell,cell,cell); }
+  if(HG.sel>=0){ const c=HG.sel&7,r=HG.sel>>3; ctx.fillStyle='rgba('+accRGB+',0.26)'; ctx.fillRect(c*cell,r*cell,cell,cell); }
+  ctx.font='600 '+(cell*0.16)+"px 'JetBrains Mono Variable',monospace"; ctx.textBaseline='alphabetic';
+  for(let i=0;i<8;i++){ ctx.fillStyle='rgba('+accRGB+','+((i&1)?0.30:0.18)+')'; ctx.fillText(8-i,3,i*cell+cell*0.2); ctx.fillText("abcdefgh"[i], i*cell+cell*0.78, W-4); }
+  const board=HG.g.board;
+  function piece(p,px,py,alpha){ if(!p)return; const sz=cell*0.78; ctx.font=sz+"px 'Segoe UI Symbol','Arial Unicode MS',sans-serif"; ctx.textAlign='center'; ctx.textBaseline='middle'; const isW=p.c==='w'; const glyph=SOLID[p.t];
+    ctx.save(); ctx.globalAlpha=alpha==null?1:alpha; ctx.shadowColor='rgba(0,0,0,'+(isLight?0.22:0.5)+')'; ctx.shadowBlur=cell*0.10; ctx.shadowOffsetY=cell*0.05;
+    ctx.fillStyle=isW?(isLight?'#FCFBF6':'#ECE8DC'):(isLight?'#2B2E35':'#10131A'); ctx.fillText(glyph,px,py);
+    ctx.shadowColor='transparent'; ctx.shadowBlur=0; ctx.shadowOffsetY=0; ctx.lineWidth=Math.max(1,cell*0.022); ctx.strokeStyle=isW?(isLight?'#B9B4A2':'#7C776A'):(isLight?'#0E1014':'#454B57'); ctx.strokeText(glyph,px,py); ctx.restore(); }
+  const animFrom=HG.anim?HG.anim.from:-1;
+  for(let s=0;s<64;s++){ const p=board[s]; if(!p||s===animFrom)continue; const c=s&7,r=s>>3; piece(p,c*cell+cell/2,r*cell+cell/2); }
+  if(HG.sel>=0){ for(const m of HG.legal){ const c=m.to&7,r=m.to>>3; if(board[m.to]){ ctx.save(); ctx.strokeStyle='rgba('+accRGB+',0.7)'; ctx.lineWidth=2.4; ctx.beginPath(); ctx.arc(c*cell+cell/2,r*cell+cell/2,cell*0.42,0,TAU); ctx.stroke(); ctx.restore(); } else { ctx.save(); ctx.fillStyle='rgba('+accRGB+',0.5)'; ctx.beginPath(); ctx.arc(c*cell+cell/2,r*cell+cell/2,cell*0.15,0,TAU); ctx.fill(); ctx.restore(); } } }
+  if(HG.anim){ const t=clamp(((now||performance.now())-HG.anim.start)/HG.anim.dur,0,1), e=easeIO(t); const fc=HG.anim.from&7,fr=HG.anim.from>>3,tc=HG.anim.to&7,tr2=HG.anim.to>>3; piece(HG.anim.piece, lerp(fc,tc,e)*cell+cell/2, lerp(fr,tr2,e)*cell+cell/2); }
+}
+function hgClick(ev){
+  if(HG.over||HG.busyAI||HG.anim||!HG.g||HG.g.turn!=='w') return;
+  const r=HG.canvas.getBoundingClientRect(); const cw=r.width/8;
+  const c=Math.floor((ev.clientX-r.left)/cw), rr=Math.floor((ev.clientY-r.top)/cw);
+  if(c<0||c>7||rr<0||rr>7)return; const s=rr*8+c;
+  if(HG.sel>=0){ const mv=HG.legal.find(m=>m.to===s); if(mv){ doHumanMove(mv); return; } }
+  const p=HG.g.board[s];
+  if(p&&p.c==='w'){ HG.sel=s; HG.legal=C.legalMoves(HG.g).filter(m=>m.from===s); } else { HG.sel=-1; HG.legal=[]; }
+  drawHG(performance.now());
+}
+function doHumanMove(mv){ const piece=HG.g.board[mv.from]; HG.sel=-1; HG.legal=[]; HG.anim={ from:mv.from, to:mv.to, piece, start:performance.now(), dur:reduce?1:200, after:()=>commitHuman(mv) }; }
+function commitHuman(mv){
+  HG.g=C.makeMove(HG.g,mv); HG.last={from:mv.from,to:mv.to};
+  HG.check=C.inCheck(HG.g.board,HG.g.turn)?C.kingSq(HG.g.board,HG.g.turn):-1;
+  const st=C.status(HG.g); if(st.over){ endGame(st); return; }
+  HG.busyAI=true; setGmStatus(HG.mind.name+' · '+tr('st.think'),'think');
+  setTimeout(aiMove, reduce?60:520+Math.random()*440);
+}
+function aiMove(){
+  if(HG.over) return;
+  const m=C.pickMove(HG.g, HG.mind.p); if(!m){ endGame({over:true,result:'½-½',reason:'nomove'}); return; }
+  const piece=HG.g.board[m.from];
+  HG.anim={ from:m.from, to:m.to, piece, start:performance.now(), dur:reduce?1:230, after:()=>{
+    HG.g=C.makeMove(HG.g,m); HG.last={from:m.from,to:m.to}; HG.busyAI=false;
+    HG.check=C.inCheck(HG.g.board,HG.g.turn)?C.kingSq(HG.g.board,HG.g.turn):-1;
+    const st=C.status(HG.g); if(st.over){ endGame(st); return; }
+    setGmStatus(HG.check>=0?tr('gm.check'):tr('gm.turn'), HG.check>=0?'check':'');
+  } };
+}
+function endGame(st){
+  HG.over=true; HG.busyAI=false; HG.sel=-1; HG.legal=[];
+  let sa=0.5, key='gm.draw', cls='draw';
+  if(st.reason==='resign'){ sa=0; key='gm.lose'; cls='lose'; }
+  else if(st.reason==='mate'){ if(st.result==='1-0'){ sa=1; key='gm.win'; cls='win'; } else { sa=0; key='gm.lose'; cls='lose'; } }
+  gameResult(HUMAN, HG.mind, sa); setGmStatus(tr(key), cls);
+}
+function gameResult(human, mind, sa){
+  const Ea=1/(1+Math.pow(10,(mind.elo-human.elo)/400)), K=28, d=Math.round(K*(sa-Ea));
+  human.elo=Math.max(100, human.elo+d);
+  if(sa===1)human.w++; else if(sa===0)human.l++; else human.d++;
+  const md=humanMoods(); human.mood= sa===1?md.hot : sa===0?md.cold : md.calm;
+  saveHuman(); renderElo();
+}
+function wireGame(){
+  const cv=document.getElementById('gmBoard'); if(cv) cv.addEventListener('click', hgClick);
+  document.querySelectorAll('[data-gm-close]').forEach(el=>el.addEventListener('click', closeGame));
+  const rs=document.getElementById('gmResign'); if(rs) rs.addEventListener('click',()=>{ if(!HG.over) endGame({over:true,reason:'resign'}); });
+  const nw=document.getElementById('gmNew'); if(nw) nw.addEventListener('click',()=>{ if(HG.mind) openGame(HG.mind, HUMAN?HUMAN.name:null); });
+  addEventListener('keydown',e=>{ if(e.key==='Escape') closeGame(); });
+  addEventListener('resize',()=>{ if(HG.modal&&HG.modal.classList.contains('open')){ gmSize(); drawHG(performance.now()); } });
+}
 
 /* ---------- BOOT ---------- */
 function boot(){
   applyTheme(theme);
+  loadHuman();
   refreshMoods();
   buildBoards(); buildMinds(); renderElo(); buildPicker();
+  wireGame();
   // hero featured emblem = current leader-ish
   featured=[...MINDS].sort((a,b)=>b.elo-a.elo)[0];
   const heroC=document.getElementById('heroEmblem'); if(heroC){ addEmblem(heroC, featured, {hero:true}); }

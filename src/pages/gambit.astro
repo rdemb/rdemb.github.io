@@ -245,11 +245,70 @@ footer p.tag{color:var(--muted);font-size:14px;max-width:38ch}
   table.elo thead th.hide-m,table.elo tbody td.hide-m{display:none}
 }
 @media (max-width:760px){#rankGrid{grid-template-columns:1fr!important;gap:16px!important}}
+
+/* pasek postepu przewijania (jak w referencji) */
+#progress{position:fixed;top:0;left:0;height:2px;width:0;z-index:300;background:linear-gradient(90deg,var(--accent),var(--accent-soft));box-shadow:0 0 10px var(--accent)}
+
+/* status "wolny / w grze" przy formularzu */
+.play-status{display:inline-flex;align-items:center;gap:8px;margin-top:9px;font-family:'JetBrains Mono Variable',monospace;font-size:11px;letter-spacing:.04em;color:var(--live)}
+.play-status .d{width:8px;height:8px;border-radius:50%;background:var(--live);box-shadow:0 0 0 0 var(--live);animation:pulse 2.2s infinite;flex:none}
+.play-status.busy{color:var(--muted)} .play-status.busy .d{background:var(--muted);animation:none}
+
+/* gracz-czlowiek w tabeli ELO */
+table.elo tbody tr.you{background:color-mix(in srgb,var(--accent) 7%,transparent)}
+table.elo tbody tr.you:hover{background:color-mix(in srgb,var(--accent) 12%,transparent)}
+.elo-name .you-tag{font-family:'JetBrains Mono Variable',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);border:1px solid var(--chip-line);border-radius:5px;padding:1px 5px}
+
+/* ===== MODAL: partia czlowiek vs umysl ===== */
+.gm-modal{position:fixed;inset:0;z-index:250;display:none;opacity:0;transition:opacity .28s ease}
+.gm-modal.open{display:block;opacity:1}
+.gm-bg{position:absolute;inset:0;background:rgba(0,0,0,.62);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.gm-panel{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:min(94vw,560px);max-height:94vh;overflow:auto;background:linear-gradient(180deg,var(--surface),var(--surface-2));border:1px solid var(--line);border-radius:20px;box-shadow:0 40px 90px -30px rgba(0,0,0,.7);padding:22px}
+.gm-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:13px}
+.gm-vs{display:flex;align-items:center;gap:11px;min-width:0;font-family:'JetBrains Mono Variable',monospace;font-size:13px}
+.gm-vs .gm-you{color:var(--accent);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:38%}
+.gm-vs .gm-sep{color:var(--muted);font-size:11px;letter-spacing:.1em}
+.gm-vs .gm-mind{color:var(--text);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gm-close{width:36px;height:36px;flex:none;border-radius:9px;border:1px solid var(--line);background:var(--surface-2);color:var(--muted);display:flex;align-items:center;justify-content:center;transition:.2s}
+.gm-close:hover{color:var(--accent);border-color:var(--chip-line)}
+.gm-status{font-family:'JetBrains Mono Variable',monospace;font-size:12.5px;letter-spacing:.02em;color:var(--muted);padding:10px 13px;border:1px solid var(--line);border-radius:10px;margin-bottom:13px;text-align:center;background:var(--bg);transition:color .25s,border-color .25s,background .25s}
+.gm-status.think{color:var(--accent);border-color:var(--chip-line)}
+.gm-status.check{color:var(--loss);border-color:color-mix(in srgb,var(--loss) 40%,var(--line))}
+.gm-status.win{color:var(--live);border-color:color-mix(in srgb,var(--live) 45%,var(--line));background:color-mix(in srgb,var(--live) 9%,transparent)}
+.gm-status.lose{color:var(--loss);border-color:color-mix(in srgb,var(--loss) 45%,var(--line));background:color-mix(in srgb,var(--loss) 8%,transparent)}
+.gm-status.draw{color:var(--text)}
+.gm-board-wrap{position:relative;border-radius:12px;overflow:hidden;background:var(--sq-dark);border:1px solid var(--line)}
+.gm-board-wrap canvas{display:block;width:100%;height:auto;aspect-ratio:1/1;cursor:pointer}
+.gm-foot{display:flex;align-items:center;gap:10px;margin-top:14px}
+.gm-foot .btn{padding:11px 18px;font-size:12.5px}
+
+/* ===== MOBILE GATE — GAMBIT dziala tylko na desktopie ===== */
+.gmg{display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:16px;min-height:calc(100dvh - 66px);padding:46px 24px;position:relative;z-index:2}
+html[data-gambit-mobile] .gmg{display:flex}
+html[data-gambit-mobile] main,html[data-gambit-mobile] footer{display:none!important}
+.gmg .gmg-glyph{font-size:42px;line-height:1;color:var(--accent)}
+.gmg .gmg-tag{font-family:'JetBrains Mono Variable',monospace;font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent)}
+.gmg h1{font-family:'Space Grotesk Variable',sans-serif;font-weight:700;font-size:clamp(40px,16vw,72px);letter-spacing:-.04em;line-height:.9;margin:2px 0}
+.gmg p{color:var(--muted);font-size:15.5px;line-height:1.6;max-width:32ch;text-wrap:pretty}
+.gmg .gmg-back{margin-top:8px}
 </style>
 </head>
 <body>
 <div class="gridbg"></div>
+<div id="progress"></div>
 <SiteNav mode="client" active="/gambit/" />
+
+<!-- MOBILE GATE: GAMBIT to ciezka, animowana scena (4 szachownice + 8 emblematow na <canvas> + silnik na zywo) — na telefonie nie dziala dobrze. Zamiast tego pokazujemy zaproszenie na desktop i NIE ladujemy ciezkich skryptow (patrz loader na koncu body). -->
+<section class="gmg" aria-label="GAMBIT — wersja desktopowa">
+  <span class="gmg-glyph" aria-hidden="true">◢</span>
+  <span class="gmg-tag" data-pl="tylko na komputerze" data-en="desktop only" data-de="nur am Computer">tylko na komputerze</span>
+  <h1>GAMBIT</h1>
+  <p data-pl="GAMBIT to żywa scena — cztery szachownice, osiem myślących umysłów i silnik liczący na bieżąco. Na telefonie nie zadziała tak, jak powinien. Otwórz tę stronę na komputerze."
+     data-en="GAMBIT is a live scene — four boards, eight thinking minds and an engine calculating in real time. It won't run the way it should on a phone. Please open this page on a desktop."
+     data-de="GAMBIT ist eine lebendige Szene — vier Bretter, acht denkende Geister und eine Engine, die in Echtzeit rechnet. Auf dem Handy läuft es nicht richtig. Bitte öffne diese Seite am Computer.">GAMBIT to żywa scena — cztery szachownice, osiem myślących umysłów i silnik liczący na bieżąco. Na telefonie nie zadziała tak, jak powinien. Otwórz tę stronę na komputerze.</p>
+  <a href="/" class="btn btn-ghost gmg-back" data-pl="← Wróć do studia" data-en="← Back to the studio" data-de="← Zurück zum Studio">← Wróć do studia</a>
+</section>
+
 <main>
 <!-- HERO -->
 <section class="hero">
@@ -349,13 +408,14 @@ footer p.tag{color:var(--muted);font-size:14px;max-width:38ch}
           <div class="field">
             <label data-i18n="play.f.mind">wybrany umysł</label>
             <input type="text" id="pickedName" readonly value="—" />
+            <div class="play-status" id="playStatus"><span class="d"></span><span class="t" data-i18n="play.free">wolny — siadaj do gry</span></div>
           </div>
           <div class="field">
-            <label data-i18n="play.f.email">twój e-mail</label>
-            <input type="email" id="playEmail" placeholder="ty@przyklad.pl" required />
+            <label data-i18n="play.f.nick">twój nick</label>
+            <input type="text" id="playNick" maxlength="18" placeholder="np. Rafał" autocomplete="nickname" required />
           </div>
-          <button type="submit" class="btn btn-primary" style="justify-content:center"><span data-i18n="play.f.btn">Zagraj / dołącz do kolejki</span><span class="arr">→</span></button>
-          <p class="play-note" data-i18n="play.note">Twój e-mail służy tylko do powiadomienia o kolejce. Bez spamu, bez kont.</p>
+          <button type="submit" class="btn btn-primary" style="justify-content:center"><span data-i18n="play.f.btn">Zagraj teraz</span><span class="arr">→</span></button>
+          <p class="play-note" data-i18n="play.note">Grasz białymi, bezpośrednio w przeglądarce. Wynik trafia do tabeli ELO — bez konta, bez maila.</p>
           <div class="play-msg" id="playMsg"></div>
         </form>
       </div>
@@ -392,7 +452,38 @@ footer p.tag{color:var(--muted);font-size:14px;max-width:38ch}
     </div>
   </div>
 </footer>
-<script is:inline src="/gambit-chess.js"></script>
-<script is:inline src="/gambit.js"></script>
+<!-- MODAL: partia czlowiek vs umysl — pelna gra renderowana lokalnie (silnik gambit-chess.js). Domyslnie ukryty; otwierany przez gambit.js po kliknieciu "Zagraj teraz". -->
+<div class="gm-modal" id="gmModal" role="dialog" aria-modal="true" aria-label="Partia z umysłem">
+  <div class="gm-bg" data-gm-close></div>
+  <div class="gm-panel">
+    <div class="gm-head">
+      <div class="gm-vs"><span class="gm-you" id="gmYou">Ty</span><span class="gm-sep">vs</span><span class="gm-mind" id="gmMind">—</span></div>
+      <button class="gm-close" type="button" data-gm-close aria-label="Zamknij partię">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <div class="gm-status" id="gmStatus">Twój ruch — grasz białymi</div>
+    <div class="gm-board-wrap"><canvas id="gmBoard"></canvas></div>
+    <div class="gm-foot">
+      <button class="btn btn-ghost" id="gmResign" type="button" data-i18n="gm.resign">Poddaj</button>
+      <button class="btn btn-ghost" id="gmNew" type="button" data-i18n="gm.new">Nowa partia</button>
+    </div>
+  </div>
+</div>
+
+<!-- GAMBIT odpala sie TYLKO na desktopie. Na mobile (<=860px) pokazujemy bramke (.gmg) i NIE ladujemy ciezkich skryptow (silnik/canvas/RAF) — oszczedza CPU/baterie i uklad sie nie sypie. -->
+<script is:inline>
+  (function(){
+    var mobile = window.matchMedia('(max-width: 860px)').matches;
+    if(!mobile){
+      var srcs=['/gambit-chess.js','/gambit.js'], i=0;
+      (function next(){ if(i>=srcs.length) return; var s=document.createElement('script'); s.src=srcs[i++]; s.onload=next; s.onerror=next; document.body.appendChild(s); })();
+      return;
+    }
+    document.documentElement.setAttribute('data-gambit-mobile','');
+    var l='pl'; try{ l=localStorage.getItem('dlogic-lang')||'pl'; }catch(e){}
+    document.querySelectorAll('.gmg [data-pl]').forEach(function(el){ var v=el.getAttribute('data-'+l); if(v!=null) el.textContent=v; });
+  })();
+</script>
 </body>
 </html>
