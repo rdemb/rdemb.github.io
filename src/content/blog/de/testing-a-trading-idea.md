@@ -2,7 +2,7 @@
 title: "Wie ich eine Trading-Idee teste, um mich nicht selbst zu täuschen"
 lang: "de"
 kind: "trading"
-date: "2026-05-31"
+date: "2026-05-23"
 excerpt: "Am leichtesten täuscht man sich selbst. So prüfe ich eine Strategie-Idee, bevor ich glaube, dass sie funktioniert."
 key: "testing-a-trading-idea"
 slug: "testing-a-trading-idea"

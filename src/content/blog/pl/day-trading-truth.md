@@ -2,7 +2,7 @@
 title: "Jak naprawdę wygląda day trading (i czemu mało kto o tym mówi)"
 lang: "pl"
 kind: "trading"
-date: "2026-05-31"
+date: "2026-05-28"
 excerpt: "Trzy lata na rynku, w tym sporo na regularnym traceniu. Bez owijania: tak to wygląda od środka."
 key: "day-trading-truth"
 slug: "day-trading-truth"

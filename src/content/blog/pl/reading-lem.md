@@ -2,7 +2,7 @@
 title: "Dlaczego wracam do Lema"
 lang: "pl"
 kind: "reflection"
-date: "2026-05-31"
+date: "2026-05-24"
 excerpt: "Krótka osobista nota o pisarzu, który psuł mi spokój, zanim AI stało się modne."
 key: "reading-lem"
 slug: "reading-lem"

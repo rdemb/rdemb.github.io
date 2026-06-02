@@ -2,7 +2,7 @@
 title: "Wskrzesiłem swój eksperyment ML i sprawdziłem, gdzie pęka"
 lang: "pl"
 kind: "project"
-date: "2026-05-31"
+date: "2026-05-25"
 excerpt: "Stary projekt o przewidywaniu ruchu obiektu. Odpaliłem go po miesiącach i zadałem mu najtwardsze pytanie, jakie umiałem."
 key: "mocps-phase-diagram"
 slug: "mocps-phase-diagram"

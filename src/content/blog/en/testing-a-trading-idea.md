@@ -2,7 +2,7 @@
 title: "How I test a trading idea so I don't fool myself"
 lang: "en"
 kind: "trading"
-date: "2026-05-31"
+date: "2026-05-23"
 excerpt: "It is easiest to fool yourself. Here is how I check a strategy idea before I believe it works."
 key: "testing-a-trading-idea"
 slug: "testing-a-trading-idea"

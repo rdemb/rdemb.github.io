@@ -2,7 +2,7 @@
 title: "Die Indikatoren, an die ich einst glaubte (und was geschah, als ich sie testete)"
 lang: "de"
 kind: "trading"
-date: "2026-05-31"
+date: "2026-05-27"
 excerpt: "RSI, MACD, gleitende Durchschnitte. Einst meine Religion. Dann setzte ich mich an die Daten."
 key: "indicators-i-trusted"
 slug: "indicators-i-trusted"

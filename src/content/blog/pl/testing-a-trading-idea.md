@@ -2,7 +2,7 @@
 title: "Jak testuję pomysł tradingowy, żeby się nie oszukać"
 lang: "pl"
 kind: "trading"
-date: "2026-05-31"
+date: "2026-05-23"
 excerpt: "Najłatwiej oszukać samego siebie. Pokazuję, jak sprawdzam pomysł na strategię, zanim uwierzę, że działa."
 key: "testing-a-trading-idea"
 slug: "testing-a-trading-idea"

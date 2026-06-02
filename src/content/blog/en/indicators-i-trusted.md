@@ -2,7 +2,7 @@
 title: "The indicators I once believed in (and what happened when I tested them)"
 lang: "en"
 kind: "trading"
-date: "2026-05-31"
+date: "2026-05-27"
 excerpt: "RSI, MACD, moving averages. Once my religion. Then I sat down with the data."
 key: "indicators-i-trusted"
 slug: "indicators-i-trusted"

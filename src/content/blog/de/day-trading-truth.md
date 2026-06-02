@@ -2,7 +2,7 @@
 title: "Wie Day-Trading wirklich aussieht (und warum kaum jemand es sagt)"
 lang: "de"
 kind: "trading"
-date: "2026-05-31"
+date: "2026-05-28"
 excerpt: "Drei Jahre am Markt, viel davon mit stetigem Verlieren. Ohne Beschönigung: so sieht es von innen aus."
 key: "day-trading-truth"
 slug: "day-trading-truth"

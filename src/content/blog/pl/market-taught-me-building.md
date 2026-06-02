@@ -2,7 +2,7 @@
 title: "Czego rynek nauczył mnie o pisaniu kodu"
 lang: "pl"
 kind: "reflection"
-date: "2026-05-31"
+date: "2026-05-26"
 excerpt: "Trading i programowanie wyglądają na dwa różne światy. Dla mnie to ta sama dyscyplina."
 key: "market-taught-me-building"
 slug: "market-taught-me-building"

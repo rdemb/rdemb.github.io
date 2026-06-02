@@ -2,7 +2,7 @@
 title: "Ich habe mein ML-Experiment wiederbelebt und gesucht, wo es bricht"
 lang: "de"
 kind: "project"
-date: "2026-05-31"
+date: "2026-05-25"
 excerpt: "Ein altes Projekt über die Bewegungsvorhersage eines Objekts. Ich habe es nach Monaten zurückgeholt und ihm die härteste Frage gestellt, die ich konnte."
 key: "mocps-phase-diagram"
 slug: "mocps-phase-diagram"

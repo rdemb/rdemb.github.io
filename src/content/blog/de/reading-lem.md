@@ -2,7 +2,7 @@
 title: "Warum ich immer wieder zu Lem zurückkehre"
 lang: "de"
 kind: "reflection"
-date: "2026-05-31"
+date: "2026-05-24"
 excerpt: "Eine kurze persönliche Notiz über den Schriftsteller, der mich beunruhigte, bevor KI in Mode kam."
 key: "reading-lem"
 slug: "reading-lem"

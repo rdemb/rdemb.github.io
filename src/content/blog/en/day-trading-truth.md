@@ -2,7 +2,7 @@
 title: "What day trading really looks like (and why few people say it)"
 lang: "en"
 kind: "trading"
-date: "2026-05-31"
+date: "2026-05-28"
 excerpt: "Three years on the market, a lot of it spent steadily losing. No sugar-coating: this is how it looks from the inside."
 key: "day-trading-truth"
 slug: "day-trading-truth"

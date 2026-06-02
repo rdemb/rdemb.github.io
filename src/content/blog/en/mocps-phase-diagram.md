@@ -2,7 +2,7 @@
 title: "I revived my ML experiment and looked for where it breaks"
 lang: "en"
 kind: "project"
-date: "2026-05-31"
+date: "2026-05-25"
 excerpt: "An old project about predicting an object's motion. I brought it back after months and asked it the hardest question I could."
 key: "mocps-phase-diagram"
 slug: "mocps-phase-diagram"

@@ -2,7 +2,7 @@
 title: "What the market taught me about writing code"
 lang: "en"
 kind: "reflection"
-date: "2026-05-31"
+date: "2026-05-26"
 excerpt: "Trading and programming look like two different worlds. For me they are the same discipline."
 key: "market-taught-me-building"
 slug: "market-taught-me-building"

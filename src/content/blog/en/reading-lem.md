@@ -2,7 +2,7 @@
 title: "Why I keep coming back to Lem"
 lang: "en"
 kind: "reflection"
-date: "2026-05-31"
+date: "2026-05-24"
 excerpt: "A short personal note on the writer who unsettled me before AI became fashionable."
 key: "reading-lem"
 slug: "reading-lem"

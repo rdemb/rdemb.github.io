@@ -2,7 +2,7 @@
 title: "Wskaźniki, w które kiedyś wierzyłem (i co się stało, gdy je sprawdziłem)"
 lang: "pl"
 kind: "trading"
-date: "2026-05-31"
+date: "2026-05-27"
 excerpt: "RSI, MACD, średnie. Kiedyś moja religia. Potem usiadłem do danych."
 key: "indicators-i-trusted"
 slug: "indicators-i-trusted"
