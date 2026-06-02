@@ -11,7 +11,10 @@ import SiteNav from '../components/SiteNav.astro';
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>GAMBIT · ewoluujące umysły szachowe · D-LOGIC studio</title>
 <meta name="description" content="Osiem neuroróżnorodnych umysłów uczy się grać w szachy. Grają ze sobą 24/7, ewoluują, pamiętają rywali i śnią. Ranking na żywo i partia z wybranym umysłem." />
-<style>
+<!-- is:global — KLUCZOWE: elementy stoluw/umyslow/tabeli/pickera tworzy gambit.js w runtime
+     (bez atrybutu data-astro-cid), wiec scoped CSS by ich NIE objal i wygladalyby golo.
+     Globalny styl (jak w Gambit.html) obejmuje tak samo statyczny markup, jak i ten z JS. -->
+<style is:global>
 :root[data-theme="dark"]{
   --bg:#0C0E12; --bg-rgb:12,14,18; --surface:#14171C; --surface-2:#191D24; --line:#23272E; --line-2:rgba(231,233,236,0.06);
   --text:#E7E9EC; --muted:#9AA1AB; --accent:#E8B23A; --accent-rgb:232,178,58; --accent-soft:#F0C766; --live:#4ADE80; --loss:#E8675A;
