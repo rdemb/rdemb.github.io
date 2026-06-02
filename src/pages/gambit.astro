@@ -122,8 +122,20 @@ h2{font-size:clamp(1.7rem,3.6vw,2.7rem);font-weight:700;letter-spacing:-.02em;li
 footer{border-top:1px solid var(--line);padding:40px 0;color:var(--mut);font-size:.85rem}
 footer a{color:var(--bone-soft)}
 
-@media(max-width:880px){ .split{grid-template-columns:1fr} .boards{grid-template-columns:1fr} }
-@media(max-width:560px){ .boards{grid-template-columns:1fr 1fr;gap:10px} .bcard{padding:9px;gap:7px} .bp__n{font-size:.72rem} .bcard__top{font-size:.72rem} }
+@media(max-width:880px){ .split{grid-template-columns:1fr} }
+@media(max-width:600px){
+  .boards{grid-template-columns:1fr}        /* 1 czytelna szachownica na wiersz */
+  .roster{grid-template-columns:1fr}
+  .play__form{flex-direction:column;align-items:stretch}
+  .play__form input,.play__form select,.play__form .btn{width:100%}
+  .hero__stats{gap:1.1rem 1.6rem}
+  .chat{max-height:380px}
+}
+@media(max-width:420px){
+  .hero h1{font-size:3rem}
+  .mind__stats{gap:6px}
+  .rank th:nth-child(4),.rank td:nth-child(4){display:none} /* ukryj W·P·R na bardzo wąskich */
+}
 .loading{opacity:.5}
 </style>
 </head>
@@ -309,7 +321,9 @@ function render(d){
   // chat (najnowsze na dole)
   const ch=document.getElementById("chat");
   ch.innerHTML=(d.chat||[]).slice(-16).map(c=>{const a=by[c.by];if(!a)return"";
-    return `<div class="cmsg ${c.kind==='dream'?'dream':''}"><i style="background:color-mix(in oklab,${a.color} 22%,transparent);color:${a.color}">${a.glyph}</i><span><b>${a.name}</b>${c.kind==='dream'?' <span class="k">sen</span>':''} — ${c.msg}</span></div>`;}).join("");
+    const msg = (typeof c.msg==='string')?c.msg:((c.msg&&(c.msg[LANG]||c.msg.pl))||'');
+    const dl = ({pl:'sen',en:'dream',de:'Traum'})[LANG]||'sen';
+    return `<div class="cmsg ${c.kind==='dream'?'dream':''}"><i style="background:color-mix(in oklab,${a.color} 22%,transparent);color:${a.color}">${a.glyph}</i><span><b>${a.name}</b>${c.kind==='dream'?` <span class="k">${dl}</span>`:''} — ${msg}</span></div>`;}).join("");
   ch.scrollTop=ch.scrollHeight;
   // play select
   const sel=document.getElementById("pSel");
