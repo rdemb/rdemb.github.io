@@ -1,0 +1,231 @@
+---
+import Chrome from '../components/Chrome.astro';
+import { withUi } from '../i18n';
+
+const site = 'https://rdemb.github.io';
+
+// Schema.org (AI-readiness): jasna encja + usługa + FAQ + okruszki. Strona sama jest demem GEO.
+const schema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'ProfessionalService',
+      '@id': `${site}/#dlogic`,
+      name: 'D-LOGIC',
+      url: site,
+      description: 'Uczciwe prześwietlenie i naprawa obecności firmy w sieci, w tym widoczność w wyszukiwarkach AI (ChatGPT, Perplexity, Google AI).',
+      founder: { '@type': 'Person', name: 'Rafał Dembski', jobTitle: 'Założyciel', address: { '@type': 'PostalAddress', addressRegion: 'NRW', addressCountry: 'DE' } },
+      areaServed: ['PL', 'DE', 'AT', 'CH'],
+      knowsAbout: ['Generative Engine Optimization', 'Answer Engine Optimization', 'audyt widoczności w AI', 'SEO', 'agenci AI'],
+    },
+    {
+      '@type': 'Service',
+      name: 'Prześwietlenie firmy w sieci',
+      serviceType: 'Audyt widoczności i obecności firmy w internecie i wyszukiwarkach AI',
+      provider: { '@id': `${site}/#dlogic` },
+      areaServed: ['PL', 'DE'],
+      offers: { '@type': 'Offer', price: '390', priceCurrency: 'EUR' },
+      url: `${site}/preswietlenie/`,
+    },
+    {
+      '@type': 'FAQPage',
+      mainEntity: [
+        { '@type': 'Question', name: 'Czym jest prześwietlenie firmy w sieci?', acceptedAnswer: { '@type': 'Answer', text: 'To uczciwa, oparta na dowodach analiza obecności firmy w internecie: widoczność w Google i wyszukiwarkach AI, jakość strony pod sprzedaż, pozycja na tle konkurentów, z konkretną listą trzech rzeczy do naprawy najpierw.' } },
+        { '@type': 'Question', name: 'Czy moja firma jest widoczna w ChatGPT?', acceptedAnswer: { '@type': 'Answer', text: 'Najczęściej nie, jeśli nie ma o niej wzmianek w wiarygodnych źródłach. Prześwietlenie to sprawdza i pokazuje, co zmienić, żeby AI zaczęło uwzględniać Twoją firmę.' } },
+        { '@type': 'Question', name: 'Czym to się różni od audytu SEO agencji?', acceptedAnswer: { '@type': 'Answer', text: 'Jest uczciwe (mówimy też, czego się nie da), glass-box (dowód przy każdym wniosku), obejmuje wyszukiwanie AI i nie kończy się raportem, tylko realną naprawą.' } },
+        { '@type': 'Question', name: 'Ile to kosztuje i ile trwa?', acceptedAnswer: { '@type': 'Answer', text: 'Prześwietlenie od 390 EUR jednorazowo, raport w kilka dni. Naprawa i monitoring działają w modelu abonamentowym.' } },
+      ],
+    },
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'D-LOGIC', item: `${site}/` },
+        { '@type': 'ListItem', position: 2, name: 'Prześwietlenie', item: `${site}/preswietlenie/` },
+      ],
+    },
+  ],
+};
+
+const dict = withUi({
+  pl: {
+    'x.eyebrow': 'Prześwietlenie firmy', 'x.title': 'Sprawdzę, czy Twoja firma w ogóle istnieje dla klienta w sieci',
+    'x.lead': 'Twój klient szuka dziś w Google i w ChatGPT. Jeśli Cię tam nie ma albo Twoja strona nie sprzedaje, tracisz pieniądze, nie wiedząc o tym. Prześwietlę to uczciwie, z dowodem, i pokażę, co naprawić najpierw.',
+    'x.cta1': 'Zrób mi prześwietlenie', 'x.cta2': 'Zobacz, jak pracuję',
+    'x.pr.k': 'Problem', 'x.pr.t': 'Trzy ciche przecieki',
+    'x.pr1': 'Nie wiesz, czy jesteś widoczny w wyszukiwaniu AI, a tam coraz częściej zaczyna się decyzja zakupowa.',
+    'x.pr2': 'Strona może wyglądać dobrze i nadal nie zamieniać odwiedzin w klientów.',
+    'x.pr3': 'Każda agencja obiecuje pierwsze miejsce. Skąd masz wiedzieć, komu wierzyć?',
+    'x.g.k': 'Co dostajesz', 'x.g.t': 'Glass-box raport, w którym każdy wniosek ma dowód',
+    'x.g1.t': 'Widoczność', 'x.g1.d': 'Czy Google i AI (ChatGPT, Perplexity) znają Cię dla zapytań Twoich klientów.',
+    'x.g2.t': 'Strona pod sprzedaż', 'x.g2.d': 'Gdzie ludzie odpadają z Twojej strony i dlaczego.',
+    'x.g3.t': 'Pozycja vs konkurenci', 'x.g3.d': 'Jak wypadasz obok nich i gdzie jest szczelina dla Ciebie.',
+    'x.g4.t': 'TOP 3 do naprawy', 'x.g4.d': 'Trzy rzeczy do naprawy najpierw, z konkretnym jak. Nie lista 50 problemów do szuflady.',
+    'x.h.k': 'Jak to działa', 'x.h.t': 'Człowiek w pętli, zero automatu bez kontroli',
+    'x.h1.t': 'Skan', 'x.h1.d': 'Skanuję Twoją firmę z publicznych danych w sieci.',
+    'x.h2.t': 'Kontrola', 'x.h2.d': 'Osobiście sprawdzam raport, zanim go zobaczysz.',
+    'x.h3.t': 'Naprawa', 'x.h3.d': 'Naprawiamy najważniejsze i mierzymy efekt przed/po, na żywo.',
+    'x.no.t': 'Czego NIE obiecuję', 'x.no.d': 'Nie obiecuję gwarantowanych pozycji ani cudów w tydzień. Obiecuję prawdę z dowodem i efekt, który widać. Jeśli czegoś nie da się sensownie poprawić, powiem to. To kosztuje mnie sprzedaż na słowach, a daje Ci pewność.',
+    'x.pk.k': 'Pakiety', 'x.pk.t': 'Jasno, bez niespodzianek',
+    'x.pk1.p': '390 € jednorazowo', 'x.pk1.t': 'Prześwietlenie', 'x.pk1.d': 'Glass-box raport, TOP 3 do naprawy i roadmapa.',
+    'x.pk2.p': 'od 690 € / mc', 'x.pk2.t': 'Naprawa + pozycjonowanie', 'x.pk2.d': 'Done-for-you treść i struktura pod Google i AI. Ty zatwierdzasz przed publikacją.',
+    'x.pk3.p': 'od 149 € / mc', 'x.pk3.t': 'Żywy monitoring', 'x.pk3.d': 'Dashboard przed/po, alerty i trend widoczności.',
+    'x.f.k': 'FAQ', 'x.f.t': 'Krótkie odpowiedzi',
+    'x.f1.q': 'Czym jest prześwietlenie firmy w sieci?', 'x.f1.a': 'Uczciwa, oparta na dowodach analiza obecności firmy w internecie: widoczność w Google i wyszukiwarkach AI, jakość strony pod sprzedaż, pozycja vs konkurenci, z listą trzech rzeczy do naprawy najpierw.',
+    'x.f2.q': 'Czy moja firma jest widoczna w ChatGPT?', 'x.f2.a': 'Najczęściej nie, jeśli nie ma o niej wzmianek w wiarygodnych źródłach. Prześwietlenie to sprawdza i pokazuje, co zmienić.',
+    'x.f3.q': 'Czym to się różni od audytu SEO agencji?', 'x.f3.a': 'Jest uczciwe, glass-box (dowód przy każdym wniosku), obejmuje wyszukiwanie AI i nie kończy się raportem, tylko naprawą.',
+    'x.f4.q': 'Ile to kosztuje i ile trwa?', 'x.f4.a': 'Prześwietlenie od 390 € jednorazowo, raport w kilka dni. Naprawa i monitoring to abonament.',
+    'x.cta.t': 'Zacznijmy od prześwietlenia', 'x.cta.l': 'Zobaczysz prawdę o swojej firmie w sieci, z dowodem. Napisz w dwóch zdaniach, co robisz, odpiszę osobiście, zwykle tego samego dnia.', 'x.cta.b': 'Napisz maila',
+  },
+  en: {
+    'x.eyebrow': 'Company X-Ray', 'x.title': 'I will check whether your company even exists for a customer online',
+    'x.lead': 'Your customer now searches in Google and in ChatGPT. If you are not there, or your site does not sell, you are losing money without knowing it. I will X-ray it honestly, with evidence, and show what to fix first.',
+    'x.cta1': 'Get my X-Ray', 'x.cta2': 'See how I work',
+    'x.pr.k': 'Problem', 'x.pr.t': 'Three quiet leaks',
+    'x.pr1': 'You do not know if you are visible in AI search, where the buying decision increasingly starts.',
+    'x.pr2': 'A site can look good and still fail to turn visits into customers.',
+    'x.pr3': 'Every agency promises the top spot. How are you supposed to know who to trust?',
+    'x.g.k': 'What you get', 'x.g.t': 'A glass-box report where every finding has evidence',
+    'x.g1.t': 'Visibility', 'x.g1.d': 'Whether Google and AI (ChatGPT, Perplexity) know you for your customers queries.',
+    'x.g2.t': 'Site that sells', 'x.g2.d': 'Where people drop off your site and why.',
+    'x.g3.t': 'Position vs rivals', 'x.g3.d': 'How you stack up next to them and where your gap is.',
+    'x.g4.t': 'TOP 3 to fix', 'x.g4.d': 'Three things to fix first, with the concrete how. Not a list of 50 problems for the drawer.',
+    'x.h.k': 'How it works', 'x.h.t': 'Human in the loop, no automation without control',
+    'x.h1.t': 'Scan', 'x.h1.d': 'I scan your company from public data on the web.',
+    'x.h2.t': 'Control', 'x.h2.d': 'I personally check the report before you see it.',
+    'x.h3.t': 'Fix', 'x.h3.d': 'We fix the most important things and measure before/after, live.',
+    'x.no.t': 'What I do NOT promise', 'x.no.d': 'I do not promise guaranteed rankings or miracles in a week. I promise truth with evidence and an effect you can see. If something cannot reasonably be improved, I say so. It costs me a sale on words and gives you certainty.',
+    'x.pk.k': 'Packages', 'x.pk.t': 'Clear, no surprises',
+    'x.pk1.p': '€390 one-time', 'x.pk1.t': 'X-Ray', 'x.pk1.d': 'Glass-box report, TOP 3 to fix and a roadmap.',
+    'x.pk2.p': 'from €690 / mo', 'x.pk2.t': 'Fix + positioning', 'x.pk2.d': 'Done-for-you content and structure for Google and AI. You approve before publishing.',
+    'x.pk3.p': 'from €149 / mo', 'x.pk3.t': 'Live monitoring', 'x.pk3.d': 'Before/after dashboard, alerts and visibility trend.',
+    'x.f.k': 'FAQ', 'x.f.t': 'Short answers',
+    'x.f1.q': 'What is a company X-Ray?', 'x.f1.a': 'An honest, evidence-based analysis of a company online presence: visibility in Google and AI search, how the site sells, position vs rivals, with three things to fix first.',
+    'x.f2.q': 'Is my company visible in ChatGPT?', 'x.f2.a': 'Usually not, unless it is mentioned in credible sources. The X-Ray checks this and shows what to change.',
+    'x.f3.q': 'How is this different from an agency SEO audit?', 'x.f3.a': 'It is honest, glass-box (evidence per finding), it covers AI search, and it does not end with a report but with the fix.',
+    'x.f4.q': 'How much and how long?', 'x.f4.a': 'X-Ray from €390 one-time, report in a few days. Fix and monitoring are subscriptions.',
+    'x.cta.t': 'Let us start with the X-Ray', 'x.cta.l': 'You will see the truth about your company online, with evidence. Write two sentences about what you do, I reply personally, usually the same day.', 'x.cta.b': 'Send an email',
+  },
+  de: {
+    'x.eyebrow': 'Firmen-Röntgen', 'x.title': 'Ich prüfe, ob deine Firma für einen Kunden online überhaupt existiert',
+    'x.lead': 'Dein Kunde sucht heute in Google und in ChatGPT. Wenn du dort nicht bist oder deine Seite nicht verkauft, verlierst du Geld, ohne es zu wissen. Ich röntge das ehrlich, mit Beweis, und zeige, was zuerst zu reparieren ist.',
+    'x.cta1': 'Mach mir das Röntgen', 'x.cta2': 'So arbeite ich',
+    'x.pr.k': 'Problem', 'x.pr.t': 'Drei leise Lecks',
+    'x.pr1': 'Du weißt nicht, ob du in der KI-Suche sichtbar bist, wo die Kaufentscheidung immer öfter beginnt.',
+    'x.pr2': 'Eine Seite kann gut aussehen und Besuche trotzdem nicht in Kunden verwandeln.',
+    'x.pr3': 'Jede Agentur verspricht den ersten Platz. Woher sollst du wissen, wem du trauen kannst?',
+    'x.g.k': 'Was du bekommst', 'x.g.t': 'Ein Glass-Box-Bericht, in dem jeder Befund einen Beweis hat',
+    'x.g1.t': 'Sichtbarkeit', 'x.g1.d': 'Ob Google und KI (ChatGPT, Perplexity) dich bei den Fragen deiner Kunden kennen.',
+    'x.g2.t': 'Seite, die verkauft', 'x.g2.d': 'Wo Menschen auf deiner Seite abspringen und warum.',
+    'x.g3.t': 'Position vs Konkurrenz', 'x.g3.d': 'Wie du neben ihnen dastehst und wo deine Lücke ist.',
+    'x.g4.t': 'TOP 3 zu reparieren', 'x.g4.d': 'Drei Dinge zuerst reparieren, mit dem konkreten Wie. Keine Liste mit 50 Problemen für die Schublade.',
+    'x.h.k': 'Wie es läuft', 'x.h.t': 'Mensch in der Schleife, keine Automatik ohne Kontrolle',
+    'x.h1.t': 'Scan', 'x.h1.d': 'Ich scanne deine Firma aus öffentlichen Daten im Netz.',
+    'x.h2.t': 'Kontrolle', 'x.h2.d': 'Ich prüfe den Bericht persönlich, bevor du ihn siehst.',
+    'x.h3.t': 'Reparatur', 'x.h3.d': 'Wir reparieren das Wichtigste und messen vorher/nachher, live.',
+    'x.no.t': 'Was ich NICHT verspreche', 'x.no.d': 'Ich verspreche keine garantierten Platzierungen und keine Wunder in einer Woche. Ich verspreche Wahrheit mit Beweis und einen sichtbaren Effekt. Wenn sich etwas nicht sinnvoll verbessern lässt, sage ich es. Das kostet mich einen Verkauf auf Worte und gibt dir Sicherheit.',
+    'x.pk.k': 'Pakete', 'x.pk.t': 'Klar, ohne Überraschungen',
+    'x.pk1.p': '390 € einmalig', 'x.pk1.t': 'Röntgen', 'x.pk1.d': 'Glass-Box-Bericht, TOP 3 zu reparieren und eine Roadmap.',
+    'x.pk2.p': 'ab 690 € / Mt', 'x.pk2.t': 'Reparatur + Positionierung', 'x.pk2.d': 'Done-for-you Inhalt und Struktur für Google und KI. Du bestätigst vor Veröffentlichung.',
+    'x.pk3.p': 'ab 149 € / Mt', 'x.pk3.t': 'Live-Monitoring', 'x.pk3.d': 'Vorher/Nachher-Dashboard, Alerts und Sichtbarkeitstrend.',
+    'x.f.k': 'FAQ', 'x.f.t': 'Kurze Antworten',
+    'x.f1.q': 'Was ist ein Firmen-Röntgen?', 'x.f1.a': 'Eine ehrliche, beweisbasierte Analyse der Online-Präsenz: Sichtbarkeit in Google und KI-Suche, wie die Seite verkauft, Position vs Konkurrenz, mit drei Dingen, die zuerst zu reparieren sind.',
+    'x.f2.q': 'Ist meine Firma in ChatGPT sichtbar?', 'x.f2.a': 'Meist nicht, wenn sie nicht in glaubwürdigen Quellen erwähnt wird. Das Röntgen prüft das und zeigt, was zu ändern ist.',
+    'x.f3.q': 'Wie unterscheidet sich das vom SEO-Audit einer Agentur?', 'x.f3.a': 'Es ist ehrlich, Glass-Box (Beweis pro Befund), deckt KI-Suche ab und endet nicht mit einem Bericht, sondern mit der Reparatur.',
+    'x.f4.q': 'Was kostet es und wie lange dauert es?', 'x.f4.a': 'Röntgen ab 390 € einmalig, Bericht in wenigen Tagen. Reparatur und Monitoring laufen im Abo.',
+    'x.cta.t': 'Fangen wir mit dem Röntgen an', 'x.cta.l': 'Du siehst die Wahrheit über deine Firma online, mit Beweis. Schreib zwei Sätze, was du tust, ich antworte persönlich, meist am selben Tag.', 'x.cta.b': 'E-Mail schreiben',
+  },
+});
+const t = dict.pl;
+---
+<Chrome title="Prześwietlenie firmy w sieci · D-LOGIC" description="Uczciwe prześwietlenie i naprawa obecności firmy w sieci, w tym widoczność w ChatGPT i Google. Z dowodem, bez obietnic cudów." dict={dict} active="">
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+
+  <section style="padding-bottom:34px">
+    <div class="wrap">
+      <div class="sec-head reveal" style="margin-bottom:28px">
+        <span class="eyebrow" data-i18n="x.eyebrow">{t['x.eyebrow']}</span>
+        <h2 data-i18n="x.title">{t['x.title']}</h2>
+        <p data-i18n="x.lead">{t['x.lead']}</p>
+        <div class="hero-cta" style="margin-top:26px">
+          <a href="mailto:rdem91@gmail.com?subject=Prze%C5%9Bwietlenie%20firmy" class="btn btn-primary"><span data-i18n="x.cta1">{t['x.cta1']}</span><span class="arr">→</span></a>
+          <a href="/blog/ai-company/" class="btn btn-ghost"><span data-i18n="x.cta2">{t['x.cta2']}</span><span class="arr">→</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head reveal" style="margin-bottom:28px"><span class="eyebrow" data-i18n="x.pr.k">{t['x.pr.k']}</span><h2 data-i18n="x.pr.t">{t['x.pr.t']}</h2></div>
+      <div class="cards">
+        <article class="card reveal"><span class="num">01</span><p data-i18n="x.pr1">{t['x.pr1']}</p></article>
+        <article class="card reveal" data-delay="1"><span class="num">02</span><p data-i18n="x.pr2">{t['x.pr2']}</p></article>
+        <article class="card reveal" data-delay="2"><span class="num">03</span><p data-i18n="x.pr3">{t['x.pr3']}</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="proof">
+    <div class="wrap">
+      <div class="sec-head reveal"><span class="eyebrow" data-i18n="x.g.k">{t['x.g.k']}</span><h2 data-i18n="x.g.t">{t['x.g.t']}</h2></div>
+      <div class="cards">
+        <article class="card reveal"><span class="num">01</span><h3 data-i18n="x.g1.t">{t['x.g1.t']}</h3><p data-i18n="x.g1.d">{t['x.g1.d']}</p></article>
+        <article class="card reveal" data-delay="1"><span class="num">02</span><h3 data-i18n="x.g2.t">{t['x.g2.t']}</h3><p data-i18n="x.g2.d">{t['x.g2.d']}</p></article>
+        <article class="card reveal"><span class="num">03</span><h3 data-i18n="x.g3.t">{t['x.g3.t']}</h3><p data-i18n="x.g3.d">{t['x.g3.d']}</p></article>
+        <article class="card reveal" data-delay="1"><span class="num" style="color:var(--accent)">★</span><h3 data-i18n="x.g4.t">{t['x.g4.t']}</h3><p data-i18n="x.g4.d">{t['x.g4.d']}</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head reveal"><span class="eyebrow" data-i18n="x.h.k">{t['x.h.k']}</span><h2 data-i18n="x.h.t">{t['x.h.t']}</h2></div>
+      <div class="hub">
+        <div class="hub-card reveal"><span class="k">01</span><h3 data-i18n="x.h1.t">{t['x.h1.t']}</h3><p data-i18n="x.h1.d">{t['x.h1.d']}</p></div>
+        <div class="hub-card reveal" data-delay="1"><span class="k">02</span><h3 data-i18n="x.h2.t">{t['x.h2.t']}</h3><p data-i18n="x.h2.d">{t['x.h2.d']}</p></div>
+        <div class="hub-card reveal" data-delay="2"><span class="k">03</span><h3 data-i18n="x.h3.t">{t['x.h3.t']}</h3><p data-i18n="x.h3.d">{t['x.h3.d']}</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap" style="max-width:760px">
+      <div class="reveal">
+        <h2 style="font-size:clamp(22px,3vw,30px)" data-i18n="x.no.t">{t['x.no.t']}</h2>
+        <p class="muted" style="margin-top:14px;font-size:17.5px;line-height:1.7" data-i18n="x.no.d">{t['x.no.d']}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="proof">
+    <div class="wrap">
+      <div class="sec-head reveal"><span class="eyebrow" data-i18n="x.pk.k">{t['x.pk.k']}</span><h2 data-i18n="x.pk.t">{t['x.pk.t']}</h2></div>
+      <div class="cards">
+        <article class="card reveal"><span class="num" data-i18n="x.pk1.p">{t['x.pk1.p']}</span><h3 data-i18n="x.pk1.t">{t['x.pk1.t']}</h3><p data-i18n="x.pk1.d">{t['x.pk1.d']}</p></article>
+        <article class="card reveal" data-delay="1"><span class="num" data-i18n="x.pk2.p">{t['x.pk2.p']}</span><h3 data-i18n="x.pk2.t">{t['x.pk2.t']}</h3><p data-i18n="x.pk2.d">{t['x.pk2.d']}</p></article>
+        <article class="card reveal" data-delay="2"><span class="num" data-i18n="x.pk3.p">{t['x.pk3.p']}</span><h3 data-i18n="x.pk3.t">{t['x.pk3.t']}</h3><p data-i18n="x.pk3.d">{t['x.pk3.d']}</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap" style="max-width:820px">
+      <div class="sec-head reveal" style="margin-bottom:24px"><span class="eyebrow" data-i18n="x.f.k">{t['x.f.k']}</span><h2 data-i18n="x.f.t">{t['x.f.t']}</h2></div>
+      <div class="hub" style="grid-template-columns:1fr">
+        <div class="hub-card reveal"><h3 data-i18n="x.f1.q">{t['x.f1.q']}</h3><p data-i18n="x.f1.a">{t['x.f1.a']}</p></div>
+        <div class="hub-card reveal"><h3 data-i18n="x.f2.q">{t['x.f2.q']}</h3><p data-i18n="x.f2.a">{t['x.f2.a']}</p></div>
+        <div class="hub-card reveal"><h3 data-i18n="x.f3.q">{t['x.f3.q']}</h3><p data-i18n="x.f3.a">{t['x.f3.a']}</p></div>
+        <div class="hub-card reveal"><h3 data-i18n="x.f4.q">{t['x.f4.q']}</h3><p data-i18n="x.f4.a">{t['x.f4.a']}</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="wrap"><div class="cta-wrap reveal"><div class="inner">
+      <span class="eyebrow" style="justify-content:center" data-i18n="x.eyebrow">{t['x.eyebrow']}</span>
+      <h2 data-i18n="x.cta.t">{t['x.cta.t']}</h2>
+      <p data-i18n="x.cta.l">{t['x.cta.l']}</p>
+      <div class="hero-cta"><a href="mailto:rdem91@gmail.com?subject=Prze%C5%9Bwietlenie%20firmy" class="btn btn-primary"><span data-i18n="x.cta.b">{t['x.cta.b']}</span><span class="arr">→</span></a></div>
+    </div></div></div>
+  </section>
+</Chrome>
