@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 660" role="img" aria-label="Organigramm der KI-Firma D-Logic Forge: Rafal als CEO und vierzehn Agenten in fünf Ebenen, angetrieben von Claude Opus 4.8 im Max-Plan">
+  <defs>
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F0C766"/>
+      <stop offset="1" stop-color="#E8B23A"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#E8B23A" stop-opacity="0.20"/>
+      <stop offset="1" stop-color="#E8B23A" stop-opacity="0"/>
+    </radialGradient>
+    <style>
+      text{font-family:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;}
+      .mono{font-family:ui-monospace,'SF Mono','JetBrains Mono',Menlo,Consolas,monospace;}
+    </style>
+  </defs>
+
+  <!-- panel -->
+  <rect x="1" y="1" width="1198" height="658" rx="20" fill="#0C0E12" stroke="#23272E" stroke-width="1.5"/>
+  <circle cx="600" cy="150" r="270" fill="url(#glow)"/>
+
+  <!-- header -->
+  <text x="44" y="48" class="mono" font-size="12.5" letter-spacing="2.4" fill="#9AA1AB">AUTONOMES KI-UNTERNEHMEN</text>
+  <text x="44" y="82" font-size="29" font-weight="700" letter-spacing="0.5" fill="#E8B23A">D-LOGIC FORGE</text>
+
+  <!-- engine badge -->
+  <rect x="820" y="40" width="336" height="34" rx="17" fill="#E8B23A" fill-opacity="0.10" stroke="#E8B23A" stroke-opacity="0.32"/>
+  <text x="988" y="62" text-anchor="middle" class="mono" font-size="13" fill="#F0C766">&#9670; Claude Opus 4.8 &#183; Max-Plan</text>
+
+  <!-- founder -->
+  <rect x="470" y="104" width="260" height="72" rx="14" fill="url(#gold)"/>
+  <text x="600" y="139" text-anchor="middle" font-size="23" font-weight="700" fill="#0C0E12">RAFAŁ</text>
+  <text x="600" y="160" text-anchor="middle" class="mono" font-size="11.5" fill="#0C0E12" fill-opacity="0.78">CEO &#183; der einzige Mensch im Loop</text>
+
+  <!-- connectors -->
+  <g stroke="#E8B23A" stroke-opacity="0.32" stroke-width="1.5" fill="none">
+    <line x1="600" y1="176" x2="600" y2="200"/>
+    <line x1="150" y1="200" x2="1038" y2="200"/>
+    <line x1="150" y1="200" x2="150" y2="228"/>
+    <line x1="372" y1="200" x2="372" y2="228"/>
+    <line x1="594" y1="200" x2="594" y2="228"/>
+    <line x1="816" y1="200" x2="816" y2="228"/>
+    <line x1="1038" y1="200" x2="1038" y2="228"/>
+  </g>
+
+  <!-- layer headers -->
+  <g text-anchor="middle" class="mono" font-size="12" letter-spacing="1" fill="#E8B23A">
+    <text x="150" y="244">STRATEGIE &#183; 3</text>
+    <text x="372" y="244">PRODUKT &#183; 3</text>
+    <text x="594" y="244">TECHNIK &#183; 3</text>
+    <text x="816" y="244">BUSINESS &#183; 4</text>
+    <text x="1038" y="244">INTELLIGENCE &#183; 1</text>
+  </g>
+
+  <!-- agent cards -->
+  <g>
+    <!-- C1 Strategia x0=52 -->
+    <g><rect x="52" y="256" width="196" height="60" rx="10" fill="#14171C" stroke="#23272E"/><circle cx="70" cy="286" r="3.5" fill="#E8B23A"/><text x="86" y="282" font-size="15" font-weight="600" fill="#E7E9EC">Bezos</text><text x="86" y="300" class="mono" font-size="10.5" fill="#9AA1AB">Strategie, Entscheidungen</text></g>
+    <g><rect x="52" y="328" width="196" height="60" rx="10" fill="#14171C" stroke="#23272E"/><circle cx="70" cy="358" r="3.5" fill="#E8B23A"/><text x="86" y="354" font-size="15" font-weight="600" fill="#E7E9EC">Vogels</text><text x="86" y="372" class="mono" font-size="10.5" fill="#9AA1AB">Architektur</text></g>
+    <g><rect x="52" y="400" width="196" height="60" rx="10" fill="#14171C" stroke="#23272E"/><circle cx="70" cy="430" r="3.5" fill="#E8B23A"/><text x="86" y="426" font-size="15" font-weight="600" fill="#E7E9EC">Munger</text><text x="86" y="444" class="mono" font-size="10.5" fill="#9AA1AB">Kritiker, Bremse</text></g>
+
+    <!-- C2 Produkt x0=274 -->
+    <g><rect x="274" y="256" width="196" height="60" rx="10" fill="#14171C" stroke="#23272E"/><circle cx="292" cy="286" r="3.5" fill="#E8B23A"/><text x="308" y="282" font-size="15" font-weight="600" fill="#E7E9EC">Norman</text><text x="308" y="300" class="mono" font-size="10.5" fill="#9AA1AB">Produkt, UX</text></g>
+    <g><rect x="274" y="328" width="196" height="60" rx="10" fill="#14171C" stroke="#23272E"/><circle cx="292" cy="358" r="3.5" fill="#E8B23A"/><text x="308" y="354" font-size="15" font-weight="600" fill="#E7E9EC">Duarte</text><text x="308" y="372" class="mono" font-size="10.5" fill="#9AA1AB">UI, Visual</text></g>
+    <g><rect x="274" y="400" width="196" height="60" rx="10" fill="#14171C" stroke="#23272E"/><circle cx="292" cy="430" r="3.5" fill="#E8B23A"/><text x="308" y="426" font-size="15" font-weight="600" fill="#E7E9EC">Cooper</text><text x="308" y="444" class="mono" font-size="10.5" fill="#9AA1AB">Interaktion</text></g>
+
+    <!-- C3 Inżynieria x0=496 -->
+    <g><rect x="496" y="256" width="196" height="60" rx="10" fill="#14171C" stroke="#23272E"/><circle cx="514" cy="286" r="3.5" fill="#E8B23A"/><text x="530" y="282" font-size="15" font-weight="600" fill="#E7E9EC">DHH</text><text x="530" y="300" class="mono" font-size="10.5" fill="#9AA1AB">full-stack</text></g>
+    <g><rect x="496" y="328" width="196" height="60" rx="10" fill="#14171C" stroke="#23272E"/><circle cx="514" cy="358" r="3.5" fill="#E8B23A"/><text x="530" y="354" font-size="15" font-weight="600" fill="#E7E9EC">Bach</text><text x="530" y="372" class="mono" font-size="10.5" fill="#9AA1AB">QA, Tests</text></g>
+    <g><rect x="496" y="400" width="196" height="60" rx="10" fill="#14171C" stroke="#23272E"/><circle cx="514" cy="430" r="3.5" fill="#E8B23A"/><text x="530" y="426" font-size="15" font-weight="600" fill="#E7E9EC">Hightower</text><text x="530" y="444" class="mono" font-size="10.5" fill="#9AA1AB">DevOps</text></g>
+
+    <!-- C4 Biznes x0=718 -->
+    <g><rect x="718" y="256" width="196" height="60" rx="10" fill="#14171C" stroke="#23272E"/><circle cx="736" cy="286" r="3.5" fill="#E8B23A"/><text x="752" y="282" font-size="15" font-weight="600" fill="#E7E9EC">Godin</text><text x="752" y="300" class="mono" font-size="10.5" fill="#9AA1AB">marketing</text></g>
+    <g><rect x="718" y="328" width="196" height="60" rx="10" fill="#14171C" stroke="#23272E"/><circle cx="736" cy="358" r="3.5" fill="#E8B23A"/><text x="752" y="354" font-size="15" font-weight="600" fill="#E7E9EC">Graham</text><text x="752" y="372" class="mono" font-size="10.5" fill="#9AA1AB">Wachstum, Ops</text></g>
+    <g><rect x="718" y="400" width="196" height="60" rx="10" fill="#14171C" stroke="#23272E"/><circle cx="736" cy="430" r="3.5" fill="#E8B23A"/><text x="752" y="426" font-size="15" font-weight="600" fill="#E7E9EC">Ross</text><text x="752" y="444" class="mono" font-size="10.5" fill="#9AA1AB">Vertrieb</text></g>
+    <g><rect x="718" y="472" width="196" height="60" rx="10" fill="#14171C" stroke="#23272E"/><circle cx="736" cy="502" r="3.5" fill="#E8B23A"/><text x="752" y="498" font-size="15" font-weight="600" fill="#E7E9EC">Campbell</text><text x="752" y="516" class="mono" font-size="10.5" fill="#9AA1AB">Finanzen, Pricing</text></g>
+
+    <!-- C5 Wywiad x0=940 -->
+    <g><rect x="940" y="256" width="196" height="60" rx="10" fill="#14171C" stroke="#23272E"/><circle cx="958" cy="286" r="3.5" fill="#E8B23A"/><text x="974" y="282" font-size="15" font-weight="600" fill="#E7E9EC">Thompson</text><text x="974" y="300" class="mono" font-size="10.5" fill="#9AA1AB">Markt, Research</text></g>
+  </g>
+
+  <!-- footer -->
+  <line x1="44" y1="558" x2="1156" y2="558" stroke="#23272E" stroke-width="1"/>
+  <rect x="44" y="578" width="168" height="30" rx="15" fill="#4ADE80" fill-opacity="0.10" stroke="#4ADE80" stroke-opacity="0.30"/>
+  <circle cx="64" cy="593" r="4" fill="#4ADE80"/>
+  <text x="78" y="597" class="mono" font-size="12" fill="#4ADE80">OBSERVE_ONLY</text>
+  <text x="232" y="597" class="mono" font-size="12.5" fill="#9AA1AB">Der Mensch entscheidet. Agenten recherchieren, rechnen, entwerfen und bauen. Nichts geht nach außen ohne Zustimmung des Menschen.</text>
+</svg>

@@ -11,6 +11,7 @@ const blog = defineCollection({
     excerpt: z.string().default(''),
     key: z.string(),
     slug: z.string(),
+    image: z.string().optional(),
   }),
 });
 

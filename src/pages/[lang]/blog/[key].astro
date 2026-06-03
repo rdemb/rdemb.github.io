@@ -16,7 +16,7 @@ const { Content } = await render(entry);
 const t = blogText[lang];
 const base = '/' + lang;
 ---
-<PageLayout lang={lang} title={`${entry.data.title} · D-LOGIC studio`} description={entry.data.excerpt} sw={postSw(entry.data.key)}>
+<PageLayout lang={lang} title={`${entry.data.title} · D-LOGIC studio`} description={entry.data.excerpt} sw={postSw(entry.data.key)} image={entry.data.image} ogType="article">
   <div class="crumbs"><a href="/">D-LOGIC</a> <span>/</span> <a href={`${base}/blog/`}>{t.title}</a></div>
   <header class="article-head">
     <span class="meta mono">{entry.data.date.replaceAll('-', '.')} · {kindLabel[lang][entry.data.kind] ?? entry.data.kind}</span>
