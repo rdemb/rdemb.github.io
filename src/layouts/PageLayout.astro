@@ -15,6 +15,18 @@ const siteUrl = Astro.site ?? new URL('https://rdemb.github.io/');
 const canonical = new URL(path || '/', siteUrl).href;
 const ogImage = image ? new URL(image, siteUrl).href : undefined;
 const ogLocale = lang === 'pl' ? 'pl_PL' : lang === 'de' ? 'de_DE' : 'en_US';
+// Schema.org artykułu (blog/case study) — pomaga byciu cytowanym w wyszukiwarkach AI.
+const articleSchema = ogType === 'article' ? {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: title.replace(/ · D-LOGIC studio$/, ''),
+  description,
+  inLanguage: lang,
+  url: canonical,
+  ...(ogImage ? { image: ogImage } : {}),
+  author: { '@type': 'Person', name: 'Rafał Dembski', url: 'https://rdemb.github.io/' },
+  publisher: { '@type': 'Organization', name: 'D-LOGIC', url: 'https://rdemb.github.io/' },
+} : null;
 ---
 <!doctype html>
 <html lang={lang} data-theme="dark">
@@ -37,6 +49,7 @@ const ogLocale = lang === 'pl' ? 'pl_PL' : lang === 'de' ? 'de_DE' : 'en_US';
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     {ogImage && <meta name="twitter:image" content={ogImage} />}
+    {articleSchema && <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />}
     <meta name="theme-color" content="#0C0E12" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     {sw.pl && <link rel="alternate" hreflang="pl" href={sw.pl} />}

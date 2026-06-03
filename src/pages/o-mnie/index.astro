@@ -8,7 +8,7 @@ const dict = withUi({
     'a.lede': 'Programowania nie nauczyła mnie szkoła ani studia, tylko ciekawość, od najmłodszych lat.',
     'a.p1': 'Zacząłem jako dzieciak, który po prostu chciał wiedzieć, jak to wszystko działa. W szkole startowałem w olimpiadach informatycznych, ale nigdy nie poszedłem w IT „na papierze". Jestem samoukiem i hobbystą, i tak zostało do dziś.',
     'a.p2': 'Na co dzień gram na rynku Forex jako day trader. To nauczyło mnie czegoś, co przeniosłem do budowania oprogramowania: liczy się dowód, nie przeczucie. Sprawdzasz na danych, liczysz koszt i jesteś uczciwy wobec wyniku, także wtedy, gdy wychodzi negatywny.',
-    'a.p3': 'Buduję narzędzia AI, strony i analizy, bo lubię, kiedy coś naprawdę działa. Najpierw testuję na sobie, stąd clawbot i moje eksperymenty, a dopiero potem oddaję to komuś innemu.',
+    'a.p3': 'Buduję narzędzia AI, agentów, strony i analizy, bo lubię, kiedy coś naprawdę działa. Najpierw testuję na sobie, stąd clawbot i moje eksperymenty, a dopiero potem oddaję to komuś innemu.',
     'a.p4': 'Poza ekranem jestem mężem i ojcem. I człowiekiem, który nie wyobraża sobie dnia bez dobrej muzyki.',
     'a.f.role': 'Kim jestem', 'a.f.role.v': 'Samouk, hobbysta programowania',
     'a.f.day': 'Na co dzień', 'a.f.day.v': 'Day trader na rynku Forex',
@@ -22,7 +22,7 @@ const dict = withUi({
     'a.lede': 'Coding was not taught to me by school or a degree, but by curiosity, from my earliest years.',
     'a.p1': 'I started as a kid who simply wanted to know how all of it worked. At school I competed in computer-science olympiads, but I never went into IT on paper. I am self-taught and a hobbyist, and that is how it has stayed to this day.',
     'a.p2': 'By day I trade Forex as a day trader. It taught me something I carried into building software: proof matters, not a hunch. You check it against data, you count the cost, and you stay honest about the result, even when it comes out negative.',
-    'a.p3': 'I build AI tools, websites and analyses because I love it when something really works. I test on myself first, that is where clawbot and my experiments come from, and only then hand it to someone else.',
+    'a.p3': 'I build AI tools, agents, websites and analyses because I love it when something really works. I test on myself first, that is where clawbot and my experiments come from, and only then hand it to someone else.',
     'a.p4': 'Away from the screen I am a husband and a father. And someone who cannot imagine a day without good music.',
     'a.f.role': 'Who I am', 'a.f.role.v': 'Self-taught, a programming hobbyist',
     'a.f.day': 'By day', 'a.f.day.v': 'Day trader on the Forex market',
@@ -36,7 +36,7 @@ const dict = withUi({
     'a.lede': 'Programmieren hat mir weder die Schule noch ein Studium beigebracht, sondern die Neugier, von klein auf.',
     'a.p1': 'Ich fing als Kind an, das einfach wissen wollte, wie das alles funktioniert. In der Schule trat ich bei Informatik-Olympiaden an, ging aber nie „auf dem Papier" in die IT. Ich bin Autodidakt und Hobbyist, und so ist es bis heute geblieben.',
     'a.p2': 'Tagsüber handle ich als Day Trader Forex. Das hat mir etwas beigebracht, das ich ins Software-Bauen übernommen habe: Beweise zählen, nicht das Bauchgefühl. Du prüfst es an Daten, rechnest die Kosten und bleibst ehrlich zum Ergebnis, auch wenn es negativ ausfällt.',
-    'a.p3': 'Ich baue KI-Tools, Websites und Analysen, weil ich es liebe, wenn etwas wirklich funktioniert. Ich teste zuerst an mir selbst, daher kommen clawbot und meine Experimente, und gebe es erst dann an jemand anderen weiter.',
+    'a.p3': 'Ich baue KI-Tools, Agenten, Websites und Analysen, weil ich es liebe, wenn etwas wirklich funktioniert. Ich teste zuerst an mir selbst, daher kommen clawbot und meine Experimente, und gebe es erst dann an jemand anderen weiter.',
     'a.p4': 'Abseits des Bildschirms bin ich Ehemann und Vater. Und jemand, der sich keinen Tag ohne gute Musik vorstellen kann.',
     'a.f.role': 'Wer ich bin', 'a.f.role.v': 'Autodidakt, Programmier-Hobbyist',
     'a.f.day': 'Tagsüber', 'a.f.day.v': 'Day Trader am Forex-Markt',
@@ -46,31 +46,32 @@ const dict = withUi({
     'a.cta.t': 'Lust, gemeinsam etwas zu bauen?', 'a.cta.b1': 'E-Mail schreiben', 'a.cta.b2': 'Projekte ansehen',
   },
 });
+const t = dict.pl;
 ---
-<Chrome title="O mnie, Rafał, D-LOGIC studio" description="Samouk i hobbysta programowania, day trader na Forex, mąż i ojciec, pasjonat dobrej muzyki." dict={dict} active="/o-mnie/">
+<Chrome title="O mnie, Rafał Dembski, D-LOGIC studio" description="Rafał Dembski (NRW): samouk i hobbysta programowania, day trader na Forex, buduję agentów AI, strony i analizy. Uczciwie, najpierw testuję na sobie." dict={dict} active="/o-mnie/">
   <section class="wrap" style="max-width:760px;padding-top:30px">
     <div class="reveal">
-      <span class="eyebrow" data-i18n="a.eyebrow">•</span>
-      <h1 style="font-family:'Space Grotesk Variable';font-weight:600;font-size:clamp(34px,6vw,54px);letter-spacing:-.02em;margin:16px 0 22px" data-i18n="a.h">•</h1>
-      <p class="about-lede" data-i18n="a.lede">•</p>
+      <span class="eyebrow" data-i18n="a.eyebrow">{t['a.eyebrow']}</span>
+      <h1 style="font-family:'Space Grotesk Variable';font-weight:600;font-size:clamp(34px,6vw,54px);letter-spacing:-.02em;margin:16px 0 22px" data-i18n="a.h">{t['a.h']}</h1>
+      <p class="about-lede" data-i18n="a.lede">{t['a.lede']}</p>
     </div>
     <div class="prose" style="margin-top:30px">
-      <p class="reveal" data-i18n="a.p1">•</p>
-      <p class="reveal" data-i18n="a.p2">•</p>
-      <p class="reveal" data-i18n="a.p3">•</p>
-      <p class="reveal" data-i18n="a.p4">•</p>
+      <p class="reveal" data-i18n="a.p1">{t['a.p1']}</p>
+      <p class="reveal" data-i18n="a.p2">{t['a.p2']}</p>
+      <p class="reveal" data-i18n="a.p3">{t['a.p3']}</p>
+      <p class="reveal" data-i18n="a.p4">{t['a.p4']}</p>
     </div>
     <div class="about-facts reveal">
-      <div class="row"><span class="l" data-i18n="a.f.role">•</span><span class="v" data-i18n="a.f.role.v">•</span></div>
-      <div class="row"><span class="l" data-i18n="a.f.day">•</span><span class="v" data-i18n="a.f.day.v">•</span></div>
-      <div class="row"><span class="l" data-i18n="a.f.edu">•</span><span class="v" data-i18n="a.f.edu.v">•</span></div>
-      <div class="row"><span class="l" data-i18n="a.f.priv">•</span><span class="v" data-i18n="a.f.priv.v">•</span></div>
-      <div class="row"><span class="l" data-i18n="a.f.like">•</span><span class="v" data-i18n="a.f.like.v">•</span></div>
+      <div class="row"><span class="l" data-i18n="a.f.role">{t['a.f.role']}</span><span class="v" data-i18n="a.f.role.v">{t['a.f.role.v']}</span></div>
+      <div class="row"><span class="l" data-i18n="a.f.day">{t['a.f.day']}</span><span class="v" data-i18n="a.f.day.v">{t['a.f.day.v']}</span></div>
+      <div class="row"><span class="l" data-i18n="a.f.edu">{t['a.f.edu']}</span><span class="v" data-i18n="a.f.edu.v">{t['a.f.edu.v']}</span></div>
+      <div class="row"><span class="l" data-i18n="a.f.priv">{t['a.f.priv']}</span><span class="v" data-i18n="a.f.priv.v">{t['a.f.priv.v']}</span></div>
+      <div class="row"><span class="l" data-i18n="a.f.like">{t['a.f.like']}</span><span class="v" data-i18n="a.f.like.v">{t['a.f.like.v']}</span></div>
     </div>
     <div class="reveal" style="margin-top:44px;display:flex;gap:14px;align-items:center;flex-wrap:wrap">
-      <h2 style="font-size:clamp(22px,3vw,30px);width:100%" data-i18n="a.cta.t">•</h2>
-      <a href="mailto:rdem91@gmail.com" class="btn btn-primary"><span data-i18n="a.cta.b1">•</span><span class="arr">→</span></a>
-      <a href="/projekty/" class="btn btn-ghost"><span data-i18n="a.cta.b2">•</span></a>
+      <h2 style="font-size:clamp(22px,3vw,30px);width:100%" data-i18n="a.cta.t">{t['a.cta.t']}</h2>
+      <a href="mailto:rdem91@gmail.com" class="btn btn-primary"><span data-i18n="a.cta.b1">{t['a.cta.b1']}</span><span class="arr">→</span></a>
+      <a href="/projekty/" class="btn btn-ghost"><span data-i18n="a.cta.b2">{t['a.cta.b2']}</span></a>
     </div>
   </section>
 </Chrome>

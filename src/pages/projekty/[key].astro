@@ -12,7 +12,7 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 ---
-<PageLayout lang={lang} title={`${entry.data.title} · D-LOGIC studio`} description={entry.data.excerpt} sw={labSw(entry.data.key)}>
+<PageLayout lang={lang} title={`${entry.data.title} · D-LOGIC studio`} description={entry.data.excerpt} sw={labSw(entry.data.key)} ogType="article">
   <div class="crumbs"><a href="/">D-LOGIC</a> <span>/</span> <a href="/#lab">Lab</a> <span>/</span> {entry.data.key}</div>
   <header class="article-head">
     <span class="meta mono">lab · {entry.data.key}</span>

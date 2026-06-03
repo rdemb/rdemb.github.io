@@ -67,31 +67,32 @@ const dict = withUi({
     'o.cta.t': 'Klingt nach etwas für dich?', 'o.cta.l': 'Schreib zwei Sätze, was du tun willst. Ich antworte persönlich, meist am selben Tag.', 'o.cta.b': 'E-Mail schreiben',
   },
 });
+const t = dict.pl;
 ---
 <Chrome title="Oferta, D-LOGIC studio, agenci AI i widoczność w sieci" description="Agenci AI, strony i prześwietlenie widoczności firmy w Google i wyszukiwarkach AI. Po ludzku, z jasnym zakresem i uczciwą wyceną." dict={dict} active="/oferta/">
   <section style="padding-bottom:40px">
     <div class="wrap">
       <div class="sec-head reveal" style="margin-bottom:34px">
-        <span class="eyebrow" data-i18n="o.eyebrow">•</span>
-        <h2 data-i18n="o.title">•</h2>
-        <p data-i18n="o.lead">•</p>
+        <span class="eyebrow" data-i18n="o.eyebrow">{t['o.eyebrow']}</span>
+        <h2 data-i18n="o.title">{t['o.title']}</h2>
+        <p data-i18n="o.lead">{t['o.lead']}</p>
       </div>
       <div class="cards">
-        <article class="card reveal"><span class="num" data-i18n="o.c1.k">•</span><h3 data-i18n="o.c1.t">•</h3><p data-i18n="o.c1.d">•</p><p class="mono" style="font-size:13px;color:var(--accent);margin-top:14px" data-i18n="o.c1.f">•</p></article>
-        <article class="card reveal" data-delay="1"><span class="num" data-i18n="o.c2.k">•</span><h3 data-i18n="o.c2.t">•</h3><p data-i18n="o.c2.d">•</p><p class="mono" style="font-size:13px;color:var(--accent);margin-top:14px" data-i18n="o.c2.f">•</p></article>
-        <article class="card reveal" data-delay="2"><span class="num" data-i18n="o.c3.k">•</span><h3 data-i18n="o.c3.t">•</h3><p data-i18n="o.c3.d">•</p><p class="mono" style="font-size:13px;color:var(--accent);margin-top:14px" data-i18n="o.c3.f">•</p></article>
+        <article class="card reveal"><span class="num" data-i18n="o.c1.k">{t['o.c1.k']}</span><h3 data-i18n="o.c1.t">{t['o.c1.t']}</h3><p data-i18n="o.c1.d">{t['o.c1.d']}</p><p class="mono" style="font-size:13px;color:var(--accent);margin-top:14px" data-i18n="o.c1.f">{t['o.c1.f']}</p></article>
+        <article class="card reveal" data-delay="1"><span class="num" data-i18n="o.c2.k">{t['o.c2.k']}</span><h3 data-i18n="o.c2.t">{t['o.c2.t']}</h3><p data-i18n="o.c2.d">{t['o.c2.d']}</p><p class="mono" style="font-size:13px;color:var(--accent);margin-top:14px" data-i18n="o.c2.f">{t['o.c2.f']}</p></article>
+        <article class="card reveal" data-delay="2"><span class="num" data-i18n="o.c3.k">{t['o.c3.k']}</span><h3 data-i18n="o.c3.t">{t['o.c3.t']}</h3><p data-i18n="o.c3.d">{t['o.c3.d']}</p><p class="mono" style="font-size:13px;color:var(--accent);margin-top:14px" data-i18n="o.c3.f">{t['o.c3.f']}</p></article>
       </div>
     </div>
   </section>
 
   <section class="proof">
     <div class="wrap">
-      <div class="sec-head reveal"><span class="eyebrow" data-i18n="o.p.eyebrow">•</span><h2 data-i18n="o.p.t">•</h2></div>
+      <div class="sec-head reveal"><span class="eyebrow" data-i18n="o.p.eyebrow">{t['o.p.eyebrow']}</span><h2 data-i18n="o.p.t">{t['o.p.t']}</h2></div>
       <div class="hub">
-        <div class="hub-card reveal"><span class="k">01</span><h3 data-i18n="o.p1.t">•</h3><p data-i18n="o.p1.d">•</p></div>
-        <div class="hub-card reveal" data-delay="1"><span class="k">02</span><h3 data-i18n="o.p2.t">•</h3><p data-i18n="o.p2.d">•</p></div>
-        <div class="hub-card reveal"><span class="k">03</span><h3 data-i18n="o.p3.t">•</h3><p data-i18n="o.p3.d">•</p></div>
-        <div class="hub-card reveal" data-delay="1"><span class="k">04</span><h3 data-i18n="o.p4.t">•</h3><p data-i18n="o.p4.d">•</p></div>
+        <div class="hub-card reveal"><span class="k">01</span><h3 data-i18n="o.p1.t">{t['o.p1.t']}</h3><p data-i18n="o.p1.d">{t['o.p1.d']}</p></div>
+        <div class="hub-card reveal" data-delay="1"><span class="k">02</span><h3 data-i18n="o.p2.t">{t['o.p2.t']}</h3><p data-i18n="o.p2.d">{t['o.p2.d']}</p></div>
+        <div class="hub-card reveal"><span class="k">03</span><h3 data-i18n="o.p3.t">{t['o.p3.t']}</h3><p data-i18n="o.p3.d">{t['o.p3.d']}</p></div>
+        <div class="hub-card reveal" data-delay="1"><span class="k">04</span><h3 data-i18n="o.p4.t">{t['o.p4.t']}</h3><p data-i18n="o.p4.d">{t['o.p4.d']}</p></div>
       </div>
     </div>
   </section>
@@ -99,19 +100,19 @@ const dict = withUi({
   <section>
     <div class="wrap" style="display:flex;align-items:center;justify-content:space-between;gap:28px;flex-wrap:wrap">
       <div class="reveal" style="max-width:60ch">
-        <h2 style="font-size:clamp(22px,3vw,30px)" data-i18n="o.pr.t">•</h2>
-        <p class="muted" style="margin-top:14px;font-size:17px" data-i18n="o.pr.d">•</p>
+        <h2 style="font-size:clamp(22px,3vw,30px)" data-i18n="o.pr.t">{t['o.pr.t']}</h2>
+        <p class="muted" style="margin-top:14px;font-size:17px" data-i18n="o.pr.d">{t['o.pr.d']}</p>
       </div>
-      <a href="/projekty/clawbot/" class="btn btn-ghost reveal"><span data-i18n="o.pr.cta">•</span><span class="arr">→</span></a>
+      <a href="/projekty/clawbot/" class="btn btn-ghost reveal"><span data-i18n="o.pr.cta">{t['o.pr.cta']}</span><span class="arr">→</span></a>
     </div>
   </section>
 
   <section class="cta">
     <div class="wrap"><div class="cta-wrap reveal"><div class="inner">
-      <span class="eyebrow" style="justify-content:center" data-i18n="nav.contact">•</span>
-      <h2 data-i18n="o.cta.t">•</h2>
-      <p data-i18n="o.cta.l">•</p>
-      <div class="hero-cta"><a href="mailto:rdem91@gmail.com" class="btn btn-primary"><span data-i18n="o.cta.b">•</span><span class="arr">→</span></a><a href="/preswietlenie/" class="btn btn-ghost"><span data-i18n="nav.xray">•</span><span class="arr">→</span></a></div>
+      <span class="eyebrow" style="justify-content:center" data-i18n="nav.contact">{t['nav.contact']}</span>
+      <h2 data-i18n="o.cta.t">{t['o.cta.t']}</h2>
+      <p data-i18n="o.cta.l">{t['o.cta.l']}</p>
+      <div class="hero-cta"><a href="mailto:rdem91@gmail.com" class="btn btn-primary"><span data-i18n="o.cta.b">{t['o.cta.b']}</span><span class="arr">→</span></a><a href="/preswietlenie/" class="btn btn-ghost"><span data-i18n="nav.xray">{t['nav.xray']}</span><span class="arr">→</span></a></div>
     </div></div></div>
   </section>
 </Chrome>
