@@ -3,14 +3,29 @@ import '@fontsource-variable/space-grotesk';
 import '@fontsource-variable/inter';
 import '@fontsource-variable/jetbrains-mono';
 import SiteNav from '../components/SiteNav.astro';
+
+// Schema.org strony głównej: główna encja firmy (AEO / widoczność w wyszukiwarkach AI).
+const homeSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  '@id': 'https://rdemb.github.io/#dlogic',
+  name: 'D-LOGIC',
+  url: 'https://rdemb.github.io/',
+  description: 'Solo studio: agenci AI, strony i prześwietlenie widoczności firm w Google i wyszukiwarkach AI. Uczciwie, z dowodem, najpierw testuję na sobie.',
+  founder: { '@type': 'Person', name: 'Rafał Dembski', address: { '@type': 'PostalAddress', addressRegion: 'NRW', addressCountry: 'DE' } },
+  areaServed: ['PL', 'DE', 'AT', 'CH'],
+  knowsAbout: ['agenci AI', 'automatyzacja', 'widoczność w wyszukiwarkach AI', 'Generative Engine Optimization', 'SEO', 'strony internetowe', 'analiza danych'],
+  sameAs: ['https://x.com/takitamrafal', 'https://github.com/rdemb'],
+};
 ---
 <!DOCTYPE html>
 <html lang="pl" data-theme="dark">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>D-LOGIC Studio, narzędzia AI, web, dane</title>
-<meta name="description" content="Solo studio (człowiek + AI): narzędzia AI, strony i produkty danowe. Uczciwość zamiast hype'u. Testuję jak własne strategie tradingowe, najpierw na sobie." />
+<title>D-LOGIC studio, agenci AI i widoczność firm w wyszukiwarkach AI</title>
+<meta name="description" content="Solo studio: buduję agentów AI, strony i prześwietlam widoczność firm w Google i w ChatGPT. Uczciwie, z dowodem, najpierw testuję na sobie." />
+<script type="application/ld+json" set:html={JSON.stringify(homeSchema)} />
 <style is:global>
 /* ================= TOKENS ================= */
 :root[data-theme="dark"]{

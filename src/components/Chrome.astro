@@ -6,6 +6,15 @@ import '@fontsource-variable/jetbrains-mono';
 import '../styles/global.css';
 import SiteNav from './SiteNav.astro';
 const { title, description = '', dict, active = '' } = Astro.props;
+
+// Schema.org site-wide: encja firmy + autor (autorytet dla wyszukiwarek AI / AEO).
+const siteSchema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    { '@type': 'WebSite', '@id': 'https://rdemb.github.io/#website', name: 'D-LOGIC', url: 'https://rdemb.github.io/', inLanguage: ['pl', 'en', 'de'], publisher: { '@id': 'https://rdemb.github.io/#person' } },
+    { '@type': 'Person', '@id': 'https://rdemb.github.io/#person', name: 'Rafał Dembski', jobTitle: 'Założyciel D-LOGIC', url: 'https://rdemb.github.io/', address: { '@type': 'PostalAddress', addressRegion: 'NRW', addressCountry: 'DE' }, knowsAbout: ['agenci AI', 'automatyzacja', 'Generative Engine Optimization', 'widoczność w wyszukiwarkach AI', 'SEO', 'analiza danych'], sameAs: ['https://x.com/takitamrafal', 'https://github.com/rdemb'] },
+  ],
+};
 ---
 <!doctype html>
 <html lang="pl" data-theme="dark">
@@ -18,6 +27,7 @@ const { title, description = '', dict, active = '' } = Astro.props;
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
+    <script type="application/ld+json" set:html={JSON.stringify(siteSchema)} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <script is:inline>
       (() => { try { document.documentElement.setAttribute('data-theme', localStorage.getItem('dlogic-theme') || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark')); } catch (e) {} })();
