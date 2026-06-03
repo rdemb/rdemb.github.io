@@ -50,7 +50,7 @@ const dict = withUi({
   pl: {
     'x.eyebrow': 'Prześwietlenie firmy', 'x.title': 'Sprawdzę, czy Twoja firma w ogóle istnieje dla klienta w sieci',
     'x.lead': 'Twój klient szuka dziś w Google i w ChatGPT. Jeśli Cię tam nie ma albo Twoja strona nie sprzedaje, tracisz pieniądze, nie wiedząc o tym. Prześwietlę to uczciwie, z dowodem, i pokażę, co naprawić najpierw.',
-    'x.cta1': 'Zrób mi prześwietlenie', 'x.cta2': 'Zobacz, jak pracuję',
+    'x.cta1': 'Sprawdź za darmo', 'x.cta2': 'Zobacz, jak pracuję',
     'x.pr.k': 'Problem', 'x.pr.t': 'Trzy ciche przecieki',
     'x.pr1': 'Nie wiesz, czy jesteś widoczny w wyszukiwaniu AI, a tam coraz częściej zaczyna się decyzja zakupowa.',
     'x.pr2': 'Strona może wyglądać dobrze i nadal nie zamieniać odwiedzin w klientów.',
@@ -79,7 +79,7 @@ const dict = withUi({
   en: {
     'x.eyebrow': 'Company X-Ray', 'x.title': 'I will check whether your company even exists for a customer online',
     'x.lead': 'Your customer now searches in Google and in ChatGPT. If you are not there, or your site does not sell, you are losing money without knowing it. I will X-ray it honestly, with evidence, and show what to fix first.',
-    'x.cta1': 'Get my X-Ray', 'x.cta2': 'See how I work',
+    'x.cta1': 'Check for free', 'x.cta2': 'See how I work',
     'x.pr.k': 'Problem', 'x.pr.t': 'Three quiet leaks',
     'x.pr1': 'You do not know if you are visible in AI search, where the buying decision increasingly starts.',
     'x.pr2': 'A site can look good and still fail to turn visits into customers.',
@@ -108,7 +108,7 @@ const dict = withUi({
   de: {
     'x.eyebrow': 'Firmen-Röntgen', 'x.title': 'Ich prüfe, ob deine Firma für einen Kunden online überhaupt existiert',
     'x.lead': 'Dein Kunde sucht heute in Google und in ChatGPT. Wenn du dort nicht bist oder deine Seite nicht verkauft, verlierst du Geld, ohne es zu wissen. Ich röntge das ehrlich, mit Beweis, und zeige, was zuerst zu reparieren ist.',
-    'x.cta1': 'Mach mir das Röntgen', 'x.cta2': 'So arbeite ich',
+    'x.cta1': 'Kostenlos prüfen', 'x.cta2': 'So arbeite ich',
     'x.pr.k': 'Problem', 'x.pr.t': 'Drei leise Lecks',
     'x.pr1': 'Du weißt nicht, ob du in der KI-Suche sichtbar bist, wo die Kaufentscheidung immer öfter beginnt.',
     'x.pr2': 'Eine Seite kann gut aussehen und Besuche trotzdem nicht in Kunden verwandeln.',
@@ -147,10 +147,58 @@ const t = dict.pl;
         <h2 data-i18n="x.title">{t['x.title']}</h2>
         <p data-i18n="x.lead">{t['x.lead']}</p>
         <div class="hero-cta" style="margin-top:26px">
-          <a href="mailto:rdem91@gmail.com?subject=Prze%C5%9Bwietlenie%20firmy" class="btn btn-primary"><span data-i18n="x.cta1">{t['x.cta1']}</span><span class="arr">→</span></a>
+          <a href="#checker" class="btn btn-primary"><span data-i18n="x.cta1">{t['x.cta1']}</span><span class="arr">→</span></a>
           <a href="/blog/ai-company/" class="btn btn-ghost"><span data-i18n="x.cta2">{t['x.cta2']}</span><span class="arr">→</span></a>
         </div>
       </div>
+    </div>
+  </section>
+
+  <section id="checker" class="proof">
+    <style is:global>
+      .chk-form{display:grid;gap:12px;max-width:560px;margin-top:6px}
+      .chk-in{width:100%;padding:13px 15px;border-radius:10px;border:1px solid var(--line);background:var(--surface-2);color:var(--text);font-family:inherit;font-size:15px}
+      .chk-in::placeholder{color:var(--muted)}
+      .chk-in:focus{outline:none;border-color:var(--accent)}
+      .chk-row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+      @media(max-width:520px){.chk-row2{grid-template-columns:1fr}}
+      .chk-result{border:1px solid var(--line);border-radius:14px;background:var(--surface);padding:24px;margin-top:10px}
+      .chk-scorebox{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+      .chk-score{font-family:'Space Grotesk Variable',sans-serif;font-size:54px;font-weight:600;color:var(--accent);line-height:1}
+      .chk-score small{font-size:20px;color:var(--muted);font-weight:400}
+      .chk-grade{font-family:'JetBrains Mono Variable',monospace;color:var(--muted);font-size:14px}
+      .chk-checks{display:grid;gap:9px;margin:18px 0}
+      .chk-check{display:flex;gap:11px;align-items:flex-start;font-size:14.5px}
+      .chk-check b{display:block;color:var(--text);font-weight:600}
+      .chk-check em{color:var(--muted);font-size:13px;font-style:normal}
+      .chk-dot{width:9px;height:9px;border-radius:50%;flex:none;margin-top:6px}
+      .chk-ok{background:var(--live)}.chk-warn{background:var(--accent)}.chk-fail{background:#f06a6a}
+      .chk-note{font-size:13px;color:var(--muted);border-left:2px solid var(--accent);padding-left:13px;margin:16px 0;line-height:1.55}
+      .chk-ph{font-family:'JetBrains Mono Variable',monospace;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin:18px 0 9px}
+      .chk-prompt{display:flex;gap:10px;align-items:center;justify-content:space-between;background:var(--surface-2);border:1px solid var(--line);border-radius:9px;padding:9px 13px;margin-bottom:7px}
+      .chk-prompt code{font-family:'JetBrains Mono Variable',monospace;font-size:13px;color:var(--text);background:none;border:none;padding:0}
+      .chk-copy{font-family:'JetBrains Mono Variable',monospace;font-size:11.5px;color:var(--accent);border:1px solid var(--chip-line);border-radius:6px;padding:5px 10px;flex:none;cursor:pointer;background:none}
+      .chk-copy:hover{background:var(--chip)}
+      .chk-up{margin-top:20px;padding-top:18px;border-top:1px solid var(--line);display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+      .chk-up span{color:var(--muted);font-size:15px;flex:1;min-width:220px}
+      .chk-err{color:#f06a6a;font-size:15px;padding:12px 0}
+    </style>
+    <div class="wrap" style="max-width:820px">
+      <div class="sec-head reveal" style="margin-bottom:20px">
+        <span class="eyebrow">Sprawdź teraz</span>
+        <h2>Sprawdź widoczność swojej firmy. Za darmo, w pół minuty.</h2>
+        <p>Wpisz adres swojej strony. Sprawdzam czystą analizą kodu, bez żadnego AI, czy Google i wyszukiwarki AI mogą Cię znaleźć i przeczytać. Dostajesz wynik z dowodem oraz gotowe pytania, którymi sam sprawdzisz w ChatGPT, czy Cię poleca.</p>
+      </div>
+      <form id="chkForm" class="chk-form reveal" autocomplete="off">
+        <input id="chkUrl" class="chk-in" type="text" inputmode="url" required placeholder="adres Twojej strony, np. twojafirma.pl" />
+        <div class="chk-row2">
+          <input id="chkCity" class="chk-in" type="text" placeholder="miasto (opcjonalnie)" />
+          <input id="chkService" class="chk-in" type="text" placeholder="czym się zajmujesz (opcjonalnie)" />
+        </div>
+        <input id="chkName" class="chk-in" type="text" placeholder="nazwa firmy (opcjonalnie)" />
+        <button type="submit" id="chkBtn" class="btn btn-primary" style="justify-content:center"><span>Sprawdź widoczność</span><span class="arr">→</span></button>
+      </form>
+      <div id="chkResult"></div>
     </div>
   </section>
 
@@ -228,4 +276,64 @@ const t = dict.pl;
       <div class="hero-cta"><a href="mailto:rdem91@gmail.com?subject=Prze%C5%9Bwietlenie%20firmy" class="btn btn-primary"><span data-i18n="x.cta.b">{t['x.cta.b']}</span><span class="arr">→</span></a></div>
     </div></div></div>
   </section>
+
+  <script is:inline>
+    (function () {
+      var form = document.getElementById('chkForm');
+      if (!form) return;
+      var btn = document.getElementById('chkBtn');
+      var out = document.getElementById('chkResult');
+      var BASE = null;
+      function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var url = document.getElementById('chkUrl').value.trim();
+        if (!url) return;
+        var lbl = btn.querySelector('span');
+        var orig = lbl.textContent;
+        btn.disabled = true; lbl.textContent = 'Sprawdzam...'; out.innerHTML = '';
+        var done = function () { btn.disabled = false; lbl.textContent = orig; };
+        var go = function () {
+          var q = new URLSearchParams({
+            url: url,
+            name: document.getElementById('chkName').value,
+            city: document.getElementById('chkCity').value,
+            service: document.getElementById('chkService').value
+          });
+          fetch(BASE + '/check?' + q.toString()).then(function (r) { return r.json(); }).then(function (d) {
+            if (!d || !d.ok) { out.innerHTML = '<div class="chk-err">' + esc((d && d.error) || 'Nie udało się sprawdzić.') + '</div>'; done(); return; }
+            render(d); done();
+          }).catch(function () { out.innerHTML = '<div class="chk-err">Checker chwilowo niedostępny. Spróbuj za moment.</div>'; done(); });
+        };
+        if (BASE) { go(); }
+        else {
+          fetch('/checker.json', { cache: 'no-store' }).then(function (r) { return r.json(); }).then(function (cj) { BASE = cj.base; go(); })
+            .catch(function () { out.innerHTML = '<div class="chk-err">Checker chwilowo niedostępny. Spróbuj za moment.</div>'; done(); });
+        }
+      });
+      function render(d) {
+        var rows = (d.checks || []).map(function (c) {
+          return '<div class="chk-check"><span class="chk-dot chk-' + esc(c.status) + '"></span><div><b>' + esc(c.label) + '</b><em>' + esc(c.detail) + '</em></div></div>';
+        }).join('');
+        var prompts = (d.prompts || []).map(function (p) {
+          return '<div class="chk-prompt"><code>' + esc(p) + '</code><button type="button" class="chk-copy" data-p="' + esc(p) + '">kopiuj</button></div>';
+        }).join('');
+        out.innerHTML = '<div class="chk-result">'
+          + '<div class="chk-scorebox"><div class="chk-score">' + esc(d.score) + '<small>/100</small></div><div class="chk-grade">AI-readiness: ' + esc(d.grade) + '</div></div>'
+          + '<div class="chk-checks">' + rows + '</div>'
+          + '<div class="chk-ph">Sprawdź realną wzmiankę, wklej do ChatGPT:</div>' + prompts
+          + '<div class="chk-note">' + esc(d.note) + '</div>'
+          + '<div class="chk-up"><span>Chcesz pełne prześwietlenie z dowodem i naprawą, zrobione ręcznie?</span> <a class="btn btn-primary" href="mailto:rdem91@gmail.com?subject=Pe%C5%82ne%20prze%C5%9Bwietlenie%20firmy"><span>Napisz do mnie</span><span class="arr">→</span></a></div>'
+          + '</div>';
+        out.querySelectorAll('.chk-copy').forEach(function (b) {
+          b.addEventListener('click', function () {
+            var txt = b.getAttribute('data-p');
+            if (navigator.clipboard) navigator.clipboard.writeText(txt);
+            var o = b.textContent; b.textContent = 'skopiowano'; setTimeout(function () { b.textContent = o; }, 1200);
+          });
+        });
+        out.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    })();
+  </script>
 </Chrome>
