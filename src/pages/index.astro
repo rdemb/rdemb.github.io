@@ -3,6 +3,7 @@ import '@fontsource-variable/space-grotesk';
 import '@fontsource-variable/inter';
 import '@fontsource-variable/jetbrains-mono';
 import SiteNav from '../components/SiteNav.astro';
+import { postsByLang } from '../lib/content';
 
 // Schema.org strony głównej: główna encja firmy (AEO / widoczność w wyszukiwarkach AI).
 const homeSchema = {
@@ -17,6 +18,15 @@ const homeSchema = {
   knowsAbout: ['agenci AI', 'automatyzacja', 'widoczność w wyszukiwarkach AI', 'Generative Engine Optimization', 'SEO', 'strony internetowe', 'analiza danych'],
   sameAs: ['https://x.com/takitamrafal', 'https://github.com/rdemb'],
 };
+
+// Najnowsze wpisy bloga: home podciąga je dynamicznie (tytuły w 3 językach do przełącznika).
+const plPosts = (await postsByLang('pl')).slice(0, 6);
+const enByKey = Object.fromEntries((await postsByLang('en')).map((p) => [p.data.key, p.data.title]));
+const deByKey = Object.fromEntries((await postsByLang('de')).map((p) => [p.data.key, p.data.title]));
+const latestNotes = plPosts.map((p) => ({
+  key: p.data.key, date: p.data.date, kind: p.data.kind,
+  pl: p.data.title, en: enByKey[p.data.key] ?? p.data.title, de: deByKey[p.data.key] ?? p.data.title,
+}));
 ---
 <!DOCTYPE html>
 <html lang="pl" data-theme="dark">
@@ -492,30 +502,12 @@ footer p.tag{color:var(--muted);font-size:14.5px;max-width:36ch}
       <h2 data-i18n="notes.title">Notatnik, projekty i refleksje.</h2>
     </div>
     <div class="notes">
-      <a href="/blog/gambit-eight-minds/" class="note reveal">
-        <span class="date mono">2026-06-02</span><span class="kind" data-i18n="notes.k.proj">projekt</span>
-        <span class="ttl">GAMBIT: osiem umysłów</span><span class="go">→</span>
-      </a>
-      <a href="/blog/market-as-organism/" class="note reveal">
-        <span class="date mono">2026-06-01</span><span class="kind" data-i18n="notes.k.proj">projekt</span>
-        <span class="ttl">Order Flow: organizm rynku</span><span class="go">→</span>
-      </a>
-      <a href="/blog/mocps-learned-occlusion-gate/" class="note reveal">
-        <span class="date mono">2026-05-19</span><span class="kind" data-i18n="notes.k.proj">projekt</span>
-        <span class="ttl">MOCPS: learned occlusion gate</span><span class="go">→</span>
-      </a>
-      <a href="/blog/why-this-blog/" class="note reveal">
-        <span class="date mono">2026-05-18</span><span class="kind" data-i18n="notes.k.refl">refleksja</span>
-        <span class="ttl" data-i18n="notes.n2">Po co ten blog</span><span class="go">→</span>
-      </a>
-      <a href="/blog/mocps-cold-run/" class="note reveal">
-        <span class="date mono">2026-05-18</span><span class="kind" data-i18n="notes.k.proj">projekt</span>
-        <span class="ttl">MOCPS: cold run 200/200</span><span class="go">→</span>
-      </a>
-      <a href="/blog/llm-vs-mocps/" class="note reveal">
-        <span class="date mono">2026-05-18</span><span class="kind" data-i18n="notes.k.refl">refleksja</span>
-        <span class="ttl" data-i18n="notes.n4">Czym LLM różni się od MOCPS</span><span class="go">→</span>
-      </a>
+      {latestNotes.map((n) => (
+        <a href={`/blog/${n.key}/`} class="note reveal">
+          <span class="date mono">{n.date}</span><span class="kind" data-i18n={n.kind === 'project' ? 'notes.k.proj' : 'notes.k.refl'}>{n.kind === 'project' ? 'projekt' : 'refleksja'}</span>
+          <span class="ttl" data-pl={n.pl} data-en={n.en} data-de={n.de}>{n.pl}</span><span class="go">→</span>
+        </a>
+      ))}
     </div>
   </div>
 </section>
@@ -713,6 +705,7 @@ function applyLang(lang){
     const v = dict[el.getAttribute("data-i18n")]; if(v==null) return;
     if(v.indexOf("<")>-1) el.innerHTML = v; else el.textContent = v;
   });
+  document.querySelectorAll(".note .ttl[data-pl]").forEach(el=>{ const v=el.getAttribute("data-"+lang); if(v!=null) el.textContent=v; });
   document.querySelectorAll("#lang button").forEach(b=>b.classList.toggle("on", b.dataset.lang===lang));
   try{ localStorage.setItem("dlogic-lang", lang); }catch(e){}
   // re-run decode on the headline after text swap
