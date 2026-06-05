@@ -164,8 +164,10 @@
         frac: Math.max(0, +a.frac || 0), age: Math.max(1000, +a.age || 6000),
       }));
 
-      this.yHaplo = (data.yHaplo && data.yHaplo.length ? data.yHaplo : Y_HAPLO).map((h) => ({ label: h.label || 'R', ybp: +h.ybp || 5000 }));
-      this.mtHaplo = (data.mtHaplo && data.mtHaplo.length ? data.mtHaplo : MT_HAPLO).map((h) => ({ label: h.label || 'H', ybp: +h.ybp || 9000 }));
+      // Array.isArray: jawnie puste [] zostaje puste (droga archiwalna bez DNA = linie uśpione),
+      // tylko brak pola (undefined) wpada w domyślny przykład. Uczciwość: bez DNA nie zmyślamy haplogrup.
+      this.yHaplo = (Array.isArray(data.yHaplo) ? data.yHaplo : Y_HAPLO).map((h) => ({ label: h.label || 'R', ybp: +h.ybp || 5000 }));
+      this.mtHaplo = (Array.isArray(data.mtHaplo) ? data.mtHaplo : MT_HAPLO).map((h) => ({ label: h.label || 'H', ybp: +h.ybp || 9000 }));
 
       // relatives: ensure placement seeds + segments
       this.relatives = (data.relatives || []).map((r, i) => ({

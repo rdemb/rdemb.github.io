@@ -169,7 +169,7 @@
   // ---------- scrim ----------
   const scrim = $('scrim');
   function anyPanelOpen() { return card.classList.contains('show') || dataDrawer.classList.contains('show') || ancDrawer.classList.contains('show'); }
-  function syncScrim() { scrim.classList.toggle('show', dataDrawer.classList.contains('show') || ancDrawer.classList.contains('show') || (!canHover && card.classList.contains('show'))); }
+  function syncScrim() { scrim.classList.toggle('show', dataDrawer.classList.contains('show') || ancDrawer.classList.contains('show') || archDrawer.classList.contains('show') || (!canHover && card.classList.contains('show'))); }
   scrim.addEventListener('click', () => { closeCard(); closeDrawers(); });
 
   // ---------- ancestor card ----------
@@ -190,9 +190,9 @@
   $('cardClose').addEventListener('click', closeCard);
 
   // ---------- drawers ----------
-  const dataDrawer = $('dataDrawer'), ancDrawer = $('ancDrawer'), dataBody = $('dataBody');
+  const dataDrawer = $('dataDrawer'), ancDrawer = $('ancDrawer'), dataBody = $('dataBody'), archDrawer = $('archDrawer');
   let form = null;
-  function closeDrawers() { dataDrawer.classList.remove('show'); ancDrawer.classList.remove('show'); syncScrim(); }
+  function closeDrawers() { dataDrawer.classList.remove('show'); ancDrawer.classList.remove('show'); archDrawer.classList.remove('show'); syncScrim(); }
   function openData() {
     closeCard(); ancDrawer.classList.remove('show');
     form = AE.buildDataForm(dataBody, engine.exportData());
@@ -204,6 +204,22 @@
     renderAnc(); $('ancSub').textContent = AE.t('anc.surfaced', { n: engine._namedFired.size, total: engine.named.length });
     ancDrawer.classList.add('show'); syncScrim();
   }
+  // ---------- archive search (droga BEZ DNA) ----------
+  function openArch() {
+    closeCard(); dataDrawer.classList.remove('show'); ancDrawer.classList.remove('show');
+    AE.buildArchivePanel($('archBody'), {
+      onLoad: (data) => {
+        engine.loadData(data);
+        world.rebuildOrgans(); setupNamedLabels();
+        form = AE.buildDataForm(dataBody, engine.exportData());
+        closeDrawers(); flashRegrow();
+      },
+    });
+    archDrawer.classList.add('show'); syncScrim();
+  }
+  $('archBtn').addEventListener('click', () => (archDrawer.classList.contains('show') ? closeDrawers() : openArch()));
+  $('archDrawerClose').addEventListener('click', closeDrawers);
+
   $('dataBtn').addEventListener('click', () => (dataDrawer.classList.contains('show') ? closeDrawers() : openData()));
   $('ancBtn').addEventListener('click', () => (ancDrawer.classList.contains('show') ? closeDrawers() : openAnc()));
   $('dataDrawerClose').addEventListener('click', closeDrawers);
