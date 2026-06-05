@@ -21,11 +21,6 @@ const t = { title: 'Projekty', lead: 'Rzeczy, które zbudowałem i zbadałem. Z 
       <h3 style="margin-top:14px">Order Flow</h3>
       <p>Żywy organizm rynku napędzany realnym przepływem zleceń krypto. Cztery algorytmy, prawdziwy order-flow i warstwa przewidywania.</p>
     </a>
-    <a class="card" href="/atavism/">
-      <span class="num">atavism · <span style="color:#e0a33c">● w budowie</span></span>
-      <h3 style="margin-top:14px">Atavism</h3>
-      <p>Żywy, uczciwy symulator twoich przodków. Wgrywasz dane, a organizm odrasta i kopie do realnych populacji, linii i pradawnych korzeni. Otwarta nauka, nie kółko procentowe.</p>
-    </a>
     {projects.map((p) => (
       <a class="card" href={`/projekty/${p.data.key}/`}>
         <span class="num">{p.data.key}</span>
