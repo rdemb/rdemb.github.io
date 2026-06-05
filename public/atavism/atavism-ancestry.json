@@ -1,0 +1,120 @@
+{
+  "profile": "Przykład (PL)",
+  "populations": [
+    {
+      "color": "#6fe3c2",
+      "label": "Balto-Slavic",
+      "frac": 0.6
+    },
+    {
+      "color": "#6fe3e6",
+      "label": "East-Central European",
+      "frac": 0.2
+    },
+    {
+      "color": "#5fbfe6",
+      "label": "North European (Baltic)",
+      "frac": 0.1
+    },
+    {
+      "color": "#8f9be6",
+      "label": "Western European",
+      "frac": 0.07
+    },
+    {
+      "color": "#b58fe6",
+      "label": "Scandinavian",
+      "frac": 0.03
+    }
+  ],
+  "relatives": [
+    {
+      "name": "Kuzyn 1C",
+      "cM": 866,
+      "degree": "1st cousin"
+    },
+    {
+      "name": "Kuzyn 2C",
+      "cM": 233,
+      "degree": "2nd cousin"
+    },
+    {
+      "name": "Match 3C",
+      "cM": 74,
+      "degree": "3rd cousin"
+    },
+    {
+      "name": "Match 4C",
+      "cM": 28,
+      "degree": "4th cousin"
+    }
+  ],
+  "named": [
+    {
+      "name": "Jan Kowalczyk",
+      "born": 1843,
+      "place": "Mazowsze",
+      "source": "parafia rzymskokat. / akta USC",
+      "lineage": "auto",
+      "gen": 6,
+      "certainty": 0.82
+    },
+    {
+      "name": "Marianna Wiśniewska",
+      "born": 1851,
+      "place": "Wielkopolska",
+      "source": "Poznan Project / parafia",
+      "lineage": "auto",
+      "gen": 6,
+      "certainty": 0.74
+    }
+  ],
+  "ancient": [
+    {
+      "color": "#e9b66a",
+      "label": "Western Steppe Herder (Yamnaya)",
+      "frac": 0.5,
+      "age": 5000
+    },
+    {
+      "color": "#e58f6a",
+      "label": "Anatolian / Early European Farmer",
+      "frac": 0.32,
+      "age": 8000
+    },
+    {
+      "color": "#9ad06a",
+      "label": "Western Hunter-Gatherer",
+      "frac": 0.18,
+      "age": 10000
+    }
+  ],
+  "yHaplo": [
+    {
+      "label": "R-M458 (R1a, Slavic)",
+      "ybp": 4500
+    },
+    {
+      "label": "R-M417 (R1a)",
+      "ybp": 5500
+    },
+    {
+      "label": "R-M173 (R1)",
+      "ybp": 22000
+    }
+  ],
+  "mtHaplo": [
+    {
+      "label": "H1b",
+      "ybp": 9000
+    },
+    {
+      "label": "H1",
+      "ybp": 13000
+    },
+    {
+      "label": "H",
+      "ybp": 20000
+    }
+  ]
+}
