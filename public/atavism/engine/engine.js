@@ -253,29 +253,32 @@
     }
 
     _mkLog(d) {
+      const T = (k, p) => (AE.t ? AE.t(k, p) : k);
+      const L = (s) => (AE.tLabel ? AE.tLabel(s) : s);
+      const D = (s) => (AE.tDegree ? AE.tDegree(s) : s);
       const r = this.rng();
       if (this.layers.genome < 0.5 || r < 0.22) {
         const p = this.populations[(this.rng() * this.populations.length) | 0];
         const chr = 1 + ((this.rng() * 22) | 0);
-        return `local-ancestry · chr${chr} · ${p.label} · ${(this.rng() * 40 + 5).toFixed(1)} cM`;
+        return `${T('log.local')} · chr${chr} · ${L(p.label)} · ${(this.rng() * 40 + 5).toFixed(1)} cM`;
       }
       if (this.layers.ibd >= 0.5 && r < 0.45) {
         const rel = this.relatives[(this.rng() * this.relatives.length) | 0];
-        return `IBD match · ${rel.degree} · ${rel.cM} cM · ${rel.segments} segments`;
+        return `${T('log.ibd')} · ${D(rel.degree)} · ${rel.cM} cM · ${rel.segments} ${T('log.segments')}`;
       }
       if (this.layers.coalescent >= 0.5 && r < 0.7) {
         const ybp = Math.round(lerp(280, 1400, this.rng()) / 10) * 10;
-        return `coalescent · lineages merged · node ~${ybp} ybp`;
+        return `${T('log.coal')} ~${ybp} ybp`;
       }
       if (this.layers.uniparental >= 0.5 && r < 0.86) {
         const hap = (this.rng() < 0.5 ? this.yHaplo : this.mtHaplo)[(this.rng() * 4) | 0];
-        return `uniparental · ${hap.label} · TMRCA ~${(hap.ybp / 1000).toFixed(1)} kybp`;
+        return `${T('log.uni')} · ${hap.label} · TMRCA ~${(hap.ybp / 1000).toFixed(1)} kybp`;
       }
       if (this.layers.ancient >= 0.5) {
         const a = this.ancient[(this.rng() * this.ancient.length) | 0];
-        return `admixture · ${a.label} · ${Math.round(a.frac * 100)}% · f-stat z=${(this.rng() * 6 + 2).toFixed(1)}`;
+        return `${T('log.admix')} · ${L(a.label)} · ${Math.round(a.frac * 100)}% · f-stat z=${(this.rng() * 6 + 2).toFixed(1)}`;
       }
-      return `scanning genome · phasing window ${(this.rng() * 22 | 0) + 1}…`;
+      return `${T('log.scan')} ${(this.rng() * 22 | 0) + 1}…`;
     }
   }
 

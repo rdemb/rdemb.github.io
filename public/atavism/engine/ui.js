@@ -1,7 +1,11 @@
 /* ============================================================
    ui.js — data-entry forms + discovered-ancestors list
    Builds the editable "Your data" drawer and reads it back into
-   an engine-compatible dataset.
+   an engine-compatible dataset. Trójjęzyczny (PL/EN/DE) przez AE.t:
+   pola dostają data-i18n / data-i18n-ph, więc applyStatic() podąża
+   za zmianą języka BEZ utraty wpisanych wartości (zmienia się etykieta,
+   nie wartość). WARTOŚCI pól select (stopień, linia) zostają kanoniczne
+   (EN) — to one trafiają do collect() i walidacji backendu.
    ============================================================ */
 (function () {
   const AE = (window.AE = window.AE || {});
@@ -9,28 +13,45 @@
   const esc = (s) => String(s == null ? '' : s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   function el(tag, cls, props) { const e = document.createElement(tag); if (cls) e.className = cls; if (props) Object.assign(e, props); return e; }
 
-  const DEGREES = ['Parent / child', 'Sibling', '1st cousin', '2nd cousin', '3rd cousin', '4th cousin', '5th+ cousin'];
-  const LINS = [['auto', 'Autosomal'], ['Y', 'Paternal (Y)'], ['mt', 'Maternal (mt)']];
+  // [wartość kanoniczna (EN), klucz i18n] — wartość idzie do collect(), tekst jest tłumaczony
+  const DEGREES = [
+    ['Parent / child', 'deg.parent'], ['Sibling', 'deg.sibling'],
+    ['1st cousin', 'deg.c1'], ['2nd cousin', 'deg.c2'], ['3rd cousin', 'deg.c3'],
+    ['4th cousin', 'deg.c4'], ['5th+ cousin', 'deg.c5'],
+  ];
+  const LINS = [['auto', 'lin.autoFull'], ['Y', 'lin.yFull'], ['mt', 'lin.mtFull']];
 
-  function field(type, value, ph, cls) {
+  // phKey = klucz i18n LUB literał (np. '%', 'cM', 'ybp') — AE.t zwróci literał gdy brak w słowniku
+  function field(type, value, phKey, cls) {
     const e = el(type === 'select' ? 'select' : 'input', 'field' + (cls ? ' ' + cls : ''));
-    if (type !== 'select') { e.type = type; e.value = value == null ? '' : value; if (ph) e.placeholder = ph; }
+    if (type !== 'select') {
+      e.type = type; e.value = value == null ? '' : value;
+      if (phKey) { e.placeholder = AE.t(phKey); e.setAttribute('data-i18n-ph', phKey); }
+    }
     if (type === 'number') { e.inputMode = 'decimal'; }
     return e;
   }
   function select(value, opts, cls) {
     const s = el('select', 'field' + (cls ? ' ' + cls : ''));
-    opts.forEach(([v, label]) => { const o = el('option'); o.value = v; o.textContent = label; if (v === value) o.selected = true; s.appendChild(o); });
+    opts.forEach(([v, key]) => {
+      const o = el('option'); o.value = v; o.textContent = AE.t(key); o.setAttribute('data-i18n', key);
+      if (v === value) o.selected = true; s.appendChild(o);
+    });
     return s;
   }
-  function rmBtn(onClick) { const b = el('button', 'rm', { type: 'button', textContent: '×', title: 'Remove' }); b.addEventListener('click', onClick); return b; }
+  function rmBtn(onClick) {
+    const b = el('button', 'rm', { type: 'button', textContent: '×' });
+    b.setAttribute('title', AE.t('misc.remove')); b.setAttribute('data-i18n-title', 'misc.remove');
+    b.addEventListener('click', onClick); return b;
+  }
+  function hint(key) { const d = el('div', 'hint', { textContent: AE.t(key) }); d.setAttribute('data-i18n', key); return d; }
 
-  function section(body, key, title, addLabel, onAdd) {
+  function section(body, key, titleKey, addKey, onAdd) {
     const wrap = el('div', 'sect'); wrap.dataset.sec = key;
     const h = el('div', 'sect-h');
-    h.appendChild(el('span', 'nm', { textContent: title }));
-    if (addLabel) {
-      const a = el('button', 'add', { type: 'button', textContent: addLabel });
+    const nm = el('span', 'nm', { textContent: AE.t(titleKey) }); nm.setAttribute('data-i18n', titleKey); h.appendChild(nm);
+    if (addKey) {
+      const a = el('button', 'add', { type: 'button', textContent: AE.t(addKey) }); a.setAttribute('data-i18n', addKey);
       a.addEventListener('click', onAdd);
       h.appendChild(a);
     }
@@ -44,31 +65,31 @@
   function popRow(rows, p) {
     const r = el('div', 'row-e');
     r.appendChild(field('color', p && p.color || '#6fe3c2', '', ''));
-    r.appendChild(field('text', p && p.label || '', 'Population', 'f-name'));
+    r.appendChild(field('text', p && p.label || '', 'ph.pop', 'f-name'));
     r.appendChild(field('number', p ? Math.round((p.frac || 0) * 100) : '', '%', 'f-pct'));
     r.appendChild(rmBtn(() => r.remove()));
     rows.appendChild(r);
   }
   function relRow(rows, r0) {
     const r = el('div', 'row-e');
-    r.appendChild(field('text', r0 && r0.name || '', 'Match name', 'f-name'));
+    r.appendChild(field('text', r0 && r0.name || '', 'ph.relName', 'f-name'));
     r.appendChild(field('number', r0 && r0.cM || '', 'cM', 'f-pct'));
-    r.appendChild(select(r0 && r0.degree || '3rd cousin', DEGREES.map((d) => [d, d]), 'f-sm'));
+    r.appendChild(select(r0 && r0.degree || '3rd cousin', DEGREES, 'f-sm'));
     r.appendChild(rmBtn(() => r.remove()));
     rows.appendChild(r);
   }
   function namedRow(rows, a) {
     const r = el('div', 'row-grid');
     const g1 = el('div', 'g2');
-    g1.appendChild(field('text', a && a.name || '', 'Ancestor name', 'f-name'));
-    g1.appendChild(field('number', a && a.born || '', 'b. year', 'f-pct'));
+    g1.appendChild(field('text', a && a.name || '', 'ph.ancName', 'f-name'));
+    g1.appendChild(field('number', a && a.born || '', 'ph.byear', 'f-pct'));
     r.appendChild(g1);
-    r.appendChild(field('text', a && a.place || '', 'Birthplace', 'f-sm'));
-    r.appendChild(field('text', a && a.source || '', 'Source (parish, civil register, GEDCOM…)', 'f-sm'));
+    r.appendChild(field('text', a && a.place || '', 'ph.place', 'f-sm'));
+    r.appendChild(field('text', a && a.source || '', 'ph.source', 'f-sm'));
     const g2 = el('div', 'g2');
     g2.appendChild(select(a && a.lineage || 'auto', LINS, 'f-sm'));
-    g2.appendChild(field('number', a && a.gen || '', 'gen', 'f-pct'));
-    g2.appendChild(field('number', a ? Math.round((a.certainty != null ? a.certainty : 0.7) * 100) : '', 'cert %', 'f-pct'));
+    g2.appendChild(field('number', a && a.gen || '', 'ph.gen', 'f-pct'));
+    g2.appendChild(field('number', a ? Math.round((a.certainty != null ? a.certainty : 0.7) * 100) : '', 'ph.cert', 'f-pct'));
     r.appendChild(g2);
     const rm = rmBtn(() => r.remove()); rm.style.alignSelf = 'flex-end'; r.appendChild(rm);
     rows.appendChild(r);
@@ -76,15 +97,15 @@
   function ancientRow(rows, a) {
     const r = el('div', 'row-e');
     r.appendChild(field('color', a && a.color || '#e9b66a', '', ''));
-    r.appendChild(field('text', a && a.label || '', 'Source population', 'f-name'));
+    r.appendChild(field('text', a && a.label || '', 'ph.ancLabel', 'f-name'));
     r.appendChild(field('number', a ? Math.round((a.frac || 0) * 100) : '', '%', 'f-pct'));
-    r.appendChild(field('number', a && a.age || '', 'yrs', 'f-pct'));
+    r.appendChild(field('number', a && a.age || '', 'ph.yrs', 'f-pct'));
     r.appendChild(rmBtn(() => r.remove()));
     rows.appendChild(r);
   }
   function haploRow(rows, h) {
     const r = el('div', 'row-e');
-    r.appendChild(field('text', h && h.label || '', 'Haplogroup', 'f-name'));
+    r.appendChild(field('text', h && h.label || '', 'ph.haplo', 'f-name'));
     r.appendChild(field('number', h && h.ybp || '', 'ybp', 'f-pct'));
     r.appendChild(rmBtn(() => r.remove()));
     rows.appendChild(r);
@@ -94,28 +115,28 @@
   AE.buildDataForm = function (body, data) {
     body.innerHTML = '';
 
-    const sp = section(body, 'profile', 'PROFILE');
-    const pr = el('div', 'row-e'); pr.appendChild(field('text', data.profile || 'You', 'Your name / label', 'f-sm')); sp.rows.appendChild(pr);
+    const sp = section(body, 'profile', 'sect.profile');
+    const pr = el('div', 'row-e'); pr.appendChild(field('text', data.profile || AE.t('misc.you'), 'ph.profile', 'f-sm')); sp.rows.appendChild(pr);
 
-    const pop = section(body, 'pop', 'LOCAL ANCESTRY', '+ add', () => popRow(pop.rows));
+    const pop = section(body, 'pop', 'sect.local', 'form.add', () => popRow(pop.rows));
     (data.populations || []).forEach((p) => popRow(pop.rows, p));
-    body.querySelector('[data-sec=pop]').appendChild(el('div', 'hint', { textContent: 'Percentages auto-normalize. Colour paints each genome segment.' }));
+    body.querySelector('[data-sec=pop]').appendChild(hint('hint.pop'));
 
-    const rel = section(body, 'rel', 'DNA MATCHES', '+ add', () => relRow(rel.rows));
+    const rel = section(body, 'rel', 'sect.matches', 'form.add', () => relRow(rel.rows));
     (data.relatives || []).forEach((r) => relRow(rel.rows, r));
-    body.querySelector('[data-sec=rel]').appendChild(el('div', 'hint', { textContent: 'Shared DNA (cM) sets how strongly each kin-node is pulled toward you.' }));
+    body.querySelector('[data-sec=rel]').appendChild(hint('hint.rel'));
 
-    const named = section(body, 'named', 'NAMED ANCESTORS', '+ add', () => namedRow(named.rows));
+    const named = section(body, 'named', 'sect.named', 'form.add', () => namedRow(named.rows));
     (data.named || []).forEach((a) => namedRow(named.rows, a));
-    body.querySelector('[data-sec=named]').appendChild(el('div', 'hint', { textContent: 'Generation sets how deep each one crystallizes. Certainty 0–100.' }));
+    body.querySelector('[data-sec=named]').appendChild(hint('hint.named'));
 
-    const anc = section(body, 'ancient', 'DEEP ANCESTRY', '+ add', () => ancientRow(anc.rows));
+    const anc = section(body, 'ancient', 'sect.deep', 'form.add', () => ancientRow(anc.rows));
     (data.ancient || []).forEach((a) => ancientRow(anc.rows, a));
-    body.querySelector('[data-sec=ancient]').appendChild(el('div', 'hint', { textContent: 'Ancient source populations — distant constellations bound by admixture threads. Age in years.' }));
+    body.querySelector('[data-sec=ancient]').appendChild(hint('hint.ancient'));
 
-    const yh = section(body, 'yhap', 'PATERNAL LINE · Y-DNA', '+ add', () => haploRow(yh.rows));
+    const yh = section(body, 'yhap', 'sect.ypat', 'form.add', () => haploRow(yh.rows));
     (data.yHaplo || []).forEach((h) => haploRow(yh.rows, h));
-    const mh = section(body, 'mthap', 'MATERNAL LINE · mtDNA', '+ add', () => haploRow(mh.rows));
+    const mh = section(body, 'mthap', 'sect.mmat', 'form.add', () => haploRow(mh.rows));
     (data.mtHaplo || []).forEach((h) => haploRow(mh.rows, h));
 
     function fields(r) { return [...r.querySelectorAll('.field')]; }
@@ -139,7 +160,7 @@
   AE.renderAncestors = function (listEl, engine, onPick) {
     listEl.innerHTML = '';
     if (!engine.named.length) {
-      listEl.appendChild(el('div', 'anc-empty', { textContent: 'No named ancestors yet. Add records in “Your data”, or keep digging.' }));
+      listEl.appendChild(el('div', 'anc-empty', { textContent: AE.t('list.empty') }));
       return;
     }
     engine.named.forEach((a) => {
@@ -147,9 +168,9 @@
       const item = el('div', 'anc-item' + (found ? '' : ' locked'));
       const dot = el('span', 'o');
       const mid = el('div');
-      mid.appendChild(el('div', 'nm', { textContent: found ? a.name : 'Undiscovered' }));
-      mid.appendChild(el('div', 'pl', { textContent: found ? `${a.place} · b. ${a.born}` : `dig to ~gen ${a.gen} to reveal` }));
-      const gen = el('div', 'gen', { textContent: `gen ${a.gen}` });
+      mid.appendChild(el('div', 'nm', { textContent: found ? a.name : AE.t('list.undiscovered') }));
+      mid.appendChild(el('div', 'pl', { textContent: found ? AE.t('list.born', { place: a.place, born: a.born }) : AE.t('list.revealAt', { gen: a.gen }) }));
+      const gen = el('div', 'gen', { textContent: AE.t('list.gen', { gen: a.gen }) });
       item.appendChild(dot); item.appendChild(mid); item.appendChild(gen);
       if (found) item.addEventListener('click', () => onPick(a));
       listEl.appendChild(item);

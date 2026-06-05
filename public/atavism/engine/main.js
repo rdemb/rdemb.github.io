@@ -14,15 +14,15 @@
 
   // ---------- organ rail ----------
   const ORGANS = [
-    { key: 'genome', label: 'Genome' },
-    { key: 'ibd', label: 'Kinship' },
-    { key: 'coalescent', label: 'Coalescent' },
-    { key: 'uniparental', label: 'Uniparental', focus: 'coalescent' },
-    { key: 'ancient', label: 'Ancient' },
+    { key: 'genome', i18n: 'organ.genome' },
+    { key: 'ibd', i18n: 'organ.kinship' },
+    { key: 'coalescent', i18n: 'organ.coalescent' },
+    { key: 'uniparental', i18n: 'organ.uniparental', focus: 'coalescent' },
+    { key: 'ancient', i18n: 'organ.ancient' },
   ];
   const organsEl = $('organs');
   organsEl.innerHTML = ORGANS.map((o) =>
-    `<div class="o" data-key="${o.focus || o.key}" data-layer="${o.key}"><span class="tick"></span><span class="lbl">${o.label}</span></div>`
+    `<div class="o" data-key="${o.focus || o.key}" data-layer="${o.key}"><span class="tick"></span><span class="lbl" data-i18n="${o.i18n}">${AE.t(o.i18n)}</span></div>`
   ).join('');
   let focusLock = null;
   organsEl.querySelectorAll('.o').forEach((elx) => {
@@ -63,11 +63,11 @@
   });
 
   function depthLabel(d) {
-    if (d < 0.04) return 'present — you';
+    if (d < 0.04) return AE.t('depth.present');
     const gen = d * 16;
-    if (d < 0.55) { const year = 2025 - Math.round(gen * 28); return `${Math.round(gen)} generations back · c. ${year}`; }
+    if (d < 0.55) { const year = 2025 - Math.round(gen * 28); return AE.t('depth.gens', { gen: Math.round(gen), year }); }
     const kybp = AE.lerp(2, 30, (d - 0.55) / 0.45);
-    return `deep time · ~${kybp.toFixed(0)} kybp`;
+    return AE.t('depth.deep', { k: kybp.toFixed(0) });
   }
 
   // ---------- engine event stream ----------
@@ -88,7 +88,7 @@
       world.flash(colors[ev.layer] || '#e9b66a', 1.0);
     } else if (ev.type === 'named') {
       world.flash('#f0c884', 1.3);
-      const t = `★ registry hit · ${ev.ancestor.name} · ${ev.ancestor.place} ${ev.ancestor.born}`;
+      const t = `★ ${AE.t('log.registryHit')} · ${ev.ancestor.name} · ${ev.ancestor.place} ${ev.ancestor.born}`;
       pushLog(t, '#f0c884'); tickerEl.innerHTML = `<b>${t}</b>`;
       if (ancDrawer.classList.contains('show')) renderAnc();
     }
@@ -138,8 +138,8 @@
       const dx = s.x - pointer.x, dy = s.y - pointer.y, d2 = dx * dx + dy * dy;
       if (d2 < bestD) { bestD = d2; best = { x: s.x, y: s.y, a, b }; }
     };
-    if (world.network && engine.layers.ibd > 0.4) world.network.nodes.forEach((nd) => consider(nd.world, nd.rel.name, `${nd.rel.degree} · ${nd.rel.cM} cM`));
-    if (world.ancient && engine.layers.ancient > 0.4) world.ancient.consts.forEach((c) => consider(c.center, c.pop.label, `${Math.round(c.pop.frac * 100)}% admixture · ~${(c.pop.age / 1000).toFixed(0)} kya`));
+    if (world.network && engine.layers.ibd > 0.4) world.network.nodes.forEach((nd) => consider(nd.world, nd.rel.name, `${AE.tDegree(nd.rel.degree)} · ${nd.rel.cM} cM`));
+    if (world.ancient && engine.layers.ancient > 0.4) world.ancient.consts.forEach((c) => consider(c.center, AE.tLabel(c.pop.label), AE.t('tip.admix', { pct: Math.round(c.pop.frac * 100), kya: (c.pop.age / 1000).toFixed(0) })));
     if (best) {
       tip.style.left = best.x + 'px'; tip.style.top = best.y + 'px';
       tip.querySelector('.a').textContent = best.a; tip.querySelector('.b').textContent = best.b;
@@ -174,12 +174,14 @@
 
   // ---------- ancestor card ----------
   const card = $('card');
+  let lastCardAnc = null;
   function openCard(a) {
+    lastCardAnc = a;
     $('cName').textContent = a.name;
-    $('cVital').textContent = `${a.place ? a.place + ' · ' : ''}b. ${a.born}`;
+    $('cVital').textContent = `${a.place ? a.place + ' · ' : ''}${AE.getLang() === 'pl' ? 'ur.' : AE.getLang() === 'de' ? 'geb.' : 'b.'} ${a.born}`;
     $('cSrc').textContent = a.source;
-    $('cLin').textContent = a.lineage === 'Y' ? 'Paternal (Y)' : a.lineage === 'mt' ? 'Maternal (mt)' : 'Autosomal';
-    $('cGen').textContent = `${a.gen} generations back`;
+    $('cLin').textContent = a.lineage === 'Y' ? AE.t('lin.yFull') : a.lineage === 'mt' ? AE.t('lin.mtFull') : AE.t('lin.autoFull');
+    $('cGen').textContent = AE.t('card.gensBack', { gen: a.gen });
     $('cConfV').textContent = `${Math.round(a.certainty * 100)}%`;
     $('cConfBar').style.width = `${a.certainty * 100}%`;
     card.classList.add('show'); syncScrim();
@@ -199,7 +201,7 @@
   function renderAnc() { AE.renderAncestors($('ancList'), engine, (a) => { openCard(a); }); }
   function openAnc() {
     closeCard(); dataDrawer.classList.remove('show');
-    renderAnc(); $('ancSub').textContent = `${engine._namedFired.size} of ${engine.named.length} surfaced`;
+    renderAnc(); $('ancSub').textContent = AE.t('anc.surfaced', { n: engine._namedFired.size, total: engine.named.length });
     ancDrawer.classList.add('show'); syncScrim();
   }
   $('dataBtn').addEventListener('click', () => (dataDrawer.classList.contains('show') ? closeDrawers() : openData()));
@@ -210,7 +212,7 @@
   $('applyBtn').addEventListener('click', () => {
     if (!form) return;
     const data = form.collect();
-    if (!data.populations.length) { alert('Add at least one local-ancestry population.'); return; }
+    if (!data.populations.length) { alert(AE.t('alert.needPop')); return; }
     engine.loadData(data);
     world.rebuildOrgans();
     setupNamedLabels();
@@ -241,7 +243,7 @@
         world.rebuildOrgans(); setupNamedLabels(); syncAuto();
         form = AE.buildDataForm(dataBody, engine.exportData());
         closeDrawers(); flashRegrow();
-      } catch (err) { alert('Nie udalo sie wczytac JSON: ' + err.message); }
+      } catch (err) { alert(AE.t('alert.badJson') + err.message); }
     };
     reader.readAsText(file); e.target.value = '';
   });
@@ -297,6 +299,21 @@
   }
   syncAuto();
   requestAnimationFrame(frame);
+
+  // ---------- language (PL / EN / DE) ----------
+  const langsw = $('langsw');
+  if (langsw) langsw.querySelectorAll('button').forEach((b) =>
+    b.addEventListener('click', () => AE.setLang(b.getAttribute('data-lang'))));
+  AE.onLang(() => {
+    // statyczne etykiety (organy, formularz, pasek, karta-klucze) ogarnia applyStatic;
+    // otwarte widoki z treścią dynamiczną odświeżamy ręcznie:
+    if (card.classList.contains('show') && lastCardAnc) openCard(lastCardAnc);
+    if (ancDrawer.classList.contains('show')) {
+      renderAnc();
+      $('ancSub').textContent = AE.t('anc.surfaced', { n: engine._namedFired.size, total: engine.named.length });
+    }
+  });
+  AE.initLang();
 
   window.__AE = world;
 })();
