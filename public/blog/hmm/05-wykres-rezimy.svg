@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 940 400" font-family="'Inter','Segoe UI',system-ui,sans-serif">
+  <!-- pasy rezimow -->
+  <rect x="70" y="60" width="180" height="270" fill="#2f8f5f" fill-opacity="0.10"/>
+  <rect x="250" y="60" width="220" height="270" fill="#A9761A" fill-opacity="0.12"/>
+  <rect x="470" y="60" width="130" height="270" fill="#c2503a" fill-opacity="0.13"/>
+  <rect x="600" y="60" width="160" height="270" fill="#2f8f5f" fill-opacity="0.10"/>
+  <rect x="760" y="60" width="120" height="270" fill="#A9761A" fill-opacity="0.12"/>
+
+  <!-- etykiety pasow -->
+  <g font-size="12" text-anchor="middle" font-weight="600">
+    <text x="160" y="78" fill="#2f8f5f">Spokój</text>
+    <text x="360" y="78" fill="#A9761A">Trend</text>
+    <text x="535" y="78" fill="#c2503a">Panika</text>
+    <text x="680" y="78" fill="#2f8f5f">Spokój</text>
+    <text x="820" y="78" fill="#A9761A">Trend</text>
+  </g>
+
+  <!-- osie -->
+  <line x1="70" y1="60" x2="70" y2="330" stroke="#9aa1ab" stroke-width="1.4"/>
+  <line x1="70" y1="330" x2="880" y2="330" stroke="#9aa1ab" stroke-width="1.4"/>
+  <text x="40" y="195" font-size="13" fill="#6b7280" transform="rotate(-90 40 195)" text-anchor="middle">cena</text>
+  <text x="475" y="360" font-size="13" fill="#6b7280" text-anchor="middle">czas</text>
+
+  <!-- linia ceny -->
+  <polyline fill="none" stroke="#15171A" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"
+    points="70,252 110,248 150,256 190,249 230,252 250,250 290,242 330,225 370,206 410,185 450,162 470,152 490,170 510,150 530,200 550,170 570,216 600,232 640,222 680,228 720,222 760,226 800,210 840,194 880,180"/>
+
+  <!-- legenda -->
+  <g font-size="12.5" fill="#3f4651">
+    <rect x="600" y="350" width="13" height="13" rx="3" fill="#2f8f5f" fill-opacity="0.5"/><text x="619" y="361">Spokój</text>
+    <rect x="690" y="350" width="13" height="13" rx="3" fill="#A9761A" fill-opacity="0.5"/><text x="709" y="361">Trend</text>
+    <rect x="770" y="350" width="13" height="13" rx="3" fill="#c2503a" fill-opacity="0.5"/><text x="789" y="361">Panika</text>
+  </g>
+</svg>

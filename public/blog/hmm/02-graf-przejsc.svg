@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 470" font-family="'Inter','Segoe UI',system-ui,sans-serif">
+  <defs>
+    <marker id="t2a" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0 0L7 3L0 6Z" fill="#7c8693"/></marker>
+  </defs>
+
+  <!-- krawedzie miedzy stanami (dwukierunkowo, lekko wygiete) -->
+  <g fill="none" stroke="#9aa1ab" stroke-width="1.7" marker-end="url(#t2a)">
+    <!-- S -> T (gora) -->
+    <path d="M276 130 C 360 96, 460 96, 544 130"/>
+    <!-- T -> S (gora, nizej) -->
+    <path d="M544 170 C 460 204, 360 204, 276 170"/>
+    <!-- S -> P -->
+    <path d="M214 206 C 250 268, 312 310, 366 332"/>
+    <!-- P -> S -->
+    <path d="M344 342 C 286 318, 236 280, 198 222"/>
+    <!-- T -> P -->
+    <path d="M606 206 C 570 268, 508 310, 454 332"/>
+    <!-- P -> T -->
+    <path d="M476 342 C 534 318, 584 280, 622 222"/>
+  </g>
+
+  <!-- petle wlasne -->
+  <g fill="none" stroke="#9aa1ab" stroke-width="1.7" marker-end="url(#t2a)">
+    <path d="M196 102 C 150 60, 232 52, 222 96"/>
+    <path d="M598 96 C 588 52, 670 60, 624 102"/>
+    <path d="M380 418 C 372 466, 448 466, 440 418"/>
+  </g>
+
+  <!-- stany -->
+  <g text-anchor="middle">
+    <circle cx="210" cy="150" r="58" fill="#e8f3ec" stroke="#2f8f5f" stroke-width="2.2"/>
+    <text x="210" y="157" font-size="19" font-weight="700" fill="#1f6b46">Spokój</text>
+    <circle cx="610" cy="150" r="58" fill="#f6edd6" stroke="#A9761A" stroke-width="2.2"/>
+    <text x="610" y="157" font-size="19" font-weight="700" fill="#7a560f">Trend</text>
+    <circle cx="410" cy="360" r="58" fill="#f7e6e1" stroke="#c2503a" stroke-width="2.2"/>
+    <text x="410" y="367" font-size="19" font-weight="700" fill="#93331f">Panika</text>
+  </g>
+
+  <!-- prawdopodobienstwa -->
+  <g font-size="13.5" font-family="'JetBrains Mono','DejaVu Sans Mono',monospace" fill="#3f4651">
+    <text x="410" y="88" text-anchor="middle">0.05</text>
+    <text x="410" y="212" text-anchor="middle">0.07</text>
+    <text x="250" y="290" text-anchor="middle">0.01</text>
+    <text x="318" y="252" text-anchor="middle">0.05</text>
+    <text x="572" y="290" text-anchor="middle">0.10</text>
+    <text x="508" y="252" text-anchor="middle">0.15</text>
+    <text x="150" y="58" font-weight="700" fill="#1f6b46">0.94</text>
+    <text x="612" y="48" font-weight="700" fill="#7a560f">0.83</text>
+    <text x="380" y="462" font-weight="700" fill="#93331f">0.80</text>
+  </g>
+</svg>

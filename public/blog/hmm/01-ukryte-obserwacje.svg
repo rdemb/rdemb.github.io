@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 940 430" font-family="'Inter','Segoe UI',system-ui,sans-serif">
+  <defs>
+    <marker id="t1aT" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0 0L7 3L0 6Z" fill="#A9761A"/></marker>
+    <marker id="t1aE" markerWidth="9" markerHeight="9" refX="6.5" refY="3" orient="auto"><path d="M0 0L6.5 3L0 6Z" fill="#aab0b8"/></marker>
+  </defs>
+
+  <!-- pas: stany ukryte -->
+  <text x="44" y="44" font-size="13" font-weight="700" letter-spacing="1.4" fill="#6b7280">STANY UKRYTE · w jakim trybie jest rynek</text>
+  <rect x="40" y="58" width="860" height="92" rx="16" fill="#fbfaf7" stroke="#b9a36a" stroke-width="1.4" stroke-dasharray="6 5"/>
+  <text x="884" y="78" text-anchor="end" font-size="30" font-weight="800" fill="#cdbf95">?</text>
+
+  <!-- pigułki stanów -->
+  <g font-size="16" font-weight="700" text-anchor="middle">
+    <g><rect x="91" y="82" width="118" height="44" rx="22" fill="#e8f3ec" stroke="#2f8f5f" stroke-width="1.6"/><text x="150" y="110" fill="#1f6b46">Spokój</text></g>
+    <g><rect x="271" y="82" width="118" height="44" rx="22" fill="#e8f3ec" stroke="#2f8f5f" stroke-width="1.6"/><text x="330" y="110" fill="#1f6b46">Spokój</text></g>
+    <g><rect x="451" y="82" width="118" height="44" rx="22" fill="#f6edd6" stroke="#A9761A" stroke-width="1.6"/><text x="510" y="110" fill="#7a560f">Trend</text></g>
+    <g><rect x="631" y="82" width="118" height="44" rx="22" fill="#f6edd6" stroke="#A9761A" stroke-width="1.6"/><text x="690" y="110" fill="#7a560f">Trend</text></g>
+    <g><rect x="801" y="82" width="118" height="44" rx="22" fill="#f7e6e1" stroke="#c2503a" stroke-width="1.6"/><text x="860" y="110" fill="#93331f">Panika</text></g>
+  </g>
+
+  <!-- przejścia (poziomo) -->
+  <g stroke="#A9761A" stroke-width="1.7" fill="none" marker-end="url(#t1aT)">
+    <line x1="211" y1="104" x2="267" y2="104"/>
+    <line x1="391" y1="104" x2="447" y2="104"/>
+    <line x1="571" y1="104" x2="627" y2="104"/>
+    <line x1="751" y1="104" x2="797" y2="104"/>
+  </g>
+  <text x="419" y="74" text-anchor="middle" font-size="12.5" fill="#A9761A">przejście</text>
+
+  <!-- emisje (pionowo w dół) -->
+  <g stroke="#aab0b8" stroke-width="1.5" fill="none" marker-end="url(#t1aE)">
+    <line x1="150" y1="128" x2="150" y2="266"/>
+    <line x1="330" y1="128" x2="330" y2="266"/>
+    <line x1="510" y1="128" x2="510" y2="266"/>
+    <line x1="690" y1="128" x2="690" y2="266"/>
+    <line x1="860" y1="128" x2="860" y2="266"/>
+  </g>
+  <text x="168" y="200" font-size="12.5" fill="#9aa1ab" transform="rotate(90 168 200)">emisja</text>
+
+  <!-- świece (co widać) -->
+  <g stroke-width="2">
+    <!-- t1 spokój, mały wzrost -->
+    <line x1="150" y1="284" x2="150" y2="344" stroke="#2f8f5f"/><rect x="141" y="300" width="18" height="22" fill="#2f8f5f"/>
+    <!-- t2 spokój, mały spadek -->
+    <line x1="330" y1="286" x2="330" y2="346" stroke="#c2503a"/><rect x="321" y="304" width="18" height="20" fill="#c2503a"/>
+    <!-- t3 trend, wzrost -->
+    <line x1="510" y1="276" x2="510" y2="346" stroke="#2f8f5f"/><rect x="501" y="290" width="18" height="40" fill="#2f8f5f"/>
+    <!-- t4 trend, wzrost -->
+    <line x1="690" y1="280" x2="690" y2="344" stroke="#2f8f5f"/><rect x="681" y="294" width="18" height="38" fill="#2f8f5f"/>
+    <!-- t5 panika, duzy spadek -->
+    <line x1="860" y1="272" x2="860" y2="372" stroke="#c2503a"/><rect x="851" y="286" width="18" height="64" fill="#c2503a"/>
+  </g>
+
+  <!-- pas: co widać -->
+  <rect x="40" y="356" width="860" height="58" rx="16" fill="#f6f7f9" stroke="#e3e6ea" stroke-width="1.4"/>
+  <g transform="translate(60 385)" fill="none" stroke="#2f8f5f" stroke-width="1.8">
+    <ellipse cx="9" cy="0" rx="11" ry="7"/><circle cx="9" cy="0" r="3" fill="#2f8f5f" stroke="none"/>
+  </g>
+  <text x="86" y="390" font-size="13" font-weight="700" letter-spacing="1.4" fill="#3f4651">CO WIDAĆ · ruch ceny, świeca po świecy</text>
+
+  <!-- oś czasu -->
+  <text x="150" y="424" text-anchor="middle" font-size="11.5" fill="#aab0b8">t</text>
+  <text x="330" y="424" text-anchor="middle" font-size="11.5" fill="#aab0b8">t+1</text>
+  <text x="510" y="424" text-anchor="middle" font-size="11.5" fill="#aab0b8">t+2</text>
+  <text x="690" y="424" text-anchor="middle" font-size="11.5" fill="#aab0b8">t+3</text>
+  <text x="860" y="424" text-anchor="middle" font-size="11.5" fill="#aab0b8">t+4</text>
+</svg>
