@@ -30,6 +30,12 @@ Markow to założenie o pamięci, a właściwie o jej braku. Model przyjmuje, ż
 
 Brzmi to jak uproszczenie i jest uproszczeniem. Rynek pamięta więcej, niż mówi ta zasada. Ale to uproszczenie, które daje się policzyć, a policzalny model bywa więcej wart niż model bliższy prawdzie, którego nikt nie umie policzyć.
 
+## Skąd się to wzięło
+
+Andriej Markow był rosyjskim matematykiem. Na początku XX wieku zajął się czymś z pozoru błahym: ciągami liter w „Eugeniuszu Onieginie" Puszkina. Liczył, jak często po samogłosce idzie spółgłoska, i wyszło mu, że następny znak zależy głównie od poprzedniego. Tak narodził się łańcuch Markowa, czyli świat, w którym przyszłość zależy od stanu teraz, a nie od całej historii.
+
+Słowo „ukryty" dołożono dużo później. W latach sześćdziesiątych Leonard Baum z zespołem dodał warstwę, której nie widać wprost, i wymyślił sposób, żeby wyciągnąć ją z samych obserwacji. Stąd nazwa algorytmu uczącego: Bauma i Welcha. Pierwsze duże zastosowanie to nie była giełda, tylko rozpoznawanie mowy: komputer słyszy fale dźwięku, a zgaduje ukryty ciąg głosek. Potem te same równania trafiły do biologii, do czytania DNA, a na końcu do rynków. Pomysł jest wszędzie ten sam. Widzisz skutek, zgadujesz ukrytą przyczynę.
+
 ## Przejścia: jak rynek przeskakuje między trybami
 
 Tryby się zmieniają, ale leniwie. Ze spokoju rzadko wpada się prosto w panikę. Zwykle najpierw jest trend, a dopiero potem się sypie. Te skłonności zapisuje macierz przejść: dla każdego trybu mówi, jak prawdopodobne jest, że rynek w nim zostanie, i jak prawdopodobne, że przeskoczy gdzie indziej.
@@ -68,6 +74,18 @@ W każdym kroku rynek mógł być w dowolnym trybie. Algorytm (nazywa się Viter
 
 Trzecie pytanie: skąd wziąć te wszystkie liczby, jeśli nikt mi ich nie podał? Z danych. Model sam dostraja przejścia i emisje tak, żeby jak najlepiej pasowały do historii (robi to algorytm Bauma i Welcha). I właśnie „jak najlepiej pasowały do historii" to ten moment, w którym najłatwiej oszukać samego siebie.
 
+## Metoda macierzowa
+
+Cały model sprowadza się do trzech tabel liczb. Wektor startowy, czyli od jakiego trybu zaczynamy. Macierz przejść A, którą widziałeś wyżej. I macierz emisji B, czyli jak prawdopodobny jest dany ruch w danym trybie. To wszystko, trzy tabele.
+
+Najlepsze jest to, że liczenie też jest tylko mnożeniem tabel. Trzymasz „wektor wiary": trzy liczby mówiące, na ile wierzysz, że jesteś w Spokoju, w Trendzie i w Panice. Przychodzi nowa świeca i robisz dwa ruchy. Najpierw mnożysz wektor przez macierz przejść, bo rynek mógł przeskoczyć. Potem przez szansę, że dany tryb dałby właśnie taką świecę. Wynik to nowy wektor wiary.
+
+![Jeden krok metody macierzowej: wektor wiary mnożony przez macierz przejść i przez prawdopodobieństwa emisji nowej świecy daje zaktualizowany wektor wiary](/blog/hmm/06-metoda-macierzowa.svg)
+
+Jeden krok: stara wiara razy macierz przejść, razy szansa nowej świecy w każdym trybie, równa się nowa wiara. Potem to samo dla kolejnej świecy.
+
+To się nazywa algorytm w przód. Dekodowanie, czyli ta złota ścieżka z kraty, to jego sprytniejszy kuzyn: zamiast sumować po wszystkich drogach, na każdym kroku zapamiętuje tylko najlepszą. Silnik jest jednak ten sam, mnożenie macierzy krok po kroku. Dlatego HMM liczy się szybko nawet na długiej historii, i dlatego całość da się zamknąć w trzech tabelach, a nie w stu regułach „jeśli, to".
+
 ## Co to daje na wykresie
 
 Bierzesz historię, pozwalasz modelowi rozłożyć ją na tryby i kolorujesz wykres tym, co wyszło.
@@ -76,13 +94,13 @@ Bierzesz historię, pozwalasz modelowi rozłożyć ją na tryby i kolorujesz wyk
 
 Ten sam wykres, tylko pomalowany trybem. I to jest naprawdę przyjemne dla oka. Od razu widać, gdzie rynek drzemał, a gdzie się palił. Tyle że „przyjemne dla oka" i „zarabia" to dwie zupełnie różne rzeczy, o czym za chwilę.
 
-## Czego HMM nie potrafi, i tu jest cała prawda
+## Granice metody, i do czego nie służy
 
-Zrobiłem dokładnie to, co radzę robić z każdym pomysłem. Zamiast się zachwycić, sprawdziłem. Walk-forward, dane, których model wcześniej nie widział, realny koszt doliczony do każdej transakcji.
+Najważniejsze, żeby nie pomylić, do czego ten model w ogóle jest. HMM nie wskazuje kierunku. Nie mówi „kupuj" ani „cena pójdzie w górę". Z samej budowy odpowiada na inne pytanie: jakiego typu jest teraz rynek.
 
-Wynik bez owijania: jako wskaźnik kierunku HMM mi nie wyszedł. „Jesteśmy w trendzie wzrostowym" nie zamieniało się w przewagę, gdy odjąłem koszty i sprawdziłem poza próbą. Etykieta trybu dochodzi z opóźnieniem, bo żeby model uznał, że zaczął się trend, ten trend musi już chwilę potrwać. A wtedy zwykle jest po herbacie.
+Druga rzecz to opóźnienie, i to również nie usterka, tylko cecha. Żeby model uznał, że zaczął się trend, ten trend musi już chwilę potrwać, bo etykieta bierze się z ciągu obserwacji, a nie z jednej świecy. Kto obiecuje wykrycie zwrotu dokładnie w punkcie zwrotnym, sprzedaje złudzenie. HMM tak nie działa i lepiej tego od niego nie oczekiwać.
 
-To nie jest porażka metody, tylko informacja o tym, czym ona naprawdę jest. HMM nie mówi, w którą stronę pójdzie cena. Mówi, jakiego typu jest teraz rynek. I to akurat zgadza się z najtwardszą lekcją, jaką wyniosłem z własnych testów: dało się sensownie przewidywać, jak duży będzie ruch, a nie w którą stronę. HMM jest właśnie o tym „jak duży". O charakterze rynku, nie o kierunku.
+To składa się w spójną całość z twardą prawdą o rynku: łatwiej sensownie ocenić, jak duży będzie ruch, niż w którą stronę pójdzie. HMM gra dokładnie w tej pierwszej lidze. Mówi o charakterze i temperaturze rynku, nie o kierunku. I właśnie tam, jako miara charakteru, jest naprawdę użyteczny.
 
 ## Jak więc tego używać uczciwie
 
