@@ -16,6 +16,8 @@ export type CapData = {
   investors: CapMind[];
   scientists: CapMind[];
   redteam: CapMind;
+  methodsTitle: string;
+  methods: { n: string; p: string }[];
   reportsTitle: string;
   disclaimerTitle: string;
   disclaimer: string;
@@ -75,6 +77,14 @@ export const capitalI18n: Record<Lang, CapData> = {
       { n: 'Psycholog behawioralny', s: 'błędy poznawcze', p: 'Bada, gdzie tłum i sama rada się mylą. Rynek to ludzie z przewidywalnymi błędami: owczym pędem, awersją do straty, nadmierną pewnością, ekstrapolacją ostatniego trendu. Jego dowodami są sentyment wobec spółki oraz dystans ceny od wartości. Pilnuje też rady, czy nie zakochała się w jakości firmy i czy nie ulega narracji. Skrajny strach czyta jako możliwą okazję, skrajną chciwość jako ostrzeżenie.' },
     ],
     redteam: { n: 'Czerwony Zespół', s: 'adwokat diabła', p: 'Jego jedynym zadaniem jest obalić tezę, zanim zaryzykujesz kapitał. Wykonuje premortem: zakłada, że minął rok i inwestycja straciła połowę wartości, po czym opisuje najbardziej prawdopodobną drogę do tej straty. Szuka najsilniejszego kontrargumentu inteligentnej drugiej strony oraz najbardziej kruchego założenia tezy. Dowodem jest dla niego konkretny, wiarygodny scenariusz porażki. Tylko teza, która przetrwa ten atak, trafia do raportu z pełną siłą.' },
+    methodsTitle: 'Dyscyplina i metody',
+    methods: [
+      { n: 'Dane u źródła', p: 'Fundamenty pochodzą prosto ze sprawozdań spółki (SEC EDGAR, 10-K/10-Q). Wskaźniki liczymy sami, a warstwa kontroli odrzuca artefakty i podaje źródło oraz pewność każdej liczby. Koniec z danymi, które mieszają okresy.' },
+      { n: 'Pamięć', p: 'Rada pamięta swoje poprzednie analizy i częstość bazową własnych werdyktów. Każdą nową spółkę zaczyna od perspektywy zewnętrznej, nie od chwytliwej narracji.' },
+      { n: 'Dreams', p: 'Przed werdyktem rada śni trzy ścieżki przyszłości spółki (byczą, bazową, niedźwiedzią), każdą z wyzwalaczem i sygnałem ostrzegawczym. Decyzję waży rozkładem możliwości, nie jednym punktem.' },
+      { n: 'Kalibracja i base rate', p: 'Pewność ma odpowiadać sile dowodu, nie emocji. Rada aktualizuje przekonania bayesowsko i porównuje spółkę z klasą referencyjną wcześniej badanych firm.' },
+      { n: 'Audyt danych', p: 'Statystyk i Czerwony Zespół sprawdzają liczby, zanim wejdą do raportu. Rozbieżności między źródłami są jawnie flagowane, nie wygładzane.' },
+    ],
     reportsTitle: 'Raporty',
     disclaimerTitle: 'Zastrzeżenie',
     disclaimer: 'Materiały w sekcji D-LOGIC Capital mają charakter edukacyjny i dokumentacyjny. Pokazują proces analizy prowadzony na potrzeby własne autora. Nie są poradą inwestycyjną, rekomendacją w rozumieniu przepisów ani zachętą do kupna lub sprzedaży instrumentów finansowych. Inwestowanie wiąże się z ryzykiem utraty kapitału. Każdy podejmuje decyzje na własną odpowiedzialność i powinien skonsultować je z licencjonowanym doradcą. Autor nie odpowiada za decyzje podjęte na podstawie tych treści. Dane pochodzą ze źródeł publicznych i mogą zawierać błędy.',
@@ -122,6 +132,14 @@ export const capitalI18n: Record<Lang, CapData> = {
       { n: 'The behavioral psychologist', s: 'cognitive biases', p: 'He studies where the crowd, and the council itself, goes wrong. The market is people with predictable errors: herding, loss aversion, overconfidence, extrapolating the latest trend. His proof is sentiment toward the company and the distance of price from value. He also watches the council, whether it has fallen in love with the company’s quality and is yielding to the narrative. Extreme fear he reads as a possible opportunity, extreme greed as a warning.' },
     ],
     redteam: { n: 'Red Team', s: "devil's advocate", p: 'Its only job is to break the thesis before you risk capital. It runs a premortem: it assumes a year has passed and the investment has lost half its value, then describes the most likely path to that loss. It looks for the strongest counterargument an intelligent counterparty could make and for the most fragile assumption in the thesis. Its proof is a concrete, credible failure scenario. Only a thesis that survives this attack reaches the report at full strength.' },
+    methodsTitle: 'Discipline and methods',
+    methods: [
+      { n: 'Data at the source', p: "Fundamentals come straight from the company's filings (SEC EDGAR, 10-K/10-Q). We compute the ratios ourselves, and a control layer rejects artifacts and records the source and confidence of every number. No more figures that mix periods." },
+      { n: 'Memory', p: 'The council remembers its own past analyses and the base rate of its verdicts. Every new company starts from the outside view, not the catchy narrative.' },
+      { n: 'Dreams', p: 'Before a verdict the council dreams three future paths for the company (bull, base, bear), each with a trigger and a warning sign. The decision is weighed across the distribution, not a single point.' },
+      { n: 'Calibration and base rates', p: 'Confidence should match the strength of the evidence, not emotion. The council updates its beliefs in a Bayesian way and compares the company to a reference class of firms studied earlier.' },
+      { n: 'Data audit', p: 'The statistician and the Red Team check the numbers before they reach the report. Divergences between sources are flagged openly, not smoothed over.' },
+    ],
     reportsTitle: 'Reports',
     disclaimerTitle: 'Disclaimer',
     disclaimer: 'The materials in the D-LOGIC Capital section are educational and documentary in nature. They show an analytical process carried out for the author’s own purposes. They are not investment advice, a recommendation within the meaning of the regulations, or an inducement to buy or sell financial instruments. Investing carries the risk of losing capital. Each person makes decisions at their own responsibility and should consult a licensed adviser. The author is not liable for decisions made on the basis of this content. The data comes from public sources and may contain errors.',
@@ -169,6 +187,14 @@ export const capitalI18n: Record<Lang, CapData> = {
       { n: 'Verhaltenspsychologe', s: 'kognitive Verzerrungen', p: 'Er untersucht, wo die Masse und der Rat selbst sich irren. Der Markt besteht aus Menschen mit vorhersehbaren Fehlern: Herdentrieb, Verlustaversion, Selbstüberschätzung, Fortschreibung des jüngsten Trends. Seine Beweise sind die Stimmung gegenüber dem Unternehmen sowie der Abstand des Kurses vom Wert. Er achtet auch auf den Rat selbst, ob er sich nicht in die Qualität des Unternehmens verliebt hat und ob er der Erzählung erliegt. Extreme Angst liest er als mögliche Gelegenheit, extreme Gier als Warnung.' },
     ],
     redteam: { n: 'Red Team', s: 'Advocatus Diaboli', p: 'Seine einzige Aufgabe ist es, die These zu widerlegen, bevor du Kapital riskierst. Es führt einen Premortem durch: Es nimmt an, ein Jahr sei vergangen und die Investition habe die Hälfte ihres Wertes verloren, und beschreibt dann den wahrscheinlichsten Weg zu diesem Verlust. Es sucht das stärkste Gegenargument einer intelligenten Gegenseite sowie die fragilste Annahme der These. Beweis ist für es ein konkretes, glaubwürdiges Szenario des Scheiterns. Nur eine These, die diesen Angriff übersteht, gelangt mit voller Kraft in den Bericht.' },
+    methodsTitle: 'Disziplin und Methoden',
+    methods: [
+      { n: 'Daten an der Quelle', p: 'Die Fundamentaldaten stammen direkt aus den Berichten des Unternehmens (SEC EDGAR, 10-K/10-Q). Die Kennzahlen berechnen wir selbst, und eine Kontrollschicht verwirft Artefakte und vermerkt Quelle sowie Konfidenz jeder Zahl. Schluss mit Zahlen, die Zeiträume vermischen.' },
+      { n: 'Gedächtnis', p: 'Der Rat erinnert sich an seine früheren Analysen und an die Basisrate seiner Urteile. Jedes neue Unternehmen beginnt mit der Außensicht, nicht mit dem griffigen Narrativ.' },
+      { n: 'Dreams', p: 'Vor einem Urteil träumt der Rat drei Zukunftspfade des Unternehmens (Bull, Base, Bear), jeden mit Auslöser und Warnsignal. Die Entscheidung wird über die Verteilung gewichtet, nicht über einen einzelnen Punkt.' },
+      { n: 'Kalibrierung und Basisraten', p: 'Die Konfidenz soll der Stärke der Belege entsprechen, nicht der Emotion. Der Rat aktualisiert seine Überzeugungen bayesianisch und vergleicht das Unternehmen mit einer Referenzklasse zuvor untersuchter Firmen.' },
+      { n: 'Datenaudit', p: 'Der Statistiker und das Red Team prüfen die Zahlen, bevor sie in den Bericht gelangen. Abweichungen zwischen Quellen werden offen markiert, nicht geglättet.' },
+    ],
     reportsTitle: 'Berichte',
     disclaimerTitle: 'Haftungsausschluss',
     disclaimer: 'Die Materialien im Bereich D-LOGIC Capital haben bildenden und dokumentierenden Charakter. Sie zeigen den Analyseprozess, der für die eigenen Zwecke des Autors durchgeführt wird. Sie sind keine Anlageberatung, keine Empfehlung im Sinne der gesetzlichen Vorschriften und keine Aufforderung zum Kauf oder Verkauf von Finanzinstrumenten. Mit dem Investieren ist das Risiko eines Kapitalverlusts verbunden. Jeder trifft seine Entscheidungen in eigener Verantwortung und sollte sie mit einem lizenzierten Berater abstimmen. Der Autor haftet nicht für Entscheidungen, die auf Grundlage dieser Inhalte getroffen werden. Die Daten stammen aus öffentlichen Quellen und können Fehler enthalten.',

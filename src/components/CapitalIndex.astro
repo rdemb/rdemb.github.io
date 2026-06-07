@@ -49,6 +49,15 @@ const t = capitalI18n[lang];
   </div>
 </section>
 
+<section class="cap-methods">
+  <h2>{t.methodsTitle}</h2>
+  <div class="cap-mgrid">
+    {t.methods.map((m) => (
+      <div class="cap-method"><span class="mn">{m.n}</span><p>{m.p}</p></div>
+    ))}
+  </div>
+</section>
+
 <section class="cap-reports">
   <h2>{t.reportsTitle}</h2>
   <div class="cap-list">
@@ -96,6 +105,11 @@ const t = capitalI18n[lang];
   .cap-mind .mn{ font-weight:700; font-size:15px; color:var(--text); display:block }
   .cap-mind .ms{ display:block; color:var(--accent); font-size:11px; letter-spacing:.06em; margin:.15rem 0 .6rem; text-transform:lowercase }
   .cap-mind p{ color:var(--muted); font-size:13px; line-height:1.6; margin:0 }
+  .cap-methods{ margin:0 0 2.6rem }
+  .cap-mgrid{ display:grid; grid-template-columns:1fr 1fr; gap:.8rem }
+  .cap-method{ border:1px solid var(--line); border-radius:12px; padding:1.1rem 1.2rem; background:var(--surface) }
+  .cap-method .mn{ display:block; font-weight:700; font-size:14px; color:var(--accent); margin-bottom:.4rem }
+  .cap-method p{ color:var(--muted); font-size:13px; line-height:1.6; margin:0 }
   .cap-reports{ margin:0 0 2.4rem }
   .cap-list{ display:grid; gap:.7rem }
   .cap-card{ display:grid; grid-template-columns:auto 1fr auto; grid-template-areas:"tkr co rec" "ex ex ex" "meta meta meta"; gap:.3rem .8rem; align-items:center; border:1px solid var(--line); border-radius:14px; padding:1.1rem 1.3rem; background:var(--surface); text-decoration:none; transition:border-color .2s, transform .2s }
