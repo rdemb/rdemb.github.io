@@ -2,13 +2,27 @@
 title: "MOCPS, Motion-Grounded Object-Centric Predictive State"
 lang: "de"
 kind: "project"
-excerpt: ""
+excerpt: "Ein kleines JEPA-Weltmodell, das Schwerkraft lernte und einen Körper bekam: ein lebender Organismus, der Mögliches von Unmöglichem zu 96% unterscheidet."
 key: "mocps"
 slug: "mocps"
 ---
 MOCPS ist ein kleines Forschungsprojekt zur Vorhersage von Objektbewegung in einfachen Pixelwelten. Die Frage ist eng: Kann eine aus Bildern extrahierte Repräsentation eine zukünftige Position besser vorhersagen als die letzte bekannte Position?
 
 Technisch ist die aktuelle Version das Rezept `signed_velocity_only` + predictor400. Es ist keine große neue Architektur, sondern ein enger reproduzierbarer Test, der aus einer Reihe negativer und positiver Ergebnisse entstanden ist.
+
+## Unter der Glasglocke — ein lebender Organismus
+
+Die neueste Richtung: diesem Weltmodell einen Körper geben. **Pod Kloszem** ("Unter der Glasglocke") ist ein lebender 3D-Organismus, ein Sternenbesucher in einem polnischen Hinterhof, angetrieben von einem echten JEPA-Modell, das rund um die Uhr auf der CPU läuft. Keine Animation: jedes Bild ist eine Ablesung des Modellzustands.
+
+Für den Organismus haben wir die Welt um **Schwerkraft** erweitert, und das ändert die Regeln. Bei linearer Bewegung konnte ein gelernter Prädiktor eine Konstant-Geschwindigkeits-Baseline nicht schlagen, weil diese bereits alle Informationen hatte. Unter Schwerkraft fehlt ihr die Beschleunigung, und der gelernte Prädiktor **schlägt sie** (4,16 px gegen 5,71 px), weil er das Fallen verinnerlicht hat.
+
+Der Organismus tut dreierlei zugleich, alles gemessen:
+
+- er **sagt** den Schwerkraft-Bogen eines geworfenen Balls **vorher** (die cyanfarbene Spur ist die echte Vorhersage des Modells),
+- er **erinnert** die Position des Balls, wenn er hinter einem Hindernis verschwindet (Objektpermanenz),
+- er **ist überrascht** auf V-JEPA-Art: wir messen die Überraschungslücke, und das Modell zuckt nur zusammen, wenn der Regisseur die Physik bricht (Levitation, Einfrieren, Teleport). Möglich von Unmöglich unterscheidet es zu **96%**.
+
+Ein kleines Eckpanel, das "Auge des Modells", zeigt das rohe 32×32-Bild, mit dem das Gehirn tatsächlich arbeitet, damit man sieht: es sagt Physik aus ~1000 Pixeln voraus, nicht aus der schönen 3D-Grafik. Dies ist ein Test des Physikverständnisses im Geiste von Yann LeCun (möglich gegen unmöglich), verkörpert als Kreatur unter Glas.
 
 ## Was es ist
 

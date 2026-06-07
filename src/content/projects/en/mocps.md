@@ -2,13 +2,27 @@
 title: "MOCPS, Motion-Grounded Object-Centric Predictive State"
 lang: "en"
 kind: "project"
-excerpt: ""
+excerpt: "A small JEPA world model that learned gravity and got a body: a living organism that tells possible from impossible 96% of the time."
 key: "mocps"
 slug: "mocps"
 ---
 MOCPS is a small research project about predicting object motion in simple pixel worlds. The question is narrow: can a representation extracted from images predict a future position better than the last known position?
 
 Technically, the current version is the `signed_velocity_only` + predictor400 recipe. It is not a large new architecture. It is a narrow reproducible test that came out of a sequence of negative and positive results.
+
+## Under the bell jar — a living organism
+
+The newest direction: give this world model a body. **Pod Kloszem** ("Under the Bell Jar") is a living 3D organism, a star visitor in a Polish backyard, driven by a real JEPA model running 24/7 on CPU. Not an animation: every frame is a readout of the model's state.
+
+For the organism we extended the world with **gravity**, and that changes the game. On linear motion a learned predictor could not beat a constant-velocity baseline, because the baseline already had all the information. Under gravity, constant velocity misses the acceleration, and the learned predictor **beats it** (4.16 px vs 5.71 px), because it internalized falling.
+
+The organism does three things at once, each measured:
+
+- it **predicts** the gravitational arc of a thrown ball (the cyan trail is the model's real prediction),
+- it **remembers** the ball's position when it hides behind an occluder (object permanence),
+- it **is surprised** the V-JEPA way: we measure the surprise gap, and the model flinches only when the director breaks physics (levitation, freeze, teleport). It tells possible from impossible **96%** of the time.
+
+A small corner panel, the "model's eye", shows the raw 32×32 image the brain actually works with, so you can see it predicts physics from ~1000 pixels, not from the pretty 3D. This is a physics-understanding test in Yann LeCun's spirit (possible vs impossible), embodied as a creature living under glass.
 
 ## What it is
 
