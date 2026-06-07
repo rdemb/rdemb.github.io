@@ -1,0 +1,88 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import { reportsByLang, capitalSw } from '../../lib/content';
+const lang = 'pl';
+const reports = await reportsByLang(lang);
+const recClass = (r: string) => /unika|sprzeda/i.test(r) ? 'avoid' : (/kup|akumul/i.test(r) ? 'buy' : 'hold');
+---
+<PageLayout lang={lang} title="D-LOGIC Capital · prywatny fundusz agentowy" description="Prywatny fundusz agentowy do długoterminowego inwestowania. Rada szesnastu umysłów rynkowych i naukowych analizuje spółki z rygorem i publikuje uczciwe raporty. Obserwacja i dokumentacja, nie porada inwestycyjna." sw={capitalSw}>
+  <div class="crumbs"><a href="/">D-LOGIC</a> <span>/</span> Capital</div>
+
+  <header class="cap-hero">
+    <span class="cap-eyebrow mono">D-LOGIC CAPITAL · RESEARCH</span>
+    <h1>Fundusz, który myśli na głos</h1>
+    <p class="cap-lead">Prywatny fundusz agentowy do długoterminowego inwestowania. Rada szesnastu umysłów — wielkich inwestorów i naukowców — analizuje każdą spółkę z rygorem, spiera się o nią i publikuje uczciwy raport. To dokumentacja procesu myślenia, nie wyrocznia.</p>
+  </header>
+
+  <section class="cap-pillars">
+    <div class="cap-pillar"><span class="n mono">16</span><span class="l">umysłów w radzie</span><p>Buffett, Graham, Lynch, Munger, Fisher, Dalio, Burry, Marks, Taleb oraz wydział naukowy: Mandelbrot, Soros, statystyk, technolog, historyk, psycholog.</p></div>
+    <div class="cap-pillar"><span class="n mono">0</span><span class="l">automatycznych transakcji</span><p>Rada radzi, człowiek decyduje i wykonuje. Żadnego auto-tradingu, żadnych połączeń z brokerem. Pełna kontrola po stronie inwestora.</p></div>
+    <div class="cap-pillar"><span class="n mono">∞</span><span class="l">rygoru ponad pewnością</span><p>Każda teza przechodzi przez Czerwony Zespół (atak premortem). Gdy dane są słabe albo rada podzielona, mówimy „nie wiem", a nie zmyślamy przekonania.</p></div>
+  </section>
+
+  <section class="cap-how">
+    <h2>Jak powstaje raport</h2>
+    <ol class="cap-flow">
+      <li><b>Twarde dane.</b> Wspólny zestaw faktów (sprawozdania, wskaźniki, wycena) — ten sam dla każdego umysłu, żeby różnice brały się z filozofii, nie z danych.</li>
+      <li><b>Rada i wydział naukowy.</b> Każdy ocenia niezależnie: wielcy inwestorzy liczą wartość i fosę, naukowcy badają ryzyko ogona, sygnał kontra szum, refleksyjność rynku i trwałość przewagi.</li>
+      <li><b>Czerwony Zespół.</b> Adwokat diabła atakuje najsilniejszą tezę. Tylko to, co przeżyje atak, trafia do raportu z pełną siłą.</li>
+      <li><b>Komitet i werdykt.</b> Synteza: gdzie zgoda, gdzie spór, jakie ryzyko, przy jakiej cenie. Wynik to teza z uzasadnieniem, nie zlecenie.</li>
+    </ol>
+  </section>
+
+  <section class="cap-reports">
+    <h2>Raporty</h2>
+    <div class="cap-list">
+      {reports.map((r) => (
+        <a href={`/capital/${r.data.key}/`} class="cap-card">
+          <span class="cap-tkr mono">{r.data.ticker}</span>
+          <span class="cap-co">{r.data.company}</span>
+          <span class={`cap-rec ${recClass(r.data.recommendation)}`}>{r.data.recommendation}</span>
+          <span class="cap-ex">{r.data.excerpt}</span>
+          <span class="cap-meta mono">{r.data.date.replaceAll('-', '.')} · cena {r.data.price}</span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <aside class="cap-disclaimer">
+    <h3>Zastrzeżenie</h3>
+    <p>Materiały publikowane w sekcji D-LOGIC Capital mają charakter <b>edukacyjny i dokumentacyjny</b>. Pokazują proces analizy prowadzony na potrzeby własne autora. <b>Nie stanowią porady inwestycyjnej, rekomendacji w rozumieniu przepisów ani zachęty do kupna lub sprzedaży</b> jakichkolwiek instrumentów finansowych. Inwestowanie wiąże się z ryzykiem utraty kapitału. Każdy podejmuje decyzje na własną odpowiedzialność i powinien skonsultować się z licencjonowanym doradcą. Autor nie ponosi odpowiedzialności za decyzje podjęte na podstawie tych treści. Dane pochodzą ze źródeł publicznych i mogą zawierać błędy.</p>
+  </aside>
+
+  <div class="article-foot"><a class="mono" href="/" style="color:var(--accent)">← strona główna</a></div>
+</PageLayout>
+
+<style>
+  .cap-hero{ margin:0 0 2.4rem }
+  .cap-eyebrow{ color:var(--accent); font-size:12px; letter-spacing:.16em }
+  .cap-hero h1{ font-family:'Space Grotesk Variable',sans-serif; font-size:clamp(30px,6vw,48px); line-height:1.05; margin:.5rem 0 .8rem }
+  .cap-lead{ color:var(--muted); font-size:clamp(15px,2.4vw,18px); line-height:1.6; max-width:60ch }
+  .cap-pillars{ display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin:0 0 2.6rem }
+  .cap-pillar{ border:1px solid var(--line); border-radius:14px; padding:1.3rem 1.2rem; background:var(--surface) }
+  .cap-pillar .n{ font-size:32px; font-weight:700; color:var(--accent); display:block; line-height:1 }
+  .cap-pillar .l{ display:block; font-size:12px; letter-spacing:.04em; text-transform:uppercase; color:var(--text); margin:.4rem 0 .6rem; font-weight:600 }
+  .cap-pillar p{ color:var(--muted); font-size:13px; line-height:1.55; margin:0 }
+  .cap-how{ margin:0 0 2.6rem }
+  .cap-how h2, .cap-reports h2{ font-family:'Space Grotesk Variable',sans-serif; font-size:22px; margin:0 0 1rem }
+  .cap-flow{ list-style:none; counter-reset:f; padding:0; margin:0; display:grid; gap:.7rem }
+  .cap-flow li{ position:relative; counter-increment:f; padding:.9rem 1rem .9rem 3rem; border:1px solid var(--line); border-radius:12px; background:var(--surface); color:var(--muted); font-size:14px; line-height:1.55 }
+  .cap-flow li::before{ content:counter(f); position:absolute; left:1rem; top:.9rem; width:1.4rem; height:1.4rem; border-radius:50%; background:var(--accent); color:#1a1205; font-family:'JetBrains Mono Variable',monospace; font-size:12px; font-weight:700; display:grid; place-items:center }
+  .cap-flow b{ color:var(--text) }
+  .cap-reports{ margin:0 0 2.4rem }
+  .cap-list{ display:grid; gap:.7rem }
+  .cap-card{ display:grid; grid-template-columns:auto 1fr auto; grid-template-areas:"tkr co rec" "ex ex ex" "meta meta meta"; gap:.3rem .8rem; align-items:center; border:1px solid var(--line); border-radius:14px; padding:1.1rem 1.3rem; background:var(--surface); text-decoration:none; transition:border-color .2s, transform .2s }
+  .cap-card:hover{ border-color:rgba(232,178,58,.45); transform:translateY(-2px) }
+  .cap-tkr{ grid-area:tkr; font-weight:700; font-size:16px; color:var(--text) }
+  .cap-co{ grid-area:co; color:var(--muted); font-size:13px }
+  .cap-rec{ grid-area:rec; font-size:11.5px; font-weight:700; padding:4px 10px; border-radius:999px; white-space:nowrap }
+  .cap-rec.buy{ background:rgba(74,222,128,.14); color:#4ade80; border:1px solid rgba(74,222,128,.3) }
+  .cap-rec.hold{ background:rgba(232,178,58,.14); color:var(--accent); border:1px solid rgba(232,178,58,.3) }
+  .cap-rec.avoid{ background:rgba(232,103,90,.14); color:#e8675a; border:1px solid rgba(232,103,90,.3) }
+  .cap-ex{ grid-area:ex; color:var(--muted); font-size:13.5px; line-height:1.5; margin-top:.3rem }
+  .cap-meta{ grid-area:meta; color:var(--muted); opacity:.7; font-size:11.5px; margin-top:.2rem }
+  .cap-disclaimer{ border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:10px; padding:1.1rem 1.3rem; background:var(--surface-2); margin:0 0 2rem }
+  .cap-disclaimer h3{ font-size:13px; text-transform:uppercase; letter-spacing:.08em; margin:0 0 .5rem; color:var(--text) }
+  .cap-disclaimer p{ color:var(--muted); font-size:12.5px; line-height:1.6; margin:0 }
+  @media (max-width:680px){ .cap-pillars{ grid-template-columns:1fr } }
+</style>

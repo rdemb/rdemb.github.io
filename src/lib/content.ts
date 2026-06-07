@@ -18,6 +18,15 @@ export const blogSw = { pl: '/blog/', en: '/en/blog/', de: '/de/blog/' };
 export const postSw = (key: string) => ({ pl: `/blog/${key}/`, en: `/en/blog/${key}/`, de: `/de/blog/${key}/` });
 export const labSw = (key: string) => ({ pl: `/projekty/${key}/`, en: `/en/projekty/${key}/`, de: `/de/projekty/${key}/` });
 
+export async function reportsByLang(lang: Lang) {
+  const all = await getCollection('reports');
+  return all
+    .filter((p) => p.data.lang === lang)
+    .sort((a, b) => b.data.date.localeCompare(a.data.date));
+}
+export const capitalSw = { pl: '/capital/', en: '/en/capital/', de: '/de/capital/' };
+export const reportSw = (key: string) => ({ pl: `/capital/${key}/`, en: `/en/capital/${key}/`, de: `/de/capital/${key}/` });
+
 export const kindLabel: Record<Lang, Record<string, string>> = {
   pl: { project: 'projekt', reflection: 'refleksja', trading: 'trading' },
   en: { project: 'project', reflection: 'reflection', trading: 'trading' },

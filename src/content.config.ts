@@ -27,4 +27,21 @@ const projects = defineCollection({
   }),
 });
 
-export const collections = { blog, projects };
+const reports = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/reports', generateId: ({ entry }) => entry.replace(/\.(md|mdx)$/, '') }),
+  schema: z.object({
+    title: z.string(),
+    ticker: z.string(),
+    company: z.string(),
+    date: z.string(),
+    recommendation: z.string(),
+    confidence: z.string().default(''),
+    price: z.string().default(''),
+    excerpt: z.string().default(''),
+    lang: z.enum(['pl', 'en', 'de']).default('pl'),
+    key: z.string(),
+    slug: z.string(),
+  }),
+});
+
+export const collections = { blog, projects, reports };
