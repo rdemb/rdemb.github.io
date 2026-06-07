@@ -24,6 +24,39 @@ Organizm robi trzy rzeczy naraz, każdą mierzymy:
 
 To jest test rozumienia fizyki w duchu Yanna LeCuna (możliwe kontra niemożliwe), ucieleśniony jako stworzenie żyjące pod szkłem.
 
+## Co widać w wizualizacji
+
+Wizualizacja to widok z boku świata, w którym żyje organizm. Każdy element coś znaczy, nic nie jest dekoracją:
+
+- **Biała kula** — prawdziwa piłka, ground truth. Realny stan świata, który serwer prowadzi 24/7.
+- **Cyjanowy łuk** — predykcja modelu: gdzie według niego poleci piłka. Realny odczyt z sieci, nie animacja.
+- **Cyjanowy znacznik z delikatną obręczą** — przekonanie modelu: gdzie myśli, że jest piłka. Gdy piłka znika za przeszkodą, znacznik zostaje i przesuwa się tam, gdzie model się jej spodziewa (trwałość obiektu). Obręcz rośnie, gdy pewność spada.
+- **Oko modelu (lewy dolny róg, 32×32 px)** — surowy obraz, którym naprawdę operuje mózg. Biała plamka to piłka tak, jak ją widzi (rozmyta, 1024 piksele), cyjanowa kropka to jego predykcja. To czyni reprezentację widzialną: model przewiduje fizykę z tego, nie z ładnej grafiki 3D.
+- **Ciemny panel z cyjanową krawędzią** — przeszkoda (okluder). Gdy piłka za nią wpada, znika z oka modelu i zaczyna się test trwałości.
+- **Koralowy błysk i fala** — zaskoczenie. Model wzdryga się tylko, gdy świat złamie fizykę (piłka nie spada, zamiera albo teleportuje się). Na zwykłym locie pozostaje spokojny.
+- **Siatka podłogi** — płaszczyzna odniesienia fizyki, wspólny układ współrzędnych prawdy i predykcji.
+- **Panel danych (prawy górny róg)** — żywe metryki: „rozumie fizykę" (jak często poprawnie odróżnia możliwe od niemożliwego), pewność, stan (widzi / pamięta / zaskoczony), liczniki trafień i zaskoczeń.
+- **Przycisk „złam fizykę"** — ty jako reżyser: kliknięcie zleca serwerowi pułapkę (zdarzenie niemożliwe), żeby sprawdzić, czy model się zorientuje.
+
+## Badania i wyniki
+
+**Świat.** Piłka leci pod stałą grawitacją, odbija się od ziemi, czasem znika za przeszkodą. Model widzi tylko rzut 32×32 piksele (te same, które pokazuje oko modelu), nigdy współrzędnych, nigdy etykiet.
+
+**Model.** Mały JEPA (joint-embedding predictive architecture, kierunek forsowany przez LeCuna): enkoder, predyktor latentu i cel-enkoder EMA. Uczy się przewidywać przyszły *latent*, nie piksele. Trening kilka minut na CPU.
+
+**Jak mierzymy, wszystko przeciw uczciwym baseline'om:**
+
+- **Grawitacja.** Liniowy probe odczytuje pozycję z predykcji modelu. Model trafia w przyszłą pozycję na **4.16 px**, baseline „stała prędkość" na **5.71 px**. Model bije go o **1.55 px**, bo zinternalizował przyspieszenie, którego baseline z definicji nie ma. To odwrotność wcześniejszego wyniku: na ruchu liniowym uczenie nie pobiło baseline'u (ten miał już całą informację), a pod grawitacją jest czego się uczyć.
+- **Możliwe kontra niemożliwe (metoda V-JEPA).** W chwili wejścia za przeszkodę model zapisuje, czego się spodziewa; przy odsłonięciu porównujemy to z rzeczywistością w przestrzeni latentu. Na możliwym zaskoczenie jest małe (0.13), na niemożliwym duże (0.79). Rozróżnia możliwe od niemożliwego w **96%**.
+
+**Po drodze, uczciwie.** Pierwsze przebiegi się sypały: znormalizowana strata pozwalała reprezentacji zapaść się (effective rank 3.8, latent nieczytelny). Naprawa to surowa strata MSE plus VICReg (variance i covariance), która podniosła rank do 11 i uczyniła latent czytelnym. Drugi problem: organizm mylił możliwe z niemożliwym, bo model widział tylko start łuku, naprawione losową rozgrzewką świata (kontekst z każdej fazy lotu).
+
+## Wnioski
+
+Mały model świata, trenowany bez etykiet na 1024 pikselach, **nauczył się grawitacji na tyle, że bije bezpamięciowy baseline na pełnej obserwacji**, i to w tym samym świecie, w którym wcześniejszy wynik pokazał, że na ruchu liniowym uczenie nie pomaga. Dostał ciało: przewiduje łuk, trzyma piłkę w pamięci za przeszkodą i wzdryga się tylko na cud, 96% poprawnie. Oko modelu pokazuje, że wszystko to dzieje się na biednym, rozmytym obrazie, więc to dowód reprezentacji, a nie efekt grafiki.
+
+**Czego to nie znaczy.** To wciąż skala zabawki: 32 piksele, jedna piłka, rzut boczny. Nie benchmark, nie SOTA, nie dowód ogólnego rozumienia fizyki ani twierdzenie, że JEPA „działa". To uczciwie ograniczony, w pełni reprodukowalny wynik, i żywy organizm, który pokazuje go na żywo, 24/7, na CPU.
+
 ## Co to jest
 
 MOCPS oznacza **Motion-Grounded Object-Centric Predictive State**. W praktyce jest to mały CPU-friendly diagnostyk sprawdzający, czy da się zbudować predykcyjny stan latentny, który:

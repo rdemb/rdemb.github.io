@@ -21,9 +21,12 @@ const heroAlt = {
   de: 'Animation: zwei Bälle kreuzen sich, einer wird verdeckt und ändert seine Bewegung; beim Wiederauftauchen muss das Ziel erkannt werden',
 }[lang];
 const heroCap = {
-  en: 'Two identical balls cross, one vanishes and changes its motion. On reappearance, which one is the target? Memoryless: 18%, learned recurrent state: 100%.',
-  de: 'Zwei identische Bälle kreuzen sich, einer verschwindet und ändert seine Bewegung. Welcher ist nach dem Wiederauftauchen das Ziel? Gedächtnislos: 18%, gelernter rekurrenter Zustand: 100%.',
+  en: "A living organism driven by the real JEPA model: it predicts a thrown ball's gravity arc, holds it in mind behind cover, and flinches only when physics breaks. Possible vs impossible, 96%, live on CPU.",
+  de: 'Ein lebender Organismus, angetrieben vom echten JEPA-Modell: er sagt den Schwerkraft-Bogen eines geworfenen Balls vorher, behält ihn hinter Deckung im Sinn und zuckt nur zusammen, wenn die Physik bricht. Möglich gegen unmöglich, 96%, live auf CPU.',
 }[lang];
+const liveCta = { en: 'Open the organism fullscreen →', de: 'Organismus im Vollbild öffnen →' }[lang];
+const liveTag = { en: 'live model · fullscreen', de: 'lebendes Modell · Vollbild' }[lang];
+const liveTitle = { en: 'Pod Kloszem — a living organism', de: 'Pod Kloszem — ein lebender Organismus' }[lang];
 ---
 <PageLayout lang={lang} title={`${entry.data.title} · D-LOGIC studio`} description={entry.data.excerpt} sw={labSw(entry.data.key)}>
   <div class="crumbs"><a href="/">D-LOGIC</a> <span>/</span> <a href="/#lab">{labW}</a> <span>/</span> {entry.data.key}</div>
@@ -34,12 +37,27 @@ const heroCap = {
   </header>
   {entry.data.key === 'clawbot' && <ClawbotScope lang={lang} />}
   {entry.data.key === 'mocps' && (
-    <figure class="mocps-hero">
-      <img src="/mocps/mocps_hero.gif" alt={heroAlt} />
-      <figcaption>{heroCap}</figcaption>
-    </figure>
+    <a class="mocps-live" href="/mocps/live.html" target="_blank" rel="noopener">
+      <span class="ml-badge"><span class="ml-dot"></span>{liveTag}</span>
+      <span class="ml-title">{liveTitle}</span>
+      <span class="ml-sub">{heroCap}</span>
+      <span class="ml-cta">{liveCta}</span>
+    </a>
   )}
   {entry.data.key === 'mocps' && <RepoBrowser lang={lang} />}
   <article class="prose"><Content /></article>
   <div class="article-foot"><a class="mono" href="/#lab" style="color:var(--accent)">← lab</a></div>
 </PageLayout>
+
+<style>
+  .mocps-live{ display:block; margin:0 0 2.2rem; padding:1.8rem 1.6rem; border:1px solid var(--line); border-radius:16px;
+    background:radial-gradient(130% 150% at 50% -10%, #101c36 0%, #0a0e1a 45%, #06080e 100%); text-decoration:none;
+    position:relative; overflow:hidden; transition:border-color .2s ease, transform .2s ease }
+  .mocps-live::after{ content:""; position:absolute; inset:0; background:linear-gradient(115deg, transparent 40%, rgba(125,226,255,.06) 50%, transparent 60%); pointer-events:none }
+  .mocps-live:hover{ border-color:rgba(125,226,255,.4); transform:translateY(-2px) }
+  .mocps-live .ml-badge{ display:inline-flex; align-items:center; gap:7px; font-family:'JetBrains Mono Variable',monospace; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:#7DE2FF }
+  .mocps-live .ml-dot{ width:7px; height:7px; border-radius:50%; background:#7DE2FF; box-shadow:0 0 8px #7DE2FF }
+  .mocps-live .ml-title{ display:block; font-family:'Space Grotesk Variable',sans-serif; font-size:clamp(22px,4.5vw,30px); color:var(--text); margin:.5rem 0 .55rem }
+  .mocps-live .ml-sub{ display:block; color:var(--muted); font-size:14px; line-height:1.6; max-width:56ch }
+  .mocps-live .ml-cta{ display:inline-block; margin-top:1rem; font-weight:600; font-size:14px; color:#7DE2FF }
+</style>

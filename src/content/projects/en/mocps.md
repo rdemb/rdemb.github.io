@@ -24,6 +24,39 @@ The organism does three things at once, each measured:
 
 A small corner panel, the "model's eye", shows the raw 32×32 image the brain actually works with, so you can see it predicts physics from ~1000 pixels, not from the pretty 3D. This is a physics-understanding test in Yann LeCun's spirit (possible vs impossible), embodied as a creature living under glass.
 
+## What you see in the visualization
+
+The visualization is a side view of the world the organism lives in. Every element means something, nothing is decoration:
+
+- **White ball** — the real ball, ground truth. The actual world state the server runs 24/7.
+- **Cyan arc** — the model's prediction: where it thinks the ball will go. A real readout from the network, not an animation.
+- **Cyan marker with a faint ring** — the model's belief: where it thinks the ball is. When the ball hides behind the occluder, the marker stays and moves to where the model expects it (object permanence). The ring grows as confidence drops.
+- **Model's eye (bottom-left, 32×32 px)** — the raw image the brain actually works with. The white blob is the ball as it sees it (blurry, 1024 pixels), the cyan dot is its prediction. This makes the representation visible: the model predicts physics from this, not from the pretty 3D.
+- **Dark panel with a cyan edge** — the obstacle (occluder). When the ball passes behind it, it disappears from the model's eye and the permanence test begins.
+- **Coral flash and ripple** — surprise. The model flinches only when the world breaks physics (the ball does not fall, freezes, or teleports). On an ordinary flight it stays calm.
+- **Floor grid** — the physics reference plane, the shared coordinate frame of truth and prediction.
+- **Data panel (top-right)** — live metrics: "physics grasp" (how often it correctly tells possible from impossible), confidence, state (sees / holds / surprised), counters of hits and surprises.
+- **"Break physics" button** — you as the director: a click asks the server for a trap (an impossible event), to test whether the model notices.
+
+## Research and results
+
+**World.** A ball flies under constant gravity, bounces off the floor, sometimes hides behind an obstacle. The model only sees a 32×32 pixel projection (the same one the model's eye shows), never coordinates, never labels.
+
+**Model.** A tiny JEPA (joint-embedding predictive architecture, the direction Yann LeCun champions): an encoder, a latent predictor, and an EMA target encoder. It learns to predict the future *latent*, not pixels. A few minutes of training on CPU.
+
+**How we measure, everything against honest baselines:**
+
+- **Gravity.** A linear probe reads the position out of the model's prediction. The model hits the future position to **4.16 px**, the constant-velocity baseline to **5.71 px**. The model beats it by **1.55 px**, because it internalized the acceleration the baseline structurally lacks. This is the mirror image of the earlier result: on linear motion learning could not beat the baseline (it already had all the information), under gravity there is something to learn.
+- **Possible vs impossible (the V-JEPA way).** At the moment of entering the occluder the model records what it expects; on reveal we compare that to reality in latent space. On possible events the surprise is small (0.13), on impossible ones large (0.79). It tells possible from impossible **96%** of the time.
+
+**Along the way, honestly.** The first runs collapsed: the normalized loss let the representation fold in on itself (effective rank 3.8, latent unreadable). The fix is a raw MSE loss plus VICReg (variance and covariance), which raised the rank to 11 and made the latent readable. The second problem: the organism confused possible with impossible because the model only ever saw the start of the arc, fixed with a random world warm-up (context from every phase of flight).
+
+## Conclusions
+
+A tiny world model, trained without labels on 1024 pixels, **learned gravity well enough to beat a memoryless baseline on full observation**, in the very world where the earlier result showed learning does not help on linear motion. It got a body: it predicts the arc, holds the ball in mind behind cover, and flinches only at the impossible, 96% correctly. The model's eye shows all of this happens on a poor, blurry image, so it is a proof about the representation, not a graphics effect.
+
+**What it does not mean.** This is still toy scale: 32 pixels, one ball, a side view. Not a benchmark, not SOTA, not proof of general physics understanding, not a claim that JEPA "works". It is an honestly bounded, fully reproducible result, and a living organism that shows it live, 24/7, on CPU.
+
 ## What it is
 
 MOCPS means **Motion-Grounded Object-Centric Predictive State**. In practice, it is a small CPU-friendly diagnostic that tests whether a predictive latent state can:

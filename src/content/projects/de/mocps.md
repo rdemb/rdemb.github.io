@@ -24,6 +24,39 @@ Der Organismus tut dreierlei zugleich, alles gemessen:
 
 Ein kleines Eckpanel, das "Auge des Modells", zeigt das rohe 32×32-Bild, mit dem das Gehirn tatsächlich arbeitet, damit man sieht: es sagt Physik aus ~1000 Pixeln voraus, nicht aus der schönen 3D-Grafik. Dies ist ein Test des Physikverständnisses im Geiste von Yann LeCun (möglich gegen unmöglich), verkörpert als Kreatur unter Glas.
 
+## Was man in der Visualisierung sieht
+
+Die Visualisierung ist eine Seitenansicht der Welt, in der der Organismus lebt. Jedes Element bedeutet etwas, nichts ist Dekoration:
+
+- **Weiße Kugel** — der echte Ball, Ground Truth. Der reale Weltzustand, den der Server rund um die Uhr führt.
+- **Cyanfarbener Bogen** — die Vorhersage des Modells: wohin der Ball seiner Meinung nach fliegt. Eine echte Ablesung aus dem Netz, keine Animation.
+- **Cyanfarbener Marker mit zartem Ring** — die Überzeugung des Modells: wo es den Ball vermutet. Wenn der Ball hinter dem Hindernis verschwindet, bleibt der Marker und wandert dorthin, wo das Modell ihn erwartet (Objektpermanenz). Der Ring wächst, wenn die Sicherheit sinkt.
+- **Auge des Modells (unten links, 32×32 px)** — das rohe Bild, mit dem das Gehirn tatsächlich arbeitet. Der weiße Fleck ist der Ball, wie es ihn sieht (verschwommen, 1024 Pixel), der cyanfarbene Punkt seine Vorhersage. Das macht die Repräsentation sichtbar: das Modell sagt Physik daraus voraus, nicht aus der schönen 3D-Grafik.
+- **Dunkles Panel mit cyanfarbener Kante** — das Hindernis (Okkluder). Wenn der Ball dahinter gerät, verschwindet er aus dem Auge des Modells und der Permanenztest beginnt.
+- **Korallenfarbenes Aufblitzen und Welle** — Überraschung. Das Modell zuckt nur zusammen, wenn die Welt die Physik bricht (der Ball fällt nicht, erstarrt oder teleportiert). Bei normalem Flug bleibt es ruhig.
+- **Bodengitter** — die Bezugsebene der Physik, das gemeinsame Koordinatensystem von Wahrheit und Vorhersage.
+- **Datenpanel (oben rechts)** — Live-Metriken: „Physik verstanden" (wie oft es Mögliches von Unmöglichem korrekt unterscheidet), Sicherheit, Zustand (sieht / hält / überrascht), Zähler für Treffer und Überraschungen.
+- **Knopf „Physik brechen"** — du als Regisseur: ein Klick bittet den Server um eine Falle (ein unmögliches Ereignis), um zu testen, ob das Modell es merkt.
+
+## Forschung und Ergebnisse
+
+**Welt.** Ein Ball fliegt unter konstanter Schwerkraft, prallt vom Boden ab, verschwindet manchmal hinter einem Hindernis. Das Modell sieht nur eine 32×32-Pixel-Projektion (dieselbe, die das Auge des Modells zeigt), nie Koordinaten, nie Etiketten.
+
+**Modell.** Ein winziges JEPA (Joint-Embedding Predictive Architecture, die Richtung, die Yann LeCun vertritt): ein Encoder, ein Latent-Prädiktor und ein EMA-Ziel-Encoder. Es lernt, den zukünftigen *Latent* vorherzusagen, nicht Pixel. Wenige Minuten Training auf der CPU.
+
+**Wie wir messen, alles gegen ehrliche Baselines:**
+
+- **Schwerkraft.** Ein linearer Probe liest die Position aus der Vorhersage des Modells. Das Modell trifft die zukünftige Position auf **4,16 px**, die Konstant-Geschwindigkeits-Baseline auf **5,71 px**. Das Modell schlägt sie um **1,55 px**, weil es die Beschleunigung verinnerlicht hat, die der Baseline strukturell fehlt. Das ist das Spiegelbild des früheren Ergebnisses: bei linearer Bewegung konnte Lernen die Baseline nicht schlagen (sie hatte bereits alle Informationen), unter Schwerkraft gibt es etwas zu lernen.
+- **Möglich gegen unmöglich (die V-JEPA-Methode).** Im Moment des Eintritts hinter das Hindernis hält das Modell fest, was es erwartet; beim Wiederauftauchen vergleichen wir das mit der Realität im Latentraum. Bei möglichen Ereignissen ist die Überraschung klein (0,13), bei unmöglichen groß (0,79). Es unterscheidet Mögliches von Unmöglichem zu **96%**.
+
+**Unterwegs, ehrlich.** Die ersten Durchläufe brachen zusammen: der normalisierte Verlust ließ die Repräsentation in sich zusammenfallen (effektiver Rang 3,8, Latent unlesbar). Die Lösung ist ein roher MSE-Verlust plus VICReg (Varianz und Kovarianz), der den Rang auf 11 hob und den Latent lesbar machte. Das zweite Problem: der Organismus verwechselte Möglich mit Unmöglich, weil das Modell nur den Anfang des Bogens sah, behoben durch ein zufälliges Aufwärmen der Welt (Kontext aus jeder Flugphase).
+
+## Schlussfolgerungen
+
+Ein winziges Weltmodell, ohne Etiketten auf 1024 Pixeln trainiert, **lernte Schwerkraft gut genug, um eine gedächtnislose Baseline bei voller Beobachtung zu schlagen**, und zwar in genau der Welt, in der das frühere Ergebnis zeigte, dass Lernen bei linearer Bewegung nicht hilft. Es bekam einen Körper: es sagt den Bogen vorher, behält den Ball hinter Deckung im Sinn und zuckt nur beim Unmöglichen zusammen, zu 96% korrekt. Das Auge des Modells zeigt, dass all das auf einem armen, verschwommenen Bild geschieht, also ist es ein Beweis über die Repräsentation, kein Grafikeffekt.
+
+**Was es nicht bedeutet.** Das ist noch Spielzeugmaßstab: 32 Pixel, ein Ball, eine Seitenansicht. Kein Benchmark, kein SOTA, kein Beweis allgemeinen Physikverständnisses, keine Behauptung, dass JEPA „funktioniert". Es ist ein ehrlich begrenztes, voll reproduzierbares Ergebnis, und ein lebender Organismus, der es live zeigt, rund um die Uhr, auf der CPU.
+
 ## Was es ist
 
 MOCPS bedeutet **Motion-Grounded Object-Centric Predictive State**. Praktisch ist es eine kleine CPU-freundliche Diagnostik, die prüft, ob ein prädiktiver latenter Zustand:
