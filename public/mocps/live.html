@@ -670,7 +670,10 @@ function liveConnect(url){ if(!url) return; LIVE.url=url; try{ localStorage.setI
   async function poll(){
     try{ const r=await fetch(base+"/state",{cache:"no-store"}); if(!r.ok) throw 0;
       LIVE.state=await r.json(); fails=0; if(!LIVE.on){ LIVE.on=true; updateLiveBadge(); } }
-    catch(_){ if(++fails>6 && LIVE.on){ LIVE.on=false; updateLiveBadge(); } }
+    catch(_){ if(++fails>6 && LIVE.on){ LIVE.on=false; updateLiveBadge(); }
+      // the quick tunnel may have rotated (watchdog restart): re-read the published URL and follow it
+      if(fails%30===0){ try{ const j=await (await fetch("/szalka-live.json",{cache:"no-store"})).json();
+        if(j && j.url && j.url.replace(/\/+$/,"")!==base){ liveConnect(j.url); } }catch(_){} } }
   }
   if(LIVE._timer) clearInterval(LIVE._timer);
   LIVE._timer=setInterval(poll,150); poll(); }
