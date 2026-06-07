@@ -695,6 +695,9 @@ function applyLive(dt){ const L=LIVE.state; if(!L){ return; }
   const ref=new THREE.Mesh(new THREE.PlaneGeometry(220,220), new THREE.MeshStandardMaterial({color:0x070a12, roughness:1, metalness:0}));
   ref.rotation.x=-Math.PI/2; ref.position.y=-0.03; scene.add(ref);
   try{ ball.material.map=null; ball.material.color.set(0xffffff); ball.material.roughness=0.35; ball.material.emissive.set(0x1a2230); ball.material.emissiveIntensity=0.4; ball.material.needsUpdate=true; sprite(ball,0xffffff,1.7,0.5); }catch(_){}
+  // minimal research HUD: drop the 1990s-yard narrative, keep data + legend
+  ['.livebar','.switch','.hud-title','.hud-log','.hud-hint'].forEach(s=>{ const e=document.querySelector(s); if(e) e.style.display='none'; });
+  try{ document.getElementById('cTL').textContent='◢ POD KLOSZEM // MODEL ŚWIATA JEPA'; }catch(_){}
 })();
 
 /* boot + loop */
