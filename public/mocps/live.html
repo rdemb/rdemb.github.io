@@ -640,24 +640,33 @@ async function liveBoot(){ let u=LIVE.url;
 const SRV={ size:32, ground:29 };
 function sx(x){ return (x-15.5)*0.82; }            // server px x -> scene x  (~[-11,11])
 function sy(y){ return BR + (SRV.ground - y)*0.40; } // server px y (down) -> scene height
-const liveWall=new THREE.Mesh(new THREE.BoxGeometry(4.4,8.2,2.0),
-  new THREE.MeshStandardMaterial({map:facade,roughness:0.95,metalness:0.0,color:0x6f6a60}));
-liveWall.position.set(sx(12),4.1,1.4); liveWall.castShadow=true; liveWall.receiveShadow=true; liveWall.visible=false; scene.add(liveWall);
+const liveWall=new THREE.Mesh(new THREE.BoxGeometry(3.0,9.0,0.5),
+  new THREE.MeshStandardMaterial({color:0x0d1524,roughness:0.45,metalness:0.15,transparent:true,opacity:0.8,emissive:0x0b1c38,emissiveIntensity:0.3}));
+liveWall.position.set(sx(12),4.3,1.2); liveWall.visible=false; scene.add(liveWall);
+const liveWallEdge=new THREE.Mesh(new THREE.BoxGeometry(3.04,0.06,0.54), new THREE.MeshBasicMaterial({color:0x7DE2FF,transparent:true,opacity:0.5}));
+liveWallEdge.position.set(sx(12),8.8,1.2); liveWallEdge.visible=false; scene.add(liveWallEdge);
 const liveBadge=document.createElement("div");
 liveBadge.style.cssText="position:fixed;top:62px;right:18px;z-index:40;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;letter-spacing:.12em;padding:5px 11px;border-radius:7px;border:1px solid var(--line);background:var(--panel);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);pointer-events:none";
 document.body.appendChild(liveBadge);
 function updateLiveBadge(){ liveBadge.textContent=LIVE.on?"● ŻYWY MODEL":"○ DEMO (offline)"; liveBadge.style.color=LIVE.on?"#7DE2FF":"var(--muted)"; }
 updateLiveBadge();
 function liveConnect(url){ if(!url) return; LIVE.url=url; try{ localStorage.setItem("szalka-live",url); }catch(_){}
-  try{ const es=new EventSource(url.replace(/\/+$/,"")+"/stream");
-    es.onmessage=ev=>{ try{ LIVE.state=JSON.parse(ev.data); if(!LIVE.on){ LIVE.on=true; updateLiveBadge(); } }catch(_){} };
-    es.onerror=()=>{ if(LIVE.on){ LIVE.on=false; updateLiveBadge(); } };
-  }catch(e){ console.warn("live source off",e); } }
+  // Poll /state instead of SSE: Cloudflare quick tunnels buffer event-streams,
+  // so a plain GET is what actually flows through to the published page.
+  const base=url.replace(/\/+$/,""); let fails=0;
+  async function poll(){
+    try{ const r=await fetch(base+"/state",{cache:"no-store"}); if(!r.ok) throw 0;
+      LIVE.state=await r.json(); fails=0; if(!LIVE.on){ LIVE.on=true; updateLiveBadge(); } }
+    catch(_){ if(++fails>6 && LIVE.on){ LIVE.on=false; updateLiveBadge(); } }
+  }
+  if(LIVE._timer) clearInterval(LIVE._timer);
+  LIVE._timer=setInterval(poll,150); poll(); }
 window.szalkaLive=liveConnect;  // console hook: szalkaLive("https://tunnel...")
 function applyLive(dt){ const L=LIVE.state; if(!L){ return; }
   SRV.ground=L.ground_y||29; SRV.size=L.size||32;
-  if(L.occluder){ const cx=(sx(L.occluder.x0)+sx(L.occluder.x1))/2; liveWall.position.x=cx;
-    liveWall.scale.x=Math.max(0.5,(sx(L.occluder.x1)-sx(L.occluder.x0))/4.4); liveWall.visible=true; }
+  if(L.occluder){ const cx=(sx(L.occluder.x0)+sx(L.occluder.x1))/2, sc=Math.max(0.5,(sx(L.occluder.x1)-sx(L.occluder.x0))/3.0);
+    liveWall.position.x=cx; liveWall.scale.x=sc; liveWall.visible=true;
+    liveWallEdge.position.x=cx; liveWallEdge.scale.x=sc; liveWallEdge.visible=true; }
   B.pos.set(sx(L.ball.x), sy(L.ball.y), 0); B.hidden=!!L.ball.hidden;
   M.belief.set(sx(L.belief.x), sy(L.belief.y), 0);
   if(L.confidence!=null) M.conf=L.confidence;
@@ -669,6 +678,24 @@ function applyLive(dt){ const L=LIVE.state; if(!L){ return; }
   G.to.set(M.belief.x, M.belief.y+2.2, 0.0); G.pos.lerp(G.to, Math.min(1,dt*2.2));
   if(L.arc && L.arc.length){ for(let i=0;i<ARCN;i++){ const p=L.arc[Math.min(i,L.arc.length-1)]; arcA[i*3]=sx(p[0]); arcA[i*3+1]=sy(p[1]); arcA[i*3+2]=0; } arcG.attributes.position.needsUpdate=true; }
 }
+
+/* ===== clean research-grade scene (replaces the 1990s yard) ===== */
+(function cleanScene(){
+  WORLD.visible=false;                                   // hide asphalt, blocks, Maluch, trzepak, lamp, bench
+  try{ dust.visible=false; }catch(_){}
+  try{ leaves.forEach(l=>l.visible=false); }catch(_){}
+  try{ gShell.visible=false; gRings.forEach(r=>r.visible=false); gTrail.visible=false; }catch(_){}  // quiet the visitor to a calm mind-node
+  scene.fog=new THREE.Fog(0x070b14, 26, 140);
+  const c=document.createElement("canvas"); c.width=8; c.height=256; const g=c.getContext("2d");
+  const gr=g.createLinearGradient(0,0,0,256); gr.addColorStop(0,"#0c1322"); gr.addColorStop(0.55,"#080c15"); gr.addColorStop(1,"#05060b");
+  g.fillStyle=gr; g.fillRect(0,0,8,256); const t=new THREE.CanvasTexture(c); t.colorSpace=THREE.SRGBColorSpace; scene.background=t;
+  hemi.color.set(0x9fb4d6); hemi.groundColor.set(0x0a1018); hemi.intensity=0.55;
+  sun.color.set(0xeaf2ff); sun.intensity=0.85; sun.position.set(-10,32,20); sun.castShadow=false;
+  const grid=new THREE.GridHelper(180, 90, 0x243650, 0x111824); grid.position.y=0; scene.add(grid);            // physics floor
+  const ref=new THREE.Mesh(new THREE.PlaneGeometry(220,220), new THREE.MeshStandardMaterial({color:0x070a12, roughness:1, metalness:0}));
+  ref.rotation.x=-Math.PI/2; ref.position.y=-0.03; scene.add(ref);
+  try{ ball.material.map=null; ball.material.color.set(0xffffff); ball.material.roughness=0.35; ball.material.emissive.set(0x1a2230); ball.material.emissiveIntensity=0.4; ball.material.needsUpdate=true; sprite(ball,0xffffff,1.7,0.5); }catch(_){}
+})();
 
 /* boot + loop */
 function resize(){ const w=innerWidth,h=innerHeight; renderer.setSize(w,h,false); camera.aspect=w/h; camera.updateProjectionMatrix(); if(composer) composer.setSize(w,h); }
