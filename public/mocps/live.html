@@ -540,12 +540,12 @@ function render(dt,time){
 
   // mind made visible
   beliefMk.position.copy(M.belief); beliefMk.material.color.copy(cc);
-  const uR=Math.min(7,0.7+(1-M.conf)*4.2); halo.scale.set(uR,uR,uR); halo.position.set(M.belief.x,0.03,M.belief.z); halo.material.opacity=0.14+0.4*(M.blind?1:0.4); halo.material.color.copy(cc);
+  const uR=Math.min(3.2,0.6+(1-M.conf)*2.0); halo.scale.set(uR,uR,uR); halo.position.set(M.belief.x,0.03,M.belief.z); halo.material.opacity=0.06+0.12*(M.blind?1:0.4); halo.material.color.set(0x7DE2FF);
   thA[0]=G.pos.x; thA[1]=G.pos.y; thA[2]=G.pos.z; thA[3]=M.belief.x; thA[4]=M.belief.y; thA[5]=M.belief.z; thG.attributes.position.needsUpdate=true; thought.material.opacity=0.14+0.28*(M.blind?1:0.5);
   if(!LIVE.on) computeArc(); arc.material.color.copy(cc); arc.material.opacity=0.3+0.4*(M.blind?1:0.6);
 
   // shockwaves
-  for(const s of shocks){ if(!s.on) continue; s.t+=dt; const z=0.7+s.t*10; s.m.scale.set(z,z,z); s.m.material.opacity=Math.max(0,0.7*(1-s.t/0.9)); if(s.t>0.9){ s.on=false; s.m.visible=false; } }
+  for(const s of shocks){ if(!s.on) continue; s.t+=dt; const z=0.6+s.t*4.2; s.m.scale.set(z,z,z); s.m.material.opacity=Math.max(0,0.4*(1-s.t/0.8)); if(s.t>0.8){ s.on=false; s.m.visible=false; } }
 
   // dust + leaves
   for(let i=0;i<ND;i++){ const x=dA[i*3],z=dA[i*3+2]; const w=wind(x,z,time); dA[i*3]+=w.x*0.5*dt; dA[i*3+2]+=w.z*0.5*dt; dA[i*3+1]+=Math.sin(time*0.6+i)*0.004; if(dA[i*3]>28) dA[i*3]=-28; if(dA[i*3]<-28) dA[i*3]=28; }
@@ -650,6 +650,19 @@ liveBadge.style.cssText="position:fixed;top:84px;left:34px;z-index:40;font-famil
 document.body.appendChild(liveBadge);
 function updateLiveBadge(){ liveBadge.textContent=LIVE.on?"● ŻYWY MODEL":"○ DEMO (offline)"; liveBadge.style.color=LIVE.on?"#7DE2FF":"var(--muted)"; }
 updateLiveBadge();
+/* model's eye: the raw 32x32 the brain actually sees — makes the representation visible */
+const eye=document.createElement("div"); eye.id="model-eye"; eye.style.display="none";
+eye.innerHTML='<canvas width="32" height="32"></canvas><span class="eye-lbl">oko modelu · 32×32 px</span>';
+document.body.appendChild(eye);
+const eyeStyle=document.createElement("style");
+eyeStyle.textContent="#model-eye{position:fixed;left:18px;bottom:18px;z-index:41;flex-direction:column;gap:5px;align-items:flex-start;pointer-events:none}#model-eye canvas{width:104px;height:104px;image-rendering:pixelated;border:1px solid rgba(231,233,236,.2);border-radius:8px;background:#05060b}#model-eye .eye-lbl{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:#9AA1AB}@media(max-width:560px){#model-eye canvas{width:74px;height:74px}}";
+document.head.appendChild(eyeStyle);
+const eyeCtx=eye.querySelector("canvas").getContext("2d");
+function drawEye(){ const L=LIVE.state; if(!LIVE.on||!L){ eye.style.display="none"; return; } eye.style.display="flex";
+  eyeCtx.fillStyle="#05060b"; eyeCtx.fillRect(0,0,32,32);
+  if(L.ball && !L.ball.hidden){ eyeCtx.fillStyle="#fff"; eyeCtx.beginPath(); eyeCtx.arc(L.ball.x,L.ball.y,2,0,6.283); eyeCtx.fill(); }
+  if(L.predicted){ eyeCtx.fillStyle="rgba(125,226,255,.95)"; eyeCtx.fillRect(Math.round(L.predicted.x)-1,Math.round(L.predicted.y)-1,2,2); }
+}
 function liveConnect(url){ if(!url) return; LIVE.url=url; try{ localStorage.setItem("szalka-live",url); }catch(_){}
   // Poll /state instead of SSE: Cloudflare quick tunnels buffer event-streams,
   // so a plain GET is what actually flows through to the published page.
@@ -677,6 +690,7 @@ function applyLive(dt){ const L=LIVE.state; if(!L){ return; }
   if(L.metrics){ M.surprises=L.metrics.surprises|0; M.ok=L.metrics.ok|0; M.physTot=L.metrics.trials|0; LIVE.grasp=L.metrics.physics_grasp_pct; }
   G.to.set(M.belief.x, M.belief.y+2.2, 0.0); G.pos.lerp(G.to, Math.min(1,dt*2.2));
   if(L.arc && L.arc.length){ for(let i=0;i<ARCN;i++){ const p=L.arc[Math.min(i,L.arc.length-1)]; arcA[i*3]=sx(p[0]); arcA[i*3+1]=sy(p[1]); arcA[i*3+2]=0; } arcG.attributes.position.needsUpdate=true; }
+  drawEye();
 }
 
 /* ===== clean research-grade scene (replaces the 1990s yard) ===== */
