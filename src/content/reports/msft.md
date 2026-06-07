@@ -1,12 +1,12 @@
 ---
-title: "Microsoft (MSFT) — akumulacja na przecenie"
+title: "Microsoft (MSFT): akumulacja na przecenie"
 ticker: "MSFT"
 company: "Microsoft Corporation"
 date: "2026-06-07"
 recommendation: "Akumulacja na przecenie (transzami)"
 confidence: "umiarkowana · 0.6"
 price: "~$417 (−25% od szczytu 52T)"
-excerpt: "Firma najwyższej jakości z forteczForym bilansem, przeceniona o 25% przez zejście z euforii AI-capexu. Rada: akumulować cierpliwie transzami, pełen margines dopiero $250–300."
+excerpt: "Firma najwyższej jakości z bilansem jak twierdza, przeceniona o 25% po tym, jak rynek ostygł wobec wydatków na AI. Rada zaleca cierpliwą akumulację małymi transzami, pełen margines dopiero przy 250 do 300 dolarów."
 lang: "pl"
 key: "msft"
 slug: "msft"
@@ -14,11 +14,11 @@ slug: "msft"
 
 ## Streszczenie
 
-Firma najwyższej jakości z forteczForym bilansem, przeceniona o 25% przez zejście z euforii AI-capexu, nie przez problem biznesu. Soros widzi anty-bańkę (cena spadła szybciej niż oczekiwania analityków). Value (Graham) słusznie ostrzega: absolutnie wciąż drogo. Werdykt: jakość warta posiadania, akumulować cierpliwie na słabości, nie all-in.
+Firma najwyższej jakości z bilansem jak twierdza. Spadek o 25% to skutek ostygnięcia rynku wobec wydatków na sztuczną inteligencję, a sam biznes pozostaje mocny. Soros widzi w tym anty-bańkę, bo cena spadła szybciej niż oczekiwania analityków. Graham ostrzega trzeźwo, że w liczbach bezwzględnych spółka wciąż jest droga. Werdykt rady: to jakość warta posiadania, którą najlepiej akumulować cierpliwie i małymi transzami.
 
 ## Biznes i fosa
 
-Trwała przewaga widoczna w liczbach: ROE 34%, marża brutto 68%, operacyjna 46%, netto 39%, wzrost przychodów 18% / zysków 23%. Azure, Microsoft 365 i koszt zmiany to realny moat, nie moda.
+Trwała przewaga widoczna w liczbach: ROE 34%, marża brutto 68%, operacyjna 46%, netto 39%, wzrost przychodów 18% i zysków 23%. Azure, Microsoft 365 oraz wysoki koszt zmiany dostawcy budują realną fosę opartą na latach przewagi.
 
 ## Wycena i scenariusze
 

@@ -1,5 +1,6 @@
 ---
 import PageLayout from '../../layouts/PageLayout.astro';
+import CapitalReport from '../../components/CapitalReport.astro';
 import { reportsByLang, reportSw } from '../../lib/content';
 import { render } from 'astro:content';
 const lang = 'pl';
@@ -10,55 +11,7 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 const d = entry.data;
-const recClass = /unika|sprzeda/i.test(d.recommendation) ? 'avoid' : (/kup|akumul/i.test(d.recommendation) ? 'buy' : 'hold');
 ---
 <PageLayout lang={lang} title={`${d.company} (${d.ticker}) · raport D-LOGIC Capital`} description={d.excerpt} sw={reportSw(d.key)}>
-  <div class="crumbs"><a href="/">D-LOGIC</a> <span>/</span> <a href="/capital/">Capital</a> <span>/</span> {d.ticker}</div>
-
-  <article class="rpt">
-    <header class="rpt-head">
-      <div class="rpt-tags mono"><span>D-LOGIC CAPITAL</span><span class="dot">·</span><span>RAPORT INWESTYCYJNY</span><span class="dot">·</span><span>{d.date.replaceAll('-', '.')}</span></div>
-      <h1>{d.company} <span class="rpt-tkr mono">{d.ticker}</span></h1>
-      <div class="rpt-recrow">
-        <span class={`rpt-rec ${recClass}`}>{d.recommendation}</span>
-        {d.price && <span class="rpt-stat"><span class="k mono">cena</span> {d.price}</span>}
-        {d.confidence && <span class="rpt-stat"><span class="k mono">pewność</span> {d.confidence}</span>}
-      </div>
-    </header>
-
-    <div class="rpt-body prose"><Content /></div>
-
-    <aside class="rpt-disc">
-      <p><b>Zastrzeżenie.</b> Materiał ma charakter edukacyjny i dokumentacyjny — pokazuje proces analizy prowadzony na potrzeby własne autora. <b>Nie jest poradą inwestycyjną, rekomendacją w rozumieniu przepisów ani zachętą do kupna lub sprzedaży.</b> Inwestowanie wiąże się z ryzykiem utraty kapitału; decyzje podejmujesz na własną odpowiedzialność i warto skonsultować je z licencjonowanym doradcą. Dane pochodzą ze źródeł publicznych i mogą zawierać błędy. <a href="/capital/">Więcej o D-LOGIC Capital →</a></p>
-    </aside>
-  </article>
-
-  <div class="article-foot"><a class="mono" href="/capital/" style="color:var(--accent)">← wszystkie raporty</a></div>
+  <CapitalReport lang={lang} d={d} base=""><Content /></CapitalReport>
 </PageLayout>
-
-<style>
-  .rpt-head{ border-bottom:1px solid var(--line); padding-bottom:1.4rem; margin:0 0 1.8rem }
-  .rpt-tags{ display:flex; flex-wrap:wrap; gap:.5rem; align-items:center; font-size:11px; letter-spacing:.12em; color:var(--accent); text-transform:uppercase }
-  .rpt-tags .dot{ color:var(--muted); opacity:.5 }
-  .rpt-head h1{ font-family:'Space Grotesk Variable',sans-serif; font-size:clamp(26px,5vw,38px); line-height:1.08; margin:.7rem 0 1rem }
-  .rpt-tkr{ color:var(--muted); font-weight:500; font-size:.62em; vertical-align:middle; margin-left:.3em }
-  .rpt-recrow{ display:flex; flex-wrap:wrap; gap:.7rem; align-items:center }
-  .rpt-rec{ font-size:13px; font-weight:700; padding:6px 14px; border-radius:999px; letter-spacing:.01em }
-  .rpt-rec.buy{ background:rgba(74,222,128,.14); color:#4ade80; border:1px solid rgba(74,222,128,.32) }
-  .rpt-rec.hold{ background:rgba(232,178,58,.14); color:var(--accent); border:1px solid rgba(232,178,58,.32) }
-  .rpt-rec.avoid{ background:rgba(232,103,90,.14); color:#e8675a; border:1px solid rgba(232,103,90,.32) }
-  .rpt-stat{ font-size:13px; color:var(--text) }
-  .rpt-stat .k{ color:var(--muted); font-size:11px; letter-spacing:.06em; text-transform:uppercase; margin-right:.35em }
-  .rpt-body :global(h2){ font-family:'Space Grotesk Variable',sans-serif; font-size:19px; margin:2em 0 .7em; padding-top:.6em; border-top:1px solid var(--line) }
-  .rpt-body :global(h2:first-child){ border-top:0; padding-top:0; margin-top:0 }
-  .rpt-body :global(p),.rpt-body :global(li){ color:var(--text); line-height:1.7; font-size:15.5px }
-  .rpt-body :global(table){ width:100%; border-collapse:collapse; font-size:13.5px; margin:1em 0; display:block; overflow-x:auto }
-  .rpt-body :global(th){ text-align:left; background:var(--surface-2); color:var(--text); font-weight:600; padding:9px 12px; border:1px solid var(--line); white-space:nowrap }
-  .rpt-body :global(td){ padding:9px 12px; border:1px solid var(--line); color:var(--muted) }
-  .rpt-body :global(td:first-child){ color:var(--text); font-weight:600 }
-  .rpt-body :global(strong){ color:var(--text) }
-  .rpt-body :global(ul){ padding-left:1.2em }
-  .rpt-disc{ border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:10px; padding:1.1rem 1.3rem; background:var(--surface-2); margin:2.4rem 0 0 }
-  .rpt-disc p{ color:var(--muted); font-size:12.5px; line-height:1.65; margin:0 }
-  .rpt-disc a{ color:var(--accent) }
-</style>

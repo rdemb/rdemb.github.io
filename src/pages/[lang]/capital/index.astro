@@ -1,0 +1,16 @@
+---
+import PageLayout from '../../../layouts/PageLayout.astro';
+import CapitalIndex from '../../../components/CapitalIndex.astro';
+import { reportsByLang, capitalSw, type Lang } from '../../../lib/content';
+import { capitalI18n } from '../../../lib/capital';
+export async function getStaticPaths() {
+  return [{ params: { lang: 'en' } }, { params: { lang: 'de' } }];
+}
+const lang = Astro.params.lang as Lang;
+const reports = await reportsByLang(lang);
+const t = capitalI18n[lang];
+const base = '/' + lang;
+---
+<PageLayout lang={lang} title={`${t.heroH1} · D-LOGIC Capital`} description={t.lead} sw={capitalSw}>
+  <CapitalIndex lang={lang} reports={reports} base={base} />
+</PageLayout>

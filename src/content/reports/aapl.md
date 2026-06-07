@@ -1,5 +1,5 @@
 ---
-title: "Apple (AAPL) — klejnot, ale za drogo"
+title: "Apple (AAPL): wybitny biznes po zbyt wysokiej cenie"
 ticker: "AAPL"
 company: "Apple Inc."
 date: "2026-06-07"

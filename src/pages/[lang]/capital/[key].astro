@@ -1,0 +1,22 @@
+---
+import PageLayout from '../../../layouts/PageLayout.astro';
+import CapitalReport from '../../../components/CapitalReport.astro';
+import { reportsByLang, reportSw, type Lang } from '../../../lib/content';
+import { render } from 'astro:content';
+export async function getStaticPaths() {
+  const out = [];
+  for (const lang of ['en', 'de'] as Lang[]) {
+    const reports = await reportsByLang(lang);
+    for (const r of reports) out.push({ params: { lang, key: r.data.key }, props: { entry: r } });
+  }
+  return out;
+}
+const lang = Astro.params.lang as Lang;
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const d = entry.data;
+const base = '/' + lang;
+---
+<PageLayout lang={lang} title={`${d.company} (${d.ticker}) · D-LOGIC Capital`} description={d.excerpt} sw={reportSw(d.key)}>
+  <CapitalReport lang={lang} d={d} base={base}><Content /></CapitalReport>
+</PageLayout>

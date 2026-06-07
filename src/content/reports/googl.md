@@ -1,5 +1,5 @@
 ---
-title: "Alphabet (GOOGL) — obserwować, lekka akumulacja"
+title: "Alphabet (GOOGL): obserwować, lekka akumulacja"
 ticker: "GOOGL"
 company: "Alphabet Inc."
 date: "2026-06-07"
@@ -31,7 +31,7 @@ ROE 38,9%, marża brutto 60%, operacyjna 36%, netto 38%, wzrost przychodów 22% 
 | --- | --- | --- |
 | Buffett | neutral · 0.62 | fosa krzyczy, cena pełna; bullish przy $270–290 |
 | Graham | bearish · 0.80 | P/E×P/B = 262 vs 22.5; ostrożna wartość $160–200 |
-| Marks | neutral → ostrożnie · 0.55 | +127% od dołka = euforia, nie strach; asymetria niekorzystna |
+| Marks | ostrożny neutral · 0.55 | +127% od dołka to raczej euforia niż strach, asymetria niekorzystna |
 | Taleb | odporne, pozycja ograniczona · 0.80 | bilans-forteca, ale koncentracja Search = ryzyko trwałej przeceny |
 | Soros | bullish · 0.68 | anty-bańka „AI zabija Google"; narracja i liczby się rozjeżdżają |
 

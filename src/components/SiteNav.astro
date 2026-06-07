@@ -43,13 +43,13 @@ const items = [
   { href: '/preswietlenie/', key: 'nav.xray',      pl: 'prześwietlenie', en: 'x-ray',           de: 'Röntgen' },
   { href: '/pracownia/',     key: 'nav.pracownia', pl: 'pracownia',     en: 'workshop',         de: 'Werkstatt' },
   { href: '/projekty/',      key: 'nav.projects',  pl: 'projekty',      en: 'projects',         de: 'Projekte', dd: projects },
-  { href: '/capital/',       key: 'nav.capital',   pl: 'Capital',       en: 'Capital',          de: 'Capital' },
+  { href: '/capital/',       key: 'nav.capital',   pl: 'capital',       en: 'capital',          de: 'capital' },
   { href: '/blog/',          key: 'nav.blog',      pl: 'blog',          en: 'blog',             de: 'Blog' },
   { href: '/#kontakt',       key: 'nav.contact',   pl: 'kontakt',       en: 'contact',          de: 'Kontakt' },
 ];
 // W trybie routed projekty/blog maja warianty jezykowe (/en/blog/ itd.)
 const hrefOf = (it) =>
-  routed && (it.href === '/projekty/' || it.href === '/blog/') ? base + it.href : it.href;
+  routed && (it.href === '/projekty/' || it.href === '/blog/' || it.href === '/capital/') ? base + it.href : it.href;
 // Podstrony content-collection (clawbot itd.) maja warianty jezykowe; gambit/order-flow nie.
 const projHref = (p) => (routed && p.routed && lang !== 'pl') ? `/${lang}${p.href}` : p.href;
 const projText = (p) => (routed ? p[lang] : p.pl);
