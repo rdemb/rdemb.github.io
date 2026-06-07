@@ -121,7 +121,7 @@ header.nav{position:fixed;top:0;left:0;right:0;z-index:40;display:flex;align-ite
   .hud-title{left:16px;right:16px;bottom:150px;max-width:none} .hud-name{font-size:clamp(30px,9vw,46px)}
   .hud-desc{font-size:13px;-webkit-line-clamp:4;display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden}
   .hud-metrics{right:16px;top:60px} .hud-log{left:16px;bottom:122px} .hud-hint{left:16px;right:16px;bottom:98px}
-  .controls{right:16px;left:16px;bottom:84px;justify-content:flex-end} .dir{display:none} .bar{display:none}
+  .controls{right:16px;left:16px;bottom:16px;justify-content:center} .dir{display:none} .bar{display:none}
   .switch{padding:10px} .switch-inner{gap:4px;padding:6px;border-radius:12px;overflow-x:auto;max-width:calc(100vw - 16px)}
   .chip{padding:9px 11px 9px 9px} .chip .lab span{display:none} .chip .kbd{display:none}
   .livebar{font-size:10px;padding:6px 12px} .livebar .vw{display:none}
@@ -655,7 +655,7 @@ const eye=document.createElement("div"); eye.id="model-eye"; eye.style.display="
 eye.innerHTML='<canvas width="32" height="32"></canvas><span class="eye-lbl">oko modelu · 32×32 px</span>';
 document.body.appendChild(eye);
 const eyeStyle=document.createElement("style");
-eyeStyle.textContent="#model-eye{position:fixed;left:18px;bottom:18px;z-index:41;flex-direction:column;gap:5px;align-items:flex-start;pointer-events:none}#model-eye canvas{width:104px;height:104px;image-rendering:pixelated;border:1px solid rgba(231,233,236,.2);border-radius:8px;background:#05060b}#model-eye .eye-lbl{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:#9AA1AB}@media(max-width:560px){#model-eye canvas{width:74px;height:74px}}";
+eyeStyle.textContent="#model-eye{position:fixed;left:16px;bottom:64px;z-index:42;flex-direction:column;gap:5px;align-items:flex-start;pointer-events:none}#model-eye canvas{width:100px;height:100px;image-rendering:pixelated;border:1px solid rgba(125,226,255,.55);border-radius:8px;background:#070e1c;box-shadow:0 0 18px rgba(125,226,255,.14)}#model-eye .eye-lbl{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:#7DE2FF}@media(max-width:560px){#model-eye{bottom:60px}#model-eye canvas{width:78px;height:78px}}";
 document.head.appendChild(eyeStyle);
 const eyeCtx=eye.querySelector("canvas").getContext("2d");
 function drawEye(){ const L=LIVE.state; if(!LIVE.on||!L){ eye.style.display="none"; return; } eye.style.display="flex";
@@ -712,6 +712,11 @@ function applyLive(dt){ const L=LIVE.state; if(!L){ return; }
   // minimal research HUD: drop the 1990s-yard narrative, keep data + legend
   ['.livebar','.switch','.hud-title','.hud-log','.hud-hint'].forEach(s=>{ const e=document.querySelector(s); if(e) e.style.display='none'; });
   try{ document.getElementById('cTL').textContent='◢ POD KLOSZEM // MODEL ŚWIATA JEPA'; }catch(_){}
+  // the director runs on the server in live mode: wire "złam fizykę" to it, hide local "samo życie"
+  try{ const ab=document.getElementById('autoBtn'); if(ab) ab.style.display='none';
+    const tb=document.getElementById('trapBtn');
+    if(tb) tb.addEventListener('click',()=>{ if(LIVE.on&&LIVE.url){ fetch(LIVE.url.replace(/\/+$/,'')+'/trap?impossible=1',{cache:'no-store'}).catch(()=>{}); } },true);
+  }catch(_){}
   // phone in portrait: the side-view scene wants width — nudge to landscape
   const rp=document.createElement('div'); rp.id='rotate-prompt';
   rp.innerHTML='<svg class="rp-ico" width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#7DE2FF" stroke-width="1.4"><rect x="7.5" y="2.5" width="9" height="19" rx="2.2"/><line x1="10.5" y1="5" x2="13.5" y2="5"/><circle cx="12" cy="18.6" r="0.6" fill="#7DE2FF"/></svg><div class="rp-t"></div><div class="rp-s"></div>';
