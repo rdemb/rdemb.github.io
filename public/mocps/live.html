@@ -646,7 +646,7 @@ liveWall.position.set(sx(12),4.3,1.2); liveWall.visible=false; scene.add(liveWal
 const liveWallEdge=new THREE.Mesh(new THREE.BoxGeometry(3.04,0.06,0.54), new THREE.MeshBasicMaterial({color:0x7DE2FF,transparent:true,opacity:0.5}));
 liveWallEdge.position.set(sx(12),8.8,1.2); liveWallEdge.visible=false; scene.add(liveWallEdge);
 const liveBadge=document.createElement("div");
-liveBadge.style.cssText="position:fixed;top:62px;right:18px;z-index:40;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;letter-spacing:.12em;padding:5px 11px;border-radius:7px;border:1px solid var(--line);background:var(--panel);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);pointer-events:none";
+liveBadge.style.cssText="position:fixed;top:84px;left:34px;z-index:40;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;letter-spacing:.12em;padding:5px 11px;border-radius:7px;border:1px solid var(--line);background:var(--panel);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);pointer-events:none";
 document.body.appendChild(liveBadge);
 function updateLiveBadge(){ liveBadge.textContent=LIVE.on?"● ŻYWY MODEL":"○ DEMO (offline)"; liveBadge.style.color=LIVE.on?"#7DE2FF":"var(--muted)"; }
 updateLiveBadge();
@@ -698,6 +698,15 @@ function applyLive(dt){ const L=LIVE.state; if(!L){ return; }
   // minimal research HUD: drop the 1990s-yard narrative, keep data + legend
   ['.livebar','.switch','.hud-title','.hud-log','.hud-hint'].forEach(s=>{ const e=document.querySelector(s); if(e) e.style.display='none'; });
   try{ document.getElementById('cTL').textContent='◢ POD KLOSZEM // MODEL ŚWIATA JEPA'; }catch(_){}
+  // phone in portrait: the side-view scene wants width — nudge to landscape
+  const rp=document.createElement('div'); rp.id='rotate-prompt';
+  rp.innerHTML='<svg class="rp-ico" width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#7DE2FF" stroke-width="1.4"><rect x="7.5" y="2.5" width="9" height="19" rx="2.2"/><line x1="10.5" y1="5" x2="13.5" y2="5"/><circle cx="12" cy="18.6" r="0.6" fill="#7DE2FF"/></svg><div class="rp-t"></div><div class="rp-s"></div>';
+  document.body.appendChild(rp);
+  const rs=document.createElement('style');
+  rs.textContent="#rotate-prompt{display:none;position:fixed;inset:0;z-index:300;background:#06080e;flex-direction:column;align-items:center;justify-content:center;gap:18px;text-align:center;padding:30px;font-family:'JetBrains Mono',monospace}@media (max-width:900px) and (orientation:portrait){#rotate-prompt{display:flex}}#rotate-prompt .rp-ico{transform-origin:50% 50%;animation:rpr 2.6s ease-in-out infinite}@keyframes rpr{0%,30%{transform:rotate(0)}56%,100%{transform:rotate(90deg)}}#rotate-prompt .rp-t{font-size:18px;font-weight:600;color:#E7E9EC;letter-spacing:.01em}#rotate-prompt .rp-s{font-size:13px;color:#9AA1AB;max-width:32ch;line-height:1.55}";
+  document.head.appendChild(rs);
+  const RPT={pl:['Obróć telefon poziomo','Organizm to widok z boku — najlepiej widać go na pełnej szerokości ekranu.'],en:['Rotate your phone','The organism is a side view — best seen across the full screen width.'],de:['Dreh dein Telefon','Der Organismus ist eine Seitenansicht — in voller Breite am besten.']};
+  try{ const t=RPT[lang]||RPT.pl; rp.querySelector('.rp-t').textContent=t[0]; rp.querySelector('.rp-s').textContent=t[1]; }catch(_){}
 })();
 
 /* boot + loop */
