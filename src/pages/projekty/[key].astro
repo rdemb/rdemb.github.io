@@ -22,11 +22,18 @@ const { Content } = await render(entry);
   {entry.data.key === 'clawbot' && <ClawbotScope lang="pl" />}
   {entry.data.key === 'mocps' && (
     <figure class="mocps-hero">
-      <img src="/mocps/mocps_hero.gif" alt="Animacja: dwie kulki krzyżują się, jedna znika i zmienia ruch; po powrocie trzeba rozpoznać, która to cel" />
-      <figcaption>Dwie identyczne kulki krzyżują się, jedna znika i zmienia ruch. Po powrocie, która to cel? Pamięć bezstanowa: 18%, nauczony stan rekurencyjny: 100%.</figcaption>
+      <iframe src="/mocps/live.html" title="Pod Kloszem — żywy organizm uczący się fizyki" loading="lazy" allow="fullscreen"></iframe>
+      <figcaption>Pod Kloszem — żywy organizm. Przybysz z gwiazd uczy się fizyki Ziemi: model JEPA przewiduje łuk lecącej piłki, trzyma jej pozycję, gdy znika za przeszkodą, i wzdryga się tylko wtedy, gdy świat złamie grawitację. Możliwe od niemożliwego rozróżnia w 96%. Przeciągnij, by obejrzeć; klawisz T stawia pułapkę.</figcaption>
     </figure>
   )}
   {entry.data.key === 'mocps' && <RepoBrowser lang="pl" />}
   <article class="prose"><Content /></article>
   <div class="article-foot"><a class="mono" href="/#lab" style="color:var(--accent)">← lab</a></div>
 </PageLayout>
+
+<style>
+  .mocps-hero{ margin:0 0 2rem }
+  .mocps-hero iframe{ width:100%; aspect-ratio:16/10; min-height:460px; border:1px solid var(--line); border-radius:14px; background:#0a0c10; display:block }
+  .mocps-hero figcaption{ margin-top:.7rem; color:var(--muted); font-size:13.5px; line-height:1.55 }
+  @media (max-width:680px){ .mocps-hero iframe{ aspect-ratio:3/4; min-height:520px } }
+</style>

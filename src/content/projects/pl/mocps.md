@@ -2,13 +2,27 @@
 title: "MOCPS, Motion-Grounded Object-Centric Predictive State"
 lang: "pl"
 kind: "project"
-excerpt: ""
+excerpt: "Mały model świata JEPA, który nauczył się grawitacji i dostał ciało: żywy organizm rozróżniający możliwe od niemożliwego w 96%."
 key: "mocps"
 slug: "mocps"
 ---
 MOCPS to mały projekt badawczy o przewidywaniu ruchu obiektu w prostych światach pikselowych. Pytanie jest wąskie: czy reprezentacja wyciągnięta z obrazu potrafi przewidzieć przyszłą pozycję lepiej niż ostatnia znana pozycja.
 
 Technicznie aktualna wersja to przepis `signed_velocity_only` + predictor400. To nie jest nowa duża architektura. To zawężony, reprodukowalny test, który powstał po serii wyników negatywnych i pozytywnych.
+
+## Pod kloszem — żywy organizm
+
+Najnowszy kierunek: dać temu modelowi świata ciało. **Pod Kloszem** to żywy organizm 3D, przybysz z gwiazd na polskim podwórku, napędzany realnym modelem JEPA działającym 24/7 na CPU. To nie animacja: każda klatka to odczyt stanu modelu.
+
+Dla organizmu rozszerzyliśmy świat o **grawitację**, i to zmienia regułę gry. W ruchu liniowym nauczony predyktor nie potrafił pobić baseline'u „stała prędkość", bo ten miał już całą informację. Pod grawitacją stała prędkość gubi przyspieszenie, a nauczony predyktor **bije ją** (4.16 px kontra 5.71 px), bo zinternalizował spadanie.
+
+Organizm robi trzy rzeczy naraz, każdą mierzymy:
+
+- **przewiduje** grawitacyjny łuk lecącej piłki (cyjanowy ślad to realna predykcja modelu),
+- **pamięta** pozycję piłki, gdy znika za przeszkodą (trwałość obiektu),
+- **dziwi się** metodą V-JEPA: mierzymy rozjazd zaskoczenia i model wzdryga się tylko wtedy, gdy reżyser złamie fizykę (lewitacja, zamarcie, teleport). Możliwe od niemożliwego rozróżnia w **96%**.
+
+To jest test rozumienia fizyki w duchu Yanna LeCuna (możliwe kontra niemożliwe), ucieleśniony jako stworzenie żyjące pod szkłem.
 
 ## Co to jest
 

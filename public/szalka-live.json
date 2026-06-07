@@ -1,0 +1,4 @@
+{
+  "url": "",
+  "note": "Cloudflare tunnel to the living organism brain on the VPS. Empty = the page runs the local DEMO (JS simulation); a real URL switches the page to the live model."
+}

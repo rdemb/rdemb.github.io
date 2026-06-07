@@ -21,7 +21,7 @@ const raw = import.meta.glob('../repo/mocps/*.{md,py}', { query: '?raw', import:
 const byName: Record<string, string> = {};
 for (const [p, c] of Object.entries(raw)) byName[p.split('/').pop() as string] = c;
 
-const ORDER = ['README.md', 'RESULT_LEARNED_OBJECT_PERMANENCE.md', 'analyze_phase.py', 'separation_margin.py', 'make_figures.py', 'make_animation.py'];
+const ORDER = ['README.md', 'RESULTS_GRAVITY_WORLD.md', 'gravity_ball.py', 'organism_brain.py', 'organism_world.py', 'organism_server.py', 'RESULT_LEARNED_OBJECT_PERMANENCE.md', 'analyze_phase.py', 'separation_margin.py', 'make_figures.py', 'make_animation.py'];
 const md = await createMarkdownProcessor({});
 const size = (s: string) => { const b = Buffer.byteLength(s, 'utf8'); return b > 1024 ? (b / 1024).toFixed(1) + ' KB' : b + ' B'; };
 
