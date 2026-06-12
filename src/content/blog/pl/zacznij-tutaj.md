@@ -20,13 +20,13 @@ Cztery wpisy o tym, co w rynku naprawdę daje się policzyć i co z tego wynika.
 
 ## Krok 3: warsztat z kodem
 
-Tu zaczyna się część do kopiowania, w kolejności montażu. Najpierw [test placebo](/blog/test-placebo/), bo to jest sito, przez które przepuszczasz wszystko dalej. Potem [szkielet EA](/blog/szkielet-ea/), hydraulika bez sygnału. Na szkielet nakładasz filtry: [zegar zmienności w praktyce](/blog/zegar-zmiennosci-w-praktyce/) i [budżet dnia](/blog/budzet-dnia-filtr/). Na koniec zarządzanie: [trailing krokowy](/blog/ea-trailing-krokowy/), [cisza wokół newsów](/blog/ea-blackout-newsow/) i [wiele par ze wspólnym ryzykiem](/blog/ea-wiele-par/).
+Tu zaczyna się część do kopiowania, w kolejności montażu. Zanim cokolwiek policzysz, [zwaliduj dane](/blog/dane-pierwszy-grzech/), bo plik z wadami zatruwa wszystko dalej. Potem [test placebo](/blog/test-placebo/), sito, przez które przepuszczasz każdy pomysł, i [matematyka przetrwania](/blog/matematyka-przetrwania/), żeby ryzyko na transakcję wynikało z rachunku, nie z apetytu. Do tego [pełny koszt transakcji](/blog/ile-kosztuje-transakcja/), bo przewaga, która nie zarabia na spread i poślizg, nie jest przewagą. Dopiero teraz [szkielet EA](/blog/szkielet-ea/), hydraulika bez sygnału. Na szkielet nakładasz filtry: [zegar zmienności w praktyce](/blog/zegar-zmiennosci-w-praktyce/) i [budżet dnia](/blog/budzet-dnia-filtr/). Na koniec zarządzanie: [trailing krokowy](/blog/ea-trailing-krokowy/), [cisza wokół newsów](/blog/ea-blackout-newsow/) i [wiele par ze wspólnym ryzykiem](/blog/ea-wiele-par/).
 
 Kod z tych wpisów leży też w plikach, razem z syntetycznymi danymi do ćwiczeń:
 
 - [dlogic-szkielet-ea.mq5](/code/dlogic-szkielet-ea.mq5), szkielet EA do MetaEditora,
 - [dlogic-warsztat.mqh](/code/dlogic-warsztat.mqh), wszystkie funkcje warsztatu w jednym include,
-- [test_placebo.py](/code/test_placebo.py) i [zegar_zmiennosci.py](/code/zegar_zmiennosci.py),
+- [test_placebo.py](/code/test_placebo.py), [zegar_zmiennosci.py](/code/zegar_zmiennosci.py), [walidator_danych.py](/code/walidator_danych.py) i [monte_carlo_kapitalu.py](/code/monte_carlo_kapitalu.py),
 - [EURUSD_H1_syntetyk.csv](/code/EURUSD_H1_syntetyk.csv), dane wygenerowane do nauki, z ostrzeżeniem w nagłówku.
 
 Uprzedzam, bo o to pytacie: te pliki celowo nie są gotowym systemem. Sygnał jest pusty, progi są przykładowe, a parametry dobiera się na danych własnego brokera, nie moich. To jest warsztat i materiał do rozwijania, nie produkt. Gotowych systemów z internetu nie polecam, włącznie z moim, gdybym kiedyś osłabł i jakiś wystawił.
