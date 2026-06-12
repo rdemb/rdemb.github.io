@@ -16,3 +16,6 @@ dist/
 /Gambit.html
 /gambit.js
 /gambit-chess.js
+
+# projekty wycofane z publikacji (zostaja lokalnie)
+/_private/
