@@ -18,6 +18,9 @@ const allLabel = lang === 'de' ? 'alle' : 'all';
     <h1>{t.title}</h1>
     <p class="excerpt">{t.lead}</p>
   </header>
+  <div class="start-bar mono">
+    <span class="follow">{lang === 'de' ? 'folgen' : 'follow'}: <a href="/rss.xml">RSS</a> · <a href="https://x.com/takitamrafal" target="_blank" rel="noopener">X</a></span>
+  </div>
   <div class="kind-filter mono" id="kindFilter">
     <button class="on" data-kind="all">{allLabel}</button>
     {kinds.map((k) => <button data-kind={k}>{kindLabel[lang][k] ?? k}</button>)}

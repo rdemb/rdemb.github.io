@@ -1,22 +1,20 @@
----
-title: "Szkielet EA, od którego zaczynam każdy automat (MQL5)"
-lang: "pl"
-kind: "trading"
-date: "2026-06-12"
-excerpt: "Zanim automat dostanie jakikolwiek pomysł na wejście, musi umieć sześć nudnych rzeczy: nową świecę, spread, porę dnia, wielkość pozycji z ryzyka, stopa i dziennik. Kompletny szkielet do skopiowania."
-key: "szkielet-ea"
-slug: "szkielet-ea"
----
-
-Większość EA, które widziałem, zaczyna się od sygnału. Mój zaczyna się od hydrauliki. Zanim automat dostanie jakikolwiek pomysł na wejście, musi umieć sześć nudnych rzeczy: rozpoznać nową świecę, odmówić gry na szerokim spreadzie, znać porę dnia, policzyć wielkość pozycji z ryzyka, postawić stopa i zapisać wszystko do dziennika. Sygnał to ostatnie dziesięć procent. Te dziewięćdziesiąt poniżej możesz skopiować.
-
-Kod jest w MQL5 (kolorowanie pokazuję jako C++, bo to niemal ta sama składnia). Wklej do MetaEditora jako nowy Expert Advisor, skompiluj i przetestuj w testerze strategii, zanim zobaczy choćby konto demo.
-
-```cpp
 //+------------------------------------------------------------------+
-//| Szkielet EA: hydraulika bez sygnału.                             |
-//| Sygnał wstawiasz w jedno miejsce: SygnalWejscia().               |
+//|                                          dlogic-szkielet-ea.mq5  |
+//|        SZKIELET EDUKACYJNY z bloga rdemb.github.io/blog/         |
+//|                                                                  |
+//|  To NIE jest gotowy system i celowo NIM NIE BĘDZIE:              |
+//|   - SygnalWejscia() zwraca 0, więc EA nie otwiera pozycji,       |
+//|   - nie ma tu żadnej przewagi, tylko hydraulika wokół niej,      |
+//|   - zanim cokolwiek dotknie pieniędzy: tester (lata danych       |
+//|     TWOJEGO brokera), potem długo demo, potem małe stawki.       |
+//|                                                                  |
+//|  Opis każdego elementu: /blog/szkielet-ea/                       |
 //+------------------------------------------------------------------+
+#property copyright "D-LOGIC studio · materiał edukacyjny"
+#property link      "https://rdemb.github.io/blog/szkielet-ea/"
+#property version   "1.00"
+#property strict
+
 #include <Trade/Trade.mqh>
 CTrade trade;
 
@@ -41,18 +39,17 @@ int OnInit()
    return INIT_SUCCEEDED;
 }
 
-//--- gra tylko raz na świecę: cała reszta OnTick to bramki
 void OnTick()
 {
-   if(!NowaSwieca())       return;
-   if(!WolnoGrac())        return;
+   if(!NowaSwieca())                 return;
+   if(!WolnoGrac())                  return;
    if(InpJedna && MojaPozycjaJest()) return;
 
-   int kierunek = SygnalWejscia();   // <- TU wstawiasz swój pomysł
-   if(kierunek == 0)       return;
+   int kierunek = SygnalWejscia();   // <- TU wstawiasz SWÓJ pomysł
+   if(kierunek == 0)                 return;
 
    double lot = LotZRyzyka(InpStopPkt);
-   if(lot <= 0)            return;
+   if(lot <= 0)                      return;
 
    double cena = (kierunek > 0) ? SymbolInfoDouble(_Symbol, SYMBOL_ASK)
                                 : SymbolInfoDouble(_Symbol, SYMBOL_BID);
@@ -63,7 +60,6 @@ void OnTick()
    Dziennik(kierunek, lot, cena, sl, ok);
 }
 
-//--- nowa świeca na bieżącym wykresie
 bool NowaSwieca()
 {
    datetime t = iTime(_Symbol, _Period, 0);
@@ -72,17 +68,17 @@ bool NowaSwieca()
    return true;
 }
 
-//--- bramki: spread i pora dnia
 bool WolnoGrac()
 {
    long spread = SymbolInfoInteger(_Symbol, SYMBOL_SPREAD);
    if(spread > InpMaxSpreadPkt) return false;
    MqlDateTime dt; TimeToStruct(TimeCurrent(), dt);
    if(dt.hour < InpGodzOd || dt.hour >= InpGodzDo) return false;
+   // TODO: dołóż własne bramki, np. budżet dnia (/blog/budzet-dnia-filtr/)
+   // i zegar zmienności (/blog/zegar-zmiennosci-w-praktyce/).
    return true;
 }
 
-//--- czy ten EA ma już pozycję na tym symbolu
 bool MojaPozycjaJest()
 {
    for(int i = PositionsTotal() - 1; i >= 0; i--)
@@ -96,7 +92,6 @@ bool MojaPozycjaJest()
    return false;
 }
 
-//--- wielkość pozycji z ryzyka: % kapitału / wartość stopa
 double LotZRyzyka(double stopPkt)
 {
    double kapital = AccountInfoDouble(ACCOUNT_EQUITY);
@@ -113,7 +108,6 @@ double LotZRyzyka(double stopPkt)
    return MathMin(MathMax(lot, lotMin), lotMax);
 }
 
-//--- dziennik CSV: po miesiącu jest bezcenny
 void Dziennik(int kier, double lot, double cena, double sl, bool ok)
 {
    int h = FileOpen("szkielet_dziennik.csv",
@@ -127,19 +121,12 @@ void Dziennik(int kier, double lot, double cena, double sl, bool ok)
    FileClose(h);
 }
 
-//--- TWÓJ POMYSŁ: zwróć 1 (long), -1 (short) albo 0 (nic)
+//--- TWÓJ POMYSŁ: zwróć 1 (long), -1 (short) albo 0 (nic).
+//--- Szkielet celowo nie gra. Pomysł przetestuj NAJPIERW testem placebo:
+//--- /blog/test-placebo/
 int SygnalWejscia()
 {
-   return 0; // szkielet celowo nie gra
+   // TODO: tu wstaw swoją regułę. Przykład struktury (NIE rekomendacja):
+   // if(WarunekTrendu() && RuchZnormalizowany() < 1.0) return 1;
+   return 0;
 }
-```
-
-## Dlaczego akurat te elementy
-
-Bramka nowej świecy chroni przed najczęstszym błędem początkujących automatów: logiką wykonywaną na każdym ticku, która otwiera dziesięć pozycji w sekundę. Bramka spreadu i godzin to wnioski z [zegara zmienności](/blog/zegar-zmiennosci/): są pory, w których koszt zjada typowy ruch i żaden sygnał tego nie odrobi. Wielkość pozycji liczona z ryzyka, a nie wpisana na sztywno, sprawia, że jedna transakcja kosztuje zawsze tyle samo kapitału, niezależnie od stopa i instrumentu. A dziennik CSV wydaje się zbędny do dnia, w którym pierwszy raz nie zgadzasz się z własnym testerem.
-
-Zwróć uwagę, czego tu nie ma. Nie ma sygnału. `SygnalWejscia()` zwraca zero i szkielet celowo nie gra. Taka jest u mnie kolejność robienia rzeczy: zanim zaczniesz testować pomysły na wejście, automat musi być nudny, przewidywalny i mierzalny. Mój działa dokładnie na tym układzie, tylko z innymi liczbami i z człowiekiem nad kierunkiem, o czym pisałem w [podziale pracy](/blog/czlowiek-i-maszyna/).
-
-Kod jest edukacyjny: skompiluj, przetestuj w testerze na latach danych od twojego brokera, bo to z jego świecami, spreadem i strefą czasu serwera automat będzie żył. Zepsuj, popraw. Niech najpierw długo działa na demo. Pieniądze dotykaj na końcu, małe.
-
-Plik z tego wpisu: [dlogic-szkielet-ea.mq5](/code/dlogic-szkielet-ea.mq5). Funkcje z dalszych części warsztatu zbieram w [dlogic-warsztat.mqh](/code/dlogic-warsztat.mqh), a mapę całej serii znajdziesz w [Zacznij tutaj](/blog/zacznij-tutaj/).

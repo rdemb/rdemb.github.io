@@ -86,3 +86,5 @@ double RuchZnormalizowany()
 `PoliczProfil()` wywołaj w `OnInit` i raz na dobę, `RuchZnormalizowany()` w miejscu, gdzie podejmujesz decyzje. W [szkielecie EA](/blog/szkielet-ea/) naturalnym miejscem jest bramka `WolnoGrac()`: zamiast sztywnych godzin od-do możesz odmawiać gry, gdy `ProfilGodziny[godzina]` nie pokrywa kilkukrotności spreadu. Wtedy automat sam przestaje grać nocą na parach europejskich i sam wraca do gry, gdy rynek się budzi, bez żadnej wiedzy o sesjach wpisanej na sztywno.
 
 Uczciwe zastrzeżenie, to samo co w tamtym wpisie: zegar mówi, ile rynek zwykle daje, a nie dokąd pójdzie. To filtr i jednostka miary, nie sygnał. Ale jako filtr jest trudny do przecenienia, bo działa na najstabilniejszej regularności, jaką znalazłem w tych danych.
+
+Pliki z tego wpisu: [zegar_zmiennosci.py](/code/zegar_zmiennosci.py), funkcje MQL5 w [dlogic-warsztat.mqh](/code/dlogic-warsztat.mqh), a do ćwiczeń [syntetyczny CSV](/code/EURUSD_H1_syntetyk.csv) z wszczepioną strukturą dnia i ostrzeżeniem w nagłówku.
