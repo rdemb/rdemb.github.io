@@ -321,8 +321,12 @@ header.bar>*{pointer-events:auto}
 </div>
 
 <script>
-window.__SZALKA_OK=false;
-setTimeout(function(){ if(!window.__SZALKA_OK){ var s=document.getElementById('loadSub'); if(s) s.textContent='nie udało się wczytać three.js — sprawdź sieć i odśwież / could not load three.js'; } },9000);
+window.__SZALKA_OK=false; window.__SZALKA_BOOT=false; window.__SZALKA_ERR=false;
+setTimeout(function(){ var s=document.getElementById('loadSub'); if(!s||window.__SZALKA_OK||window.__SZALKA_ERR) return;
+  s.textContent=window.__SZALKA_BOOT
+    ? 'start się zaciął — odśwież stronę / startup stalled, refresh'
+    : 'przeglądarka nie wczytała modułu three.js (wymagane wsparcie importmap) — zaktualizuj przeglądarkę / the browser did not load the three.js module';
+},9000);
 </script>
 <script type="importmap">{ "imports": {
   "three": "/vendor/three-0.160/build/three.module.js",
@@ -330,7 +334,8 @@ setTimeout(function(){ if(!window.__SZALKA_OK){ var s=document.getElementById('l
 }}</script>
 <script type="module">
 import * as THREE from 'three';
-boot().catch(e=>{ const s=document.getElementById('loadSub'); if(s) s.textContent='błąd: '+(e&&e.message?e.message:e); console.error(e); });
+window.__SZALKA_BOOT=true;
+boot().catch(e=>{ window.__SZALKA_ERR=true; const s=document.getElementById('loadSub'); if(s) s.textContent='błąd: '+(e&&e.message?e.message:e); console.error(e); });
 
 async function boot(){
 "use strict";
@@ -361,6 +366,8 @@ const T={
    feedEmpty:"reżyser szykuje pierwszą próbę…",
    lgTruth:"piłka (prawda)", lgBelief:"przekonanie modelu", lgArc:"tor wyobraźni (fizyka przekonania)", lgPred:"surowa predykcja sieci (t+4)", lgWall:"zasłona", lgSurp:"zaskoczenie",
    load:"nawiązywanie łączności z organizmem…",
+   noglT:"Scena 3D wyłączona: przeglądarka nie udostępnia WebGL",
+   noglS:"Żywe dane organizmu działają normalnie (panele, oko modelu, próby). Aby zobaczyć scenę, włącz akcelerację sprzętową w ustawieniach przeglądarki albo otwórz stronę na innym urządzeniu.",
    rotT:"Obróć telefon poziomo", rotS:"Świat organizmu to widok z boku — potrzebuje pełnej szerokości ekranu." },
  en:{ organism:"organism", age:"life", eye:"model's eye", legend:"legend", grasp:"physics grasp", voe:"impossible test", feed:"recent trials",
    idName:'Under <em>Glass</em>', idSub:"a living world model · TinyJEPA",
@@ -381,6 +388,8 @@ const T={
    feedEmpty:"the director prepares the first trial…",
    lgTruth:"ball (truth)", lgBelief:"model's belief", lgArc:"imagined path (belief physics)", lgPred:"raw network prediction (t+4)", lgWall:"occluder", lgSurp:"surprise",
    load:"establishing contact with the organism…",
+   noglT:"3D scene off: this browser exposes no WebGL",
+   noglS:"The organism's live data still works (panels, model's eye, trials). To see the scene, enable hardware acceleration in the browser settings or open this page on another device.",
    rotT:"Rotate your phone", rotS:"The organism's world is a side view — it needs the full screen width." },
  de:{ organism:"Organismus", age:"Leben", eye:"Auge des Modells", legend:"Legende", grasp:"Physik-Verständnis", voe:"Test des Unmöglichen", feed:"letzte Proben",
    idName:'Unter <em>Glas</em>', idSub:"ein lebendes Weltmodell · TinyJEPA",
@@ -401,6 +410,8 @@ const T={
    feedEmpty:"der Regisseur bereitet die erste Probe vor…",
    lgTruth:"Ball (Wahrheit)", lgBelief:"Überzeugung des Modells", lgArc:"vorgestellte Bahn (Glaubensphysik)", lgPred:"rohe Netz-Vorhersage (t+4)", lgWall:"Verdeckung", lgSurp:"Überraschung",
    load:"Kontaktaufnahme mit dem Organismus…",
+   noglT:"3D-Szene aus: der Browser stellt kein WebGL bereit",
+   noglS:"Die Live-Daten des Organismus funktionieren weiter (Panels, Auge des Modells, Proben). Für die Szene aktiviere die Hardware-Beschleunigung im Browser oder öffne die Seite auf einem anderen Gerät.",
    rotT:"Dreh dein Telefon", rotS:"Die Welt des Organismus ist eine Seitenansicht — sie braucht die volle Breite." }
 };
 let lang="pl"; try{ lang=localStorage.getItem("dlogic-lang")||"pl"; }catch(e){}
@@ -506,9 +517,13 @@ const DEMO=(function(){
 
 /* ================= three.js scene ================= */
 const canvas=document.getElementById("stage");
-const renderer=new THREE.WebGLRenderer({canvas,antialias:!mob,powerPreference:"high-performance"});
-renderer.setPixelRatio(Math.min(window.devicePixelRatio||1, mob?1.6:2));
-renderer.outputColorSpace=THREE.SRGBColorSpace;
+let renderer=null;
+try{
+  renderer=new THREE.WebGLRenderer({canvas,antialias:!mob,powerPreference:"high-performance"});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1, mob?1.6:2));
+  renderer.outputColorSpace=THREE.SRGBColorSpace;
+}catch(e){ console.warn("WebGL unavailable — HUD-only mode:", e&&e.message?e.message:e); }
+const NOGL=!renderer;
 const scene=new THREE.Scene();
 scene.fog=new THREE.Fog(0x05070c, 30, 120);
 { const c=document.createElement("canvas"); c.width=8; c.height=256; const g=c.getContext("2d");
@@ -606,6 +621,17 @@ let flinch=0, fps=60;
 function paintConn(){ connBar.classList.toggle("live",S.live); connBar.classList.toggle("demo",!S.live);
   liveLbl.textContent=S.live?tr("live"):tr("demo"); }
 
+/* no-WebGL mode: hide the dead canvas, say it plainly, keep the data alive */
+if(NOGL){
+  canvas.style.display="none";
+  const b=document.createElement("div"); b.id="nogl";
+  b.innerHTML='<div class="ngl-ico">◢</div><div class="ngl-t"></div><div class="ngl-s"></div>';
+  const st=document.createElement("style");
+  st.textContent="#nogl{position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;padding:40px;background:radial-gradient(ellipse 70% 60% at 50% 44%, rgba(20,28,44,.6), transparent 75%)}#nogl .ngl-ico{font-size:34px;color:var(--gold);opacity:.8}#nogl .ngl-t{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:clamp(17px,2.4vw,24px);color:var(--text);max-width:34ch}#nogl .ngl-s{font-size:13px;line-height:1.65;color:var(--muted);max-width:52ch}";
+  document.head.appendChild(st);
+  document.getElementById("stage-wrap").appendChild(b);
+}
+
 /* static texts (on lang change / connection change) */
 function paintStatic(){
   $("t-organism").textContent=tr("organism"); $("t-age").textContent=tr("age"); $("t-eye").textContent=tr("eye");
@@ -622,6 +648,8 @@ function paintStatic(){
   $("trapTxt").textContent=tr("trap"); $("bundleTxt").textContent=tr("bundle"); $("aboutLink").textContent=tr("about");
   $("loadSub").textContent=tr("load"); $("rotT").textContent=tr("rotT"); $("rotS").textContent=tr("rotS");
   $("feedEmpty").textContent=tr("feedEmpty");
+  const ngl=document.getElementById("nogl");
+  if(ngl){ ngl.querySelector(".ngl-t").textContent=tr("noglT"); ngl.querySelector(".ngl-s").textContent=tr("noglS"); }
   const lg=[["lgTruth","#F4F6F8",0],["lgBelief","#7DE2FF",0],["lgArc","#7DE2FF",1],["lgPred","#E8B23A",0],["lgWall","#3FB6DC",1],["lgSurp","#E8675A",0]];
   $("legend").innerHTML=lg.map(([k,c,line])=>'<div class="lr"><span class="sw'+(line?" line":"")+'" style="color:'+c+'"></span>'+tr(k)+'</div>').join("");
   document.querySelectorAll("#lang button").forEach(b=>b.classList.toggle("on",b.dataset.lang===lang));
@@ -804,12 +832,22 @@ function loop(){ raf=requestAnimationFrame(loop);
   if(hudT>=0.25){ hudT=0; paintAge(st); paintInstruments(st); watchTrials(st); drawEye(st); }
   if(composer) composer.render(); else renderer.render(scene,camera);
 }
-document.addEventListener("visibilitychange",()=>{ if(document.hidden) cancelAnimationFrame(raf);
+/* HUD-only heartbeat (no WebGL): live data, eye and trial feed keep working */
+function hudTick(){ if(document.hidden) return;
+  trapCool=Math.max(0,trapCool-0.25);
+  const st=(S.live&&S.state)?S.state:DEMO.step(0.25);
+  paintAge(st); paintInstruments(st); watchTrials(st); drawEye(st);
+  const s=st.surprise||0;
+  if(s>0.27 && s>S.lastSurprise+0.04){ const f=$("flashSurp"); f.style.opacity="0.45"; setTimeout(()=>f.style.opacity="0",60);
+    const stp=$("stamp"); stp.textContent=tr("stamp"); stp.classList.add("show"); setTimeout(()=>stp.classList.remove("show"),900); }
+  S.lastSurprise=s;
+}
+document.addEventListener("visibilitychange",()=>{ if(NOGL) return; if(document.hidden) cancelAnimationFrame(raf);
   else { clock.getDelta(); raf=requestAnimationFrame(loop); } });
 
 /* bloom, lazily; scene is fine without it */
 let composer=null;
-(async function(){ try{
+(async function(){ if(NOGL) return; try{
   const {EffectComposer}=await import('three/addons/postprocessing/EffectComposer.js');
   const {RenderPass}=await import('three/addons/postprocessing/RenderPass.js');
   const {UnrealBloomPass}=await import('three/addons/postprocessing/UnrealBloomPass.js');
@@ -820,14 +858,17 @@ let composer=null;
   composer.setPixelRatio(renderer.getPixelRatio()); composer.setSize(innerWidth,innerHeight);
 }catch(e){ composer=null; console.warn("bloom off",e); } })();
 
-function resize(){ renderer.setSize(innerWidth,innerHeight,false); camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix(); if(composer) composer.setSize(innerWidth,innerHeight); }
+function resize(){ if(!renderer) return; renderer.setSize(innerWidth,innerHeight,false); camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix(); if(composer) composer.setSize(innerWidth,innerHeight); }
 let rz; addEventListener("resize",()=>{ clearTimeout(rz); rz=setTimeout(resize,150); });
 
 /* boot */
 paintConn(); paintStatic(); resize();
 liveBoot();
-if(reduce){ const st=DEMO.step(0.016); applyState(st,0.016,0); paintAge(st); paintInstruments(st); drawEye(st); renderer.render(scene,camera); }
-raf=requestAnimationFrame(loop);
+if(NOGL){ hudTick(); setInterval(hudTick,250); }
+else {
+  if(reduce){ const st=DEMO.step(0.016); applyState(st,0.016,0); paintAge(st); paintInstruments(st); drawEye(st); renderer.render(scene,camera); }
+  raf=requestAnimationFrame(loop);
+}
 window.__SZALKA_OK=true;
 setTimeout(()=>{ const l=$("load"); if(l){ l.classList.add("done"); setTimeout(()=>l.style.display="none",750); } },700);
 }
