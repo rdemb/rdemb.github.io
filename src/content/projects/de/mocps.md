@@ -14,7 +14,7 @@ Technisch ist die aktuelle Version das Rezept `signed_velocity_only` + predictor
 
 Die neueste Richtung: diesem Weltmodell einen Körper geben. **Pod Kloszem** ("Unter der Glasglocke") ist ein lebender 3D-Organismus, ein Sternenbesucher in einem polnischen Hinterhof, angetrieben von einem echten JEPA-Modell, das rund um die Uhr auf der CPU läuft. Keine Animation: jedes Bild ist eine Ablesung des Modellzustands.
 
-Für den Organismus haben wir die Welt um **Schwerkraft** erweitert, und das ändert die Regeln. Bei linearer Bewegung konnte ein gelernter Prädiktor eine Konstant-Geschwindigkeits-Baseline nicht schlagen, weil diese bereits alle Informationen hatte. Unter Schwerkraft fehlt ihr die Beschleunigung, und der gelernte Prädiktor **schlägt sie** (4,16 px gegen 5,71 px), weil er das Fallen verinnerlicht hat.
+Für den Organismus haben wir die Welt um **Schwerkraft** erweitert, und das ändert die Regeln. Bei linearer Bewegung konnte ein gelernter Prädiktor eine Konstant-Geschwindigkeits-Baseline nicht schlagen, weil diese bereits alle Informationen hatte. Unter Schwerkraft fehlt ihr die Beschleunigung, und der gelernte Prädiktor **schlägt sie** (3,85 ± 0,56 px gegen 5,71 px, fünf Seeds), weil er das Fallen verinnerlicht hat.
 
 Der Organismus tut dreierlei zugleich, alles gemessen:
 
@@ -47,8 +47,9 @@ Die Visualisierung ist eine Seitenansicht der Welt, in der der Organismus lebt. 
 
 **Wie wir messen, alles gegen ehrliche Baselines:**
 
-- **Schwerkraft.** Ein linearer Probe liest die Position aus der Vorhersage des Modells. Das Modell trifft die zukünftige Position auf **4,16 px**, die Konstant-Geschwindigkeits-Baseline auf **5,71 px**. Das Modell schlägt sie um **1,55 px**, weil es die Beschleunigung verinnerlicht hat, die der Baseline strukturell fehlt. Das ist das Spiegelbild des früheren Ergebnisses: bei linearer Bewegung konnte Lernen die Baseline nicht schlagen (sie hatte bereits alle Informationen), unter Schwerkraft gibt es etwas zu lernen.
-- **Möglich gegen unmöglich (die V-JEPA-Methode).** Im Moment des Eintritts hinter das Hindernis hält das Modell fest, was es erwartet; beim Wiederauftauchen vergleichen wir das mit der Realität im Latentraum. Bei möglichen Ereignissen ist die Überraschung klein (0,13), bei unmöglichen groß (0,79). Es unterscheidet Mögliches von Unmöglichem zu **96%**.
+- **Schwerkraft, repliziert über 5 Seeds.** Ein linearer Probe liest die Position aus der Vorhersage des Modells. Das Modell trifft die zukünftige Position auf **3,85 ± 0,56 px**, die Konstant-Geschwindigkeits-Baseline auf **5,71 ± 0,01 px** — ein Vorsprung von **+1,86 px, positiv auf jedem der fünf Seeds**, und der beste Seed (2,91 px) schlägt sogar das Konstant-Beschleunigungs-Orakel, weil er Bodenabpraller gelernt hat. Das ist das Spiegelbild des früheren Ergebnisses: bei linearer Bewegung konnte Lernen die Baseline nicht schlagen (sie hatte bereits alle Informationen), unter Schwerkraft gibt es etwas zu lernen.
+- **Möglich gegen unmöglich (die V-JEPA-Methode).** Im Moment des Eintritts hinter das Hindernis hält das Modell fest, was es erwartet; beim Wiederauftauchen vergleichen wir das mit der Realität im Latentraum. Bei möglichen Ereignissen ist die Überraschung klein (0,14), bei unmöglichen groß (0,82); grobe Wunder erkennt es zu 92–100% bei 2,4% Fehlalarmen. Daneben läuft eine ehrliche Baseline: ein idealisierter Pixel-Tracker mit der wahren Physik. Jede Probe landet in einem öffentlichen Log (`trials.jsonl`), aus dem die Schwellen-Kalibrierung berechnet wird.
+- **Subtile Wunder, eine vermessene Grenze.** Der Regisseur kennt auch Wunder, die in einem einzelnen Frame unsichtbar sind: Schwerkraft um ±30% verbogen, Impuls um ±35% hinter der Deckung. Die aktuelle Repräsentation erkennt davon 5–15% — und wir berichten das offen, als Karte des Ortes, an dem das Verstehen endet, nicht als versteckten Fehlschlag.
 
 **Unterwegs, ehrlich.** Die ersten Durchläufe brachen zusammen: der normalisierte Verlust ließ die Repräsentation in sich zusammenfallen (effektiver Rang 3,8, Latent unlesbar). Die Lösung ist ein roher MSE-Verlust plus VICReg (Varianz und Kovarianz), der den Rang auf 11 hob und den Latent lesbar machte. Das zweite Problem: der Organismus verwechselte Möglich mit Unmöglich, weil das Modell nur den Anfang des Bogens sah, behoben durch ein zufälliges Aufwärmen der Welt (Kontext aus jeder Flugphase).
 
@@ -57,6 +58,8 @@ Die Visualisierung ist eine Seitenansicht der Welt, in der der Organismus lebt. 
 Ein winziges Weltmodell, ohne Etiketten auf 1024 Pixeln trainiert, **lernte Schwerkraft gut genug, um eine gedächtnislose Baseline bei voller Beobachtung zu schlagen**, und zwar in genau der Welt, in der das frühere Ergebnis zeigte, dass Lernen bei linearer Bewegung nicht hilft. Es bekam einen Körper: es sagt den Bogen vorher, behält den Ball hinter Deckung im Sinn und zuckt nur beim Unmöglichen zusammen, zu 96% korrekt. Das Auge des Modells zeigt, dass all das auf einem armen, verschwommenen Bild geschieht, also ist es ein Beweis über die Repräsentation, kein Grafikeffekt.
 
 **Was es nicht bedeutet.** Das ist noch Spielzeugmaßstab: 32 Pixel, ein Ball, eine Seitenansicht. Kein Benchmark, kein SOTA, kein Beweis allgemeinen Physikverständnisses, keine Behauptung, dass JEPA „funktioniert". Es ist ein ehrlich begrenztes, voll reproduzierbares Ergebnis, und ein lebender Organismus, der es live zeigt, rund um die Uhr, auf der CPU.
+
+**Code.** Das ganze Labor samt trainiertem Checkpoint des Organismus liegt auf GitHub: [github.com/rdemb/jepa-petri-dish](https://github.com/rdemb/jepa-petri-dish) — `python -m organism.server` startet den Organismus bei dir, und diese Seite lässt sich mit dem Parameter `?live=` auf deinen eigenen Server richten.
 
 ## Was es ist
 

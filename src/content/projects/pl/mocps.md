@@ -14,7 +14,7 @@ Technicznie aktualna wersja to przepis `signed_velocity_only` + predictor400. To
 
 Najnowszy kierunek: dać temu modelowi świata ciało. **Pod Kloszem** to żywy organizm 3D, przybysz z gwiazd na polskim podwórku, napędzany realnym modelem JEPA działającym 24/7 na CPU. To nie animacja: każda klatka to odczyt stanu modelu.
 
-Dla organizmu rozszerzyliśmy świat o **grawitację**, i to zmienia regułę gry. W ruchu liniowym nauczony predyktor nie potrafił pobić baseline'u „stała prędkość", bo ten miał już całą informację. Pod grawitacją stała prędkość gubi przyspieszenie, a nauczony predyktor **bije ją** (4.16 px kontra 5.71 px), bo zinternalizował spadanie.
+Dla organizmu rozszerzyliśmy świat o **grawitację**, i to zmienia regułę gry. W ruchu liniowym nauczony predyktor nie potrafił pobić baseline'u „stała prędkość", bo ten miał już całą informację. Pod grawitacją stała prędkość gubi przyspieszenie, a nauczony predyktor **bije ją** (3.85 ± 0.56 px kontra 5.71 px, pięć seedów), bo zinternalizował spadanie.
 
 Organizm robi trzy rzeczy naraz, każdą mierzymy:
 
@@ -47,8 +47,9 @@ Wizualizacja to widok z boku świata, w którym żyje organizm. Każdy element c
 
 **Jak mierzymy, wszystko przeciw uczciwym baseline'om:**
 
-- **Grawitacja.** Liniowy probe odczytuje pozycję z predykcji modelu. Model trafia w przyszłą pozycję na **4.16 px**, baseline „stała prędkość" na **5.71 px**. Model bije go o **1.55 px**, bo zinternalizował przyspieszenie, którego baseline z definicji nie ma. To odwrotność wcześniejszego wyniku: na ruchu liniowym uczenie nie pobiło baseline'u (ten miał już całą informację), a pod grawitacją jest czego się uczyć.
-- **Możliwe kontra niemożliwe (metoda V-JEPA).** W chwili wejścia za przeszkodę model zapisuje, czego się spodziewa; przy odsłonięciu porównujemy to z rzeczywistością w przestrzeni latentu. Na możliwym zaskoczenie jest małe (0.13), na niemożliwym duże (0.79). Rozróżnia możliwe od niemożliwego w **96%**.
+- **Grawitacja, replikacja na 5 seedach.** Liniowy probe odczytuje pozycję z predykcji modelu. Model trafia w przyszłą pozycję na **3.85 ± 0.56 px**, baseline „stała prędkość" na **5.71 ± 0.01 px** — przewaga **+1.86 px, dodatnia na każdym z pięciu seedów**, a najlepszy seed (2.91 px) bije nawet wyrocznię stałego przyspieszenia, bo nauczył się odbić od ziemi. To odwrotność wcześniejszego wyniku: na ruchu liniowym uczenie nie pobiło baseline'u (ten miał już całą informację), a pod grawitacją jest czego się uczyć.
+- **Możliwe kontra niemożliwe (metoda V-JEPA).** W chwili wejścia za przeszkodę model zapisuje, czego się spodziewa; przy odsłonięciu porównujemy to z rzeczywistością w przestrzeni latentu. Na możliwym zaskoczenie jest małe (0.14), na niemożliwym duże (0.82); grube cuda wykrywa w 92–100% przy 2,4% fałszywych alarmów. Obok modelu biegnie uczciwy baseline: idealny tracker pikselowy z prawdziwą fizyką. Każda próba trafia do publicznego dziennika (`trials.jsonl`), z którego policzona jest kalibracja progu.
+- **Subtelne cuda, zmierzona granica.** Reżyser zna też cuda, których nie widać w jednej klatce: grawitacja wykrzywiona o ±30%, pęd o ±35% za zasłoną. Obecna reprezentacja wykrywa je w 5–15% — i raportujemy to wprost, jako mapę miejsca, w którym rozumienie się kończy, a nie ukrytą porażkę.
 
 **Po drodze, uczciwie.** Pierwsze przebiegi się sypały: znormalizowana strata pozwalała reprezentacji zapaść się (effective rank 3.8, latent nieczytelny). Naprawa to surowa strata MSE plus VICReg (variance i covariance), która podniosła rank do 11 i uczyniła latent czytelnym. Drugi problem: organizm mylił możliwe z niemożliwym, bo model widział tylko start łuku, naprawione losową rozgrzewką świata (kontekst z każdej fazy lotu).
 
@@ -57,6 +58,8 @@ Wizualizacja to widok z boku świata, w którym żyje organizm. Każdy element c
 Mały model świata, trenowany bez etykiet na 1024 pikselach, **nauczył się grawitacji na tyle, że bije bezpamięciowy baseline na pełnej obserwacji**, i to w tym samym świecie, w którym wcześniejszy wynik pokazał, że na ruchu liniowym uczenie nie pomaga. Dostał ciało: przewiduje łuk, trzyma piłkę w pamięci za przeszkodą i wzdryga się tylko na cud, 96% poprawnie. Oko modelu pokazuje, że wszystko to dzieje się na biednym, rozmytym obrazie, więc to dowód reprezentacji, a nie efekt grafiki.
 
 **Czego to nie znaczy.** To wciąż skala zabawki: 32 piksele, jedna piłka, rzut boczny. Nie benchmark, nie SOTA, nie dowód ogólnego rozumienia fizyki ani twierdzenie, że JEPA „działa". To uczciwie ograniczony, w pełni reprodukowalny wynik, i żywy organizm, który pokazuje go na żywo, 24/7, na CPU.
+
+**Kod.** Całe laboratorium z wytrenowanym checkpointem organizmu jest na GitHubie: [github.com/rdemb/jepa-petri-dish](https://github.com/rdemb/jepa-petri-dish) — `python -m organism.server` uruchamia organizm u Ciebie, a tę stronę można wycelować we własny serwer parametrem `?live=`.
 
 ## Co to jest
 

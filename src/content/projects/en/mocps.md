@@ -14,7 +14,7 @@ Technically, the current version is the `signed_velocity_only` + predictor400 re
 
 The newest direction: give this world model a body. **Pod Kloszem** ("Under the Bell Jar") is a living 3D organism, a star visitor in a Polish backyard, driven by a real JEPA model running 24/7 on CPU. Not an animation: every frame is a readout of the model's state.
 
-For the organism we extended the world with **gravity**, and that changes the game. On linear motion a learned predictor could not beat a constant-velocity baseline, because the baseline already had all the information. Under gravity, constant velocity misses the acceleration, and the learned predictor **beats it** (4.16 px vs 5.71 px), because it internalized falling.
+For the organism we extended the world with **gravity**, and that changes the game. On linear motion a learned predictor could not beat a constant-velocity baseline, because the baseline already had all the information. Under gravity, constant velocity misses the acceleration, and the learned predictor **beats it** (3.85 ± 0.56 px vs 5.71 px, five seeds), because it internalized falling.
 
 The organism does three things at once, each measured:
 
@@ -47,8 +47,9 @@ The visualization is a side view of the world the organism lives in. Every eleme
 
 **How we measure, everything against honest baselines:**
 
-- **Gravity.** A linear probe reads the position out of the model's prediction. The model hits the future position to **4.16 px**, the constant-velocity baseline to **5.71 px**. The model beats it by **1.55 px**, because it internalized the acceleration the baseline structurally lacks. This is the mirror image of the earlier result: on linear motion learning could not beat the baseline (it already had all the information), under gravity there is something to learn.
-- **Possible vs impossible (the V-JEPA way).** At the moment of entering the occluder the model records what it expects; on reveal we compare that to reality in latent space. On possible events the surprise is small (0.13), on impossible ones large (0.79). It tells possible from impossible **96%** of the time.
+- **Gravity, replicated over 5 seeds.** A linear probe reads the position out of the model's prediction. The model hits the future position to **3.85 ± 0.56 px**, the constant-velocity baseline to **5.71 ± 0.01 px** — an advantage of **+1.86 px, positive on every one of five seeds**, and the best seed (2.91 px) even beats the constant-acceleration oracle, because it learned floor bounces. This is the mirror image of the earlier result: on linear motion learning could not beat the baseline (it already had all the information), under gravity there is something to learn.
+- **Possible vs impossible (the V-JEPA way).** At the moment of entering the occluder the model records what it expects; on reveal we compare that to reality in latent space. On possible events the surprise is small (0.14), on impossible ones large (0.82); gross miracles are detected at 92–100% with a 2.4% false-alarm rate. An honest baseline runs alongside: an idealized pixel tracker with the true physics. Every trial is appended to a public log (`trials.jsonl`), from which the threshold calibration is computed.
+- **Subtle miracles, a measured edge.** The director also knows miracles invisible in a single frame: gravity bent by ±30%, momentum by ±35% behind the cover. The current representation catches 5–15% of those — and we report it plainly, as a map of where understanding ends, not a hidden failure.
 
 **Along the way, honestly.** The first runs collapsed: the normalized loss let the representation fold in on itself (effective rank 3.8, latent unreadable). The fix is a raw MSE loss plus VICReg (variance and covariance), which raised the rank to 11 and made the latent readable. The second problem: the organism confused possible with impossible because the model only ever saw the start of the arc, fixed with a random world warm-up (context from every phase of flight).
 
@@ -57,6 +58,8 @@ The visualization is a side view of the world the organism lives in. Every eleme
 A tiny world model, trained without labels on 1024 pixels, **learned gravity well enough to beat a memoryless baseline on full observation**, in the very world where the earlier result showed learning does not help on linear motion. It got a body: it predicts the arc, holds the ball in mind behind cover, and flinches only at the impossible, 96% correctly. The model's eye shows all of this happens on a poor, blurry image, so it is a proof about the representation, not a graphics effect.
 
 **What it does not mean.** This is still toy scale: 32 pixels, one ball, a side view. Not a benchmark, not SOTA, not proof of general physics understanding, not a claim that JEPA "works". It is an honestly bounded, fully reproducible result, and a living organism that shows it live, 24/7, on CPU.
+
+**Code.** The whole lab, with the organism's trained checkpoint, is on GitHub: [github.com/rdemb/jepa-petri-dish](https://github.com/rdemb/jepa-petri-dish) — `python -m organism.server` runs the organism on your machine, and this page can be pointed at your own server with the `?live=` parameter.
 
 ## What it is
 
