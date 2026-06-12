@@ -11,7 +11,7 @@ slug: "ai-search-cost"
 
 ## Three levels of cost
 
-- **Do it yourself, free.** Checking whether AI knows you, and fixing the basics on your site, costs nothing but your time. I described it in [a separate post](/en/blog/does-chatgpt-recommend-you/).
+- **Do it yourself, free.** Checking whether AI knows you, and fixing the basics on your site, costs nothing but your time. I described it in [a separate post](/en/blog/ai-visibility/).
 - **A one-time diagnosis.** Someone X-rays your company and tells you what to fix first. With me, [the X-ray](/preswietlenie/) is €390.
 - **Ongoing work.** Content and presence beyond your site build over months. That is either your time or a subscription: from €690/mo with me, usually €1.5k to €10k a month at SEO agencies.
 

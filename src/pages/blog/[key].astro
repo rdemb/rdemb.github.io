@@ -1,6 +1,6 @@
 ---
 import PageLayout from '../../layouts/PageLayout.astro';
-import { postsByLang, postSw, blogText, kindLabel } from '../../lib/content';
+import { postsByLang, postLangs, postSwSafe, postHreflangs, blogText, kindLabel } from '../../lib/content';
 import { render } from 'astro:content';
 const lang = 'pl';
 export async function getStaticPaths() {
@@ -10,10 +10,11 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 const t = blogText[lang];
+const langs = await postLangs(entry.data.key);
 ---
-<PageLayout lang={lang} title={`${entry.data.title} · D-LOGIC studio`} description={entry.data.excerpt} sw={postSw(entry.data.key)} image={entry.data.image ?? `/blog/covers/${entry.data.key}.png`} ogType="article">
+<PageLayout lang={lang} title={`${entry.data.title} · D-LOGIC studio`} description={entry.data.excerpt} sw={postSwSafe(entry.data.key, langs)} hreflangs={postHreflangs(entry.data.key, langs)} image={entry.data.image ?? `/blog/covers/${entry.data.key}.png`} ogType="article">
   <div class="crumbs"><a href="/">D-LOGIC</a> <span>/</span> <a href="/blog/">{t.title}</a></div>
-  <figure class="mocps-hero" style="margin:14px 0 6px"><img src={`/blog/covers/${entry.data.key}.png`} alt={entry.data.title} loading="lazy" /></figure>
+  <figure class="mocps-hero" style="margin:14px 0 6px"><img src={`/blog/covers/${entry.data.key}.png`} alt={entry.data.title} width="1200" height="630" loading="lazy" /></figure>
   <header class="article-head">
     <span class="meta mono">{entry.data.date.replaceAll('-', '.')} · {kindLabel[lang][entry.data.kind] ?? entry.data.kind}</span>
     <h1>{entry.data.title}</h1>

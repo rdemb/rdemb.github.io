@@ -11,7 +11,7 @@ slug: "was-kostet-ki-sichtbarkeit"
 
 ## Drei Kostenstufen
 
-- **Mach es selbst, kostenlos.** Zu prüfen, ob die KI dich kennt, und die Basics auf deiner Seite zu reparieren, kostet nichts außer deiner Zeit. Ich habe es in [einem eigenen Beitrag](/de/blog/empfiehlt-chatgpt-deine-firma/) beschrieben.
+- **Mach es selbst, kostenlos.** Zu prüfen, ob die KI dich kennt, und die Basics auf deiner Seite zu reparieren, kostet nichts außer deiner Zeit. Ich habe es in [einem eigenen Beitrag](/de/blog/ai-visibility/) beschrieben.
 - **Eine einmalige Diagnose.** Jemand röntgt deine Firma und sagt, was zuerst zu reparieren ist. Bei mir kostet [das Röntgen](/preswietlenie/) 390 €.
 - **Laufende Arbeit.** Inhalt und Präsenz über deine Seite hinaus bauen sich über Monate auf. Das ist entweder deine Zeit oder ein Abo: bei mir ab 690 €/Mt, bei SEO-Agenturen meist 1,5k bis 10k im Monat.
 
