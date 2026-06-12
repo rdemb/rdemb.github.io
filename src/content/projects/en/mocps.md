@@ -18,7 +18,7 @@ For the organism we extended the world with **gravity**, and that changes the ga
 
 The organism does three things at once, each measured:
 
-- it **predicts** the gravitational arc of a thrown ball (the cyan trail is the model's real prediction),
+- it **predicts** the ball's flight (the gold dot in the scene is the network's raw prediction, 4 frames ahead),
 - it **remembers** the ball's position when it hides behind an occluder (object permanence),
 - it **is surprised** the V-JEPA way: we measure the surprise gap, and the model flinches only when the director breaks physics (levitation, freeze, teleport). It tells possible from impossible **96%** of the time.
 
@@ -29,13 +29,14 @@ A small corner panel, the "model's eye", shows the raw 32×32 image the brain ac
 The visualization is a side view of the world the organism lives in. Every element means something, nothing is decoration:
 
 - **White ball** — the real ball, ground truth. The actual world state the server runs 24/7.
-- **Cyan arc** — the model's prediction: where it thinks the ball will go. A real readout from the network, not an animation.
+- **Cyan arc** — the imagination track: the model's belief about the ball rolled forward with the world's hard physics (a rollout). It makes the memory under occlusion visible, but is not itself a network readout.
+- **Gold dot** — the raw network prediction: where the model (a linear probe on the predicted latent) expects the ball 4 frames later. The only point in the scene read straight from the network.
 - **Cyan marker with a faint ring** — the model's belief: where it thinks the ball is. When the ball hides behind the occluder, the marker stays and moves to where the model expects it (object permanence). The ring grows as confidence drops.
-- **Model's eye (bottom-left, 32×32 px)** — the raw image the brain actually works with. The white blob is the ball as it sees it (blurry, 1024 pixels), the cyan dot is its prediction. This makes the representation visible: the model predicts physics from this, not from the pretty 3D.
+- **Model's eye (left panel, 32×32 px)** — the raw image the brain actually works with. The white blob is the ball as it sees it (blurry, 1024 pixels), the cyan dot is its belief. This makes the representation visible: the model predicts physics from this, not from the pretty 3D.
 - **Dark panel with a cyan edge** — the obstacle (occluder). When the ball passes behind it, it disappears from the model's eye and the permanence test begins.
 - **Coral flash and ripple** — surprise. The model flinches only when the world breaks physics (the ball does not fall, freezes, or teleports). On an ordinary flight it stays calm.
 - **Floor grid** — the physics reference plane, the shared coordinate frame of truth and prediction.
-- **Data panel (top-right)** — live metrics: "physics grasp" (how often it correctly tells possible from impossible), confidence, state (sees / holds / surprised), counters of hits and surprises.
+- **Data panel (right column)** — live metrics: "physics grasp" (how often it correctly tells possible from impossible), confidence, state (sees / holds / surprised), and the impossible test: mean surprise on possible vs impossible worlds and the margin between them. On the left: the organism's age counted on the server (it survives restarts), world steps and the trial counter.
 - **"Break physics" button** — you as the director: a click asks the server for a trap (an impossible event), to test whether the model notices.
 
 ## Research and results

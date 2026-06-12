@@ -18,7 +18,7 @@ Für den Organismus haben wir die Welt um **Schwerkraft** erweitert, und das än
 
 Der Organismus tut dreierlei zugleich, alles gemessen:
 
-- er **sagt** den Schwerkraft-Bogen eines geworfenen Balls **vorher** (die cyanfarbene Spur ist die echte Vorhersage des Modells),
+- er **sagt** den Flug des Balls **vorher** (der goldene Punkt in der Szene ist die rohe Netz-Vorhersage, 4 Frames voraus),
 - er **erinnert** die Position des Balls, wenn er hinter einem Hindernis verschwindet (Objektpermanenz),
 - er **ist überrascht** auf V-JEPA-Art: wir messen die Überraschungslücke, und das Modell zuckt nur zusammen, wenn der Regisseur die Physik bricht (Levitation, Einfrieren, Teleport). Möglich von Unmöglich unterscheidet es zu **96%**.
 
@@ -29,13 +29,14 @@ Ein kleines Eckpanel, das "Auge des Modells", zeigt das rohe 32×32-Bild, mit de
 Die Visualisierung ist eine Seitenansicht der Welt, in der der Organismus lebt. Jedes Element bedeutet etwas, nichts ist Dekoration:
 
 - **Weiße Kugel** — der echte Ball, Ground Truth. Der reale Weltzustand, den der Server rund um die Uhr führt.
-- **Cyanfarbener Bogen** — die Vorhersage des Modells: wohin der Ball seiner Meinung nach fliegt. Eine echte Ablesung aus dem Netz, keine Animation.
+- **Cyanfarbener Bogen** — die Bahn der Vorstellung: die Überzeugung des Modells, mit der harten Physik der Welt vorwärtsgerollt (Rollout). Er macht das Gedächtnis hinter der Verdeckung sichtbar, ist aber selbst keine Netz-Ablesung.
+- **Goldener Punkt** — die rohe Netz-Vorhersage: wo das Modell (lineare Probe auf dem vorhergesagten Latent) den Ball 4 Frames später erwartet. Der einzige Punkt der Szene, der direkt aus dem Netz gelesen wird.
 - **Cyanfarbener Marker mit zartem Ring** — die Überzeugung des Modells: wo es den Ball vermutet. Wenn der Ball hinter dem Hindernis verschwindet, bleibt der Marker und wandert dorthin, wo das Modell ihn erwartet (Objektpermanenz). Der Ring wächst, wenn die Sicherheit sinkt.
-- **Auge des Modells (unten links, 32×32 px)** — das rohe Bild, mit dem das Gehirn tatsächlich arbeitet. Der weiße Fleck ist der Ball, wie es ihn sieht (verschwommen, 1024 Pixel), der cyanfarbene Punkt seine Vorhersage. Das macht die Repräsentation sichtbar: das Modell sagt Physik daraus voraus, nicht aus der schönen 3D-Grafik.
+- **Auge des Modells (linkes Panel, 32×32 px)** — das rohe Bild, mit dem das Gehirn tatsächlich arbeitet. Der weiße Fleck ist der Ball, wie es ihn sieht (verschwommen, 1024 Pixel), der cyanfarbene Punkt seine Überzeugung. Das macht die Repräsentation sichtbar: das Modell sagt Physik daraus voraus, nicht aus der schönen 3D-Grafik.
 - **Dunkles Panel mit cyanfarbener Kante** — das Hindernis (Okkluder). Wenn der Ball dahinter gerät, verschwindet er aus dem Auge des Modells und der Permanenztest beginnt.
 - **Korallenfarbenes Aufblitzen und Welle** — Überraschung. Das Modell zuckt nur zusammen, wenn die Welt die Physik bricht (der Ball fällt nicht, erstarrt oder teleportiert). Bei normalem Flug bleibt es ruhig.
 - **Bodengitter** — die Bezugsebene der Physik, das gemeinsame Koordinatensystem von Wahrheit und Vorhersage.
-- **Datenpanel (oben rechts)** — Live-Metriken: „Physik verstanden" (wie oft es Mögliches von Unmöglichem korrekt unterscheidet), Sicherheit, Zustand (sieht / hält / überrascht), Zähler für Treffer und Überraschungen.
+- **Datenpanel (rechte Spalte)** — Live-Metriken: „Physik verstanden" (wie oft es Mögliches von Unmöglichem korrekt unterscheidet), Sicherheit, Zustand (sieht / hält / überrascht) und der Test des Unmöglichen: mittlere Überraschung in möglichen gegen unmögliche Welten und die Marge dazwischen. Links: das Alter des Organismus, auf dem Server gezählt (überlebt Neustarts), Weltschritte und der Probenzähler.
 - **Knopf „Physik brechen"** — du als Regisseur: ein Klick bittet den Server um eine Falle (ein unmögliches Ereignis), um zu testen, ob das Modell es merkt.
 
 ## Forschung und Ergebnisse

@@ -18,7 +18,7 @@ Dla organizmu rozszerzyliśmy świat o **grawitację**, i to zmienia regułę gr
 
 Organizm robi trzy rzeczy naraz, każdą mierzymy:
 
-- **przewiduje** grawitacyjny łuk lecącej piłki (cyjanowy ślad to realna predykcja modelu),
+- **przewiduje** lot piłki (złota kropka na scenie to surowa predykcja sieci, 4 klatki naprzód),
 - **pamięta** pozycję piłki, gdy znika za przeszkodą (trwałość obiektu),
 - **dziwi się** metodą V-JEPA: mierzymy rozjazd zaskoczenia i model wzdryga się tylko wtedy, gdy reżyser złamie fizykę (lewitacja, zamarcie, teleport). Możliwe od niemożliwego rozróżnia w **96%**.
 
@@ -29,13 +29,14 @@ To jest test rozumienia fizyki w duchu Yanna LeCuna (możliwe kontra niemożliwe
 Wizualizacja to widok z boku świata, w którym żyje organizm. Każdy element coś znaczy, nic nie jest dekoracją:
 
 - **Biała kula** — prawdziwa piłka, ground truth. Realny stan świata, który serwer prowadzi 24/7.
-- **Cyjanowy łuk** — predykcja modelu: gdzie według niego poleci piłka. Realny odczyt z sieci, nie animacja.
+- **Cyjanowy łuk** — tor wyobraźni: przekonanie modelu o piłce prowadzone naprzód twardą fizyką świata (rollout). Uwidacznia pamięć pod zasłoną, ale sam w sobie nie jest odczytem z sieci.
+- **Złota kropka** — surowa predykcja sieci: gdzie model (liniowa sonda na przewidzianym latencie) spodziewa się piłki 4 klatki później. Jedyny punkt sceny czytany prosto z sieci.
 - **Cyjanowy znacznik z delikatną obręczą** — przekonanie modelu: gdzie myśli, że jest piłka. Gdy piłka znika za przeszkodą, znacznik zostaje i przesuwa się tam, gdzie model się jej spodziewa (trwałość obiektu). Obręcz rośnie, gdy pewność spada.
-- **Oko modelu (lewy dolny róg, 32×32 px)** — surowy obraz, którym naprawdę operuje mózg. Biała plamka to piłka tak, jak ją widzi (rozmyta, 1024 piksele), cyjanowa kropka to jego predykcja. To czyni reprezentację widzialną: model przewiduje fizykę z tego, nie z ładnej grafiki 3D.
+- **Oko modelu (lewy panel, 32×32 px)** — surowy obraz, którym naprawdę operuje mózg. Biała plamka to piłka tak, jak ją widzi (rozmyta, 1024 piksele), cyjanowa kropka to jego przekonanie. To czyni reprezentację widzialną: model przewiduje fizykę z tego, nie z ładnej grafiki 3D.
 - **Ciemny panel z cyjanową krawędzią** — przeszkoda (okluder). Gdy piłka za nią wpada, znika z oka modelu i zaczyna się test trwałości.
 - **Koralowy błysk i fala** — zaskoczenie. Model wzdryga się tylko, gdy świat złamie fizykę (piłka nie spada, zamiera albo teleportuje się). Na zwykłym locie pozostaje spokojny.
 - **Siatka podłogi** — płaszczyzna odniesienia fizyki, wspólny układ współrzędnych prawdy i predykcji.
-- **Panel danych (prawy górny róg)** — żywe metryki: „rozumie fizykę" (jak często poprawnie odróżnia możliwe od niemożliwego), pewność, stan (widzi / pamięta / zaskoczony), liczniki trafień i zaskoczeń.
+- **Panel danych (prawa kolumna)** — żywe metryki: „rozumie fizykę" (jak często poprawnie odróżnia możliwe od niemożliwego), pewność, stan (widzi / pamięta / zaskoczony) oraz test niemożliwego: średnie zaskoczenie na świecie możliwym kontra niemożliwym i margines między nimi. Po lewej: wiek organizmu liczony na serwerze (przeżywa restarty), kroki świata i licznik prób.
 - **Przycisk „złam fizykę"** — ty jako reżyser: kliknięcie zleca serwerowi pułapkę (zdarzenie niemożliwe), żeby sprawdzić, czy model się zorientuje.
 
 ## Badania i wyniki
