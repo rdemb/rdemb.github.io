@@ -24,6 +24,11 @@ import torch
 from torch import Tensor
 
 IMPOSSIBLE_KINDS = ("levitate", "freeze", "teleport")
+# Subtle miracles: physics is bent, not broken. A single-frame pixel checker
+# at reveal can miss these; they probe whether the latent expectation carries
+# more than coarse geometry.
+SUBTLE_KINDS = ("gravity_warp", "speed_warp")
+SUBTLE_SHARE = 0.4  # of impossible trials
 APPROACH_TIMEOUT = 80
 
 
@@ -55,6 +60,8 @@ class LiveGravityWorld:
         self.vy = 0.0
         self.no_grav = False
         self.frozen = False
+        self.grav_mult = 1.0
+        self.speed_mult = 1.0
         self.hidden = False
         self.prev_hidden = False
         self.step_count = 0
@@ -77,9 +84,9 @@ class LiveGravityWorld:
     def _gravity_physics(self) -> None:
         c = self.cfg
         if not self.no_grav and not self.frozen:
-            self.vy += c.gravity
+            self.vy += c.gravity * self.grav_mult
         if not self.frozen:
-            self.x += self.vx
+            self.x += self.vx * self.speed_mult
             self.y += self.vy
         if self.y > c.ground_y:
             self.y = c.ground_y - (self.y - c.ground_y)
@@ -101,10 +108,16 @@ class LiveGravityWorld:
     # ---- director -------------------------------------------------------
     def _start_trial(self, force_impossible: bool | None = None) -> None:
         impossible = self.rng.random() < 0.5 if force_impossible is None else force_impossible
-        kind = self.rng.choice(IMPOSSIBLE_KINDS) if impossible else "normal"
+        if impossible:
+            pool = SUBTLE_KINDS if self.rng.random() < SUBTLE_SHARE else IMPOSSIBLE_KINDS
+            kind = self.rng.choice(pool)
+        else:
+            kind = "normal"
         self.trial = {
             "impossible": impossible,
             "kind": kind,
+            "subtle": kind in SUBTLE_KINDS,
+            "sign": 1 if self.rng.random() < 0.5 else -1,
             "phase": "approach",
             "occ_left": 0,
             "applied": False,
@@ -121,6 +134,7 @@ class LiveGravityWorld:
         self.trial["applied"] = True
         if self.trial["impossible"]:
             kind = self.trial["kind"]
+            sign = self.trial.get("sign", 1)
             if kind == "levitate":
                 self.no_grav = True
                 self.vy = -3.0  # a clear upward defiance of gravity, not a subtle drift
@@ -129,11 +143,20 @@ class LiveGravityWorld:
             elif kind == "teleport":
                 # jump to the far side at the height it entered; gravity resumes
                 self.x = self.cfg.occ_x0 - 4.0 if self.x > (self.cfg.occ_x0 + self.cfg.occ_x1) / 2 else self.cfg.occ_x1 + 4.0
+            elif kind == "gravity_warp":
+                # gravity bends by 30% while hidden: the ball emerges a touch
+                # high or low — too little for a one-frame pixel check
+                self.grav_mult = 1.0 + 0.3 * sign
+            elif kind == "speed_warp":
+                # lateral momentum bends by 35% while hidden
+                self.speed_mult = 1.0 + 0.35 * sign
 
     def end_trial(self) -> None:
         self.trial = None
         self.no_grav = False
         self.frozen = False
+        self.grav_mult = 1.0
+        self.speed_mult = 1.0
         self.cooldown = self.rng.uniform(2.5, 5.0)
 
     def request_trial(self, impossible: bool) -> None:

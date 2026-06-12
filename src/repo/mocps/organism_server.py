@@ -24,6 +24,10 @@ from urllib.parse import parse_qs, urlparse
 from organism.brain import LivingBrain
 
 
+TRAP_COOLDOWN_S = 3.0
+MAX_STREAM_CLIENTS = 6
+
+
 class Organism:
     def __init__(self, run_dir: str, fps: int = 20, seed: int | None = None) -> None:
         self.brain = LivingBrain(run_dir=run_dir, seed=seed)
@@ -31,6 +35,8 @@ class Organism:
         self.lock = threading.Lock()
         self.state = self.brain.build_state(None)
         self._stop = False
+        self._last_trap = 0.0
+        self.stream_clients = 0
 
     def run(self) -> None:
         dt = 1.0 / self.fps
@@ -39,14 +45,21 @@ class Organism:
             state = self.brain.step(dt)
             with self.lock:
                 self.state = state
+            self.brain.life.save()  # throttled internally (~30 s)
             time.sleep(max(0.0, dt - (time.monotonic() - start)))
+        self.brain.life.save(force=True)
 
     def snapshot(self) -> dict:
         with self.lock:
             return dict(self.state)
 
-    def trap(self, impossible: bool) -> None:
+    def trap(self, impossible: bool) -> dict:
+        now = time.monotonic()
+        if now - self._last_trap < TRAP_COOLDOWN_S:
+            return {"ok": False, "cooldown_s": round(TRAP_COOLDOWN_S - (now - self._last_trap), 1)}
+        self._last_trap = now
         self.brain.world.request_trial(impossible)
+        return {"ok": True, "impossible": impossible}
 
 
 ORG: Organism | None = None
@@ -86,9 +99,12 @@ class Handler(BaseHTTPRequestHandler):
         elif path == "/trap":
             query = parse_qs(parsed.query)
             impossible = query.get("impossible", ["0"])[0] == "1"
-            ORG.trap(impossible)
-            self._json({"ok": True, "impossible": impossible})
+            self._json(ORG.trap(impossible))
         elif path == "/stream":
+            if ORG.stream_clients >= MAX_STREAM_CLIENTS:
+                self._json({"error": "too many stream clients"}, status=429)
+                return
+            ORG.stream_clients += 1
             self.send_response(200)
             self.send_header("Content-Type", "text/event-stream")
             self.send_header("Cache-Control", "no-cache")
@@ -103,6 +119,8 @@ class Handler(BaseHTTPRequestHandler):
                     time.sleep(1.0 / 12)
             except (BrokenPipeError, ConnectionResetError):
                 pass
+            finally:
+                ORG.stream_clients -= 1
         elif path in ("/", "/index.html") and FRONTEND is not None and FRONTEND.exists():
             body = FRONTEND.read_bytes()
             self.send_response(200)

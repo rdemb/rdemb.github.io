@@ -86,6 +86,33 @@ learning cannot help. It is **not** a benchmark, not SOTA, not evidence of
 general physics understanding, and not a real-video claim. Single side-view
 gravity world, frozen depth, one ball.
 
+## Multi-seed replication (n=5)
+
+Same recipe, seeds 0-4, held-out 512 samples each (`runs/gravity_seed*_eval`):
+
+| predictor | future-position MAE (mean ± sd) |
+| --- | ---: |
+| constant velocity (memoryless) | `5.71 ± 0.01 px` |
+| persistence | `5.17 ± 0.00 px` |
+| **learned JEPA** | **`3.85 ± 0.56 px`** |
+| constant-acceleration oracle | `3.75 ± 0.01 px` |
+
+Advantage over constant velocity: `+1.86 ± 0.56 px`, positive on **all five
+seeds**. The best seed (`2.91 px`) lands below the constant-acceleration
+oracle, which cannot model floor bounces; the learned predictor can.
+
+## Live deployment (gravity_v3)
+
+The same recipe trained as `gravity_v3` (seed 0) runs 24/7 as a living organism
+(`organism/`): held-out numbers `4.16 px` model vs `5.71 px` constant velocity
+(`runs/gravity_v3_eval/summary.json`). The live server stages possible and
+impossible occlusion trials — including *subtle* miracles (gravity bent ±30%,
+lateral momentum ±35% while hidden) — scores a latent violation-of-expectation
+at each reveal, logs every trial to `runs/gravity_v3/trials.jsonl`, and keeps a
+life ledger that survives restarts. A kinematic pixel baseline (true physics,
+idealized tracking) runs alongside as the honesty rail. Threshold calibration:
+`python -m organism.calibrate --run-dir runs/gravity_v3`.
+
 ## Reproduce (CPU)
 
 ```bash
