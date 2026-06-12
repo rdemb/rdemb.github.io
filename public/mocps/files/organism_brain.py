@@ -31,7 +31,7 @@ from jepa_petri.models import TinyJEPA
 from organism.life import Life
 from organism.world import IMPOSSIBLE_KINDS, SUBTLE_KINDS, LiveGravityWorld, WorldConfig
 
-LATENT_SURPRISE_THRESH = 0.27  # latent mismatch (1 - cos) at reveal counting as a flinch; 96% possible/impossible split
+LATENT_SURPRISE_THRESH = 0.27  # latent mismatch (1 - cos) at reveal counting as a flinch; AUC 0.82 possible/impossible split
 BASELINE_PX_THRESH = 2.5  # kinematic baseline: pixel distance at reveal counting as a flinch (~ball radius + 1)
 
 

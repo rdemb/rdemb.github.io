@@ -21,12 +21,12 @@ const heroAlt = {
   de: 'Animation: zwei Bälle kreuzen sich, einer wird verdeckt und ändert seine Bewegung; beim Wiederauftauchen muss das Ziel erkannt werden',
 }[lang];
 const heroCap = {
-  en: "A living organism driven by the real JEPA model: it predicts a thrown ball's gravity arc, holds it in mind behind cover, and flinches only when physics breaks. Possible vs impossible, 96%, live on CPU.",
-  de: 'Ein lebender Organismus, angetrieben vom echten JEPA-Modell: er sagt den Schwerkraft-Bogen eines geworfenen Balls vorher, behält ihn hinter Deckung im Sinn und zuckt nur zusammen, wenn die Physik bricht. Möglich gegen unmöglich, 96%, live auf CPU.',
+  en: "A living organism driven by the real JEPA model: it predicts a thrown ball's gravity arc, holds it in mind behind cover, and flinches only when physics breaks. Blatant miracles caught 86–100% (AUC 0.82), live on CPU.",
+  de: 'Ein lebender Organismus, angetrieben vom echten JEPA-Modell: er sagt den Schwerkraft-Bogen eines geworfenen Balls vorher, behält ihn hinter Deckung im Sinn und zuckt nur zusammen, wenn die Physik bricht. Krasse Wunder zu 86–100% erkannt (AUC 0.82), live auf CPU.',
 }[lang];
 const liveCta = { en: 'Open the organism fullscreen →', de: 'Organismus im Vollbild öffnen →' }[lang];
 const liveTag = { en: 'live model · fullscreen', de: 'lebendes Modell · Vollbild' }[lang];
-const liveTitle = { en: 'Pod Kloszem — a living organism', de: 'Pod Kloszem — ein lebender Organismus' }[lang];
+const liveTitle = { en: 'Pod Kloszem: a living organism', de: 'Pod Kloszem: ein lebender Organismus' }[lang];
 ---
 <PageLayout lang={lang} title={`${entry.data.title} · D-LOGIC studio`} description={entry.data.excerpt} sw={labSw(entry.data.key)}>
   <div class="crumbs"><a href="/">D-LOGIC</a> <span>/</span> <a href="/#lab">{labW}</a> <span>/</span> {entry.data.key}</div>
