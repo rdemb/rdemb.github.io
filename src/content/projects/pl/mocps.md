@@ -59,8 +59,6 @@ Mały model świata, trenowany bez etykiet na 1024 pikselach, **nauczył się gr
 
 **Czego to nie znaczy.** To wciąż skala zabawki: 32 piksele, jedna piłka, rzut boczny. Nie benchmark, nie SOTA, nie dowód ogólnego rozumienia fizyki ani twierdzenie, że JEPA „działa". To uczciwie ograniczony, w pełni reprodukowalny wynik, i żywy organizm, który pokazuje go na żywo, 24/7, na CPU.
 
-**Kod.** Całe laboratorium z wytrenowanym checkpointem organizmu jest na GitHubie: [github.com/rdemb/jepa-petri-dish](https://github.com/rdemb/jepa-petri-dish) — `python -m organism.server` uruchamia organizm u Ciebie, a tę stronę można wycelować we własny serwer parametrem `?live=`.
-
 ## Co to jest
 
 MOCPS oznacza **Motion-Grounded Object-Centric Predictive State**. W praktyce jest to mały CPU-friendly diagnostyk sprawdzający, czy da się zbudować predykcyjny stan latentny, który:

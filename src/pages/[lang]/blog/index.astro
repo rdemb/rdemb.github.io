@@ -8,6 +8,8 @@ const lang = Astro.params.lang as Lang;
 const posts = await postsByLang(lang);
 const t = blogText[lang];
 const base = '/' + lang;
+const kinds = [...new Set(posts.map((p) => p.data.kind))];
+const allLabel = lang === 'de' ? 'alle' : 'all';
 ---
 <PageLayout lang={lang} title={`${t.title} · D-LOGIC studio`} description={t.lead} sw={blogSw}>
   <div class="crumbs"><a href="/">D-LOGIC</a> <span>/</span> {t.title}</div>
@@ -16,9 +18,13 @@ const base = '/' + lang;
     <h1>{t.title}</h1>
     <p class="excerpt">{t.lead}</p>
   </header>
-  <div class="post-index">
+  <div class="kind-filter mono" id="kindFilter">
+    <button class="on" data-kind="all">{allLabel}</button>
+    {kinds.map((k) => <button data-kind={k}>{kindLabel[lang][k] ?? k}</button>)}
+  </div>
+  <div class="post-index" id="postIndex">
     {posts.map((p) => (
-      <a href={`${base}/blog/${p.data.key}/`}>
+      <a href={`${base}/blog/${p.data.key}/`} data-kind={p.data.kind}>
         <span class="d">{p.data.date.replaceAll('-', '.')}</span>
         <span class="h">{p.data.title}</span>
         <span class="t">{kindLabel[lang][p.data.kind] ?? p.data.kind}</span>
@@ -26,4 +32,17 @@ const base = '/' + lang;
       </a>
     ))}
   </div>
+  <script is:inline>
+    (function(){
+      var bar=document.getElementById('kindFilter'); if(!bar) return;
+      bar.addEventListener('click',function(e){
+        var b=e.target.closest('button'); if(!b) return;
+        bar.querySelectorAll('button').forEach(function(x){x.classList.toggle('on',x===b);});
+        var k=b.dataset.kind;
+        document.querySelectorAll('#postIndex a').forEach(function(a){
+          a.style.display=(k==='all'||a.dataset.kind===k)?'':'none';
+        });
+      });
+    })();
+  </script>
 </PageLayout>

@@ -41,6 +41,7 @@ const siteSchema = {
     <meta name="twitter:image" content={ogImage} />
     <script type="application/ld+json" set:html={JSON.stringify(siteSchema)} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="alternate" type="application/rss+xml" title="D-LOGIC studio · Notatki" href="/rss.xml" />
     <script is:inline>
       (() => { try { document.documentElement.setAttribute('data-theme', localStorage.getItem('dlogic-theme') || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark')); } catch (e) {} })();
     </script>

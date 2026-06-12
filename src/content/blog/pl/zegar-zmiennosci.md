@@ -10,7 +10,7 @@ slug: "zegar-zmiennosci"
 
 Forex reklamuje się jako rynek czynny całą dobę. To prawda na papierze i nieprawda w praktyce. Przez te dwadzieścia cztery godziny nie handluje jeden rynek, tylko trzy po kolei. Najpierw Azja, cicha i wąska. Potem Londyn, który budzi wszystko. Na koniec Nowy Jork, z danymi o 14:30 i największymi godzinami dnia, kiedy obie sesje nakładają się na siebie.
 
-Kiedy pierwszy raz policzyłem na danych, ile EUR/USD przechodzi średnio w każdej godzinie doby, spodziewałem się chaosu. Wyszło coś odwrotnego. Profil zmienności godzina po godzinie powtarza się z uporem rozkładu jazdy. Trzecia w nocy wygląda jak trzecia w nocy sprzed miesiąca. Otwarcie Londynu jak każde otwarcie Londynu. Korelacja tego profilu między różnymi okresami wychodzi u mnie powyżej 0,9. W świecie, w którym prawie nic nie jest stabilne, to jest najstabilniejsza rzecz, jaką znalazłem.
+Kiedy pierwszy raz policzyłem na danych, ile EUR/USD przechodzi średnio w każdej godzinie doby, spodziewałem się chaosu. Wyszło coś odwrotnego. Profil zmienności godzina po godzinie powtarza się z uporem rozkładu jazdy. Trzecia w nocy wygląda jak trzecia w nocy sprzed miesiąca. Otwarcie Londynu jak każde otwarcie Londynu. Korelacja tego profilu między różnymi okresami wychodzi u mnie powyżej 0,9. W świecie, w którym prawie nic nie jest stabilne, to jest najstabilniejsza rzecz, jaką znalazłem. Jedno zastrzeżenie: liczę to na danych historycznych mojego brokera. Inny broker tyka w innej strefie czasu serwera i inaczej skleja świece, więc twój zegar będzie miał ten sam upór, ale inne liczby przy godzinach.
 
 ## Co z tego wynika
 

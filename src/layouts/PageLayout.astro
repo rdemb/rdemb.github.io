@@ -54,6 +54,7 @@ const articleSchema = ogType === 'article' ? {
     {articleSchema && <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />}
     <meta name="theme-color" content="#0C0E12" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="alternate" type="application/rss+xml" title="D-LOGIC studio · Notatki" href="/rss.xml" />
     {hreflangs.pl && <link rel="alternate" hreflang="pl" href={new URL(hreflangs.pl, siteUrl).href} />}
     {hreflangs.en && <link rel="alternate" hreflang="en" href={new URL(hreflangs.en, siteUrl).href} />}
     {hreflangs.de && <link rel="alternate" hreflang="de" href={new URL(hreflangs.de, siteUrl).href} />}

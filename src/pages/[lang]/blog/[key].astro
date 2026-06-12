@@ -16,12 +16,13 @@ const { Content } = await render(entry);
 const t = blogText[lang];
 const base = '/' + lang;
 const langs = await postLangs(entry.data.key);
+const minutes = Math.max(1, Math.round((entry.body ?? '').split(/\s+/).length / 200));
 ---
 <PageLayout lang={lang} title={`${entry.data.title} · D-LOGIC studio`} description={entry.data.excerpt} sw={postSwSafe(entry.data.key, langs)} hreflangs={postHreflangs(entry.data.key, langs)} image={entry.data.image ?? `/blog/covers/${entry.data.key}.png`} ogType="article">
   <div class="crumbs"><a href="/">D-LOGIC</a> <span>/</span> <a href={`${base}/blog/`}>{t.title}</a></div>
   <figure class="mocps-hero" style="margin:14px 0 6px"><img src={`/blog/covers/${entry.data.key}.png`} alt={entry.data.title} width="1200" height="630" loading="lazy" /></figure>
   <header class="article-head">
-    <span class="meta mono">{entry.data.date.replaceAll('-', '.')} · {kindLabel[lang][entry.data.kind] ?? entry.data.kind}</span>
+    <span class="meta mono">{entry.data.date.replaceAll('-', '.')} · {kindLabel[lang][entry.data.kind] ?? entry.data.kind} · {minutes} min</span>
     <h1>{entry.data.title}</h1>
     {entry.data.excerpt && <p class="excerpt">{entry.data.excerpt}</p>}
   </header>
@@ -29,4 +30,21 @@ const langs = await postLangs(entry.data.key);
   <div class="article-foot">
     <a class="mono" href={`${base}/blog/`} style="color:var(--accent)">{t.all} →</a>
   </div>
+  <script is:inline>
+    (function(){
+      var L=(document.documentElement.lang||'pl').slice(0,2);
+      var T={pl:['kopiuj','skopiowane ✓'],en:['copy','copied ✓'],de:['kopieren','kopiert ✓']}[L]||['kopiuj','✓'];
+      document.querySelectorAll('.prose pre').forEach(function(pre){
+        var b=document.createElement('button'); b.type='button'; b.className='code-copy'; b.textContent=T[0];
+        b.addEventListener('click',function(){
+          var code=pre.querySelector('code'); var txt=code?code.innerText:pre.innerText;
+          (navigator.clipboard?navigator.clipboard.writeText(txt):Promise.reject()).then(function(){
+            b.textContent=T[1]; b.classList.add('ok');
+            setTimeout(function(){ b.textContent=T[0]; b.classList.remove('ok'); },1600);
+          }).catch(function(){});
+        });
+        pre.appendChild(b);
+      });
+    })();
+  </script>
 </PageLayout>

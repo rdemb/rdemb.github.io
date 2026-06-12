@@ -16,7 +16,7 @@ Przestałem zadawać pytanie, dokąd pójdzie rynek. Na to pytanie nie znalazłe
 
 Liczba nazywa się hazard, pojęcie pożyczone z analizy przeżycia, tej samej, którą medycyna liczy ryzyko nawrotu choroby. Tutaj: jaka jest szansa, że w najbliższym czasie rynek dołoży nowe ekstremum dnia, biorąc pod uwagę stan, w którym dzień właśnie jest. Która godzina. Ile typowego dziennego dystansu już zużyte. Jak daleko cena siedzi od dotychczasowego szczytu i dołka.
 
-Ta szansa zmienia się w ciągu dnia bardzo mocno i bardzo regularnie. Rano, gdy zakres jest mały, nowe ekstrema sypią się gęsto, bo dzień dopiero szuka swojego kształtu. Im później i im pełniejszy budżet dnia, tym rzadziej rynek dokłada nowy punkt do mapy. Wieczorem, przy wyrobionym zakresie, szansa na nowy szczyt robi się mała. Brzmi jak zdrowy rozsądek i w dużej części nim jest. Różnica polega na tym, że zamiast wrażenia mam krzywą policzoną na latach danych, sprawdzoną na danych, których model nigdy nie widział, i porównaną z testem placebo, żeby wykluczyć, że gratuluję sobie odkrycia trywialności.
+Ta szansa zmienia się w ciągu dnia bardzo mocno i bardzo regularnie. Rano, gdy zakres jest mały, nowe ekstrema sypią się gęsto, bo dzień dopiero szuka swojego kształtu. Im później i im pełniejszy budżet dnia, tym rzadziej rynek dokłada nowy punkt do mapy. Wieczorem, przy wyrobionym zakresie, szansa na nowy szczyt robi się mała. Brzmi jak zdrowy rozsądek i w dużej części nim jest. Różnica polega na tym, że zamiast wrażenia mam krzywą policzoną na latach danych historycznych mojego brokera, sprawdzoną na danych, których model nigdy nie widział, i porównaną z testem placebo, żeby wykluczyć, że gratuluję sobie odkrycia trywialności.
 
 ## Do czego się nadaje, a do czego nie
 

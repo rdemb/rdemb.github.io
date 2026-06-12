@@ -59,8 +59,6 @@ A tiny world model, trained without labels on 1024 pixels, **learned gravity wel
 
 **What it does not mean.** This is still toy scale: 32 pixels, one ball, a side view. Not a benchmark, not SOTA, not proof of general physics understanding, not a claim that JEPA "works". It is an honestly bounded, fully reproducible result, and a living organism that shows it live, 24/7, on CPU.
 
-**Code.** The whole lab, with the organism's trained checkpoint, is on GitHub: [github.com/rdemb/jepa-petri-dish](https://github.com/rdemb/jepa-petri-dish) — `python -m organism.server` runs the organism on your machine, and this page can be pointed at your own server with the `?live=` parameter.
-
 ## What it is
 
 MOCPS means **Motion-Grounded Object-Centric Predictive State**. In practice, it is a small CPU-friendly diagnostic that tests whether a predictive latent state can:

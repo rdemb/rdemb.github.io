@@ -22,7 +22,7 @@ Kiedy zacząłem ją liczyć u siebie, zobaczyłem rzecz niewygodną. Spora czę
 
 Opisałem niedawno mapę dnia, czyli policzoną na latach danych szansę, że rynek jeszcze dołoży nowe ekstremum. Z tej mapy mój automat korzysta dokładnie tu. Gdy statystyka mówi, że dzień najpewniej zrobił już swoje, automat zaczyna skracać życie pozycji: dosuwa stopa szybciej, niż zrobiłby to klasyczny trailing liczony od samej ceny.
 
-Zanim ta reguła weszła do użycia, przeszła test, którego warunki zapisałem z góry: na danych poza próbą miała skrócić czas w ryzyku i nie pogorszyć wyniku. Skróciła go o około 12 procent przy wyniku bez zmian. Dwanaście procent mniej minut na loterii zdarzeń za darmo. Żadnego dodatkowego zysku, i o to chodziło. Nie każda poprawka w tradingu musi zarabiać więcej. Ta po prostu mniej ryzykuje przy tym samym.
+Zanim ta reguła weszła do użycia, przeszła test, którego warunki zapisałem z góry: na danych poza próbą (historia od mojego brokera) miała skrócić czas w ryzyku i nie pogorszyć wyniku. Skróciła go o około 12 procent przy wyniku bez zmian. Dwanaście procent mniej minut na loterii zdarzeń za darmo. Żadnego dodatkowego zysku, i o to chodziło. Nie każda poprawka w tradingu musi zarabiać więcej. Ta po prostu mniej ryzykuje przy tym samym.
 
 ## Skrajny przypadek: weekend
 
