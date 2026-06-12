@@ -71,10 +71,13 @@ header.bar>*{pointer-events:auto}
 .about-link:hover{color:var(--gold);border-color:rgba(232,178,58,.4)}
 
 /* ---------- left column: identity + eye ---------- */
-.col{position:fixed;z-index:40;display:flex;flex-direction:column;gap:12px;pointer-events:none}
-.col>*{pointer-events:auto}
-.col-l{left:26px;top:78px;bottom:96px;width:288px;justify-content:space-between}
-.col-r{right:26px;top:78px;bottom:96px;width:316px;justify-content:flex-start}
+.col{position:fixed;z-index:40;display:flex;flex-direction:column;gap:12px;pointer-events:auto;
+  overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;-ms-overflow-style:none}
+.col::-webkit-scrollbar{display:none}
+.col-l{left:26px;top:78px;bottom:96px;width:288px}
+.col-r{right:26px;top:78px;bottom:96px;width:316px}
+.col .card{flex:none}
+.col-l .card.eye-wrap{margin-top:auto}
 
 .card{background:var(--panel);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
   border:1px solid var(--line);border-radius:14px;padding:16px 17px}
@@ -189,16 +192,41 @@ header.bar>*{pointer-events:auto}
 
 /* ---------- responsive ---------- */
 @media (max-width:1180px){ .col-l{width:248px} .col-r{width:280px} .id-name{font-size:22px} }
+/* short desktop windows: compact cards, columns scroll internally */
+@media (max-height:860px){
+  .col{gap:9px} .card{padding:12px 13px}
+  .id-name{font-size:21px} .id-desc{font-size:11.5px;margin-top:7px}
+  .big-metric .v{font-size:31px} .voe-note{display:none}
+  .eye-frame{max-width:150px} .feed{max-height:118px}
+  .age-cell .v{font-size:15px}
+}
+@media (max-height:700px){
+  .col-l{top:64px;bottom:84px} .col-r{top:64px;bottom:84px}
+  #idCard .id-desc,.age-foot{display:none} .id-name{font-size:18px}
+  .eye-frame{max-width:108px} .feed{max-height:84px} .big-metric .v{font-size:26px}
+}
+/* phones / narrow tablets (landscape; portrait shows the rotate prompt) */
 @media (max-width:980px){
-  .col-l{left:14px;top:64px;bottom:auto;width:200px;gap:8px}
-  .col-r{right:14px;top:64px;bottom:auto;width:236px;gap:8px}
-  .card{padding:11px 12px;border-radius:11px}
-  #idCard .id-desc,#voeCard .voe-note,.legend,.age-foot{display:none}
-  .id-name{font-size:17px} .big-metric .v{font-size:28px}
-  .eye-frame{max-width:120px} .feed{max-height:96px}
-  header.bar{padding:10px 14px} .bar-mid{font-size:9.5px;padding:6px 11px} .about-link{display:none}
-  .actions{padding:12px} .act{padding:11px 15px;font-size:11px} .act .kbd{display:none}
+  .col-l{left:10px;top:54px;bottom:64px;width:172px;gap:7px}
+  .col-r{right:10px;top:54px;bottom:64px;width:212px;gap:7px}
+  .card{padding:9px 10px;border-radius:10px}
+  .card .ttl{font-size:8.5px;margin-bottom:7px}
+  #idCard,.legend{display:none}
+  #voeCard .voe-note,.age-foot{display:none}
+  .col-l .card.eye-wrap{margin-top:0}
+  .age-grid{gap:6px 10px} .age-cell .v{font-size:13px} .age-cell .k{font-size:8px}
+  .big-metric .v{font-size:24px} .big-metric .note{font-size:8.5px}
+  .state-pill{margin-top:8px;font-size:9px;padding:4px 8px}
+  .voe-row+.voe-row{margin-top:9px} .voe-row .lab{font-size:9px}
+  .voe-margin{margin-top:9px;padding-top:8px;font-size:9px} .voe-margin b{font-size:13px}
+  .eye-frame{max-width:92px} .eye-cap{font-size:8.5px}
+  .feed{max-height:74px} .fe{font-size:9.5px;padding:4px 2px} .fe .kind{width:74px}
+  header.bar{padding:8px 12px} .brand{font-size:12.5px}
+  .bar-mid{font-size:9px;padding:5px 10px;gap:7px} .about-link{display:none}
+  .seg button{padding:4px 7px;font-size:10.5px}
+  .actions{padding:10px;gap:7px} .act{padding:10px 13px;font-size:10.5px;border-radius:10px} .act .kbd{display:none}
   .dir-line{display:none}
+  .stamp{font-size:30px;border-width:2px;padding:4px 14px}
 }
 @media (prefers-reduced-motion:reduce){ .bar-mid.live .led,.act.trap.armed,#rotate .ico,.spinner{animation:none!important} }
 </style>
@@ -263,6 +291,7 @@ header.bar>*{pointer-events:auto}
     <div class="voe-row pos"><div class="lab"><span id="voePosL">świat możliwy → zaskoczenie</span><b id="voePosV">—</b></div><div class="track"><i id="voePosBar"></i></div></div>
     <div class="voe-row imp"><div class="lab"><span id="voeImpL">świat niemożliwy → zaskoczenie</span><b id="voeImpV">—</b></div><div class="track"><i id="voeImpBar"></i></div></div>
     <div class="voe-margin"><span id="voeMarginL">margines cudu</span><b id="voeMarginV">—</b></div>
+    <div class="voe-margin" style="border-top:none;margin-top:7px;padding-top:0"><span id="voeDetL">wykrywalność cudów</span><b id="voeDetV" style="color:var(--text);font-size:11px">—</b></div>
     <div class="voe-note" id="voeNote"></div>
   </div>
   <div class="card">
@@ -326,8 +355,9 @@ const T={
    stamp:"?!", trap:"złam fizykę", trapArmed:"cud zamówiony…", bundle:"kod i wyniki", about:"o projekcie →",
    dirIdle:"reżyser czuwa · próby możliwe i niemożliwe losują się same", dirTrial:"próba w toku:", dirImp:"niemożliwa", dirPos:"możliwa",
    st:{sees:"WIDZI", holds:"PAMIĘTA", lost:"ZGUBIŁ", surp:"ZASKOCZONY"},
-   kind:{normal:"zwykły lot", levitate:"lewitacja", freeze:"zamrożenie", teleport:"teleportacja"},
+   kind:{normal:"zwykły lot", levitate:"lewitacja", freeze:"zamrożenie", teleport:"teleportacja", gravity_warp:"krzywa grawitacja", speed_warp:"skrzywiony pęd"},
    res:{det:"wykrył cud ⚡", miss:"przegapił cud", calm:"spokój, słusznie", false:"fałszywy alarm"},
+   detRow:"wykrywalność cudów", detHard:"grube", detSubtle:"subtelne",
    feedEmpty:"reżyser szykuje pierwszą próbę…",
    lgTruth:"piłka (prawda)", lgBelief:"przekonanie modelu", lgArc:"tor wyobraźni (fizyka przekonania)", lgPred:"surowa predykcja sieci (t+4)", lgWall:"zasłona", lgSurp:"zaskoczenie",
    load:"nawiązywanie łączności z organizmem…",
@@ -345,8 +375,9 @@ const T={
    stamp:"?!", trap:"break physics", trapArmed:"miracle ordered…", bundle:"code & results", about:"about →",
    dirIdle:"the director is on duty · possible and impossible trials roll on their own", dirTrial:"trial running:", dirImp:"impossible", dirPos:"possible",
    st:{sees:"SEES", holds:"HOLDS", lost:"LOST", surp:"SURPRISED"},
-   kind:{normal:"ordinary flight", levitate:"levitation", freeze:"freeze", teleport:"teleport"},
+   kind:{normal:"ordinary flight", levitate:"levitation", freeze:"freeze", teleport:"teleport", gravity_warp:"warped gravity", speed_warp:"warped momentum"},
    res:{det:"caught the miracle ⚡", miss:"missed the miracle", calm:"calm, rightly so", false:"false alarm"},
+   detRow:"miracle detection", detHard:"gross", detSubtle:"subtle",
    feedEmpty:"the director prepares the first trial…",
    lgTruth:"ball (truth)", lgBelief:"model's belief", lgArc:"imagined path (belief physics)", lgPred:"raw network prediction (t+4)", lgWall:"occluder", lgSurp:"surprise",
    load:"establishing contact with the organism…",
@@ -364,8 +395,9 @@ const T={
    stamp:"?!", trap:"Physik brechen", trapArmed:"Wunder bestellt…", bundle:"Code & Ergebnisse", about:"über das Projekt →",
    dirIdle:"der Regisseur wacht · mögliche und unmögliche Proben losen sich selbst", dirTrial:"Probe läuft:", dirImp:"unmöglich", dirPos:"möglich",
    st:{sees:"SIEHT", holds:"HÄLT", lost:"VERLOREN", surp:"ÜBERRASCHT"},
-   kind:{normal:"gewöhnlicher Flug", levitate:"Levitation", freeze:"Einfrieren", teleport:"Teleport"},
+   kind:{normal:"gewöhnlicher Flug", levitate:"Levitation", freeze:"Einfrieren", teleport:"Teleport", gravity_warp:"verbogene Schwerkraft", speed_warp:"verbogener Impuls"},
    res:{det:"Wunder erkannt ⚡", miss:"Wunder verpasst", calm:"ruhig, zu Recht", false:"Fehlalarm"},
+   detRow:"Wunder-Erkennung", detHard:"grob", detSubtle:"subtil",
    feedEmpty:"der Regisseur bereitet die erste Probe vor…",
    lgTruth:"Ball (Wahrheit)", lgBelief:"Überzeugung des Modells", lgArc:"vorgestellte Bahn (Glaubensphysik)", lgPred:"rohe Netz-Vorhersage (t+4)", lgWall:"Verdeckung", lgSurp:"Überraschung",
    load:"Kontaktaufnahme mit dem Organismus…",
@@ -584,7 +616,9 @@ function paintStatic(){
   $("eyeNote").textContent=tr("eyeNote");
   $("graspNote").innerHTML=S.live?tr("graspNoteLive"):tr("graspNoteDemo");
   $("voePosL").textContent=tr("voePos"); $("voeImpL").textContent=tr("voeImp"); $("voeMarginL").textContent=tr("voeMargin");
+  $("voeDetL").textContent=tr("detRow");
   $("voeNote").innerHTML=tr("voeNote");
+  renderFeed();
   $("trapTxt").textContent=tr("trap"); $("bundleTxt").textContent=tr("bundle"); $("aboutLink").textContent=tr("about");
   $("loadSub").textContent=tr("load"); $("rotT").textContent=tr("rotT"); $("rotS").textContent=tr("rotS");
   $("feedEmpty").textContent=tr("feedEmpty");
@@ -636,6 +670,8 @@ function paintInstruments(st){
   $("voePosBar").style.transform="scaleX("+Math.min(1,ps||0)+")";
   $("voeImpBar").style.transform="scaleX("+Math.min(1,is||0)+")";
   $("voeMarginV").textContent=mg==null?"—":("+"+mg.toFixed(2));
+  const gh=m.grasp_hard_pct, gs=m.grasp_subtle_pct;
+  $("voeDetV").textContent=(gh==null&&gs==null)?"—":(tr("detHard")+" "+(gh==null?"—":gh+"%")+" · "+tr("detSubtle")+" "+(gs==null?"—":gs+"%"));
   const dl=$("dirLine");
   if(st.trial){ dl.innerHTML=tr("dirTrial")+" <b>"+(tr("kind")[st.trial.kind]||st.trial.kind)+" · "+(st.trial.impossible?tr("dirImp"):tr("dirPos"))+"</b>"; }
   else dl.textContent=tr("dirIdle");
@@ -648,6 +684,10 @@ function feedPush(kind,impossible,surprised){
   const ic= impossible ? (surprised?"⚡":"·") : (surprised?"!":"✓");
   FEED.unshift({kind,impossible,v,ic,t:new Date()});
   if(FEED.length>9) FEED.pop();
+  renderFeed();
+}
+function renderFeed(){
+  if(!FEED.length){ feedEl.innerHTML='<div class="feed-empty">'+tr("feedEmpty")+'</div>'; return; }
   const fmt=(d)=>d.toTimeString().slice(0,5);
   feedEl.innerHTML=FEED.map(f=>'<div class="fe v-'+f.v+'"><span class="ic">'+f.ic+'</span><span class="kind">'+(tr("kind")[f.kind]||f.kind)+'</span><span class="res">'+tr("res")[f.v]+'</span><span class="t">'+fmt(f.t)+'</span></div>').join("");
 }
@@ -673,6 +713,8 @@ function drawEye(st){
   eyeCtx.fillStyle="rgba(140,160,190,0.35)"; eyeCtx.fillRect(0,(st.ground_y||29)+1,32,1);
   // belief (always: it is the mind)
   if(st.belief){ eyeCtx.fillStyle="rgba(125,226,255,0.9)"; eyeCtx.fillRect(Math.round(st.belief.x)-1,Math.round(st.belief.y)-1,2,2); }
+  // raw network prediction (gold, matches the scene marker)
+  if(st.predicted && st.predicted.x!=null){ eyeCtx.fillStyle="rgba(232,178,58,0.95)"; eyeCtx.fillRect(Math.round(st.predicted.x),Math.round(st.predicted.y),1,1); }
   // truth ball (only when visible — the eye sees what the model sees)
   if(st.ball && !st.ball.hidden){ eyeCtx.fillStyle="#fff"; eyeCtx.beginPath(); eyeCtx.arc(st.ball.x,st.ball.y,1.6,0,6.283); eyeCtx.fill(); }
 }
