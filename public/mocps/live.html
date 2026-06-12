@@ -141,13 +141,13 @@ header.nav{position:fixed;top:0;left:0;right:0;z-index:40;display:flex;align-ite
 <div class="livebar"><span class="rec"></span><span id="liveTxt">na żywo · podwórko 1994</span><span class="vw" id="viewers">1&nbsp;240 oczu</span></div>
 
 <header class="nav">
-  <a href="D-Logic Studio.html" class="brand"><span class="glyph">◢</span>D-<b>LOGIC</b>·STUDIO</a>
+  <a href="/" class="brand"><span class="glyph">◢</span>D-<b>LOGIC</b>·STUDIO</a>
   <nav class="nav-links">
-    <a href="D-Logic Studio.html#oferta" data-i18n="nav.services">usługi</a>
-    <a href="D-Logic Studio.html#lab" data-i18n="nav.lab">lab</a>
+    <a href="/#oferta" data-i18n="nav.services">usługi</a>
+    <a href="/#lab" data-i18n="nav.lab">lab</a>
     <a href="#" class="cur" data-i18n="nav.szalka">przybysz</a>
-    <a href="D-Logic Studio.html#notes" data-i18n="nav.blog">blog</a>
-    <a href="D-Logic Studio.html#kontakt" data-i18n="nav.contact">kontakt</a>
+    <a href="/#notes" data-i18n="nav.blog">blog</a>
+    <a href="/#kontakt" data-i18n="nav.contact">kontakt</a>
   </nav>
   <div class="nav-tools">
     <div class="seg" id="lang" role="group" aria-label="Język">
@@ -194,8 +194,8 @@ window.__SZALKA_OK=false;
 setTimeout(function(){ if(!window.__SZALKA_OK){ var s=document.getElementById('loadSub'); if(s) s.textContent='nie udało się wczytać three.js — sprawdź sieć i odśwież'; } },9000);
 </script>
 <script type="importmap">{ "imports": {
-  "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-  "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  "three": "/vendor/three-0.160/build/three.module.js",
+  "three/addons/": "/vendor/three-0.160/examples/jsm/"
 }}</script>
 <script type="module">
 import * as THREE from 'three';
@@ -632,7 +632,14 @@ async function loadBloom(){ try{
    own side-view (x, height) in 32px, mapped 1:1 into a frontal plane of the yard.
    Offline, the local DEMO simulation runs unchanged. */
 const LIVE={ on:false, state:null, lastSurprise:0, url:"", grasp:null };
-{ const p=new URLSearchParams(location.search); try{ LIVE.url=p.get("live")||localStorage.getItem("szalka-live")||""; }catch(_){ LIVE.url=p.get("live")||""; } }
+/* walidacja URL mostu: tylko https na *.trycloudflare.com albo http(s) na localhost/127.0.0.1 (dev) */
+function liveUrlOk(u){ if(!u) return false; try{ const x=new URL(u);
+  if(x.protocol==="https:" && /\.trycloudflare\.com$/i.test(x.hostname)) return true;
+  if((x.protocol==="https:"||x.protocol==="http:") && (x.hostname==="localhost"||x.hostname==="127.0.0.1")) return true;
+}catch(_){} return false; }
+{ const p=new URLSearchParams(location.search); const q=p.get("live")||"";
+  let stored=""; try{ stored=localStorage.getItem("szalka-live")||""; }catch(_){}
+  LIVE.url=liveUrlOk(q)?q:(liveUrlOk(stored)?stored:""); }
 async function liveBoot(){ let u=LIVE.url;
   if(!u){ try{ const r=await fetch("/szalka-live.json",{cache:"no-store"}); if(r.ok){ const j=await r.json(); u=(j&&j.url)||""; } }catch(_){} }
   if(!u && location.protocol.indexOf("http")===0 && location.hostname.indexOf("github.io")<0) u=location.origin; // served by the brain itself
@@ -663,7 +670,7 @@ function drawEye(){ const L=LIVE.state; if(!LIVE.on||!L){ eye.style.display="non
   if(L.ball && !L.ball.hidden){ eyeCtx.fillStyle="#fff"; eyeCtx.beginPath(); eyeCtx.arc(L.ball.x,L.ball.y,2,0,6.283); eyeCtx.fill(); }
   if(L.predicted){ eyeCtx.fillStyle="rgba(125,226,255,.95)"; eyeCtx.fillRect(Math.round(L.predicted.x)-1,Math.round(L.predicted.y)-1,2,2); }
 }
-function liveConnect(url){ if(!url) return; LIVE.url=url; try{ localStorage.setItem("szalka-live",url); }catch(_){}
+function liveConnect(url){ if(!url) return; LIVE.url=url; try{ if(liveUrlOk(url)) localStorage.setItem("szalka-live",url); }catch(_){}
   // Poll /state instead of SSE: Cloudflare quick tunnels buffer event-streams,
   // so a plain GET is what actually flows through to the published page.
   const base=url.replace(/\/+$/,""); let fails=0;
@@ -677,7 +684,7 @@ function liveConnect(url){ if(!url) return; LIVE.url=url; try{ localStorage.setI
   }
   if(LIVE._timer) clearInterval(LIVE._timer);
   LIVE._timer=setInterval(poll,150); poll(); }
-window.szalkaLive=liveConnect;  // console hook: szalkaLive("https://tunnel...")
+window.szalkaLive=function(u){ if(liveUrlOk(u)) liveConnect(u); else console.warn("szalkaLive: odrzucony URL (dozwolone: https *.trycloudflare.com lub http(s) localhost/127.0.0.1)"); };  // console hook: szalkaLive("https://tunnel...")
 function applyLive(dt){ const L=LIVE.state; if(!L){ return; }
   SRV.ground=L.ground_y||29; SRV.size=L.size||32;
   if(L.occluder){ const cx=(sx(L.occluder.x0)+sx(L.occluder.x1))/2, sc=Math.max(0.5,(sx(L.occluder.x1)-sx(L.occluder.x0))/3.0);

@@ -12,6 +12,7 @@ const clamp=(v,a,b)=>v<a?a:v>b?b:v;
 const lerp=(a,b,t)=>a+(b-a)*t;
 const easeIO=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
 const rnd=(a,b)=>a+Math.random()*(b-a);
+const esc=s=>String(s).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[ch]);
 
 /* ---------- the 8 minds ----------
    personality: depth, temp(erature), risk, aggr(ession)
@@ -226,6 +227,8 @@ function addEmblem(canvas, mind, opts){
   emblemCanvases.push(obj);
   return obj;
 }
+/* wyrzuca wpisy, ktorych canvas wypadl z DOM (przebudowy renderElo/applyLang/startLocalSim) — bez tego tablica rosnie bez konca */
+function pruneEmblems(){ for(let i=emblemCanvases.length-1;i>=0;i--){ if(!emblemCanvases[i].canvas.isConnected) emblemCanvases.splice(i,1); } }
 
 /* =====================================================================
    BOARD RENDERER — premium 2D board
@@ -278,7 +281,7 @@ function Board(opts){
     state=ns; display=state.board.slice(); lastMove={from:m.from,to:m.to};
     anim=null; self.moveNo=state.full;
     // eval
-    const cp = C.evaluate(state.board); self.evalCp = state.turn==='w'?cp:cp; // white-positive
+    const cp = C.evaluate(state.board); self.evalCp = cp; // white-positive
     checkSq = C.inCheck(state.board, state.turn)? C.kingSq(state.board, state.turn) : -1;
     if(self.onMove) self.onMove(self, m, anim);
     const st=C.status(state);
@@ -402,10 +405,11 @@ function applyEter(chat){
   feed.innerHTML=recent.map(c=>{ const m=bid[c.by]; if(!m) return '';
     const msg=(typeof c.msg==='string')?c.msg:((c.msg&&(c.msg[lang]||c.msg.pl))||'');
     const t=new Date((c.t||0)*1000); const hh=String(t.getHours()).padStart(2,'0'),mm=String(t.getMinutes()).padStart(2,'0');
-    return '<div class="eter-line"><span class="time">'+hh+':'+mm+'</span><span class="who">'+m.name+'</span><span class="msg">'+msg+'</span></div>';
+    return '<div class="eter-line"><span class="time">'+hh+':'+mm+'</span><span class="who">'+m.name+'</span><span class="msg">'+esc(msg)+'</span></div>';
   }).join('');
 }
 async function pollServer(){
+  if(document.hidden){ setTimeout(pollServer,2000); return; } // karta w tle: nie fetchuj, nie przebudowuj DOM
   let gotData=false;
   try{
     if(SERVER_BASE===null){ const j=await (await fetch('/pracownia-demos.json',{cache:'no-store'})).json(); SERVER_BASE=(j.base||'').replace(/\/+$/,''); }
@@ -476,12 +480,7 @@ function fillBoardCard(card, b){
   updateBoardCard(card,b);
 }
 function updateBoardCard(card, b){
-  const wEl=card.querySelector('.player[data-side=w]'), bEl=card.querySelector('.player[data-side=b]');
-  const turnW = b._turnW = (b.over?false:true); // visual handled below
-  const movingW = !b.over && (b.moveNo>0? null:null);
-  // active = whose turn now
-  const sideToMove = b.over? null : (b.result? null : null);
-  // determine turn from board internal: approximate via moveNo parity is unreliable; use thinking flag set in tick
+  // stan tury/active maluje wspolna petla RAF (frame); tu tylko ELO, licznik ruchow i evalbar
   card.querySelector('.player[data-side=w] .pn span').textContent='ELO '+b.white.elo;
   card.querySelector('.player[data-side=b] .pn span').textContent='ELO '+b.black.elo;
   const mv=card.querySelector('.mv'); if(mv) mv.textContent=b.moveNo||1;
@@ -545,7 +544,7 @@ function startLocalSim(){
   const sg=document.getElementById('statGames'); if(sg) countUp(sg, appState.games=1240+((Math.random()*60)|0), 1500);
   const stt=document.getElementById('statTourney'); if(stt) countUp(stt, 312, 1500);
   for(let k=0;k<3;k++){ pushEter(MINDS[(Math.random()*MINDS.length)|0],'idle'); }
-  if(!localBanterTimer) localBanterTimer=setInterval(()=>{ if(reduce)return; if(Math.random()<0.6) pushEter(MINDS[(Math.random()*MINDS.length)|0],'idle'); }, 5200);
+  if(!localBanterTimer) localBanterTimer=setInterval(()=>{ if(reduce||document.hidden)return; if(Math.random()<0.6) pushEter(MINDS[(Math.random()*MINDS.length)|0],'idle'); }, 5200);
   if(reduce){ boards.forEach(b=>{ for(let k=0;k<24;k++) b.tickSim(b.interval); b.draw(performance.now()); }); }
   else setTimeout(()=>{ emblemCanvases.forEach(e=>e.size()); boards.forEach(b=>b.size()); }, 60);
 }
@@ -556,7 +555,7 @@ function buildMinds(){
   for(const m of MINDS){
     const el=document.createElement('div'); el.className='mind';
     el.innerHTML=
-      '<div class="mind-emblem"><canvas></canvas><span class="elo">'+m.elo+'</span><span class="mood">'+(m.mood||'')+'</span></div>'+
+      '<div class="mind-emblem"><canvas></canvas><span class="elo">'+esc(m.elo)+'</span><span class="mood">'+esc(m.mood||'')+'</span></div>'+
       '<h3>'+m.name+'<span class="codeno">#'+(MINDS.indexOf(m)+1).toString().padStart(2,'0')+'</span></h3>'+
       '<div class="style">'+(m.style[lang]||m.style.pl)+'</div>'+
       '<div class="traits">'+
@@ -580,6 +579,7 @@ function renderElo(){
   const sorted=[...MINDS, ...(HUMAN?[HUMAN]:[])].sort((a,b)=>b.elo-a.elo);
   const md=MOODS[lang]||MOODS.pl;
   body.innerHTML='';
+  pruneEmblems(); // renderElo biega co poll (~2 s) — sprzata wlasne stare wiersze i wszystkie inne sieroty
   sorted.forEach((m,i)=>{
     const tr_=document.createElement('tr');
     if(m.human) tr_.className='you';
@@ -588,9 +588,9 @@ function renderElo(){
     tr_.innerHTML=
       '<td class="elo-rank '+(i===0?'top':'')+'">'+(i+1)+'</td>'+
       '<td><div class="elo-name"><div class="av"><canvas></canvas></div><b>'+m.name+youTag+'</b></div></td>'+
-      '<td style="text-align:right"><span class="elo-elo">'+m.elo+'</span>'+dStr+'</td>'+
-      '<td style="text-align:right" class="hide-m"><span class="elo-wpr"><span class="w">'+m.w+'</span>·<span class="l">'+m.l+'</span>·'+m.d+'</span></td>'+
-      '<td class="hide-m"><span class="elo-mood" style="color:hsl('+m.hue+',70%,'+(docEl.getAttribute("data-theme")==="light"?40:62)+'%)">'+(m.mood||md.calm)+'</span></td>';
+      '<td style="text-align:right"><span class="elo-elo">'+esc(m.elo)+'</span>'+dStr+'</td>'+
+      '<td style="text-align:right" class="hide-m"><span class="elo-wpr"><span class="w">'+esc(m.w)+'</span>·<span class="l">'+esc(m.l)+'</span>·'+esc(m.d)+'</span></td>'+
+      '<td class="hide-m"><span class="elo-mood" style="color:hsl('+m.hue+',70%,'+(docEl.getAttribute("data-theme")==="light"?40:62)+'%)">'+esc(m.mood||md.calm)+'</span></td>';
     body.appendChild(tr_);
     const cv=tr_.querySelector('canvas'); addEmblem(cv, m);
   });
@@ -614,9 +614,9 @@ function buildPicker(){
 }
 
 /* ---------- shared RAF ---------- */
-let last=performance.now();
+let last=performance.now(), rafId=0;
 function frame(now){
-  requestAnimationFrame(frame);
+  rafId=requestAnimationFrame(frame);
   let dt=now-last; last=now; if(dt>60)dt=60;
   // boards
   for(const b of boards){ b.tick(dt); b.draw(now);
@@ -640,6 +640,11 @@ function frame(now){
   if(featured){ const b=document.getElementById('heroName'); if(b) b.textContent=featured.name; }
 }
 function drawStaticEmblems(){ for(const e of emblemCanvases){ drawEmblem(e.ctx, e.W, e.H, e.mind, 1200, e.mind.mood01||0.4, 0); } }
+/* pauza w tle: karta ukryta -> stop RAF, widoczna -> wznow */
+document.addEventListener('visibilitychange',()=>{
+  if(document.hidden){ if(rafId){ cancelAnimationFrame(rafId); rafId=0; } }
+  else if(!reduce&&!rafId){ last=performance.now(); rafId=requestAnimationFrame(frame); }
+});
 
 /* ---------- count-up + reveal + chrome ---------- */
 function setLabel(el, txt){
@@ -837,10 +842,10 @@ function boot(){
   // size all emblem canvases now that layout settled
   setTimeout(()=>{ emblemCanvases.forEach(e=>e.size()); boards.forEach(b=>b.size()); }, 60);
   if(reduce){ drawStaticEmblems(); for(const b of boards){ for(let k=0;k<30;k++) b.tick(b.interval); b.draw(performance.now()); } }
-  else requestAnimationFrame(frame);
+  else rafId=requestAnimationFrame(frame);
 
   // refresh elo emblem moods periodically
-  setInterval(()=>{ MINDS.forEach(m=>{ if(m._eloEl)m._eloEl.textContent=m.elo; if(m._moodEl)m._moodEl.textContent=m.mood||''; }); }, 1500);
+  setInterval(()=>{ if(document.hidden)return; MINDS.forEach(m=>{ if(m._eloEl)m._eloEl.textContent=m.elo; if(m._moodEl)m._moodEl.textContent=m.mood||''; }); }, 1500);
 }
 addEventListener('resize',()=>{ clearTimeout(window.__grz); window.__grz=setTimeout(()=>{ emblemCanvases.forEach(e=>e.size()); boards.forEach(b=>b.size()); },160); });
 

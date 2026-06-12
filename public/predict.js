@@ -116,7 +116,7 @@ function drawCal(){ var c=document.getElementById("pqCal"); if(!c) return; var r
   var res=resolved(); var B=[[0,.2],[.2,.4],[.4,.6],[.6,.8],[.8,1]];
   B.forEach(function(rg,i){ var pts=res.filter(function(p){return p.p>=rg[0]&&p.p<rg[1]+(i==4?0.001:0);}); if(!pts.length) return;
     var avgP=pts.reduce(function(s,p){return s+p.p;},0)/pts.length, rate=pts.reduce(function(s,p){return s+p.o;},0)/pts.length;
-    var px=avgP*w, py=h-rate*h; x.fillStyle="var(--accent)"; x.fillStyle="#E8B23A"; x.beginPath(); x.arc(px,py,3+Math.min(6,pts.length),0,7); x.globalAlpha=.85; x.fill(); x.globalAlpha=1; });
+    var px=avgP*w, py=h-rate*h; x.fillStyle="#E8B23A"; x.beginPath(); x.arc(px,py,3+Math.min(6,pts.length),0,7); x.globalAlpha=.85; x.fill(); x.globalAlpha=1; });
 }
 
 /* ---------- market poll ---------- */
