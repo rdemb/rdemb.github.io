@@ -25,12 +25,10 @@ int OnInit()
    int n = StringSplit(InpSymbole, ';', symbole);
    if(n <= 0) return INIT_PARAMETERS_INCORRECT;
    ArrayResize(ostatniaSwiecaSym, n);
+   ArrayInitialize(ostatniaSwiecaSym, 0);
    for(int i = 0; i < n; i++)
-   {
-      ArrayInitialize(ostatniaSwiecaSym, 0);
       if(!SymbolSelect(symbole[i], true)) // dopisz do Obserwacji rynku
          PrintFormat("Brak symbolu %s u brokera", symbole[i]);
-   }
    return INIT_SUCCEEDED;
 }
 

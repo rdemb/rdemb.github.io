@@ -22,10 +22,10 @@ Pilnuje. Wielkość pozycji wynika z liczb, nie z przekonania. Przed ważnymi da
 
 Egzekwuje. To jest najważniejsze. O 16:58, po dwóch przegranych, z pozycją lekko pod wodą, człowiek zaczyna negocjować sam ze sobą. Jeszcze chwilę. Może odbije. Maszyna nie negocjuje. Reguła, która przeszła test, jest wykonywana tak samo w poniedziałek rano i w piątek wieczorem.
 
-Kierunek zostaje po mojej stronie. Czytanie sytuacji, kontekst dnia, decyzja, że dziś gram, a jutro nie. To jest robota dla człowieka, bo wymaga rozumienia świata, a nie tylko liczenia. Automat świetnie robi rzeczy nudne i powtarzalne, a fatalnie te, które wymagają osądu. Człowiek dokładnie odwrotnie. Dziwi mnie, jak rzadko ten podział bierze się na serio: ludzie każą maszynom zgadywać kierunek, a sami ręcznie pilnują stopów. U mnie jest na odwrót i to jest cała filozofia tego EA.
+Kierunek zostaje po mojej stronie. Czytanie sytuacji, kontekst dnia, decyzja, że dziś gram, a jutro nie. To jest robota dla człowieka, bo wymaga rozumienia świata, a nie tylko liczenia. Automat świetnie robi rzeczy nudne i powtarzalne, a fatalnie te, które wymagają osądu. Człowiek dokładnie odwrotnie. Dziwi mnie, jak rzadko ten podział bierze się na serio: ludzie każą maszynom zgadywać kierunek, a sami ręcznie pilnują stopów. U mnie role są rozdane odwrotnie i na tym stoi cała filozofia tego EA.
 
 ## Jedna zasada na koniec
 
 Żadna automatyczna reguła nie wchodzi u mnie do gry prosto z pomysłu. Najpierw tester i lata danych. Potem test placebo: czy losowa reguła o podobnym kształcie nie daje tego samego, bo jeśli daje, to odkryłem szum, nie przewagę. Warunki zaliczenia zapisuję, zanim zobaczę wynik, żeby nie przesuwać bramki w trakcie meczu. Dopiero to, co przejdzie, dostaje prawo dotykać pieniędzy, i też nie samodzielnie.
 
-To ten sam układ, który zbudowałem w [D-Logic Capital](https://rdemb.github.io/capital/) na rynku akcji: rada liczy, spiera się i radzi, a decyzję podejmuje człowiek. Na Foreksie moja rada jest krzemowa i nazywa się EA. Radzi bardzo dobrze. Decydować nie będzie.
+To ten sam układ, który zbudowałem w [D-Logic Capital](https://rdemb.github.io/capital/) na rynku akcji: rada liczy, spiera się i radzi, a decyzję podejmuje człowiek. Na Foreksie moja rada jest krzemowa i nazywa się EA. Radzi bardzo dobrze, ale decyzji za mnie nie podejmie.

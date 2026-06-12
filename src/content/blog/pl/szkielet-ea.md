@@ -140,6 +140,6 @@ Bramka nowej świecy chroni przed najczęstszym błędem początkujących automa
 
 Zwróć uwagę, czego tu nie ma. Nie ma sygnału. `SygnalWejscia()` zwraca zero i szkielet celowo nie gra. Taka jest u mnie kolejność robienia rzeczy: zanim zaczniesz testować pomysły na wejście, automat musi być nudny, przewidywalny i mierzalny. Mój działa dokładnie na tym układzie, tylko z innymi liczbami i z człowiekiem nad kierunkiem, o czym pisałem w [podziale pracy](/blog/czlowiek-i-maszyna/).
 
-Kod jest edukacyjny: skompiluj, przetestuj w testerze na latach danych od twojego brokera, bo to z jego świecami, spreadem i strefą czasu serwera automat będzie żył. Zepsuj, popraw. Niech najpierw długo działa na demo. Pieniądze dotykaj na końcu, małe.
+Kod jest edukacyjny: skompiluj, przetestuj w testerze na latach danych od twojego brokera, bo to z jego świecami, spreadem i strefą czasu serwera automat będzie żył. Zepsuj, popraw. Niech najpierw długo działa na demo. Pieniędzy dotykaj na końcu, małych.
 
 Plik z tego wpisu: [dlogic-szkielet-ea.mq5](/code/dlogic-szkielet-ea.mq5). Funkcje z dalszych części warsztatu zbieram w [dlogic-warsztat.mqh](/code/dlogic-warsztat.mqh), a mapę całej serii znajdziesz w [Zacznij tutaj](/blog/zacznij-tutaj/).

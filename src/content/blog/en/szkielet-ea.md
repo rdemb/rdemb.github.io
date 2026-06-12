@@ -1,14 +1,14 @@
 ---
-title: "The EA skeleton I start every automat from (MQL5)"
+title: "The EA skeleton I start every EA from (MQL5)"
 lang: "en"
 kind: "trading"
 date: "2026-06-12"
-excerpt: "Before an automat gets any idea about entries, it must master six boring things: a new bar, the spread, the hour, position size from risk, a stop and a journal. A complete skeleton to copy."
+excerpt: "Before an EA gets any idea about entries, it must master six boring things: a new bar, the spread, the hour, position size from risk, a stop and a journal. A complete skeleton to copy."
 key: "szkielet-ea"
 slug: "ea-skeleton"
 ---
 
-Most EAs I have seen start with a signal. Mine starts with plumbing. Before the automat gets any idea about entries, it has to master six boring things: recognize a new bar, refuse to trade on a wide spread, know the hour of day, size the position from risk, place a stop and write everything to a journal. The signal is the last ten percent. The ninety percent below is yours to copy.
+Most EAs I have seen start with a signal. Mine starts with plumbing. Before the EA gets any idea about entries, it has to master six boring things: recognize a new bar, refuse to trade on a wide spread, know the hour of day, size the position from risk, place a stop and write everything to a journal. The signal is the last ten percent. The ninety percent below is yours to copy.
 
 The code is MQL5 (highlighted as C++, the syntax is nearly identical). Paste it into MetaEditor as a new Expert Advisor, compile, and run it through the strategy tester before it ever sees even a demo account.
 
@@ -134,9 +134,9 @@ int EntrySignal()
 
 ## Why exactly these parts
 
-The new-bar gate protects you from the most common beginner-automat bug: logic running on every tick, opening ten positions a second. The spread and hours gates follow from the [volatility clock](/blog/zegar-zmiennosci/) (in Polish for now): there are hours when costs eat the typical move and no signal can earn that back. Position size computed from risk, not hardcoded, makes every trade cost the same share of equity regardless of the stop and the instrument. And the CSV journal looks redundant until the first day you disagree with your own tester.
+The new-bar gate protects you from the most common beginner-EA bug: logic running on every tick, opening ten positions a second. The spread and hours gates follow from the [volatility clock](/en/blog/zegar-zmiennosci/): there are hours when costs eat the typical move and no signal can earn that back. Position size computed from risk, not hardcoded, makes every trade cost the same share of equity regardless of the stop and the instrument. And the CSV journal looks redundant until the first day you disagree with your own tester.
 
-Notice what is missing. There is no signal. `EntrySignal()` returns zero and the skeleton deliberately does not trade. That is the order I do things in: before you start testing entry ideas, the automat must be boring, predictable and measurable. Mine runs on exactly this layout, just with different numbers and with a human above the direction, which I wrote about in [the division of labor](/blog/czlowiek-i-maszyna/) (in Polish for now).
+Notice what is missing. There is no signal. `EntrySignal()` returns zero and the skeleton deliberately does not trade. That is the order I do things in: before you start testing entry ideas, the EA must be boring, predictable and measurable. Mine runs on exactly this layout, just with different numbers and with a human above the direction, which I wrote about in [the division of labor](/en/blog/czlowiek-i-maszyna/).
 
 The code is educational: compile it, run it through the tester on years of data from your broker, because it will live with that broker's bars, spread and server timezone. Break it, fix it. Let it run on demo for a long time first. Touch money last, and small.
 

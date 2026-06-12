@@ -16,7 +16,7 @@ Ja wolę coś innego. Liczby. Statystykę. Matematykę. Rzeczy, które nie mają
 
 ## To nie jest zabawa
 
-Inflacja to cichy podatek, którego nikt nie głosował. Zżera oszczędności po kawałku, rok po roku, a większość ludzi zorientuje się dopiero przy emeryturze. Pieniądze leżące na koncie nie stoją w miejscu. One tracą wartość, tylko powoli, więc nie boli od razu.
+Inflacja to cichy podatek, na który nikt nie głosował. Zżera oszczędności po kawałku, rok po roku, a większość ludzi zorientuje się dopiero przy emeryturze. Pieniądze leżące na koncie nie stoją w miejscu. One tracą wartość, tylko powoli, więc nie boli od razu.
 
 Bez porządnej poduszki finansowej i bez kapitału, który pracuje, przyszłość rysuje się prosto. Sprzedawanie jagód na targu, żeby dociągnąć do końca miesiąca. Można mieć zupełnie inny obraz. Spokojny poranek, własny taras, wędka i świeża ryba na obiad, bo o pieniądze zadbałeś dwadzieścia lat wcześniej.
 

@@ -10,7 +10,7 @@ slug: "test-placebo"
 
 Najdroższy moment w algotradingu to ten, w którym backtest pokazuje krzywą kapitału rosnącą w prawo i w górę. Drożeje od tego, co robisz dalej. Ja przez lata robiłem to, co wszyscy: cieszyłem się i odpalałem na demo. Dziś robię coś innego i to jest najważniejsze trzydzieści linii kodu w moim warsztacie.
 
-Pomysł pożyczyłem z medycyny. Nowy lek nie musi po prostu działać, musi działać lepiej niż tabletka z cukru podana tak samo. Strategia nie musi po prostu zarabiać na historii, musi zarabiać lepiej niż strategia losowa, która wchodzi tyle samo razy, w te same warunki kosztowe, tylko bez żadnego pomysłu. Jeśli twoja przewaga nie odróżnia się od dwóch tysięcy małp rzucających lotkami w wykres, to nie jest przewaga. To szum, który akurat ułożył się w uśmiech.
+Pomysł pożyczyłem z medycyny. Nowy lek nie musi po prostu działać, musi działać lepiej niż tabletka z cukru podana tak samo. Strategia nie musi po prostu zarabiać na historii, musi zarabiać lepiej niż strategia losowa, która wchodzi tyle samo razy, w te same warunki kosztowe, tylko bez żadnego pomysłu. Jeśli twoja przewaga nie odróżnia się od dwóch tysięcy losowych strategii, to nie jest przewaga. To szum.
 
 ## Kod
 
@@ -45,7 +45,7 @@ Zanim wkleiłem ten kod tutaj, sprawdziłem go tak, jak sprawdzam strategie. Na 
 
 ## Jak czytać p i jak się nie oszukać
 
-Małe p, powiedzmy poniżej 0.01, znaczy tyle: bardzo rzadko zdarza się małpa, która pobiła twoją strategię. To jeszcze nie dowód przewagi, ale poważny powód, żeby testować dalej. Wartość p w okolicach 0.2 albo 0.5 znaczy, że twoja reguła robi mniej więcej to, co losowanie, i żadna optymalizacja progu tego nie uratuje, bo optymalizowałbyś szum.
+Małe p, powiedzmy poniżej 0.01, znaczy tyle: bardzo rzadko zdarza się losowa strategia, która pobije twoją. To jeszcze nie dowód przewagi, ale poważny powód, żeby testować dalej. Wartość p w okolicach 0.2 albo 0.5 znaczy, że twoja reguła robi mniej więcej to, co losowanie, i żadna optymalizacja progu tego nie uratuje, bo optymalizowałbyś szum.
 
 Trzy pułapki, każdą znam od środka. Pierwsza: jeśli przetestujesz dwadzieścia pomysłów, jeden wyjdzie z p poniżej 0.05 czystym przypadkiem, więc kryteria zapisz z góry, zanim zobaczysz wynik, i licz wszystkie próby, też te nieudane. Druga: koszty. Tablica zwrotów musi mieć odjęty spread i poślizg od każdego wejścia, u twojego brokera inne niż u mojego, inaczej testujesz świat, w którym broker dopłaca. Trzecia: ten test sprawdza wybór momentów wejścia przy ustalonej liczbie transakcji. Nie sprawdza zarządzania pozycją ani tego, czy strategia przeżyje inne lata niż te w teście, od tego są dane poza próbą.
 

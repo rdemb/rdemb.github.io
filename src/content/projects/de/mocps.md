@@ -2,7 +2,7 @@
 title: "MOCPS, Motion-Grounded Object-Centric Predictive State"
 lang: "de"
 kind: "project"
-excerpt: "Ein kleines JEPA-Weltmodell, das Schwerkraft lernte und einen Körper bekam: ein lebender Organismus, der Mögliches von Unmöglichem zu 96% unterscheidet."
+excerpt: "Ein kleines JEPA-Weltmodell, das Schwerkraft lernte und einen Körper bekam: ein lebender Organismus, der bei gebrochener Physik zusammenzuckt, nicht bei gewöhnlichem Flug (AUC 0.82)."
 key: "mocps"
 slug: "mocps"
 ---
@@ -10,7 +10,7 @@ MOCPS ist ein kleines Forschungsprojekt zur Vorhersage von Objektbewegung in ein
 
 Technisch ist die aktuelle Version das Rezept `signed_velocity_only` + predictor400. Es ist keine große neue Architektur, sondern ein enger reproduzierbarer Test, der aus einer Reihe negativer und positiver Ergebnisse entstanden ist.
 
-## Unter der Glasglocke — ein lebender Organismus
+## Unter der Glasglocke: ein lebender Organismus
 
 Die neueste Richtung: diesem Weltmodell einen Körper geben. **Pod Kloszem** ("Unter der Glasglocke") ist ein lebender 3D-Organismus, ein Sternenbesucher in einem polnischen Hinterhof, angetrieben von einem echten JEPA-Modell, das rund um die Uhr auf der CPU läuft. Keine Animation: jedes Bild ist eine Ablesung des Modellzustands.
 
@@ -20,7 +20,7 @@ Der Organismus tut dreierlei zugleich, alles gemessen:
 
 - er **sagt** den Flug des Balls **vorher** (der goldene Punkt in der Szene ist die rohe Netz-Vorhersage, 4 Frames voraus),
 - er **erinnert** die Position des Balls, wenn er hinter einem Hindernis verschwindet (Objektpermanenz),
-- er **ist überrascht** auf V-JEPA-Art: wir messen die Überraschungslücke, und das Modell zuckt nur zusammen, wenn der Regisseur die Physik bricht (Levitation, Einfrieren, Teleport). Möglich von Unmöglich unterscheidet es zu **96%**.
+- er **ist überrascht** auf V-JEPA-Art: wir messen die Überraschungslücke, und das Modell zuckt nur zusammen, wenn der Regisseur die Physik bricht (Levitation, Einfrieren, Teleport). Krasse Physikbrüche erkennt es zu 86–100%, bei etwa 3% Fehlalarmen (AUC 0.82).
 
 Ein kleines Eckpanel, das "Auge des Modells", zeigt das rohe 32×32-Bild, mit dem das Gehirn tatsächlich arbeitet, damit man sieht: es sagt Physik aus ~1000 Pixeln voraus, nicht aus der schönen 3D-Grafik. Dies ist ein Test des Physikverständnisses im Geiste von Yann LeCun (möglich gegen unmöglich), verkörpert als Kreatur unter Glas.
 
@@ -28,16 +28,16 @@ Ein kleines Eckpanel, das "Auge des Modells", zeigt das rohe 32×32-Bild, mit de
 
 Die Visualisierung ist eine Seitenansicht der Welt, in der der Organismus lebt. Jedes Element bedeutet etwas, nichts ist Dekoration:
 
-- **Weiße Kugel** — der echte Ball, Ground Truth. Der reale Weltzustand, den der Server rund um die Uhr führt.
-- **Cyanfarbener Bogen** — die Bahn der Vorstellung: die Überzeugung des Modells, mit der harten Physik der Welt vorwärtsgerollt (Rollout). Er macht das Gedächtnis hinter der Verdeckung sichtbar, ist aber selbst keine Netz-Ablesung.
-- **Goldener Punkt** — die rohe Netz-Vorhersage: wo das Modell (lineare Probe auf dem vorhergesagten Latent) den Ball 4 Frames später erwartet. Der einzige Punkt der Szene, der direkt aus dem Netz gelesen wird.
-- **Cyanfarbener Marker mit zartem Ring** — die Überzeugung des Modells: wo es den Ball vermutet. Wenn der Ball hinter dem Hindernis verschwindet, bleibt der Marker und wandert dorthin, wo das Modell ihn erwartet (Objektpermanenz). Der Ring wächst, wenn die Sicherheit sinkt.
-- **Auge des Modells (linkes Panel, 32×32 px)** — das rohe Bild, mit dem das Gehirn tatsächlich arbeitet. Der weiße Fleck ist der Ball, wie es ihn sieht (verschwommen, 1024 Pixel), der cyanfarbene Punkt seine Überzeugung. Das macht die Repräsentation sichtbar: das Modell sagt Physik daraus voraus, nicht aus der schönen 3D-Grafik.
-- **Dunkles Panel mit cyanfarbener Kante** — das Hindernis (Okkluder). Wenn der Ball dahinter gerät, verschwindet er aus dem Auge des Modells und der Permanenztest beginnt.
-- **Korallenfarbenes Aufblitzen und Welle** — Überraschung. Das Modell zuckt nur zusammen, wenn die Welt die Physik bricht (der Ball fällt nicht, erstarrt oder teleportiert). Bei normalem Flug bleibt es ruhig.
-- **Bodengitter** — die Bezugsebene der Physik, das gemeinsame Koordinatensystem von Wahrheit und Vorhersage.
-- **Datenpanel (rechte Spalte)** — Live-Metriken: „Physik verstanden" (wie oft es Mögliches von Unmöglichem korrekt unterscheidet), Sicherheit, Zustand (sieht / hält / überrascht) und der Test des Unmöglichen: mittlere Überraschung in möglichen gegen unmögliche Welten und die Marge dazwischen. Links: das Alter des Organismus, auf dem Server gezählt (überlebt Neustarts), Weltschritte und der Probenzähler.
-- **Knopf „Physik brechen"** — du als Regisseur: ein Klick bittet den Server um eine Falle (ein unmögliches Ereignis), um zu testen, ob das Modell es merkt.
+- **Weiße Kugel**: der echte Ball, Ground Truth. Der reale Weltzustand, den der Server rund um die Uhr führt.
+- **Cyanfarbener Bogen**: die Bahn der Vorstellung. Die Überzeugung des Modells, mit der harten Physik der Welt vorwärtsgerollt (Rollout). Er macht das Gedächtnis hinter der Verdeckung sichtbar, ist aber selbst keine Netz-Ablesung.
+- **Goldener Punkt**: die rohe Netz-Vorhersage. Hier erwartet das Modell (lineare Probe auf dem vorhergesagten Latent) den Ball 4 Frames später. Der einzige Punkt der Szene, der direkt aus dem Netz gelesen wird.
+- **Cyanfarbener Marker mit zartem Ring**: die Überzeugung des Modells, wo es den Ball vermutet. Wenn der Ball hinter dem Hindernis verschwindet, bleibt der Marker und wandert dorthin, wo das Modell ihn erwartet (Objektpermanenz). Der Ring wächst, wenn die Sicherheit sinkt.
+- **Auge des Modells (linkes Panel, 32×32 px)**: das rohe Bild, mit dem das Gehirn tatsächlich arbeitet. Der weiße Fleck ist der Ball, wie es ihn sieht (verschwommen, 1024 Pixel), der cyanfarbene Punkt seine Überzeugung. Das macht die Repräsentation sichtbar: das Modell sagt Physik daraus voraus, nicht aus der schönen 3D-Grafik.
+- **Dunkles Panel mit cyanfarbener Kante**: das Hindernis (Okkluder). Wenn der Ball dahinter gerät, verschwindet er aus dem Auge des Modells und der Permanenztest beginnt.
+- **Korallenfarbenes Aufblitzen und Welle**: Überraschung. Das Modell zuckt nur zusammen, wenn die Welt die Physik bricht (der Ball fällt nicht, erstarrt oder teleportiert). Bei normalem Flug bleibt es ruhig.
+- **Bodengitter**: die Bezugsebene der Physik, das gemeinsame Koordinatensystem von Wahrheit und Vorhersage.
+- **Datenpanel (rechte Spalte)**: Live-Metriken. „Physik verstanden" (wie oft es Mögliches von Unmöglichem korrekt unterscheidet), Sicherheit, Zustand (sieht / hält / überrascht) und der Test des Unmöglichen: mittlere Überraschung in möglichen gegen unmögliche Welten und die Marge dazwischen. Links: das Alter des Organismus, auf dem Server gezählt (überlebt Neustarts), Weltschritte und der Probenzähler.
+- **Knopf „Physik brechen"**: du als Regisseur. Ein Klick bittet den Server um eine Falle (ein unmögliches Ereignis), um zu testen, ob das Modell es merkt.
 
 ## Forschung und Ergebnisse
 
@@ -47,15 +47,15 @@ Die Visualisierung ist eine Seitenansicht der Welt, in der der Organismus lebt. 
 
 **Wie wir messen, alles gegen ehrliche Baselines:**
 
-- **Schwerkraft, repliziert über 5 Seeds.** Ein linearer Probe liest die Position aus der Vorhersage des Modells. Das Modell trifft die zukünftige Position auf **3,85 ± 0,56 px**, die Konstant-Geschwindigkeits-Baseline auf **5,71 ± 0,01 px** — ein Vorsprung von **+1,86 px, positiv auf jedem der fünf Seeds**, und der beste Seed (2,91 px) schlägt sogar das Konstant-Beschleunigungs-Orakel, weil er Bodenabpraller gelernt hat. Das ist das Spiegelbild des früheren Ergebnisses: bei linearer Bewegung konnte Lernen die Baseline nicht schlagen (sie hatte bereits alle Informationen), unter Schwerkraft gibt es etwas zu lernen.
-- **Möglich gegen unmöglich (die V-JEPA-Methode).** Im Moment des Eintritts hinter das Hindernis hält das Modell fest, was es erwartet; beim Wiederauftauchen vergleichen wir das mit der Realität im Latentraum. Bei möglichen Ereignissen ist die Überraschung klein (0,14), bei unmöglichen groß (0,82); grobe Wunder erkennt es zu 92–100% bei 2,4% Fehlalarmen. Daneben läuft eine ehrliche Baseline: ein idealisierter Pixel-Tracker mit der wahren Physik. Jede Probe landet in einem öffentlichen Log (`trials.jsonl`), aus dem die Schwellen-Kalibrierung berechnet wird.
-- **Subtile Wunder, eine vermessene Grenze.** Der Regisseur kennt auch Wunder, die in einem einzelnen Frame unsichtbar sind: Schwerkraft um ±30% verbogen, Impuls um ±35% hinter der Deckung. Die aktuelle Repräsentation erkennt davon 5–15% — und wir berichten das offen, als Karte des Ortes, an dem das Verstehen endet, nicht als versteckten Fehlschlag.
+- **Schwerkraft, repliziert über 5 Seeds.** Ein linearer Probe liest die Position aus der Vorhersage des Modells. Das Modell trifft die zukünftige Position auf **3,85 ± 0,56 px**, die Konstant-Geschwindigkeits-Baseline auf **5,71 ± 0,01 px**, ein Vorsprung von **+1,86 px, positiv auf jedem der fünf Seeds**. Der beste Seed (2,91 px) schlägt sogar das Konstant-Beschleunigungs-Orakel, weil er Bodenabpraller gelernt hat. Das ist das Spiegelbild des früheren Ergebnisses: bei linearer Bewegung konnte Lernen die Baseline nicht schlagen (sie hatte bereits alle Informationen), unter Schwerkraft gibt es etwas zu lernen.
+- **Möglich gegen unmöglich (die V-JEPA-Methode).** Im Moment des Eintritts hinter das Hindernis hält das Modell fest, was es erwartet; beim Wiederauftauchen vergleichen wir das mit der Realität im Latentraum. Bei möglichen Ereignissen ist die Überraschung klein (0,14), bei unmöglichen groß (0,82); grobe Wunder erkennt es zu 86–100% bei etwa 3% Fehlalarmen (AUC 0.82, aktuelles Logbuch n>5000). Daneben läuft eine ehrliche Baseline: ein idealisierter Pixel-Tracker mit der wahren Physik. Jede Probe landet in einem öffentlichen Log (`trials.jsonl`), aus dem die Schwellen-Kalibrierung berechnet wird.
+- **Subtile Wunder, eine vermessene Grenze.** Der Regisseur kennt auch Wunder, die in einem einzelnen Frame unsichtbar sind: Schwerkraft um ±30% verbogen, Impuls um ±35% hinter der Deckung. Die aktuelle Repräsentation erkennt davon 10–17%, und wir berichten das offen, als Karte des Ortes, an dem das Verstehen endet, nicht als versteckten Fehlschlag.
 
 **Unterwegs, ehrlich.** Die ersten Durchläufe brachen zusammen: der normalisierte Verlust ließ die Repräsentation in sich zusammenfallen (effektiver Rang 3,8, Latent unlesbar). Die Lösung ist ein roher MSE-Verlust plus VICReg (Varianz und Kovarianz), der den Rang auf 11 hob und den Latent lesbar machte. Das zweite Problem: der Organismus verwechselte Möglich mit Unmöglich, weil das Modell nur den Anfang des Bogens sah, behoben durch ein zufälliges Aufwärmen der Welt (Kontext aus jeder Flugphase).
 
 ## Schlussfolgerungen
 
-Ein winziges Weltmodell, ohne Etiketten auf 1024 Pixeln trainiert, **lernte Schwerkraft gut genug, um eine gedächtnislose Baseline bei voller Beobachtung zu schlagen**, und zwar in genau der Welt, in der das frühere Ergebnis zeigte, dass Lernen bei linearer Bewegung nicht hilft. Es bekam einen Körper: es sagt den Bogen vorher, behält den Ball hinter Deckung im Sinn und zuckt nur beim Unmöglichen zusammen, zu 96% korrekt. Das Auge des Modells zeigt, dass all das auf einem armen, verschwommenen Bild geschieht, also ist es ein Beweis über die Repräsentation, kein Grafikeffekt.
+Ein winziges Weltmodell, ohne Etiketten auf 1024 Pixeln trainiert, **lernte Schwerkraft gut genug, um eine gedächtnislose Baseline bei voller Beobachtung zu schlagen**, und zwar in genau der Welt, in der das frühere Ergebnis zeigte, dass Lernen bei linearer Bewegung nicht hilft. Es bekam einen Körper: es sagt den Bogen vorher, behält den Ball hinter Deckung im Sinn und zuckt nur beim Unmöglichen zusammen (AUC 0.82, krasse Wunder 86–100%). Das Auge des Modells zeigt, dass all das auf einem armen, verschwommenen Bild geschieht, also ist es ein Beweis über die Repräsentation, kein Grafikeffekt.
 
 **Was es nicht bedeutet.** Das ist noch Spielzeugmaßstab: 32 Pixel, ein Ball, eine Seitenansicht. Kein Benchmark, kein SOTA, kein Beweis allgemeinen Physikverständnisses, keine Behauptung, dass JEPA „funktioniert". Es ist ein ehrlich begrenztes, voll reproduzierbares Ergebnis, und ein lebender Organismus, der es live zeigt, rund um die Uhr, auf der CPU.
 

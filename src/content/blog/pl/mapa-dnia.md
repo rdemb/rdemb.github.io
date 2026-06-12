@@ -20,10 +20,10 @@ Ta szansa zmienia się w ciągu dnia bardzo mocno i bardzo regularnie. Rano, gdy
 
 ## Do czego się nadaje, a do czego nie
 
-Mapa dnia mówi, gdzie jeszcze może być ruch, a gdzie statystyka mówi „raczej domknięte”. Nie mówi, w którą stronę. To jest mapa terenu, nie strzałka.
+Mapa dnia mówi, gdzie jeszcze może być ruch, a gdzie statystyka mówi „raczej domknięte”. Nie mówi, w którą stronę. Pokazuje teren, a nie kierunek.
 
 U mnie pracuje tam, gdzie nie trzeba zgadywać kierunku: w zarządzaniu pozycją. Gdy mapa mówi, że dzień najpewniej zrobił już swoje, nie ma powodu wisieć w rynku i czekać na cud. Pozycja się skraca, stop się dosuwa, ekspozycja spada. Kierunek dalej wybiera człowiek, mapa pilnuje, żeby nie przepłacał czasem trzymania.
 
-I uczciwość do końca, bo na tym stoi ten blog. Sprawdziłem też wariant ofensywny: skoro wieczorem nowe ekstrema są rzadkie, może da się grać przeciwko nim, po prostu fadować końcówki ruchów. Test z góry zarejestrowany, z kosztami transakcyjnymi, na danych poza próbą. Wynik: struktura w danych jest, filtr mapy faktycznie poprawia selekcję ponad placebo, ale po odjęciu spreadu zostaje zero, a nawet lekki minus. Mapa wie, gdzie ruch zwykle gaśnie. Nie wie tego na tyle precyzyjnie, żeby pokryć koszt zakładu. Dziewiąty raz z rzędu ta sama lekcja: na poziomie dostępnym detalicznie rynek odda strukturę, ale nie odda darmowego obiadu.
+I uczciwość do końca, bo na tym stoi ten blog. Sprawdziłem też wariant ofensywny: skoro wieczorem nowe ekstrema są rzadkie, może da się grać przeciwko nim, po prostu fadować końcówki ruchów. Test z góry zarejestrowany, z kosztami transakcyjnymi, na danych poza próbą. Wynik: struktura w danych jest, filtr mapy faktycznie poprawia selekcję ponad placebo, ale po odjęciu spreadu zostaje zero, a nawet lekki minus. Mapa wie, gdzie ruch zwykle gaśnie, tylko nie na tyle precyzyjnie, żeby pokryć koszt zakładu. Dziewiąty raz z rzędu ta sama lekcja: na poziomie dostępnym detalicznie rynek odda strukturę, ale nie odda darmowego obiadu.
 
 Dlatego mapa dnia została u mnie tym, czym jest: warstwą kontekstu i hamulcem, nie sygnałem. W tej roli robi cichą, mierzalną robotę każdego dnia.

@@ -8,7 +8,7 @@ key: "dane-pierwszy-grzech"
 slug: "dane-pierwszy-grzech"
 ---
 
-Mój automat dzienny miał kiedyś fazę, w której tester pokazywał co innego niż życie i nie umiałem znaleźć dlaczego. Winowajcą nie była strategia, tylko zegar: czas serwera mojego brokera chodzi za giełdą amerykańską i dwa razy w roku, przy zmianie czasu w USA, cała moja statystyka „per godzina” przesuwała się o jeden. Reguła ustawiona na 9:00 nagle żyła o 8:00. Od tamtej pory nie wierzę żadnemu plikowi z danymi, dopóki nie przejdzie kontroli. Dosłownie żadnemu.
+Mój automat dzienny miał kiedyś fazę, w której tester pokazywał co innego niż życie i nie umiałem dojść dlaczego. Winowajcą nie była strategia, tylko zegar: czas serwera mojego brokera chodzi za giełdą amerykańską i dwa razy w roku, przy zmianie czasu w USA, cała moja statystyka „per godzina” przesuwała się o jeden. Reguła ustawiona na 9:00 nagle żyła o 8:00. Od tamtej pory nie wierzę żadnemu plikowi z danymi, dopóki nie przejdzie kontroli. Dosłownie żadnemu.
 
 To jest pierwszy grzech automatów: liczymy wyrafinowane rzeczy na danych, których nikt nie obejrzał. A lista typowych wad jest krótka i powtarzalna. Dziury po przerwach serwera. Zduplikowane znaczniki czasu po sklejaniu plików. Świece z high poniżej low, bo coś poszło nie tak przy eksporcie. Świece weekendowe, których na FX być nie powinno. Skoki o rząd wielkości, które są błędem feedu, nie ruchem. I właśnie zegar, najcichsza wada ze wszystkich, bo niczego nie psuje w pojedynczej świecy, tylko w każdej statystyce liczonej po godzinach.
 

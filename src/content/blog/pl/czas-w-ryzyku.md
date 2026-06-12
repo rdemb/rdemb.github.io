@@ -10,7 +10,7 @@ slug: "czas-w-ryzyku"
 
 Wyobraź sobie dwie transakcje. Obie zarobiły po 20 pipsów na tej samej parze. W podsumowaniu rachunku wyglądają identycznie. Tylko że pierwsza weszła i wyszła w kwadrans, a druga wisiała w rynku pięć godzin, przeżyła dwa odczyty danych i konferencję prasową. Czy to naprawdę ten sam wynik?
 
-Dla mnie nie. Każda minuta w pozycji to bilet na loterię zdarzeń, których nie kontroluję. Nagłówek z agencji, wypowiedź bankiera, poślizg na cienkim rynku, w skrajnym przypadku luka. Większość losów w tej loterii jest pusta i nic się nie dzieje. Ale losujesz tyle razy, ile minut trzymasz pozycję. Dwadzieścia pipsów zarobione w kwadrans i te same dwadzieścia zarobione w pięć godzin różnią się liczbą losów, które po drodze kupiłeś.
+Dla mnie nie. Każda minuta w pozycji to bilet na loterię zdarzeń, których nie kontroluję. Nagłówek z agencji, wypowiedź bankiera, poślizg na cienkim rynku, w skrajnym przypadku luka. Większość losów w tej loterii jest pusta i nic się nie dzieje. Ale losujesz tyle razy, ile minut trzymasz pozycję. Dwadzieścia pipsów zarobionych w kwadrans i te same dwadzieścia zarobionych w pięć godzin różnią się liczbą losów, które po drodze kupiłeś.
 
 ## Metryka, której nie ma w raportach
 
