@@ -15,7 +15,7 @@ const dict = withUi({
     'a.f.edu': 'Edukacja', 'a.f.edu.v': 'Bez formalnego IT; olimpiady informatyczne w szkole',
     'a.f.priv': 'Prywatnie', 'a.f.priv.v': 'Mąż i ojciec',
     'a.f.like': 'Lubię', 'a.f.like.v': 'Dobrą muzykę i rzeczy, które po prostu działają',
-    'a.cta.t': 'Chcesz coś razem zbudować?', 'a.cta.b1': 'Napisz maila', 'a.cta.b2': 'Zobacz projekty',
+    'a.cta.t': 'Chcesz coś razem zbudować?', 'a.cta.b1': 'Napisz na X', 'a.cta.b2': 'Zobacz projekty',
   },
   en: {
     'a.eyebrow': 'About', 'a.h': 'Hi, I am Rafał.',
@@ -29,7 +29,7 @@ const dict = withUi({
     'a.f.edu': 'Education', 'a.f.edu.v': 'No formal IT; computer-science olympiads at school',
     'a.f.priv': 'Privately', 'a.f.priv.v': 'Husband and father',
     'a.f.like': 'I love', 'a.f.like.v': 'Good music and things that simply work',
-    'a.cta.t': 'Want to build something together?', 'a.cta.b1': 'Send an email', 'a.cta.b2': 'See projects',
+    'a.cta.t': 'Want to build something together?', 'a.cta.b1': 'Message me on X', 'a.cta.b2': 'See projects',
   },
   de: {
     'a.eyebrow': 'Über mich', 'a.h': 'Hi, ich bin Rafał.',
@@ -43,7 +43,7 @@ const dict = withUi({
     'a.f.edu': 'Ausbildung', 'a.f.edu.v': 'Keine formale IT; Informatik-Olympiaden in der Schule',
     'a.f.priv': 'Privat', 'a.f.priv.v': 'Ehemann und Vater',
     'a.f.like': 'Ich liebe', 'a.f.like.v': 'Gute Musik und Dinge, die einfach funktionieren',
-    'a.cta.t': 'Lust, gemeinsam etwas zu bauen?', 'a.cta.b1': 'E-Mail schreiben', 'a.cta.b2': 'Projekte ansehen',
+    'a.cta.t': 'Lust, gemeinsam etwas zu bauen?', 'a.cta.b1': 'Schreib mir auf X', 'a.cta.b2': 'Projekte ansehen',
   },
 });
 const t = dict.pl;
@@ -70,7 +70,7 @@ const t = dict.pl;
     </div>
     <div class="reveal" style="margin-top:44px;display:flex;gap:14px;align-items:center;flex-wrap:wrap">
       <h2 style="font-size:clamp(22px,3vw,30px);width:100%" data-i18n="a.cta.t">{t['a.cta.t']}</h2>
-      <a href="mailto:rdem91@gmail.com" class="btn btn-primary"><span data-i18n="a.cta.b1">{t['a.cta.b1']}</span><span class="arr">→</span></a>
+      <a href="https://x.com/takitamrafal" target="_blank" rel="noopener" class="btn btn-primary"><span data-i18n="a.cta.b1">{t['a.cta.b1']}</span><span class="arr">→</span></a>
       <a href="/projekty/" class="btn btn-ghost"><span data-i18n="a.cta.b2">{t['a.cta.b2']}</span></a>
     </div>
   </section>

@@ -1,0 +1,15 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+---
+<PageLayout lang="pl" title="404 · D-LOGIC studio" description="Tej strony nie ma." sw={{ pl: '/', en: '/', de: '/' }} hreflangs={{ pl: '/' }} share={false}>
+  <section style="max-width:640px;margin:0 auto;padding:64px 0 48px;text-align:center">
+    <p class="mono" style="color:var(--accent);font-size:14px;letter-spacing:2px">404</p>
+    <h1 style="font-family:'Space Grotesk Variable';font-weight:600;font-size:clamp(30px,5vw,44px);letter-spacing:-.02em;margin:14px 0 10px">Tej strony nie ma</h1>
+    <p class="muted" style="font-size:16px">Adres jest nieaktualny albo wkradła się literówka. Nic straconego.<br /><span lang="en">This page does not exist.</span></p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:28px">
+      <a href="/" class="btn btn-primary"><span>Strona główna</span><span class="arr">→</span></a>
+      <a href="/blog/" class="btn btn-ghost"><span>Blog</span></a>
+      <a href="/projekty/" class="btn btn-ghost"><span>Projekty</span></a>
+    </div>
+  </section>
+</PageLayout>

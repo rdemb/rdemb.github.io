@@ -6,13 +6,15 @@ import '@fontsource-variable/jetbrains-mono';
 import '../styles/global.css';
 import SiteNav from './SiteNav.astro';
 const { title, description = '', dict, active = '' } = Astro.props;
+const canonical = new URL(Astro.url?.pathname || '/', 'https://rdemb.github.io').href;
+const ogImage = 'https://rdemb.github.io/og-default.png';
 
 // Schema.org site-wide: encja firmy + autor (autorytet dla wyszukiwarek AI / AEO).
 const siteSchema = {
   '@context': 'https://schema.org',
   '@graph': [
     { '@type': 'WebSite', '@id': 'https://rdemb.github.io/#website', name: 'D-LOGIC', url: 'https://rdemb.github.io/', inLanguage: ['pl', 'en', 'de'], publisher: { '@id': 'https://rdemb.github.io/#person' } },
-    { '@type': 'Person', '@id': 'https://rdemb.github.io/#person', name: 'Rafał Dembski', jobTitle: 'Założyciel D-LOGIC', url: 'https://rdemb.github.io/', address: { '@type': 'PostalAddress', addressRegion: 'NRW', addressCountry: 'DE' }, knowsAbout: ['agenci AI', 'automatyzacja', 'Generative Engine Optimization', 'widoczność w wyszukiwarkach AI', 'SEO', 'analiza danych'], sameAs: ['https://x.com/takitamrafal', 'https://github.com/rdemb'] },
+    { '@type': 'Person', '@id': 'https://rdemb.github.io/#person', name: 'Rafał Dembski', jobTitle: 'Założyciel D-LOGIC', url: 'https://rdemb.github.io/', address: { '@type': 'PostalAddress', addressRegion: 'NRW', addressCountry: 'DE' }, knowsAbout: ['agenci AI', 'automatyzacja', 'Generative Engine Optimization', 'widoczność w wyszukiwarkach AI', 'SEO', 'analiza danych'], sameAs: ['https://x.com/takitamrafal', 'https://www.facebook.com/share/1E7TXWyRYC/', 'https://github.com/rdemb'] },
   ],
 };
 ---
@@ -24,9 +26,19 @@ const siteSchema = {
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="theme-color" content="#0C0E12" />
+    <link rel="canonical" href={canonical} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content="D-LOGIC studio" />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
     <script type="application/ld+json" set:html={JSON.stringify(siteSchema)} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <script is:inline>
@@ -59,8 +71,8 @@ const siteSchema = {
             </div>
             <div class="foot-col">
               <h4 data-i18n="foot.h2">•</h4>
-              <a href="mailto:rdem91@gmail.com">rdem91@gmail.com</a>
               <a href="https://x.com/takitamrafal" target="_blank" rel="noopener">x.com/takitamrafal</a>
+              <a href="https://www.facebook.com/share/1E7TXWyRYC/" target="_blank" rel="noopener">facebook</a>
               <a href="https://github.com/rdemb" target="_blank" rel="noopener">github.com/rdemb</a>
             </div>
           </div>

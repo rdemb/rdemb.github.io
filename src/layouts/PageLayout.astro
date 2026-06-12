@@ -6,14 +6,16 @@ import '../styles/global.css';
 import SiteNav from '../components/SiteNav.astro';
 import Share from '../components/Share.astro';
 
-const { lang = 'pl', title, description = '', sw = { pl: '/', en: '/en/', de: '/de/' }, share = true, image, ogType = 'website' } = Astro.props;
+// sw = linki przełącznika języka (zawsze klikalne, mogą mieć fallback do listy);
+// hreflangs = wyłącznie realne wersje językowe tej treści (do <link rel="alternate">).
+const { lang = 'pl', title, description = '', sw = { pl: '/', en: '/en/', de: '/de/' }, hreflangs = sw, share = true, image, ogType = 'website' } = Astro.props;
 // Aktywna zakladka wyliczana z biezacej sciezki (dziala dla /blog, /en/blog, /projekty, ...)
 const path = Astro.url?.pathname || '';
-const active = path.includes('/projekty') ? '/projekty/' : path.includes('/blog') ? '/blog/' : '';
+const active = path.includes('/projekty') ? '/projekty/' : path.includes('/blog') ? '/blog/' : path.includes('/capital') ? '/capital/' : '';
 // Linki absolutne dla OpenGraph / Twitter (podglad na FB, X, LinkedIn)
 const siteUrl = Astro.site ?? new URL('https://rdemb.github.io/');
 const canonical = new URL(path || '/', siteUrl).href;
-const ogImage = image ? new URL(image, siteUrl).href : undefined;
+const ogImage = new URL(image ?? '/og-default.png', siteUrl).href;
 const ogLocale = lang === 'pl' ? 'pl_PL' : lang === 'de' ? 'de_DE' : 'en_US';
 // Schema.org artykułu (blog/case study) — pomaga byciu cytowanym w wyszukiwarkach AI.
 const articleSchema = ogType === 'article' ? {
@@ -52,9 +54,10 @@ const articleSchema = ogType === 'article' ? {
     {articleSchema && <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />}
     <meta name="theme-color" content="#0C0E12" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    {sw.pl && <link rel="alternate" hreflang="pl" href={sw.pl} />}
-    {sw.en && <link rel="alternate" hreflang="en" href={sw.en} />}
-    {sw.de && <link rel="alternate" hreflang="de" href={sw.de} />}
+    {hreflangs.pl && <link rel="alternate" hreflang="pl" href={new URL(hreflangs.pl, siteUrl).href} />}
+    {hreflangs.en && <link rel="alternate" hreflang="en" href={new URL(hreflangs.en, siteUrl).href} />}
+    {hreflangs.de && <link rel="alternate" hreflang="de" href={new URL(hreflangs.de, siteUrl).href} />}
+    {hreflangs.pl && <link rel="alternate" hreflang="x-default" href={new URL(hreflangs.pl, siteUrl).href} />}
     <script is:inline>
       (() => { try { document.documentElement.setAttribute('data-theme', localStorage.getItem('dlogic-theme') || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark')); } catch (e) {} })();
     </script>
@@ -66,8 +69,8 @@ const articleSchema = ogType === 'article' ? {
 
     <footer>
       <div class="wrap"><div class="foot-base" style="margin-top:0;border-top:none">
-        <span class="mono">© 2026 D-LOGIC studio</span>
-        <span class="mono"><a href="mailto:rdem91@gmail.com">rdem91@gmail.com</a> · <a href="https://x.com/takitamrafal" target="_blank" rel="noopener">x</a> · <a href="https://github.com/rdemb" target="_blank" rel="noopener">github</a></span>
+        <span class="mono">© {new Date().getFullYear()} D-LOGIC studio</span>
+        <span class="mono"><a href="https://x.com/takitamrafal" target="_blank" rel="noopener">x</a> · <a href="https://www.facebook.com/share/1E7TXWyRYC/" target="_blank" rel="noopener">facebook</a> · <a href="https://github.com/rdemb" target="_blank" rel="noopener">github</a></span>
       </div></div>
     </footer>
 

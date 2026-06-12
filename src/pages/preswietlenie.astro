@@ -74,7 +74,7 @@ const dict = withUi({
     'x.f2.q': 'Czy moja firma jest widoczna w ChatGPT?', 'x.f2.a': 'Najczęściej nie, jeśli nie ma o niej wzmianek w wiarygodnych źródłach. Prześwietlenie to sprawdza i pokazuje, co zmienić.',
     'x.f3.q': 'Czym to się różni od audytu SEO agencji?', 'x.f3.a': 'Jest uczciwe, glass-box (dowód przy każdym wniosku), obejmuje wyszukiwanie AI i nie kończy się raportem, tylko naprawą.',
     'x.f4.q': 'Ile to kosztuje i ile trwa?', 'x.f4.a': 'Prześwietlenie od 390 € jednorazowo, raport w kilka dni. Naprawa i monitoring to abonament.',
-    'x.cta.t': 'Zacznijmy od prześwietlenia', 'x.cta.l': 'Zobaczysz prawdę o swojej firmie w sieci, z dowodem. Napisz w dwóch zdaniach, co robisz, odpiszę osobiście, zwykle tego samego dnia.', 'x.cta.b': 'Napisz maila',
+    'x.cta.t': 'Zacznijmy od prześwietlenia', 'x.cta.l': 'Zobaczysz prawdę o swojej firmie w sieci, z dowodem. Napisz w dwóch zdaniach, co robisz, odpiszę osobiście, zwykle tego samego dnia.', 'x.cta.b': 'Napisz na X',
   },
   en: {
     'x.eyebrow': 'Company X-Ray', 'x.title': 'I will check whether your company even exists for a customer online',
@@ -103,7 +103,7 @@ const dict = withUi({
     'x.f2.q': 'Is my company visible in ChatGPT?', 'x.f2.a': 'Usually not, unless it is mentioned in credible sources. The X-Ray checks this and shows what to change.',
     'x.f3.q': 'How is this different from an agency SEO audit?', 'x.f3.a': 'It is honest, glass-box (evidence per finding), it covers AI search, and it does not end with a report but with the fix.',
     'x.f4.q': 'How much and how long?', 'x.f4.a': 'X-Ray from €390 one-time, report in a few days. Fix and monitoring are subscriptions.',
-    'x.cta.t': 'Let us start with the X-Ray', 'x.cta.l': 'You will see the truth about your company online, with evidence. Write two sentences about what you do, I reply personally, usually the same day.', 'x.cta.b': 'Send an email',
+    'x.cta.t': 'Let us start with the X-Ray', 'x.cta.l': 'You will see the truth about your company online, with evidence. Write two sentences about what you do, I reply personally, usually the same day.', 'x.cta.b': 'Message me on X',
   },
   de: {
     'x.eyebrow': 'Firmen-Röntgen', 'x.title': 'Ich prüfe, ob deine Firma für einen Kunden online überhaupt existiert',
@@ -132,12 +132,12 @@ const dict = withUi({
     'x.f2.q': 'Ist meine Firma in ChatGPT sichtbar?', 'x.f2.a': 'Meist nicht, wenn sie nicht in glaubwürdigen Quellen erwähnt wird. Das Röntgen prüft das und zeigt, was zu ändern ist.',
     'x.f3.q': 'Wie unterscheidet sich das vom SEO-Audit einer Agentur?', 'x.f3.a': 'Es ist ehrlich, Glass-Box (Beweis pro Befund), deckt KI-Suche ab und endet nicht mit einem Bericht, sondern mit der Reparatur.',
     'x.f4.q': 'Was kostet es und wie lange dauert es?', 'x.f4.a': 'Röntgen ab 390 € einmalig, Bericht in wenigen Tagen. Reparatur und Monitoring laufen im Abo.',
-    'x.cta.t': 'Fangen wir mit dem Röntgen an', 'x.cta.l': 'Du siehst die Wahrheit über deine Firma online, mit Beweis. Schreib zwei Sätze, was du tust, ich antworte persönlich, meist am selben Tag.', 'x.cta.b': 'E-Mail schreiben',
+    'x.cta.t': 'Fangen wir mit dem Röntgen an', 'x.cta.l': 'Du siehst die Wahrheit über deine Firma online, mit Beweis. Schreib zwei Sätze, was du tust, ich antworte persönlich, meist am selben Tag.', 'x.cta.b': 'Schreib mir auf X',
   },
 });
 const t = dict.pl;
 ---
-<Chrome title="Prześwietlenie firmy w sieci · D-LOGIC" description="Uczciwe prześwietlenie i naprawa obecności firmy w sieci, w tym widoczność w ChatGPT i Google. Z dowodem, bez obietnic cudów." dict={dict} active="">
+<Chrome title="Prześwietlenie firmy w sieci · D-LOGIC" description="Uczciwe prześwietlenie i naprawa obecności firmy w sieci, w tym widoczność w ChatGPT i Google. Z dowodem, bez obietnic cudów." dict={dict} active="/preswietlenie/">
   <script type="application/ld+json" set:html={JSON.stringify(schema)} />
 
   <section style="padding-bottom:34px">
@@ -273,7 +273,7 @@ const t = dict.pl;
       <span class="eyebrow" style="justify-content:center" data-i18n="x.eyebrow">{t['x.eyebrow']}</span>
       <h2 data-i18n="x.cta.t">{t['x.cta.t']}</h2>
       <p data-i18n="x.cta.l">{t['x.cta.l']}</p>
-      <div class="hero-cta"><a href="mailto:rdem91@gmail.com?subject=Prze%C5%9Bwietlenie%20firmy" class="btn btn-primary"><span data-i18n="x.cta.b">{t['x.cta.b']}</span><span class="arr">→</span></a></div>
+      <div class="hero-cta"><a href="https://x.com/takitamrafal" target="_blank" rel="noopener" class="btn btn-primary"><span data-i18n="x.cta.b">{t['x.cta.b']}</span><span class="arr">→</span></a></div>
     </div></div></div>
   </section>
 
@@ -323,7 +323,7 @@ const t = dict.pl;
           + '<div class="chk-checks">' + rows + '</div>'
           + '<div class="chk-ph">Sprawdź realną wzmiankę, wklej do ChatGPT:</div>' + prompts
           + '<div class="chk-note">' + esc(d.note) + '</div>'
-          + '<div class="chk-up"><span>Chcesz pełne prześwietlenie z dowodem i naprawą, zrobione ręcznie?</span> <a class="btn btn-primary" href="mailto:rdem91@gmail.com?subject=Pe%C5%82ne%20prze%C5%9Bwietlenie%20firmy"><span>Napisz do mnie</span><span class="arr">→</span></a></div>'
+          + '<div class="chk-up"><span>Chcesz pełne prześwietlenie z dowodem i naprawą, zrobione ręcznie?</span> <a class="btn btn-primary" href="https://x.com/takitamrafal" target="_blank" rel="noopener"><span>Napisz do mnie na X</span><span class="arr">→</span></a></div>'
           + '</div>';
         out.querySelectorAll('.chk-copy').forEach(function (b) {
           b.addEventListener('click', function () {

@@ -3,7 +3,7 @@ import '@fontsource-variable/space-grotesk';
 import '@fontsource-variable/inter';
 import '@fontsource-variable/jetbrains-mono';
 import SiteNav from '../components/SiteNav.astro';
-import { postsByLang } from '../lib/content';
+import { postsByLang, kindLabel } from '../lib/content';
 
 // Schema.org strony głównej: główna encja firmy (AEO / widoczność w wyszukiwarkach AI).
 const homeSchema = {
@@ -16,7 +16,7 @@ const homeSchema = {
   founder: { '@type': 'Person', name: 'Rafał Dembski', address: { '@type': 'PostalAddress', addressRegion: 'NRW', addressCountry: 'DE' } },
   areaServed: ['PL', 'DE', 'AT', 'CH'],
   knowsAbout: ['agenci AI', 'automatyzacja', 'widoczność w wyszukiwarkach AI', 'Generative Engine Optimization', 'SEO', 'strony internetowe', 'analiza danych'],
-  sameAs: ['https://x.com/takitamrafal', 'https://github.com/rdemb'],
+  sameAs: ['https://x.com/takitamrafal', 'https://www.facebook.com/share/1E7TXWyRYC/', 'https://github.com/rdemb'],
 };
 
 // Najnowsze wpisy bloga: home podciąga je dynamicznie (tytuły w 3 językach do przełącznika).
@@ -35,6 +35,21 @@ const latestNotes = plPosts.map((p) => ({
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>D-LOGIC studio, agenci AI i widoczność firm w wyszukiwarkach AI</title>
 <meta name="description" content="Solo studio: buduję agentów AI, strony i prześwietlam widoczność firm w Google i w ChatGPT. Uczciwie, z dowodem, najpierw testuję na sobie." />
+<meta name="theme-color" content="#0C0E12" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="canonical" href="https://rdemb.github.io/" />
+<meta property="og:title" content="D-LOGIC studio, agenci AI i widoczność firm w wyszukiwarkach AI" />
+<meta property="og:description" content="Solo studio: buduję agentów AI, strony i prześwietlam widoczność firm w Google i w ChatGPT. Uczciwie, z dowodem, najpierw testuję na sobie." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://rdemb.github.io/" />
+<meta property="og:site_name" content="D-LOGIC studio" />
+<meta property="og:image" content="https://rdemb.github.io/og-default.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="D-LOGIC studio, agenci AI i widoczność firm w wyszukiwarkach AI" />
+<meta name="twitter:description" content="Agenci AI, strony i prześwietlenie widoczności firm w Google i wyszukiwarkach AI." />
+<meta name="twitter:image" content="https://rdemb.github.io/og-default.png" />
 <script type="application/ld+json" set:html={JSON.stringify(homeSchema)} />
 <style is:global>
 /* ================= TOKENS ================= */
@@ -504,7 +519,7 @@ footer p.tag{color:var(--muted);font-size:14.5px;max-width:36ch}
     <div class="notes">
       {latestNotes.map((n) => (
         <a href={`/blog/${n.key}/`} class="note reveal">
-          <span class="date mono">{n.date}</span><span class="kind" data-i18n={n.kind === 'project' ? 'notes.k.proj' : 'notes.k.refl'}>{n.kind === 'project' ? 'projekt' : 'refleksja'}</span>
+          <span class="date mono">{n.date}</span><span class="kind" data-pl={kindLabel.pl[n.kind] ?? n.kind} data-en={kindLabel.en[n.kind] ?? n.kind} data-de={kindLabel.de[n.kind] ?? n.kind}>{kindLabel.pl[n.kind] ?? n.kind}</span>
           <span class="ttl" data-pl={n.pl} data-en={n.en} data-de={n.de}>{n.pl}</span><span class="go">→</span>
         </a>
       ))}
@@ -522,8 +537,8 @@ footer p.tag{color:var(--muted);font-size:14.5px;max-width:36ch}
         <h2 data-i18n="cta.title">Masz coś, co powinno być pilnowane albo zautomatyzowane?</h2>
         <p data-i18n="cta.sub">Napisz w dwóch zdaniach, co chcesz uprościć albo rozwiązać. Odpowiem szczerze, czy umiem to zrobić dobrze, i jak.</p>
         <div class="hero-cta">
-          <a href="mailto:rdem91@gmail.com" class="btn btn-primary" data-magnetic><span data-i18n="cta.btn">Porozmawiajmy</span><span class="arr">→</span></a>
-          <a href="https://x.com/takitamrafal" target="_blank" rel="noopener" class="btn btn-ghost" data-magnetic><span data-i18n="cta.btn2">Napisz na X</span></a>
+          <a href="https://x.com/takitamrafal" target="_blank" rel="noopener" class="btn btn-primary" data-magnetic><span data-i18n="cta.btn">Porozmawiajmy</span><span class="arr">→</span></a>
+          <a href="https://www.facebook.com/share/1E7TXWyRYC/" target="_blank" rel="noopener" class="btn btn-ghost" data-magnetic><span data-i18n="cta.btn2">Facebook</span></a>
         </div>
       </div>
     </div>
@@ -551,8 +566,8 @@ footer p.tag{color:var(--muted);font-size:14.5px;max-width:36ch}
         </div>
         <div class="foot-col">
           <h4 data-i18n="foot.h2">Kontakt</h4>
-          <a href="mailto:rdem91@gmail.com">rdem91@gmail.com</a>
           <a href="https://x.com/takitamrafal" target="_blank" rel="noopener">x.com/takitamrafal</a>
+          <a href="https://www.facebook.com/share/1E7TXWyRYC/" target="_blank" rel="noopener">facebook</a>
           <a href="https://github.com/rdemb" target="_blank" rel="noopener">github.com/rdemb</a>
         </div>
       </div>
@@ -613,7 +628,7 @@ const I18N = {
   "notes.eyebrow":"Najnowsze pisanie","notes.title":"Notatnik, projekty i refleksje.",
   "notes.k.proj":"projekt","notes.k.refl":"refleksja","notes.n2":"Po co ten blog","notes.n4":"Czym LLM różni się od MOCPS",
   "cta.eyebrow":"Kontakt","cta.title":"Masz coś, co powinno być pilnowane albo zautomatyzowane?",
-  "cta.sub":"Napisz w dwóch zdaniach, co chcesz uprościć albo rozwiązać. Odpowiem szczerze, czy umiem to zrobić dobrze, i jak.","cta.btn":"Porozmawiajmy","cta.btn2":"Napisz na X","proof.cta":"Zobacz projekt: clawbot",
+  "cta.sub":"Napisz w dwóch zdaniach, co chcesz uprościć albo rozwiązać. Odpowiem szczerze, czy umiem to zrobić dobrze, i jak.","cta.btn":"Porozmawiajmy","cta.btn2":"Facebook","proof.cta":"Zobacz projekt: clawbot",
   "foot.tag":"Studio + lab + notatnik. Uczciwość zamiast hype.","foot.h1":"Nawigacja","foot.h2":"Kontakt",
   "foot.note":"Wszystkie wyniki, też negatywne, zapisane."
  },
@@ -654,7 +669,7 @@ const I18N = {
   "notes.eyebrow":"Latest writing","notes.title":"Notebook, projects and reflections.",
   "notes.k.proj":"project","notes.k.refl":"reflection","notes.n2":"Why this blog","notes.n4":"How an LLM differs from MOCPS",
   "cta.eyebrow":"Contact","cta.title":"Got something that should be watched or automated?",
-  "cta.sub":"Write in two sentences what you'd like to solve or simplify. I'll answer honestly whether I can do it well, and how.","cta.btn":"Let's talk","cta.btn2":"Message on X","proof.cta":"See the project: clawbot",
+  "cta.sub":"Write in two sentences what you'd like to solve or simplify. I'll answer honestly whether I can do it well, and how.","cta.btn":"Let's talk","cta.btn2":"Facebook","proof.cta":"See the project: clawbot",
   "foot.tag":"Studio + lab + notebook. Honesty over hype.","foot.h1":"Navigation","foot.h2":"Contact",
   "foot.note":"All results, negative ones too, on the record."
  },
@@ -695,7 +710,7 @@ const I18N = {
   "notes.eyebrow":"Neueste Texte","notes.title":"Notizbuch, Projekte und Reflexionen.",
   "notes.k.proj":"Projekt","notes.k.refl":"Reflexion","notes.n2":"Wozu dieser Blog","notes.n4":"Wie sich ein LLM von MOCPS unterscheidet",
   "cta.eyebrow":"Kontakt","cta.title":"Hast du etwas, das überwacht oder automatisiert werden sollte?",
-  "cta.sub":"Schreib in zwei Sätzen, was du lösen oder vereinfachen möchtest. Ich antworte ehrlich, ob ich es gut kann, und wie.","cta.btn":"Lass uns reden","cta.btn2":"Auf X schreiben","proof.cta":"Projekt ansehen: clawbot",
+  "cta.sub":"Schreib in zwei Sätzen, was du lösen oder vereinfachen möchtest. Ich antworte ehrlich, ob ich es gut kann, und wie.","cta.btn":"Lass uns reden","cta.btn2":"Facebook","proof.cta":"Projekt ansehen: clawbot",
   "foot.tag":"Studio + Lab + Notizbuch. Ehrlichkeit statt Hype.","foot.h1":"Navigation","foot.h2":"Kontakt",
   "foot.note":"Alle Ergebnisse, auch negative, dokumentiert."
  }
