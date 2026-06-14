@@ -1,58 +1,55 @@
 ---
 /*
-  ConceptEmbed — osadza interaktywna wizualizacje 3D "D-LOGIC DAY" (plik Rafala,
-  kopiowany verbatim do public/projekty/dlogic-fx/concept-3d.html, NIETKNIETY)
-  jako hero karty projektu D-LOGIC FX. Iframe + link pelnoekranowy. Prop: lang.
-  Wzorzec jak ClawbotScope / mocps-live: bierze lang, renderuje i18n etykiety.
+  ConceptEmbed — karta-ODNOŚNIK do interaktywnej wizualizacji 3D "D-LOGIC DAY".
+  NIE osadzamy iframe (decyzja Rafała 2026-06-14): klik otwiera standalone
+  wizualizację w NOWEJ KARCIE. Plik Rafała kopiowany verbatim do
+  public/projekty/dlogic-fx/concept-3d.html, NIETKNIĘTY. Prop: lang.
+  Wzorzec jak mocps-live: link-karta z badge / tytuł / opis / CTA, target=_blank.
 */
 const { lang = 'pl' } = Astro.props;
 const t = {
   pl: {
     tag: 'interaktywnie · 3D',
     title: 'Koncept w przestrzeni',
-    sub: 'Sześć gałęzi konceptu jako żywa sieć: teza, dane, modele, rygor, mapa dnia i pochowane pomysły. Przeciągnij, żeby obrócić, przewiń, żeby przybliżyć, najedź na węzeł, żeby go odczytać.',
-    cta: 'Otwórz na pełnym ekranie →',
+    sub: 'Sześć gałęzi konceptu jako żywa sieć 3D: teza, dane, modele, rygor, mapa dnia i pochowane pomysły. Obróć scenę, przybliż, najedź na węzeł, żeby go odczytać.',
+    cta: 'Otwórz wizualizację w nowej karcie →',
   },
   en: {
     tag: 'interactive · 3D',
     title: 'The concept, in space',
-    sub: 'Six branches of the concept as a living network: thesis, inputs, models, rigour, the day map and the buried ideas. Drag to orbit, scroll to zoom, hover a node to read it.',
-    cta: 'Open fullscreen →',
+    sub: 'Six branches of the concept as a living 3D network: thesis, inputs, models, rigour, the day map and the buried ideas. Orbit the scene, zoom, hover a node to read it.',
+    cta: 'Open the visualization in a new tab →',
   },
   de: {
     tag: 'interaktiv · 3D',
     title: 'Das Konzept im Raum',
-    sub: 'Sechs Äste des Konzepts als lebendes Netz: These, Daten, Modelle, Rigorosität, die Tageskarte und die begrabenen Ideen. Ziehen zum Drehen, scrollen zum Zoomen, über einen Knoten fahren zum Lesen.',
-    cta: 'Im Vollbild öffnen →',
+    sub: 'Sechs Äste des Konzepts als lebendes 3D-Netz: These, Daten, Modelle, Rigorosität, die Tageskarte und die begrabenen Ideen. Drehe die Szene, zoome, fahre über einen Knoten zum Lesen.',
+    cta: 'Visualisierung in neuem Tab öffnen →',
   },
 }[lang] ?? {} as any;
 const src = '/projekty/dlogic-fx/concept-3d.html';
 ---
-<section class="concept">
-  <div class="concept-bar">
-    <span class="concept-tag"><span class="concept-dot"></span>{t.tag}</span>
-    <a class="concept-full" href={src} target="_blank" rel="noopener">{t.cta}</a>
-  </div>
-  <div class="concept-frame">
-    <iframe src={src} title={t.title} loading="lazy" allowfullscreen></iframe>
-  </div>
-  <p class="concept-sub">{t.sub}</p>
-</section>
+<a class="concept-link" href={src} target="_blank" rel="noopener">
+  <span class="concept-badge"><span class="concept-dot"></span>{t.tag}</span>
+  <span class="concept-title">{t.title}</span>
+  <span class="concept-sub">{t.sub}</span>
+  <span class="concept-cta">{t.cta}</span>
+</a>
 
 <style>
-  .concept{ margin:0 0 2.4rem; }
-  .concept-bar{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px; }
-  .concept-tag{ display:inline-flex; align-items:center; gap:7px; font-family:'JetBrains Mono Variable',monospace;
+  .concept-link{ display:block; margin:0 0 2.4rem; padding:1.8rem 1.6rem; border:1px solid var(--line);
+    border-radius:16px; background:radial-gradient(130% 150% at 50% -10%, #06241f 0%, #081016 45%, #04060a 100%);
+    text-decoration:none; position:relative; overflow:hidden; transition:border-color .2s ease, transform .2s ease; }
+  .concept-link::after{ content:""; position:absolute; inset:0;
+    background:linear-gradient(115deg, transparent 40%, rgba(55,227,208,.07) 50%, transparent 60%); pointer-events:none; }
+  .concept-link:hover{ border-color:rgba(55,227,208,.45); transform:translateY(-2px); }
+  .concept-badge{ display:inline-flex; align-items:center; gap:7px; font-family:'JetBrains Mono Variable',monospace;
     font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:#37e3d0; }
   .concept-dot{ width:7px; height:7px; border-radius:50%; background:#37e3d0; box-shadow:0 0 8px #37e3d0;
     animation:concept-pulse 2.4s ease-in-out infinite; }
   @keyframes concept-pulse{ 0%,100%{ opacity:1 } 50%{ opacity:.35 } }
-  .concept-full{ font-family:'JetBrains Mono Variable',monospace; font-size:12px; color:#37e3d0;
-    text-decoration:none; white-space:nowrap; transition:opacity .2s; }
-  .concept-full:hover{ text-decoration:underline; opacity:.85; }
-  .concept-frame{ position:relative; border:1px solid var(--line); border-radius:16px; overflow:hidden;
-    background:#04060a; box-shadow:0 30px 80px rgba(0,0,0,.45); }
-  .concept-frame iframe{ display:block; width:100%; height:clamp(440px, 66vh, 660px); border:0; }
-  .concept-sub{ margin:.85rem 0 0; color:var(--muted); font-size:13.5px; line-height:1.6; max-width:62ch; }
-  @media (max-width:560px){ .concept-frame iframe{ height:74vh; min-height:420px; } }
+  .concept-title{ display:block; font-family:'Space Grotesk Variable',sans-serif; font-size:clamp(22px,4.5vw,30px);
+    color:var(--text); margin:.5rem 0 .55rem; }
+  .concept-sub{ display:block; color:var(--muted); font-size:14px; line-height:1.6; max-width:60ch; }
+  .concept-cta{ display:inline-block; margin-top:1rem; font-weight:600; font-size:14px; color:#37e3d0; }
 </style>

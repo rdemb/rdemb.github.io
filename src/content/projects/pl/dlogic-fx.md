@@ -10,7 +10,7 @@ D-LOGIC FX to mój koncept day-tradingu na rynku walutowym, zbudowany wokół je
 
 Więc odwracam problem. Zamiast zmuszać maszynę, żeby zgadywała kierunek, każę jej mapować to, co naprawdę jest przewidywalne w strukturze dnia. Kierunek zostaje przy człowieku. Maszyna podaje kontekst, ryzyko i moment. Decyzję podejmuję ja.
 
-Wizualizacja u góry pokazuje ten koncept jako żywą sieć: rdzeń, sześć gałęzi i ich składowe. Możesz ją obrócić, przybliżyć i najechać na dowolny węzeł.
+Odnośnik powyżej otwiera ten koncept w nowej karcie jako żywą sieć 3D: rdzeń, sześć gałęzi i ich składowe. W środku obracasz scenę, przybliżasz i najeżdżasz na dowolny węzeł, żeby go odczytać.
 
 ## Teza
 

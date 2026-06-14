@@ -10,7 +10,7 @@ D-LOGIC FX is my FX day-trading concept, built around one uncomfortable observat
 
 So I invert the problem. Instead of forcing the machine to guess direction, I have it map what actually is predictable in the structure of the day. Direction stays with the human. The machine hands me context, risk and timing. I make the call.
 
-The visualization above renders the concept as a living network: a core, six branches and their components. Drag to orbit, scroll to zoom, hover any node to inspect it.
+The link above opens this concept in a new tab as a living 3D network: a core, six branches and their components. Inside you orbit the scene, zoom, and hover any node to read it.
 
 ## Thesis
 

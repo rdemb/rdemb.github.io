@@ -10,7 +10,7 @@ D-LOGIC FX ist mein Daytrading-Konzept für den Devisenmarkt, gebaut um eine unb
 
 Also drehe ich das Problem um. Statt die Maschine zum Raten der Richtung zu zwingen, lasse ich sie kartieren, was an der Struktur des Tages wirklich vorhersagbar ist. Die Richtung bleibt beim Menschen. Die Maschine liefert mir Kontext, Risiko und Timing. Die Entscheidung treffe ich.
 
-Die Visualisierung oben zeigt das Konzept als lebendes Netz: ein Kern, sechs Äste und ihre Komponenten. Ziehen zum Drehen, scrollen zum Zoomen, über jeden Knoten fahren zum Inspizieren.
+Der Link oben öffnet dieses Konzept in einem neuen Tab als lebendes 3D-Netz: ein Kern, sechs Äste und ihre Komponenten. Darin drehst du die Szene, zoomst und fährst über jeden Knoten, um ihn zu lesen.
 
 ## These
 
