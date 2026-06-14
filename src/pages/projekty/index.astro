@@ -2,7 +2,7 @@
 import PageLayout from '../../layouts/PageLayout.astro';
 import { projectsByLang } from '../../lib/content';
 const lang = 'pl';
-const order = ['clawbot', 'forex-lab', 'aai', 'mocps'];
+const order = ['clawbot', 'forex-lab', 'dlogic-fx', 'mocps'];
 const all = await projectsByLang(lang);
 const projects = order.map((k) => all.find((p) => p.data.key === k)).filter(Boolean);
 const t = { title: 'Projekty', lead: 'Rzeczy, które zbudowałem i zbadałem. Z opisem, co zadziałało, a co nie. Bo nieudany wynik to też wynik.' };

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>D-LOGIC DAY — 3D Concept Network</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800;900&family=IBM+Plex+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#04060a;--txt:#eef2f8;--dim:#8492a6;--faint:#3a4452;
+  --teal:#37e3d0;--gold:#e6c25a;--crimson:#ff5b4d;--mono:'IBM Plex Mono',monospace;--disp:'Unbounded',sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--txt);font-family:var(--mono)}
+#webgl{position:fixed;inset:0;z-index:0}
+#labels{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+.lab{font-family:var(--mono);font-size:11px;letter-spacing:.04em;white-space:nowrap;
+  transform:translate(-50%,-50%);text-shadow:0 0 10px rgba(0,0,0,.9);transition:opacity .3s}
+.lab.core{font-family:var(--disp);font-weight:800;font-size:17px;color:#fff}
+.lab.branch{font-family:var(--disp);font-weight:600;font-size:12px;letter-spacing:.14em;text-transform:uppercase}
+.lab.leaf{font-size:10px;color:var(--dim);opacity:.0}
+.lab.leaf.show{opacity:1;color:var(--txt)}
+/* HUD */
+#hud{position:fixed;top:20px;left:24px;z-index:5}
+#hud .t{font-family:var(--disp);font-weight:800;font-size:14px;letter-spacing:.03em}#hud .t b{color:var(--teal)}
+#hud .s{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-top:3px}
+#hint{position:fixed;top:20px;right:24px;z-index:5;font-size:10px;letter-spacing:.14em;color:var(--faint);
+  text-transform:uppercase;text-align:right;line-height:1.7}
+/* narration */
+#narr{position:fixed;left:24px;bottom:96px;z-index:6;width:min(380px,calc(100vw - 48px));
+  background:linear-gradient(180deg,rgba(10,14,21,.82),rgba(7,10,15,.92));border:1px solid rgba(120,140,170,.16);
+  backdrop-filter:blur(12px);padding:24px 26px;box-shadow:0 30px 80px rgba(0,0,0,.5);transition:opacity .5s,transform .5s}
+#narr.hide{opacity:0;transform:translateY(20px);pointer-events:none}
+#narr .step{font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:var(--teal);margin-bottom:12px;display:flex;gap:10px;align-items:center}
+#narr .step .bar{width:24px;height:1px;background:var(--teal);box-shadow:0 0 8px var(--teal)}
+#narr h2{font-family:var(--disp);font-weight:700;font-size:25px;line-height:1.04;margin-bottom:12px}
+#narr h2.tl{color:var(--teal)} #narr h2.gl{color:var(--gold)} #narr h2.cl{color:var(--crimson)}
+#narr p{font-size:13px;color:var(--dim);line-height:1.6}
+#narr .comps{margin-top:16px;display:flex;flex-direction:column;gap:7px}
+#narr .cp{display:flex;justify-content:space-between;font-size:12px;border-top:1px solid rgba(120,140,170,.1);padding-top:7px}
+#narr .cp .k{color:var(--txt)} #narr .cp .v{color:var(--teal)} #narr.cl-acc .cp .v{color:var(--crimson)}
+/* controls */
+#ctrl{position:fixed;left:0;right:0;bottom:0;z-index:7;display:flex;align-items:center;gap:16px;
+  padding:16px 26px;background:linear-gradient(0deg,rgba(4,6,10,.92),transparent)}
+#ctrl button{background:rgba(12,16,24,.6);border:1px solid rgba(120,140,170,.18);color:var(--txt);
+  height:42px;min-width:42px;border-radius:50px;padding:0 14px;cursor:pointer;font-family:var(--mono);font-size:13px;
+  display:flex;align-items:center;justify-content:center;gap:8px;transition:.2s}
+#ctrl button:hover{border-color:var(--teal);color:var(--teal);box-shadow:0 0 14px rgba(55,227,208,.25)}
+#ctrl button.act{border-color:var(--gold);color:var(--gold)}
+#dots{flex:1;display:flex;gap:8px;align-items:center;justify-content:center}
+#dots i{width:8px;height:8px;border-radius:50%;background:#27303d;cursor:pointer;transition:.3s}
+#dots i.on{background:var(--teal);box-shadow:0 0 10px var(--teal);transform:scale(1.3)}
+#tip{position:fixed;z-index:8;pointer-events:none;background:rgba(9,13,20,.96);border:1px solid rgba(120,140,170,.2);
+  padding:12px 15px;max-width:260px;opacity:0;transition:opacity .15s;box-shadow:0 18px 50px rgba(0,0,0,.6)}
+#tip.on{opacity:1}#tip h4{font-family:var(--disp);font-weight:600;font-size:13px;margin-bottom:4px}
+#tip .m{font-family:var(--mono);font-size:15px;color:var(--teal);margin:2px 0 6px}#tip p{font-size:11.5px;color:var(--dim);line-height:1.5}
+/* intro */
+#intro{position:fixed;inset:0;z-index:20;background:var(--bg);display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;transition:opacity 1.2s}
+#intro.gone{opacity:0;pointer-events:none}
+#intro .lk{font-family:var(--disp);font-weight:800;font-size:clamp(36px,7vw,90px)}#intro .lk b{color:var(--teal)}#intro .lk .d{color:var(--gold)}
+#intro .sb{margin-top:18px;font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--dim)}
+#intro .ld{margin-top:40px;font-size:11px;letter-spacing:.2em;color:var(--faint);text-transform:uppercase}
+@media(max-width:760px){#narr{bottom:88px;padding:18px 20px}#narr h2{font-size:21px}#hint{display:none}}
+</style>
+</head>
+<body>
+<div id="webgl"></div>
+<div id="labels"></div>
+<div id="hud"><div class="t">D&middot;<b>LOGIC</b> DAY</div><div class="s">3D concept network</div></div>
+<div id="hint">drag &middot; orbit<br>scroll &middot; zoom<br>hover &middot; inspect</div>
+
+<div id="narr">
+  <div class="step"><span class="bar"></span><span id="stepn">Intro</span></div>
+  <h2 id="ntitle">The concept, in space.</h2>
+  <p id="ndesc">A semi-algorithmic FX day-trading concept &mdash; rendered as a living network. The machine maps the structure of the day; you take the direction.</p>
+  <div class="comps" id="ncomps"></div>
+</div>
+
+<div id="ctrl">
+  <button id="prev" title="previous">&#10094;</button>
+  <button id="play" title="play/pause">&#10073;&#10073;</button>
+  <button id="next" title="next">&#10095;</button>
+  <div id="dots"></div>
+  <button id="free" title="free orbit">&#8635; Free orbit</button>
+</div>
+
+<div id="tip"></div>
+<div id="intro"><div class="lk">D<span class="d">&middot;</span><b>LOGIC</b> DAY</div>
+  <div class="sb">A FOREX day-trading concept</div>
+  <div class="ld" id="ldtxt">Initialising network&hellip;</div></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://unpkg.com/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script src="https://unpkg.com/three@0.128.0/examples/js/renderers/CSS2DRenderer.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script>
+const C={teal:0x37e3d0,gold:0xe6c25a,crim:0xff5b4d};
+const HEX={[C.teal]:"#37e3d0",[C.gold]:"#e6c25a",[C.crim]:"#ff5b4d"};
+const DATA=[
+ {key:"Thesis",col:C.teal,acc:"tl",title:"Direction is noise.<br>Structure is signal.",
+  desc:"Across 18 directional fronts on retail data, after cost, price never predicted its own direction. So the concept inverts the problem: the machine maps what IS predictable, and the human takes the call.",
+  leaves:[["Direction = null","18 fronts"],["Structure is signal",""],["Human takes direction","OBSERVE"]]},
+ {key:"Inputs",col:C.gold,acc:"gl",title:"Grounded in real data.",
+  desc:"Multi-timeframe price across five FX pairs, reconstructed in broker time, with nearly two decades of daily history for honest out-of-sample testing.",
+  leaves:[["M5 / M15 / D1","multi-TF"],["5 FX pairs","major"],["19 years tested","~6000 days"]]},
+ {key:"Models",col:C.teal,acc:"tl",title:"Five validated layers.",
+  desc:"Each layer is a mechanically-motivated, gate-passed read on the day. The hazard map looks forward; volatility sizes the trade; budget enforces timing; VWAP-fade is the surviving market signal; meta-labeling learns the trader.",
+  leaves:[["Day-Map Hazard","AUC .87–.92"],["Volatility Engine","R² .12–.30"],["Budget · Timing","corr −0.48"],["VWAP-Fade","5/5 OOS+"],["Meta-Labeling","in forward"]]},
+ {key:"Rigour",col:C.gold,acc:"gl",title:"Nothing entered on belief.",
+  desc:"Every candidate was pre-registered, judged out-of-sample, beaten against placebo, filtered by false-discovery rate across the whole grid, and costed before promotion. Most ideas died here — by design.",
+  leaves:[["Pre-register",""],["IS / OOS",""],["Placebo + FDR","q≤0.10"],["Cost + DSR",""]]},
+ {key:"Market Map",col:C.teal,acc:"tl",title:"One glance. Full context.",
+  desc:"The cockpit fuses every layer into a single panel: probability bias on top, your position, the magnets, the news clock — distilled into one go / no-go verdict. It informs; it never pulls the trigger.",
+  leaves:[["BIAS","P-up vs down"],["PULSE","0–100 MTF"],["LEVELS","PDH/PDL/TGT"],["NEWS","blackout ±15m"],["GO / NO-GO","verdict"]]},
+ {key:"Buried",col:C.crim,acc:"cl",title:"What we killed, in the open.",
+  desc:"A concept is only as trustworthy as the ideas it's willing to bury. These looked clever and predicted nothing after rigour — so they never shipped. Intellectual honesty is the feature.",
+  leaves:[["Oscillator","IC ≈ 0"],["Fibonacci","artefact"],["Fixing W-shape","dies on cost"],["Squeeze","not sig."]]},
+];
+
+let scene,cam,rndr,lrndr,ctrls,raycaster,mouse=new THREE.Vector2(-2,-2);
+let nodeMeshes=[],edgeObjs=[],pulses=[],coreMesh,hovered=null;
+const R1=18, ROUT=15;
+
+function fibDir(i,n){const y=1-(i/(n-1))*2;const r=Math.sqrt(Math.max(0,1-y*y));const th=i*2.399963;
+  return new THREE.Vector3(Math.cos(th)*r,y*0.85,Math.sin(th)*r).normalize();}
+function makeGlowSprite(color){const cv=document.createElement("canvas");cv.width=cv.height=128;const x=cv.getContext("2d");
+  const g=x.createRadialGradient(64,64,0,64,64,64);const h="#"+color.toString(16).padStart(6,"0");
+  g.addColorStop(0,h);g.addColorStop(.25,h);g.addColorStop(1,"rgba(0,0,0,0)");x.fillStyle=g;x.beginPath();x.arc(64,64,64,0,7);x.fill();
+  const tx=new THREE.Texture(cv);tx.needsUpdate=true;const m=new THREE.SpriteMaterial({map:tx,blending:THREE.AdditiveBlending,depthWrite:false,opacity:.0});
+  return new THREE.Sprite(m);}
+function label(text,cls){const d=document.createElement("div");d.className="lab "+cls;d.textContent=text;
+  return new THREE.CSS2DObject(d);}
+
+function buildScene(){
+  scene=new THREE.Scene();scene.fog=new THREE.FogExp2(0x04060a,0.012);
+  cam=new THREE.PerspectiveCamera(55,innerWidth/innerHeight,.1,400);cam.position.set(0,6,72);
+  rndr=new THREE.WebGLRenderer({antialias:true,alpha:true});rndr.setSize(innerWidth,innerHeight);
+  rndr.setPixelRatio(Math.min(devicePixelRatio,2));document.getElementById("webgl").appendChild(rndr.domElement);
+  lrndr=new THREE.CSS2DRenderer();lrndr.setSize(innerWidth,innerHeight);document.getElementById("labels").appendChild(lrndr.domElement);
+  ctrls=new THREE.OrbitControls(cam,rndr.domElement);ctrls.enableDamping=true;ctrls.dampingFactor=.06;
+  ctrls.minDistance=18;ctrls.maxDistance=160;ctrls.autoRotateSpeed=.6;
+  raycaster=new THREE.Raycaster();
+  scene.add(new THREE.AmbientLight(0xffffff,.7));
+  // starfield
+  const sg=new THREE.BufferGeometry();const sp=[];for(let i=0;i<900;i++){const r=180+Math.random()*120;
+    const a=Math.random()*7,b=Math.acos(2*Math.random()-1);sp.push(r*Math.sin(b)*Math.cos(a),r*Math.cos(b),r*Math.sin(b)*Math.sin(a));}
+  sg.setAttribute("position",new THREE.Float32BufferAttribute(sp,3));
+  scene.add(new THREE.Points(sg,new THREE.PointsMaterial({color:0x4a5a72,size:.7,transparent:true,opacity:.7})));
+
+  // core
+  coreMesh=node(new THREE.Vector3(0,0,0),2.4,C.gold,"core","D·LOGIC DAY",{title:"The core",detail:"Semi-algorithmic FX day-trading concept. Machine maps structure; human takes direction.",metric:""});
+  // branches + leaves
+  DATA.forEach((br,i)=>{
+    const dir=fibDir(i,DATA.length);const bp=dir.clone().multiplyScalar(R1);
+    const bn=node(bp,1.3,br.col,"branch",br.key,{title:br.key,detail:br.leaves.length+" components",metric:""});
+    bn.userData.branch=i;edge(coreMesh,bn,br.col,true);
+    // leaf basis perpendicular to dir
+    const up=Math.abs(dir.y)<.9?new THREE.Vector3(0,1,0):new THREE.Vector3(1,0,0);
+    const t1=new THREE.Vector3().crossVectors(dir,up).normalize();const t2=new THREE.Vector3().crossVectors(dir,t1).normalize();
+    const L=br.leaves.length;
+    br.leaves.forEach((lf,j)=>{const a=(j-(L-1)/2);
+      const lp=bp.clone().add(dir.clone().multiplyScalar(ROUT))
+        .add(t1.clone().multiplyScalar(a*6)).add(t2.clone().multiplyScalar((j%2?1:-1)*4));
+      const ln=node(lp,.7,br.col,"leaf",lf[0],{title:lf[0],detail:DATA[i].desc.split(".")[0]+".",metric:lf[1]});
+      ln.userData.branch=i;edge(bn,ln,br.col,false);
+    });
+  });
+}
+function node(pos,r,col,kind,text,info){
+  const m=new THREE.Mesh(new THREE.SphereGeometry(r,28,28),
+    new THREE.MeshBasicMaterial({color:kind==="leaf"?0x0a0f17:col}));
+  if(kind==="leaf"){m.material=new THREE.MeshBasicMaterial({color:0x0b1018});
+    const ring=new THREE.Mesh(new THREE.SphereGeometry(r*1.02,24,24),new THREE.MeshBasicMaterial({color:col,wireframe:true,transparent:true,opacity:.55}));m.add(ring);}
+  m.position.copy(pos);m.userData={kind,col,info,base:r};m.scale.setScalar(0.001);
+  const gl=makeGlowSprite(col);gl.scale.setScalar(r*(kind==="leaf"?5:8));m.add(gl);m.userData.glow=gl;
+  const lo=label(text,kind);lo.position.set(0,r+ (kind==="core"?3:kind==="branch"?2.4:1.4),0);m.add(lo);m.userData.lab=lo.element;
+  scene.add(m);nodeMeshes.push(m);return m;
+}
+function edge(a,b,col,main){
+  const g=new THREE.BufferGeometry().setFromPoints([a.position,b.position]);
+  const ln=new THREE.Line(g,new THREE.LineBasicMaterial({color:col,transparent:true,opacity:0}));
+  scene.add(ln);edgeObjs.push({ln,a,b,main,col});
+  const pm=new THREE.Mesh(new THREE.SphereGeometry(main?.4:.28,12,12),new THREE.MeshBasicMaterial({color:col}));
+  const pg=makeGlowSprite(col);pg.scale.setScalar(main?3:2);pg.material.opacity=.9;pm.add(pg);pm.visible=false;
+  scene.add(pm);pulses.push({m:pm,a,b,t:Math.random(),sp:.002+Math.random()*.003,main});
+}
+
+// ---- growth ----
+function grow(){
+  document.getElementById("ldtxt").textContent="Network ready";
+  setTimeout(()=>document.getElementById("intro").classList.add("gone"),400);
+  const tl=gsap.timeline({delay:.6});
+  tl.to(coreMesh.scale,{x:1,y:1,z:1,duration:.9,ease:"back.out(1.7)"})
+    .to(coreMesh.userData.glow.material,{opacity:.9,duration:.6},"-=.6");
+  const branches=nodeMeshes.filter(m=>m.userData.kind==="branch");
+  branches.forEach((bn,i)=>{
+    const e=edgeObjs.find(x=>x.b===bn);
+    tl.to(e.ln.material,{opacity:.55,duration:.4},"-=.2")
+      .to(bn.scale,{x:1,y:1,z:1,duration:.5,ease:"back.out(2)"},"-=.25")
+      .to(bn.userData.glow.material,{opacity:.7,duration:.4},"-=.4");
+  });
+  const leaves=nodeMeshes.filter(m=>m.userData.kind==="leaf");
+  leaves.forEach((ln,i)=>{const e=edgeObjs.find(x=>x.b===ln);
+    tl.to(e.ln.material,{opacity:.28,duration:.35},i===0?">":"<+.07")
+      .to(ln.scale,{x:1,y:1,z:1,duration:.4,ease:"back.out(2.2)"},"<")
+      .to(ln.userData.glow.material,{opacity:.5,duration:.35},"<");});
+  tl.add(()=>{pulses.forEach(p=>p.m.visible=true);startNarration();},"+=.3");
+}
+
+// ---- camera flights / narration ----
+const intro={key:"Intro",title:"The concept, in space.",acc:"",
+  desc:"A semi-algorithmic FX day-trading concept, rendered as a living network. The machine maps the structure of the day; you take the direction.",comps:[]};
+let step=0,playing=true,autoT=null;
+const dots=document.getElementById("dots");
+[intro,...DATA].forEach((_,i)=>{const d=document.createElement("i");d.onclick=()=>goto(i);dots.appendChild(d);});
+function setNarr(o){
+  document.getElementById("stepn").textContent=o.key;
+  const h=document.getElementById("ntitle");h.innerHTML=o.title;h.className=o.acc||"";
+  document.getElementById("ndesc").innerHTML=o.desc;
+  const cc=document.getElementById("ncomps");cc.innerHTML="";
+  document.getElementById("narr").className=o.acc==="cl"?"cl-acc":"";
+  (o.comps||(o.leaves||[])).forEach(l=>{const r=document.createElement("div");r.className="cp";
+    r.innerHTML=`<span class="k">${l[0]}</span><span class="v">${l[1]||""}</span>`;cc.appendChild(r);});
+  [...dots.children].forEach((d,i)=>d.classList.toggle("on",i===step));
+}
+function focusBranch(idx){
+  // dim everything, light the active branch (idx -1 = all)
+  nodeMeshes.forEach(m=>{const on=(idx<0)||(m.userData.branch===idx)||(m===coreMesh);
+    gsap.to(m.material,{opacity:on?1:.12,duration:.6});if(m.material)m.material.transparent=true;
+    gsap.to(m.userData.glow.material,{opacity:on?(m.userData.kind==="leaf"?.5:.8):.04,duration:.6});
+    m.userData.lab.style.opacity=on?(m.userData.kind==="leaf"?(idx<0?0:1):1):0.05;});
+  edgeObjs.forEach(e=>{const on=(idx<0)||(e.b.userData.branch===idx);
+    gsap.to(e.ln.material,{opacity:on?(e.main?.55:.28):.04,duration:.6});});
+  // fly camera
+  let tgt=new THREE.Vector3(0,0,0),dist=70;
+  if(idx>=0){const bn=nodeMeshes.find(m=>m.userData.kind==="branch"&&m.userData.branch===idx);
+    tgt=bn.position.clone().multiplyScalar(.6);dist=42;}
+  const camPos=(idx<0)?new THREE.Vector3(0,6,72):
+    nodeMeshes.find(m=>m.userData.kind==="branch"&&m.userData.branch===idx).position.clone().multiplyScalar(1.9).add(new THREE.Vector3(0,8,0));
+  gsap.to(cam.position,{x:camPos.x,y:camPos.y,z:camPos.z,duration:1.5,ease:"power3.inOut"});
+  gsap.to(ctrls.target,{x:tgt.x,y:tgt.y,z:tgt.z,duration:1.5,ease:"power3.inOut",onUpdate:()=>ctrls.update()});
+}
+function render(o){setNarr(o);}
+function goto(i){step=i;const o=[intro,...DATA][i];setNarr(o);focusBranch(i-1);resetAuto();}
+function startNarration(){step=0;setNarr(intro);focusBranch(-1);resetAuto();}
+function resetAuto(){clearTimeout(autoT);if(playing)autoT=setTimeout(()=>{step=(step+1)%(DATA.length+1);goto(step);},step===0?4500:7000);}
+document.getElementById("next").onclick=()=>{step=(step+1)%(DATA.length+1);goto(step);};
+document.getElementById("prev").onclick=()=>{step=(step-1+DATA.length+1)%(DATA.length+1);goto(step);};
+const playBtn=document.getElementById("play");
+playBtn.onclick=()=>{playing=!playing;playBtn.innerHTML=playing?"&#10073;&#10073;":"&#9654;";if(playing)resetAuto();else clearTimeout(autoT);};
+const freeBtn=document.getElementById("free");let freeMode=false;
+freeBtn.onclick=()=>{freeMode=!freeMode;freeBtn.classList.toggle("act",freeMode);
+  ctrls.autoRotate=freeMode;document.getElementById("narr").classList.toggle("hide",freeMode);
+  if(freeMode){playing=false;clearTimeout(autoT);focusBranch(-1);}else{playing=true;goto(step);}};
+
+// ---- hover ----
+addEventListener("mousemove",e=>{mouse.x=(e.clientX/innerWidth)*2-1;mouse.y=-(e.clientY/innerHeight)*2+1;
+  const tip=document.getElementById("tip");tip.style.left=Math.min(e.clientX+16,innerWidth-280)+"px";tip.style.top=Math.min(e.clientY+16,innerHeight-150)+"px";});
+
+// ---- loop ----
+function animate(){requestAnimationFrame(animate);ctrls.update();
+  pulses.forEach(p=>{if(!p.m.visible)return;p.t+=p.sp;if(p.t>1)p.t=0;
+    p.m.position.lerpVectors(p.a.position,p.b.position,p.t);});
+  // hover pick
+  raycaster.setFromCamera(mouse,cam);
+  const hits=raycaster.intersectObjects(nodeMeshes,false);
+  const tip=document.getElementById("tip");
+  if(hits.length){const m=hits[0].object;if(hovered!==m){hovered=m;const info=m.userData.info;
+    tip.innerHTML=`<h4>${info.title}</h4>${info.metric?`<div class="m">${info.metric}</div>`:""}<p>${info.detail}</p>`;tip.classList.add("on");
+    gsap.to(m.scale,{x:1.3,y:1.3,z:1.3,duration:.25});}}
+  else if(hovered){gsap.to(hovered.scale,{x:1,y:1,z:1,duration:.25});hovered=null;tip.classList.remove("on");}
+  rndr.render(scene,cam);lrndr.render(scene,cam);}
+
+addEventListener("resize",()=>{cam.aspect=innerWidth/innerHeight;cam.updateProjectionMatrix();
+  rndr.setSize(innerWidth,innerHeight);lrndr.setSize(innerWidth,innerHeight);});
+
+// boot
+if(window.THREE&&THREE.OrbitControls&&THREE.CSS2DRenderer){buildScene();animate();grow();}
+else{document.getElementById("ldtxt").textContent="3D engine failed to load — check connection.";}
+</script>
+</body>
+</html>
