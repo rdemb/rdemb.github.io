@@ -7,7 +7,7 @@ excerpt: "Das Modell ging aus, aber sein Verhalten ist dokumentiert und veröffe
 key: "system-prompts-work"
 slug: "fable-verhalten-nachgebaut"
 ---
-Vor einer Woche schrieb ich, dass [Fable 5 abgeschaltet wurde](/de/blog/ai-kill-switch/), das stärkste öffentliche Modell von Anthropic. Das Modell ist weg, aber sein Verhalten wurde aufgeschrieben und veröffentlicht. Ich habe es in eine Textdatei gepackt und auf dem schwächeren Opus 4.8 laufen lassen. Nebenbei zeige ich etwas, das man selten roh sieht: ein System-Prompt verändert wirklich, wie sich ein Modell verhält.
+Gestern schrieb ich, dass [Fable 5 abgeschaltet wurde](/de/blog/ai-kill-switch/), das stärkste öffentliche Modell von Anthropic. Das Modell ist weg, aber sein Verhalten wurde aufgeschrieben und veröffentlicht. Ich habe es in eine Textdatei gepackt und auf dem schwächeren Opus 4.8 laufen lassen. Nebenbei zeige ich etwas, das man selten roh sieht: ein System-Prompt verändert wirklich, wie sich ein Modell verhält.
 
 ## Das Modell ist nicht alles
 
@@ -47,7 +47,7 @@ Andrej Karpathy sagt seit Langem: „the hottest new programming language is Eng
 
 ## Was ich damit mache
 
-Das Fazit ist praktisch. Das Modell selbst ist gemietete Leistung hinter dem Schalter eines anderen, worüber ich letzte Woche schrieb. Die Art, wie du es anweist, gehört dir und trägt über Modelle hinweg. Wenn die Spitze ausgeht, bleibt ein guter System-Prompt und läuft auf dem, was du zur Hand hast. Das ist ein Hebel, den niemand per Schreiben abschaltet.
+Das Fazit ist praktisch. Das Modell selbst ist gemietete Leistung hinter dem Schalter eines anderen, worüber ich gestern schrieb. Die Art, wie du es anweist, gehört dir und trägt über Modelle hinweg. Wenn die Spitze ausgeht, bleibt ein guter System-Prompt und läuft auf dem, was du zur Hand hast. Das ist ein Hebel, den niemand per Schreiben abschaltet.
 
 Das ganze Profil steht auf drei echten Quellen: Anthropics veröffentlichte Prompts, der offizielle API-Leitfaden und mein Anti-Slop-Standard. Du kannst es herunterladen und bei dir einsetzen.
 

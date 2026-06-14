@@ -7,7 +7,7 @@ excerpt: "The model went dark, but its behavior was documented and published. I 
 key: "system-prompts-work"
 slug: "rebuilt-fable-behavior"
 ---
-A week ago I wrote that [Fable 5 was switched off](/en/blog/ai-kill-switch/), Anthropic's strongest public model. The model is gone, but its behavior was written down and published. I took that, folded it into one text file, and ran it on the weaker Opus 4.8. Along the way I will show something people rarely show raw: a system prompt really does change how a model behaves.
+Yesterday I wrote that [Fable 5 was switched off](/en/blog/ai-kill-switch/), Anthropic's strongest public model. The model is gone, but its behavior was written down and published. I took that, folded it into one text file, and ran it on the weaker Opus 4.8. Along the way I will show something people rarely show raw: a system prompt really does change how a model behaves.
 
 ## The model is not the whole story
 
@@ -47,7 +47,7 @@ Andrej Karpathy has said for a while that "the hottest new programming language 
 
 ## What I do with this
 
-The takeaway is practical. The model itself is rented power behind someone else's switch, which is what I wrote about last week. The way you instruct it is yours, and it carries across models. When the frontier goes dark, a good system prompt stays and runs on whatever you have at hand. That is leverage nobody switches off with a memo.
+The takeaway is practical. The model itself is rented power behind someone else's switch, which is what I wrote about yesterday. The way you instruct it is yours, and it carries across models. When the frontier goes dark, a good system prompt stays and runs on whatever you have at hand. That is leverage nobody switches off with a memo.
 
 The whole profile rests on three real sources: Anthropic's published prompts, the official API guide, and my anti-slop standard. You can download it and paste it into your own setup.
 

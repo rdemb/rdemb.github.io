@@ -7,7 +7,7 @@ excerpt: "Model zgasł, ale jego zachowanie zostało opisane i opublikowane. Zmi
 key: "system-prompts-work"
 slug: "zachowanie-fable-w-pliku"
 ---
-Tydzień temu pisałem, że [wyłączyli Fable 5](/blog/ai-kill-switch/), najmocniejszy publiczny model Anthropic. Model zgasł. Ale jego zachowanie zostało opisane i opublikowane. Wziąłem ten opis, zmieściłem go w jednym pliku tekstu i uruchomiłem na słabszym Opus 4.8. Przy okazji pokażę coś, czego mało kto pokazuje na surowo: że system prompt naprawdę zmienia zachowanie modelu.
+Wczoraj pisałem, że [wyłączyli Fable 5](/blog/ai-kill-switch/), najmocniejszy publiczny model Anthropic. Model zgasł. Ale jego zachowanie zostało opisane i opublikowane. Wziąłem ten opis, zmieściłem go w jednym pliku tekstu i uruchomiłem na słabszym Opus 4.8. Przy okazji pokażę coś, czego mało kto pokazuje na surowo: że system prompt naprawdę zmienia zachowanie modelu.
 
 ## Model to nie wszystko
 
@@ -47,7 +47,7 @@ Andrej Karpathy powtarza od dawna, że „the hottest new programming language i
 
 ## Co z tym robię
 
-Wniosek jest praktyczny. Sam model to wynajęta moc za cudzym wyłącznikiem, o czym pisałem tydzień temu. Ale sposób, w jaki go instruujesz, jest Twój i przenosi się między modelami. Gdy front gaśnie, dobry system prompt zostaje i działa na tym, co masz pod ręką. To jest dźwignia, której nikt nie wyłączy pismem.
+Wniosek jest praktyczny. Sam model to wynajęta moc za cudzym wyłącznikiem, o czym pisałem wczoraj. Ale sposób, w jaki go instruujesz, jest Twój i przenosi się między modelami. Gdy front gaśnie, dobry system prompt zostaje i działa na tym, co masz pod ręką. To jest dźwignia, której nikt nie wyłączy pismem.
 
 Cały profil stoi na trzech realnych źródłach: opublikowane prompty Anthropic, oficjalny przewodnik API i mój standard anty-slop. Możesz go pobrać i wkleić u siebie.
 
