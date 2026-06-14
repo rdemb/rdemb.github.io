@@ -117,4 +117,4 @@ Das Profil hebt nicht die Intelligenz des Modells und ersetzt Fable 5 nicht dort
 
 ---
 
-Quellen: [Anthropic System-Prompts](https://platform.claude.com/docs/en/release-notes/system-prompts), [Modell-Migrationsleitfaden](https://platform.claude.com/docs/en/about-claude/models/migration-guide), [Karpathys Beobachtungen in einer Datei (multica-ai)](https://github.com/multica-ai/andrej-karpathy-skills), [Beitrag der letzten Woche zur Abschaltung von Fable 5](/de/blog/ai-kill-switch/).
+Quellen: [Anthropic System-Prompts](https://platform.claude.com/docs/en/release-notes/system-prompts), [Modell-Migrationsleitfaden](https://platform.claude.com/docs/en/about-claude/models/migration-guide), [Karpathys Beobachtungen in einer Datei (multica-ai)](https://github.com/multica-ai/andrej-karpathy-skills), [Beitrag von gestern zur Abschaltung von Fable 5](/de/blog/ai-kill-switch/).
