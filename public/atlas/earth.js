@@ -38,14 +38,15 @@ async function loadGeo() {
 }
 
 export async function buildEarth() {
-  const [dayTex, specTex, normalTex, cloudTex, geojson] = await Promise.all([
+  const [dayTex, specTex, normalTex, cloudTex, nightTex, geojson] = await Promise.all([
     loadTex(TEX + 'earth_atmos_2048.jpg', true),
     loadTex(TEX + 'earth_specular_2048.jpg', false),
     loadTex(TEX + 'earth_normal_2048.jpg', false),
-    loadTex(TEX + 'earth_clouds_1024.png', true),
+    loadTex(TEX + 'earth_clouds_2048.png', true),   // RGBA: prawdziwy alpha, miekkie chmury
+    loadTex(TEX + 'earth_lights_2048.png', true),   // swiatla miast na nocnej stronie
     loadGeo(),
   ]);
-  return { dayTex, specTex, normalTex, cloudTex, geojson, ok: !!dayTex };
+  return { dayTex, specTex, normalTex, cloudTex, nightTex, geojson, ok: !!dayTex };
 }
 
 export default buildEarth;
