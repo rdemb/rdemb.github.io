@@ -74,9 +74,9 @@ export class Globe {
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
 
     // swiatlo: slonce (kierunkowe, stale w scenie => terminator wedruje przy obrocie) + ambient
-    this._sun = new THREE.DirectionalLight(0xfff2dd, 1.45); this._sun.position.set(-220, 90, 160); this.scene.add(this._sun);
-    this.scene.add(new THREE.AmbientLight(0x33455c, 0.55));
-    this.scene.add(new THREE.HemisphereLight(0x223344, 0x05070a, 0.35));
+    this._sun = new THREE.DirectionalLight(0xfff4e2, 1.25); this._sun.position.set(-220, 90, 160); this.scene.add(this._sun);
+    this.scene.add(new THREE.AmbientLight(0x32445a, 0.34));
+    this.scene.add(new THREE.HemisphereLight(0x2a3c4e, 0x05070a, 0.22));
 
     this.world = new THREE.Group(); this.scene.add(this.world);
 
@@ -101,7 +101,7 @@ export class Globe {
     for (const k in this.layers) this.world.add(this.layers[k]);
 
     this._raycaster = new THREE.Raycaster(); this._pointer = new THREE.Vector2(-2, -2);
-    this._bindInput(); this._loadCoastline();
+    this._bindInput();
     buildEarth().then((tex) => this._applyEarth(tex)).catch(() => {});
     this._animate(); window.addEventListener('resize', () => this.resize());
     return this;
@@ -110,10 +110,12 @@ export class Globe {
   _applyEarth(tex) {
     if (!tex || !tex.hasGeo) return;
     this._earthMat.map = tex.mapTex; this._earthMat.specularMap = tex.specTex;
-    this._earthMat.emissiveMap = tex.mapTex; this._earthMat.emissive = new THREE.Color(0x16202b); this._earthMat.emissiveIntensity = 0.5;
-    this._earthMat.color = new THREE.Color(0xffffff); this._earthMat.shininess = 24; this._earthMat.needsUpdate = true;
-    this._cloudMat.alphaMap = tex.cloudTex; this._cloudMat.opacity = 0.55; this._cloudMat.needsUpdate = true;
-    if (this.layers.coast.children[0]) this.layers.coast.children[0].material.opacity = 0.5; // ścisz kontury, tekstura niesie ląd
+    // emissive BIAŁE i słabe (0.13) — utrzymuje barwę lądu noca, NIE wypłukuje jej na szaro
+    this._earthMat.emissiveMap = tex.mapTex; this._earthMat.emissive = new THREE.Color(0xffffff); this._earthMat.emissiveIntensity = 0.13;
+    this._earthMat.specular = new THREE.Color(0x1e303d); this._earthMat.shininess = 11;
+    this._earthMat.color = new THREE.Color(0xffffff); this._earthMat.needsUpdate = true;
+    this._cloudMat.alphaMap = tex.cloudTex; this._cloudMat.opacity = 0.5; this._cloudMat.needsUpdate = true;
+    if (tex.geojson) this._buildOutlines(tex.geojson);  // kontury z TEGO SAMEGO źródła = idealne wyrównanie
   }
 
   _addStars() {
@@ -124,25 +126,21 @@ export class Globe {
     this.scene.add(new THREE.Points(g, new THREE.PointsMaterial({ color: 0x55607a, size: 1.7, sizeAttenuation: false })));
   }
 
-  async _loadCoastline() {
-    const urls = [
-      'https://cdn.jsdelivr.net/gh/nvkelso/natural-earth-vector@master/geojson/ne_50m_coastline.geojson',
-      'https://cdn.jsdelivr.net/gh/nvkelso/natural-earth-vector@master/geojson/ne_110m_coastline.geojson',
-    ];
-    for (const url of urls) {
-      try {
-        const ctrl = new AbortController(); const to = setTimeout(() => ctrl.abort(), 8000);
-        const r = await fetch(url, { signal: ctrl.signal }); clearTimeout(to);
-        if (!r.ok) continue; this._buildCoast(await r.json()); return;
-      } catch (e) { /* offline */ }
-    }
-  }
-  _buildCoast(gj) {
+  // kontury + granice z TEGO SAMEGO geojson co tekstura (110m) => idealne wyrownanie (koniec rozjazdu)
+  _buildOutlines(gj) {
     const seg = [];
-    const addLine = (co) => { for (let i = 0; i < co.length - 1; i++) { const a = latLngToVec3(co[i][1], co[i][0], R * 1.004); const b = latLngToVec3(co[i + 1][1], co[i + 1][0], R * 1.004); seg.push(a.x, a.y, a.z, b.x, b.y, b.z); } };
-    for (const f of (gj.features || [])) { const gm = f.geometry; if (!gm) continue; if (gm.type === 'LineString') addLine(gm.coordinates); else if (gm.type === 'MultiLineString') gm.coordinates.forEach(addLine); }
-    const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(seg, 3));
-    this.layers.coast.add(new THREE.LineSegments(g, new THREE.LineBasicMaterial({ color: 0x6fd0e0, transparent: true, opacity: this._earthMat.map ? 0.5 : 0.85 })));
+    const addRing = (ring) => {
+      for (let i = 0; i < ring.length - 1; i++) {
+        if (Math.abs(ring[i][0] - ring[i + 1][0]) > 180) continue;           // pomin antymerydian
+        const a = latLngToVec3(ring[i][1], ring[i][0], R * 1.0045);
+        const b = latLngToVec3(ring[i + 1][1], ring[i + 1][0], R * 1.0045);
+        seg.push(a.x, a.y, a.z, b.x, b.y, b.z);
+      }
+    };
+    for (const f of (gj.features || [])) { const g = f.geometry; if (!g) continue; const polys = g.type === 'Polygon' ? [g.coordinates] : g.type === 'MultiPolygon' ? g.coordinates : []; for (const poly of polys) for (const ring of poly) addRing(ring); }
+    const geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.Float32BufferAttribute(seg, 3));
+    this.layers.coast.clear();
+    this.layers.coast.add(new THREE.LineSegments(geo, new THREE.LineBasicMaterial({ color: 0x8fb0c2, transparent: true, opacity: 0.3 })));
   }
 
   // ---- markery: emoji + poswiata ----
@@ -153,7 +151,7 @@ export class Globe {
     const halo = haloTexture();
     const addMarker = (item, group, r, glyphScale, haloColor, isNode) => {
       const pos = latLngToVec3(item.lat, item.lng, r); item._pos = pos;
-      const hMat = new THREE.SpriteMaterial({ map: halo, color: new THREE.Color(haloColor), transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, opacity: 0.9 });
+      const hMat = new THREE.SpriteMaterial({ map: halo, color: new THREE.Color(haloColor), transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, opacity: 0.5 });
       const hSpr = new THREE.Sprite(hMat); hSpr.position.copy(pos); hSpr.userData.item = item; hSpr.userData.kind = isNode ? 'node' : (group === this.layers.choke ? 'choke' : 'bank');
       const gMat = new THREE.SpriteMaterial({ map: emojiTexture(item.icon || '•'), transparent: true, depthWrite: false });
       const gSpr = new THREE.Sprite(gMat); gSpr.position.copy(pos);
@@ -163,7 +161,7 @@ export class Globe {
       if (isNode) { this._halos.push(hSpr); this._glyphs.push(gSpr); }
       else { this._halos.push(hSpr); this._glyphs.push(gSpr); }
     };
-    for (const n of nodes) addMarker(n, this.layers.nodes, R * 1.02, 3.2 + Math.sqrt(n.share_pct || 0) * 1.25, n.color || '#E0E3E8', true);
+    for (const n of nodes) addMarker(n, this.layers.nodes, R * 1.02, 2.6 + Math.sqrt(n.share_pct || 0) * 1.05, n.color || '#E0E3E8', true);
     for (const cp of chokepoints) { cp.icon = '⚠️'; addMarker(cp, this.layers.choke, R * 1.03, 5.2, '#E8675A', false); }
     for (const b of banks) { b.icon = '🏛️'; addMarker(b, this.layers.bank, R * 1.03, 4.6, '#9BD17A', false); }
     this._applyLOD(true);
@@ -175,7 +173,7 @@ export class Globe {
     this._lodNear = near;
     const setOne = (item, on) => {
       const sel = this._selId && item.id === this._selId;
-      const hs = (item._base) * (sel ? 1.95 : 1) * 1.7;
+      const hs = (item._base) * (sel ? 1.95 : 1) * 1.3;
       const gs = (item._base) * (sel ? 1.95 : 1);
       item._halo.visible = on; item._halo.scale.set(hs, hs, 1);
       item._glyph.visible = on && (near || sel); item._glyph.scale.set(gs, gs, 1);
@@ -273,7 +271,7 @@ export class Globe {
       const w = this.canvas.clientWidth, h = this.canvas.clientHeight;
       const comp = new EffectComposer(this.renderer);
       comp.addPass(new RenderPass(this.scene, this.camera));
-      comp.addPass(new UnrealBloomPass(new THREE.Vector2(w, h), 0.55, 0.55, 0.28));
+      comp.addPass(new UnrealBloomPass(new THREE.Vector2(w, h), 0.4, 0.5, 0.32));
       comp.addPass(new OutputPass());
       this._composer = comp;
       window.addEventListener('resize', () => comp.setSize(this.canvas.clientWidth, this.canvas.clientHeight));
