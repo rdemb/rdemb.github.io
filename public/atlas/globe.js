@@ -58,7 +58,7 @@ export class Globe {
     this._drag = null; this._moved = 0;
     this.nodeItems = []; this.chokeItems = []; this.bankItems = [];
     this.colorMode = 'category'; this._catFilter = null; this._selId = null;
-    this._halos = []; this._glyphs = []; this._pick = []; this._lodNear = true; this._cloudDrift = 0;
+    this._halos = []; this._glyphs = []; this._pick = []; this._lodNear = true; this._zoomTarget = 300;
   }
 
   init() {
@@ -84,10 +84,10 @@ export class Globe {
     this._earthMat = new THREE.MeshPhongMaterial({ color: 0x0a1a2c, specular: 0x2a4a66, shininess: 16, emissive: 0x0a141f, emissiveIntensity: 0.45 });
     const core = new THREE.Mesh(new THREE.SphereGeometry(R, 96, 64), this._earthMat); this.world.add(core);
 
-    // chmury (osobna grupa => dryf wzgledem globu)
+    // chmury — DZIECKO `world`, wiec obracaja sie RAZEM z ladami i staja, gdy glob staje
     this._cloudMat = new THREE.MeshPhongMaterial({ color: 0xe6edf6, transparent: true, opacity: 0.0, depthWrite: false, specular: 0x000000 });
     this._clouds = new THREE.Mesh(new THREE.SphereGeometry(R * 1.012, 64, 48), this._cloudMat);
-    this._cloudGroup = new THREE.Group(); this._cloudGroup.add(this._clouds); this.scene.add(this._cloudGroup);
+    this.world.add(this._clouds);
 
     // atmosfera (niebieski rim = realizm)
     const atm = new THREE.Mesh(new THREE.SphereGeometry(R * 1.16, 64, 48), new THREE.ShaderMaterial({
@@ -227,7 +227,7 @@ export class Globe {
     el.addEventListener('pointerup', () => { if (this._drag && this._moved < 6) this._click(); this._drag = null; });
     el.addEventListener('pointerleave', () => { this._drag = null; this._pointer.set(-2, -2); });
     el.addEventListener('dblclick', () => { this._target = { x: 0.22, y: this._rot.y }; this.setAutoRotate(true); });
-    el.addEventListener('wheel', (e) => { e.preventDefault(); const d = this.camera.position.length() * (1 + Math.sign(e.deltaY) * 0.08); this.camera.position.setLength(clamp(d, 135, 520)); this._applyLOD(); }, { passive: false });
+    el.addEventListener('wheel', (e) => { e.preventDefault(); this._zoomTarget = clamp(this._zoomTarget * (1 + Math.sign(e.deltaY) * 0.085), 118, 560); }, { passive: false });  // plynny zoom => animate lerp
   }
 
   _pickHit() {
@@ -259,7 +259,9 @@ export class Globe {
         if (this.autoRotate && Math.abs(this._vel.y) < 0.0006) this._rot.y += 0.0008;
       }
       this.world.rotation.set(this._rot.x, this._rot.y, 0);
-      this._cloudDrift += 0.0003; this._cloudGroup.rotation.set(this._rot.x, this._rot.y + this._cloudDrift, 0);
+      // chmury w `world` => bez osobnej rotacji; krecą sie i staja z lqdami
+      const cd = this.camera.position.length();
+      if (Math.abs(cd - this._zoomTarget) > 0.4) { this.camera.position.setLength(cd + (this._zoomTarget - cd) * 0.16); this._applyLOD(); }  // plynne, realne przyblizenie
       for (const o of this.layers.arcs.children) if (o.userData && o.userData.n) { o.userData.t = Math.min(o.userData.n, o.userData.t + 1.7); o.geometry.setDrawRange(0, Math.floor(o.userData.t)); }
       if (!this._drag) { const p = this._pickHit(); const id = p ? (p.item.id || p.item.code) : -1; if (id !== this._hoverId) { this._hoverId = id; if (this.onHover) this.onHover(p); this.canvas.style.cursor = p ? 'pointer' : 'grab'; } }
       if (this._composer) this._composer.render(); else this.renderer.render(this.scene, this.camera);

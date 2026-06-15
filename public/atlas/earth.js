@@ -19,7 +19,7 @@ function loadTex(url, srgb) {
   return new Promise((res) => {
     new THREE.TextureLoader().load(
       url,
-      (t) => { t.colorSpace = srgb ? THREE.SRGBColorSpace : THREE.NoColorSpace; t.anisotropy = 8; res(t); },
+      (t) => { t.colorSpace = srgb ? THREE.SRGBColorSpace : THREE.NoColorSpace; t.anisotropy = 16; res(t); },  // max aniso => ostro pod katem i przy zoomie
       undefined,
       () => res(null),
     );
@@ -39,11 +39,11 @@ async function loadGeo() {
 
 export async function buildEarth() {
   const [dayTex, specTex, normalTex, cloudTex, nightTex, geojson] = await Promise.all([
-    loadTex(TEX + 'earth_atmos_2048.jpg', true),
+    loadTex(TEX + 'earth-blue-marble.jpg', true),   // NASA Blue Marble 4K = ostrzejszy przy zoomie
     loadTex(TEX + 'earth_specular_2048.jpg', false),
     loadTex(TEX + 'earth_normal_2048.jpg', false),
     loadTex(TEX + 'earth_clouds_2048.png', true),   // RGBA: prawdziwy alpha, miekkie chmury
-    loadTex(TEX + 'earth_lights_2048.png', true),   // swiatla miast na nocnej stronie
+    loadTex(TEX + 'earth-night.jpg', true),         // swiatla miast 4K na nocnej stronie
     loadGeo(),
   ]);
   return { dayTex, specTex, normalTex, cloudTex, nightTex, geojson, ok: !!dayTex };
