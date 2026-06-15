@@ -132,8 +132,8 @@ export class Globe {
     const addRing = (ring) => {
       for (let i = 0; i < ring.length - 1; i++) {
         if (Math.abs(ring[i][0] - ring[i + 1][0]) > 180) continue;           // pomin antymerydian
-        const a = latLngToVec3(ring[i][1], ring[i][0], R * 1.0045);
-        const b = latLngToVec3(ring[i + 1][1], ring[i + 1][0], R * 1.0045);
+        const a = latLngToVec3(ring[i][1], ring[i][0], R * 1.0025);
+        const b = latLngToVec3(ring[i + 1][1], ring[i + 1][0], R * 1.0025);
         seg.push(a.x, a.y, a.z, b.x, b.y, b.z);
       }
     };
@@ -161,9 +161,9 @@ export class Globe {
       if (isNode) { this._halos.push(hSpr); this._glyphs.push(gSpr); }
       else { this._halos.push(hSpr); this._glyphs.push(gSpr); }
     };
-    for (const n of nodes) addMarker(n, this.layers.nodes, R * 1.02, 2.6 + Math.sqrt(n.share_pct || 0) * 1.05, n.color || '#E0E3E8', true);
-    for (const cp of chokepoints) { cp.icon = '⚠️'; addMarker(cp, this.layers.choke, R * 1.03, 5.2, '#E8675A', false); }
-    for (const b of banks) { b.icon = '🏛️'; addMarker(b, this.layers.bank, R * 1.03, 4.6, '#9BD17A', false); }
+    for (const n of nodes) addMarker(n, this.layers.nodes, R * 1.004, 2.6 + Math.sqrt(n.share_pct || 0) * 1.05, n.color || '#E0E3E8', true);
+    for (const cp of chokepoints) { cp.icon = '⚠️'; addMarker(cp, this.layers.choke, R * 1.006, 5.2, '#E8675A', false); }
+    for (const b of banks) { b.icon = '🏛️'; addMarker(b, this.layers.bank, R * 1.006, 4.6, '#9BD17A', false); }
     this._applyLOD(true);
   }
 
