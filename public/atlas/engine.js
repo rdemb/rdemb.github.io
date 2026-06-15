@@ -70,6 +70,19 @@ export const CAT_PL = {
   fertilizer: 'Nawozy', industrial: 'Przemysl / logistyka',
 };
 
+// emoji per typ wezla (infrastruktura) i per surowiec (zloza)
+const ICON_TYPE = { port: '⚓', 'export-port': '⚓', refinery: '🏭', smelter: '🏭', 'lng-terminal': '🔥', fab: '💻', 'ammonia-plant': '🧪', 'potash-mine': '🧪', 'phosphate-mine': '🧪' };
+const ICON_COMMODITY = {
+  crude_oil: '🛢️', natgas: '🔥', uranium: '☢️', coal: '⚫', gold: '🥇', silver: '🥈', platinum: '💍', palladium: '💍',
+  copper: '🟤', iron_ore: '⛏️', bauxite_alumina: '🔩', aluminum: '🔩', nickel: '🔩', zinc: '🔩', tin: '🥫', lead: '🔋', manganese: '⛏️',
+  lithium: '🔋', cobalt: '🔋', graphite: '✏️', rare_earths: '🧲', wheat: '🌾', corn: '🌽', soybean: '🫘', rice: '🌾',
+  coffee: '☕', cocoa: '🍫', sugar: '🍬', palm_oil: '🌴', cotton: '🧵', natural_rubber: '🛞',
+  potash: '🧪', phosphate: '🧪', nitrogen_ammonia: '🧪', semiconductors: '💻', shipping: '🚢',
+};
+// krytyczne miesiace (polkula N; dla lat<0 przesuwane o pol roku)
+const SEASON = { wheat: [5, 6, 7], corn: [6, 7, 8], soybean: [7, 8], rice: [6, 7, 8, 9], coffee: [11, 0], cocoa: [10, 11, 0, 1], sugar: [8, 9, 10], cotton: [6, 7, 8], natural_rubber: [1, 2] };
+const SEASON_LABEL = { wheat: 'nalewanie ziarna i zniwa (ryzyko suszy/upalu)', corn: 'zapylanie i nalewanie (lipcowa susza)', soybean: 'wypelnianie straczkow (sierpniowa susza)', rice: 'monsun i kwitnienie', coffee: 'okno mrozow (Brazylia)', cocoa: 'sucha Harmattan', sugar: 'dojrzewanie trzciny', cotton: 'kwitnienie i monsun', natural_rubber: 'pora sucha / wyciek lateksu' };
+
 // deterministyczny RNG (mulberry32) — powtarzalne symulacje
 function mulberry32(seed) {
   let a = seed >>> 0;
@@ -201,6 +214,71 @@ export class WorldEngine {
     return Object.values(this.byCommodity)
       .filter((b) => b.nodes.length >= 2 && b.mapped >= 8)
       .sort((a, b) => b.fragility - a.fragility);
+  }
+
+  iconFor(n) { return ICON_TYPE[n.type] || ICON_COMMODITY[n.commodity] || '•'; }
+
+  // sezonowosc agro: czy biezacy miesiac to okno krytyczne (polkula uwzgledniona)
+  seasonality(node, month) {
+    let w = SEASON[node.commodity]; if (!w) return null;
+    if (node.lat < 0) w = w.map((m) => (m + 6) % 12);
+    const active = w.includes(month);
+    const near = active || w.includes((month + 1) % 12) || w.includes((month + 11) % 12);
+    return { active, near, label: SEASON_LABEL[node.commodity] || '', window: w };
+  }
+
+  // PageRank na grafie zaleznosci surowiec<->waluta/firma/chokepoint (centralnosc systemowa)
+  pagerank() {
+    if (this._pr) return this._pr;
+    const adj = {};
+    const add = (a, b, w) => { (adj[a] = adj[a] || {}); (adj[b] = adj[b] || {}); adj[a][b] = (adj[a][b] || 0) + w; adj[b][a] = (adj[b][a] || 0) + w; };
+    for (const ccy of this.currencies) for (const d of (ccy.drivers || [])) add('x:' + ccy.code, 'c:' + d.c, d.w);
+    for (const co of this.companies) for (const cid of (co.commodities || [])) add('f:' + co.id, 'c:' + cid, 1);
+    for (const cp of this.chokepoints) for (const cid of (cp.commodities_at_risk || [])) add('k:' + cp.id, 'c:' + cid, 1.5);
+    const ids = Object.keys(adj); const N = ids.length;
+    if (!N) return (this._pr = { byId: {}, commodity: {}, top: [] });
+    let pr = {}; ids.forEach((id) => (pr[id] = 1 / N));
+    const out = {}; ids.forEach((id) => (out[id] = Object.values(adj[id]).reduce((a, b) => a + b, 0) || 1));
+    const damp = 0.85;
+    for (let it = 0; it < 50; it++) {
+      const np = {}; ids.forEach((id) => (np[id] = (1 - damp) / N));
+      for (const id of ids) { const sh = pr[id] * damp / out[id]; for (const nb in adj[id]) np[nb] += sh * adj[id][nb]; }
+      pr = np;
+    }
+    const com = {}; let mx = 0;
+    for (const id of ids) if (id[0] === 'c') { com[id.slice(2)] = pr[id]; if (pr[id] > mx) mx = pr[id]; }
+    for (const k in com) com[k] = mx ? com[k] / mx * 100 : 0;
+    const top = ids.map((id) => ({ id, score: pr[id] })).sort((a, b) => b.score - a.score).slice(0, 12);
+    return (this._pr = { byId: pr, commodity: com, top });
+  }
+  centralityRanking() {
+    const pr = this.pagerank().commodity;
+    return Object.values(this.byCommodity).filter((b) => b.nodes.length)
+      .map((b) => ({ ...b, pr: pr[b.id] || 0 })).sort((a, b) => b.pr - a.pr);
+  }
+
+  // KOMBINATORYKA: najgorsze LACZNE scenariusze (pary zrodel zaklocen)
+  compoundRisks(topN = 8) {
+    const nodesTop = this.nodes.slice().sort((a, b) => b.share_pct - a.share_pct).slice(0, 16);
+    const sources = [
+      ...this.chokepoints.map((c) => ({ o: c, prob: c.annual_disruption_prob || 0.05, label: c.pl || c.name })),
+      ...nodesTop.map((n) => ({ o: n, prob: n.hazard, label: n.name })),
+    ];
+    const sysW = {}; for (const id in this.byCommodity) sysW[id] = this.byCommodity[id].systemic || 1;
+    const out = [];
+    for (let i = 0; i < sources.length; i++) for (let j = i + 1; j < sources.length; j++) {
+      const a = sources[i], b = sources[j];
+      const ca = this.cascade(a.o), cb = this.cascade(b.o);
+      const merged = {};
+      for (const k in ca.shock) merged[k] = ca.shock[k];
+      for (const k in cb.shock) merged[k] = Math.max(merged[k] || 0, cb.shock[k]);
+      let s = 0; for (const k in merged) s += merged[k] * (sysW[k] || 1);
+      out.push({
+        a: a.label, b: b.label, severity: s, jointProb: a.prob * b.prob, expected: s * a.prob * b.prob,
+        commodities: Object.entries(merged).filter(([, v]) => v > 0.05).sort((x, y) => y[1] - x[1]).slice(0, 4).map(([k]) => this.commodities[k]?.pl || k),
+      });
+    }
+    return out.sort((x, y) => y.severity - x.severity).slice(0, topN);
   }
 
   ccy(code) { return this.currencies.find((c) => c.code === code); }
