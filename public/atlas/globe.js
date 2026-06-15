@@ -75,7 +75,7 @@ export class Globe {
 
     // swiatlo: slonce (kierunkowe, stale w scenie => terminator wedruje przy obrocie) + ambient
     this._sun = new THREE.DirectionalLight(0xfff4e2, 1.25); this._sun.position.set(-220, 90, 160); this.scene.add(this._sun);
-    this.scene.add(new THREE.AmbientLight(0x32445a, 0.34));
+    this.scene.add(new THREE.AmbientLight(0x33485f, 0.48));
     this.scene.add(new THREE.HemisphereLight(0x2a3c4e, 0x05070a, 0.22));
 
     this.world = new THREE.Group(); this.scene.add(this.world);
@@ -108,14 +108,16 @@ export class Globe {
   }
 
   _applyEarth(tex) {
-    if (!tex || !tex.hasGeo) return;
-    this._earthMat.map = tex.mapTex; this._earthMat.specularMap = tex.specTex;
-    // emissive BIAŁE i słabe (0.13) — utrzymuje barwę lądu noca, NIE wypłukuje jej na szaro
-    this._earthMat.emissiveMap = tex.mapTex; this._earthMat.emissive = new THREE.Color(0xffffff); this._earthMat.emissiveIntensity = 0.13;
-    this._earthMat.specular = new THREE.Color(0x1e303d); this._earthMat.shininess = 11;
-    this._earthMat.color = new THREE.Color(0xffffff); this._earthMat.needsUpdate = true;
-    this._cloudMat.alphaMap = tex.cloudTex; this._cloudMat.opacity = 0.5; this._cloudMat.needsUpdate = true;
-    if (tex.geojson) this._buildOutlines(tex.geojson);  // kontury z TEGO SAMEGO źródła = idealne wyrównanie
+    if (!tex || !tex.ok) { if (tex && tex.geojson) this._buildOutlines(tex.geojson); return; }
+    const M = this._earthMat;
+    M.map = tex.dayTex;
+    M.specularMap = tex.specTex; M.specular = new THREE.Color(0x2b3a48); M.shininess = 18;
+    if (tex.normalTex) { M.normalMap = tex.normalTex; M.normalScale = new THREE.Vector2(0.85, 0.85); }
+    M.emissiveMap = null; M.emissive = new THREE.Color(0x080d15); M.emissiveIntensity = 1;  // ledwie widoczna noc, nie czarna
+    M.color = new THREE.Color(0xffffff); M.needsUpdate = true;
+    this._cloudMat.alphaMap = tex.cloudTex; this._cloudMat.color = new THREE.Color(0xeef3fb);
+    this._cloudMat.opacity = 0.75; this._cloudMat.needsUpdate = true;
+    if (tex.geojson) this._buildOutlines(tex.geojson);  // subtelne granice z geojson, wyrownane do tekstury
   }
 
   _addStars() {
@@ -140,7 +142,7 @@ export class Globe {
     for (const f of (gj.features || [])) { const g = f.geometry; if (!g) continue; const polys = g.type === 'Polygon' ? [g.coordinates] : g.type === 'MultiPolygon' ? g.coordinates : []; for (const poly of polys) for (const ring of poly) addRing(ring); }
     const geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.Float32BufferAttribute(seg, 3));
     this.layers.coast.clear();
-    this.layers.coast.add(new THREE.LineSegments(geo, new THREE.LineBasicMaterial({ color: 0x8fb0c2, transparent: true, opacity: 0.3 })));
+    this.layers.coast.add(new THREE.LineSegments(geo, new THREE.LineBasicMaterial({ color: 0x7e9fb2, transparent: true, opacity: 0.14 })));
   }
 
   // ---- markery: emoji + poswiata ----
@@ -151,7 +153,7 @@ export class Globe {
     const halo = haloTexture();
     const addMarker = (item, group, r, glyphScale, haloColor, isNode) => {
       const pos = latLngToVec3(item.lat, item.lng, r); item._pos = pos;
-      const hMat = new THREE.SpriteMaterial({ map: halo, color: new THREE.Color(haloColor), transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, opacity: 0.5 });
+      const hMat = new THREE.SpriteMaterial({ map: halo, color: new THREE.Color(haloColor), transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, opacity: 0.32 });
       const hSpr = new THREE.Sprite(hMat); hSpr.position.copy(pos); hSpr.userData.item = item; hSpr.userData.kind = isNode ? 'node' : (group === this.layers.choke ? 'choke' : 'bank');
       const gMat = new THREE.SpriteMaterial({ map: emojiTexture(item.icon || '•'), transparent: true, depthWrite: false });
       const gSpr = new THREE.Sprite(gMat); gSpr.position.copy(pos);
@@ -161,9 +163,9 @@ export class Globe {
       if (isNode) { this._halos.push(hSpr); this._glyphs.push(gSpr); }
       else { this._halos.push(hSpr); this._glyphs.push(gSpr); }
     };
-    for (const n of nodes) addMarker(n, this.layers.nodes, R * 1.004, 2.6 + Math.sqrt(n.share_pct || 0) * 1.05, n.color || '#E0E3E8', true);
-    for (const cp of chokepoints) { cp.icon = '⚠️'; addMarker(cp, this.layers.choke, R * 1.006, 5.2, '#E8675A', false); }
-    for (const b of banks) { b.icon = '🏛️'; addMarker(b, this.layers.bank, R * 1.006, 4.6, '#9BD17A', false); }
+    for (const n of nodes) addMarker(n, this.layers.nodes, R * 1.004, 1.7 + Math.sqrt(n.share_pct || 0) * 0.8, n.color || '#E0E3E8', true);
+    for (const cp of chokepoints) { cp.icon = '⚠️'; addMarker(cp, this.layers.choke, R * 1.006, 3.3, '#E8675A', false); }
+    for (const b of banks) { b.icon = '🏛️'; addMarker(b, this.layers.bank, R * 1.006, 2.9, '#9BD17A', false); }
     this._applyLOD(true);
   }
 
@@ -173,7 +175,7 @@ export class Globe {
     this._lodNear = near;
     const setOne = (item, on) => {
       const sel = this._selId && item.id === this._selId;
-      const hs = (item._base) * (sel ? 1.95 : 1) * 1.3;
+      const hs = (item._base) * (sel ? 1.95 : 1) * 0.85;
       const gs = (item._base) * (sel ? 1.95 : 1);
       item._halo.visible = on; item._halo.scale.set(hs, hs, 1);
       item._glyph.visible = on && (near || sel); item._glyph.scale.set(gs, gs, 1);
