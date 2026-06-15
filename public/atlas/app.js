@@ -152,7 +152,7 @@ function renderSim(res, compounds, eng) {
   const comp = compounds.map((r) => `<div class="sm-row2"><span>${r.a} <em>+</em> ${r.b}</span><b>p ${(r.jointProb * 100).toFixed(2)}%</b></div>`).join('');
   out.innerHTML = `
     <div class="sm-sec"><h4>Najbardziej zagrożone surowce <span class="muted">(szok ceny P95/rok)</span></h4>${shocks}</div>
-    <div class="sm-sec"><h4>Kombinatoryka — najgorsze scenariusze łączne</h4>${comp}<p class="muted" style="margin-top:5px">Pary źródeł zakłóceń wg dotkliwości łącznej (HHI×systemowość).</p></div>
+    <div class="sm-sec"><h4>Kombinatoryka: najgorsze scenariusze łączne</h4>${comp}<p class="muted" style="margin-top:5px">Pary źródeł zakłóceń wg dotkliwości łącznej (HHI×systemowość).</p></div>
     <div class="sm-sec"><h4>Portfel demo <span class="muted">(${pf.grossNotional} j.)</span></h4>
       <div class="sm-pf"><div><label>ø P&L</label><b class="${pf.mean >= 0 ? 'up' : 'dn'}">${pf.mean.toFixed(1)}</b></div>
       <div><label>VaR 95%</label><b class="dn">${pf.var95.toFixed(1)}</b></div>

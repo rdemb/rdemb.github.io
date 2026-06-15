@@ -54,7 +54,7 @@ async function nodeArticle(node, eng, Live) {
 
   // LEDE
   const role = node.share_pct >= 4 ? pick(['filar', 'kregoslup', 'serce'], seed) : node.share_pct >= 1.5 ? pick(['wazny wezel', 'istotny element', 'znaczacy punkt'], seed) : pick(['ogniwo', 'element ukladanki', 'tryb'], seed);
-  const lede = `${pick(['Patrzysz na', 'Przed Toba', 'To'], seed)} ${node.name} (${node.region || node.country}) — ${role} globalnej podazy surowca, ktory ${com.use ? com.use.toLowerCase() : 'napedza gospodarke'}. ` +
+  const lede = `${pick(['Patrzysz na', 'Przed Toba', 'To'], seed)} ${node.name} (${node.region || node.country}), ${role} globalnej podazy surowca, ktory ${com.use ? com.use.toLowerCase() : 'napedza gospodarke'}. ` +
     `Operator: ${node.operator}. Wedlug zmapowanych danych to ${rank > 0 ? `nr ${rank} wsrod ${stat.nodes.length} sledzonych zloz` : 'jedno ze sledzonych zloz'} ${com.pl.toLowerCase()}, z udzialem okolo ${node.share_pct}% w globalnej podazy.`;
 
   // GEOGRAFIA
@@ -68,7 +68,7 @@ async function nodeArticle(node, eng, Live) {
     `<p>Kruchosc ${com.pl.toLowerCase()} jest <b style="color:var(--accent)">${fband}</b> (indeks HHI ${stat.fragility}/100): ${fexpl}. ` +
     `Najwiekszy gracz to <b>${stat.topCountry}</b> z okolo ${sP(stat.topShare)} zmapowanej podazy${stat.spof ? ', co kwalifikuje surowiec jako <b style="color:var(--loss)">single point of failure</b>' : ''}. ` +
     `Zmapowani liderzy: ${tops.map((t) => `${t.c} (${sP(t.pct)})`).join(', ')}.</p>` +
-    `<p>W grafie zaleznosci swiata ${com.pl.toLowerCase()} ma centralnosc PageRank <b>${pr}/100</b> — ${pr >= 70 ? 'to jeden z surowcow, ktore najmocniej trzesa calym ukladem walut, firm i szlakow' : pr >= 40 ? 'to surowiec o duzym znaczeniu systemowym' : 'jego waga systemowa jest umiarkowana, choc lokalnie istotna'}.</p>` +
+    `<p>W grafie zaleznosci swiata ${com.pl.toLowerCase()} ma centralnosc PageRank <b>${pr}/100</b>. ${pr >= 70 ? 'To jeden z surowcow, ktore najmocniej trzesa calym ukladem walut, firm i szlakow' : pr >= 40 ? 'To surowiec o duzym znaczeniu systemowym' : 'Jego waga systemowa jest umiarkowana, choc lokalnie istotna'}.</p>` +
     `<div class="art-bar"><i style="width:${stat.fragility}%;background:${node.fragColor}"></i></div></div>`;
 
   // KTO TRZYMA RYNEK
@@ -108,7 +108,7 @@ async function nodeArticle(node, eng, Live) {
   if (chokes.length || compounds.length) {
     riskBlock = `<div class="art-sec"><h4>Lancuch ryzyka</h4>`;
     if (chokes.length) riskBlock += `<p>Ten surowiec przechodzi przez waskie gardla: ${chokes.map((c) => `<b>${c.pl}</b> (ryzyko ${sP(c.annual_disruption_prob)}/rok)`).join(', ')}. Zatkanie ktoregokolwiek przeklada sie na koszt i czas dostawy.</p>`;
-    if (compounds.length) riskBlock += `<p>Kombinatoryka najgorszych scenariuszy laczy to z innymi punktami zapalnymi — np. <b>${compounds[0].a} + ${compounds[0].b}</b> jednoczesnie (prawd. laczne ${(compounds[0].jointProb * 100).toFixed(2)}%/rok) uderzyloby w ${compounds[0].commodities.join(', ')}.</p>`;
+    if (compounds.length) riskBlock += `<p>Kombinatoryka najgorszych scenariuszy laczy to z innymi punktami zapalnymi, np. <b>${compounds[0].a} + ${compounds[0].b}</b> jednoczesnie (prawd. laczne ${(compounds[0].jointProb * 100).toFixed(2)}%/rok) uderzyloby w ${compounds[0].commodities.join(', ')}.</p>`;
     riskBlock += `</div>`;
   }
 
@@ -140,10 +140,10 @@ async function nodeArticle(node, eng, Live) {
 
   // WERDYKT
   const verdict = `<div class="art-sec"><h4>Werdykt kontekstowy</h4>` +
-    `<p>${stat.spof ? `Trzymaj ${stat.topCountry} na radarze — koncentracja jest tu najwiekszym ryzykiem.` : 'Rozproszenie podazy daje rynkowi poduszke, ale '} ` +
+    `<p>${stat.spof ? `Trzymaj ${stat.topCountry} na radarze, bo koncentracja jest tu najwiekszym ryzykiem.` : 'Rozproszenie podazy daje rynkowi poduszke, ale '} ` +
     `${pr >= 60 ? `wysoka centralnosc systemowa oznacza, ze ruch ceny rozejdzie sie szeroko po walutach i akcjach.` : `efekty pozostana raczej lokalne dla powiazanych aktywow.`} ` +
     `Co obserwowac: ${isAgro ? 'pogode w oknie sezonowym i raporty USDA' : chokes.length ? 'droznosc chokepointow i zapasy' : 'politykę producentów i popyt'}.</p>` +
-    `<p class="art-obs">OBSERVE_ONLY — to warstwa kontekstu i scenariuszy „co-jesli", policzona algorytmicznie z danych, nie prognoza kierunku. Liczby surowcowe sa skalibrowane zgrubnie i datowane.</p></div>`;
+    `<p class="art-obs">OBSERVE_ONLY: to warstwa kontekstu i scenariuszy „co-jesli", policzona algorytmicznie z danych. Nie jest prognoza kierunku. Liczby surowcowe sa skalibrowane zgrubnie i datowane.</p></div>`;
 
   const foot = `<div class="art-foot">Wygenerowano algorytmicznie (bez LLM): <b>${nowStr()}</b> · dane na zywo: Open-Meteo, ExchangeRate-API, gold-api.com · statystyki liczone na biezaco z ${eng.nodes.length} zloz.</div>`;
 
@@ -168,8 +168,8 @@ async function chokeArticle(cp, eng, Live) {
     `<div class="art-sec"><h4>Parametry ryzyka</h4><div class="art-stats"><span>prawd. zaklocenia / rok<b>${sP(cp.annual_disruption_prob)}</b></span><span>dotkliwosc<b>${sP(cp.severity)}</b></span><span>objazd<b>${(cp.alt_routes || []).join('; ') || '—'}</b></span></div></div>` +
     `<div class="art-sec"><h4>Co przez nie plynie</h4><p>${coms.map((c) => c.pl).join(', ')}. Zatkanie przeklada sie na cene i czas dostawy tych surowcow w skali globalnej.</p></div>` +
     `<div class="art-sec"><h4>Reakcja walut (kaskada, live FX)</h4><div class="art-list">${ccyRows || '<span class="muted">—</span>'}</div></div>` +
-    (compounds.length ? `<div class="art-sec"><h4>Kombinatoryka — scenariusze laczne</h4>${compounds.map((r) => `<div class="art-row"><span>+ ${r.a === cp.pl ? r.b : r.a}</span><b>p ${(r.jointProb * 100).toFixed(2)}%</b></div>`).join('')}<p class="muted" style="margin-top:6px">Najgrozniejsze, gdy ten punkt staje rownoczesnie z innym (ryzyko skorelowane).</p></div>` : '') +
-    `<div class="art-sec"><p class="art-obs">OBSERVE_ONLY — scenariusz, nie prognoza. Kaskada policzona deterministycznie z utraty przeplywu / elastycznosci.</p></div>` +
+    (compounds.length ? `<div class="art-sec"><h4>Kombinatoryka: scenariusze laczne</h4>${compounds.map((r) => `<div class="art-row"><span>+ ${r.a === cp.pl ? r.b : r.a}</span><b>p ${(r.jointProb * 100).toFixed(2)}%</b></div>`).join('')}<p class="muted" style="margin-top:6px">Najgrozniejsze, gdy ten punkt staje rownoczesnie z innym (ryzyko skorelowane).</p></div>` : '') +
+    `<div class="art-sec"><p class="art-obs">OBSERVE_ONLY: scenariusz, nie prognoza. Kaskada policzona deterministycznie z utraty przeplywu / elastycznosci.</p></div>` +
     `<div class="art-foot">Wygenerowano: <b>${nowStr()}</b> · FX na zywo: ExchangeRate-API.</div>`;
   return { title: cp.pl, html };
 }
