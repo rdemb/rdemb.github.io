@@ -274,13 +274,13 @@ img{ display:block; max-width:100%; }
   <section class="thero wrap">
     <div class="thero__eyebrow rv"><span class="ln"></span><span data-pl="Pracownia · kolekcja szablonów" data-de="Werkstatt · Template-Kollektion" data-en="Workshop · template collection">Pracownia · kolekcja szablonów</span></div>
     <h1 class="rv" data-pl-html="Strony, które klient <span class='hl'>prowadzi sam.</span>" data-de-html="Websites, die der Kunde <span class='hl'>selbst pflegt.</span>" data-en-html="Sites the client <span class='hl'>runs themselves.</span>">Strony, które klient <span class="hl">prowadzi sam.</span></h1>
-    <p class="thero__lede rv" data-pl="Szesnaście żywych szablonów dla różnych branż, każdy z działającym panelem CMS. Kliknij dowolny, żeby otworzyć prawdziwą stronę i jej panel, w PL i DE. Po zakupie personalizuję projekt w całości pod Twoją markę." data-de="Sechzehn echte Templates für verschiedene Branchen, jedes mit funktionierendem CMS-Panel. Klick eines an, um die echte Seite und ihr Panel zu öffnen, in PL und DE. Nach dem Kauf personalisiere ich das Projekt vollständig auf deine Marke." data-en="Sixteen live templates for different industries, each with a working CMS panel. Click any of them to open the real site and its panel, in PL and DE. After purchase I fully personalise the project to your brand.">Szesnaście żywych szablonów dla różnych branż, każdy z działającym panelem CMS. Kliknij dowolny, żeby otworzyć prawdziwą stronę i jej panel, w PL i DE. Po zakupie personalizuję projekt w całości pod Twoją markę.</p>
+    <p class="thero__lede rv" data-pl="Szesnaście szablonów branżowych i pierwszy projekt premium, każdy z działającym panelem CMS. Kliknij dowolny, żeby otworzyć prawdziwą stronę i jej panel, w PL i DE. Po zakupie personalizuję projekt w całości pod Twoją markę." data-de="Sechzehn Branchen-Templates und das erste Premium-Projekt, jedes mit funktionierendem CMS-Panel. Klick eines an, um die echte Seite und ihr Panel zu öffnen, in PL und DE. Nach dem Kauf personalisiere ich das Projekt vollständig auf deine Marke." data-en="Sixteen industry templates and the first premium project, each with a working CMS panel. Click any of them to open the real site and its panel, in PL and DE. After purchase I fully personalise the project to your brand.">Szesnaście szablonów branżowych i pierwszy projekt premium, każdy z działającym panelem CMS. Kliknij dowolny, żeby otworzyć prawdziwą stronę i jej panel, w PL i DE. Po zakupie personalizuję projekt w całości pod Twoją markę.</p>
     <div class="thero__cta rv">
       <a href="#prace" class="btn btn--solid" data-pl="Zobacz szablony →" data-de="Templates ansehen →" data-en="See the templates →">Zobacz szablony →</a>
       <a href="#cms" class="btn btn--ghost" data-pl="Jak działa CMS" data-de="So funktioniert das CMS" data-en="How the CMS works">Jak działa CMS</a>
     </div>
     <div class="thero__stats">
-      <div class="tstat rv"><div class="n">16</div><div class="l" data-pl="żywych szablonów" data-de="echte Templates" data-en="live templates">żywych szablonów</div></div>
+      <div class="tstat rv"><div class="n">17</div><div class="l" data-pl="żywych szablonów" data-de="echte Templates" data-en="live templates">żywych szablonów</div></div>
       <div class="tstat rv"><div class="n"><b>CMS</b></div><div class="l" data-pl="w każdym" data-de="in jedem" data-en="in each">w każdym</div></div>
       <div class="tstat rv"><div class="n">PL<span style="opacity:.4">/</span>DE</div><div class="l" data-pl="dwa języki" data-de="zwei Sprachen" data-en="two languages">dwa języki</div></div>
       <div class="tstat rv"><div class="n">100<b>%</b></div><div class="l" data-pl="responsywne" data-de="responsiv" data-en="responsive">responsywne</div></div>
@@ -396,6 +396,10 @@ if(document.readyState!=="loading")init();else document.addEventListener("DOMCon
 (function(){"use strict";
 const $=(s,c=document)=>c.querySelector(s), $$=(s,c=document)=>[...c.querySelectorAll(s)];
 const PROJECTS=[
+    { id:"neve", name:"NÉVÉ", href:"premium/neve/index.html", live:true, premium:true, cms:"premium/neve/neve-studio.html", cmsLabel:{pl:"Panel CMS",de:"CMS-Panel"},
+      ind:{pl:"Resort i spa · kolekcja premium",de:"Resort & Spa · Premium-Kollektion"},
+      desc:{pl:"Kinowy hero przewijany scena po scenie, realne kadry 4K, śnieg i panel CMS.",de:"Filmischer Hero, Szene für Szene gescrollt, echte 4K-Aufnahmen, Schnee und CMS-Panel."},
+      pal:["#0f1722","#d8a44e","#eef3fb"], pp:{bg:"#0f1722",bar:"#0a0e16",hero:"#0f1722",acc:"#d8a44e",ink:"#eef3fb"} },
     { id:"oliva", name:"OLIVA", href:"OLIVA.html", live:true,
       ind:{pl:"Restauracja · kuchnia sezonowa",de:"Restaurant · saisonale Küche"},
       desc:{pl:"Sezonowa karta, kinowy hero, rezerwacja krok po kroku.",de:"Saisonale Karte, filmischer Hero, Reservierung Schritt für Schritt."},
@@ -462,6 +466,7 @@ const PROJECTS=[
       pal:["#4f46e5","#0ea5e9","#f4f5f8"], pp:{bg:"#f4f5f8",bar:"#ffffff",hero:"#eef0f6",acc:"#4f46e5",ink:"#1e2230"} }
   ];
 const _EN={
+ neve:{ind:"Resort & spa · premium collection",desc:"A cinematic hero scrolled scene by scene, real 4K shots, snow and a CMS panel.",cms:"CMS panel"},
  oliva:{ind:"Restaurant · seasonal kitchen",desc:"Seasonal menu, cinematic hero, step-by-step booking."},
  forma:{ind:"Architecture & interior studio",desc:"Raw grid, concrete and light. Project portfolio."},
  mare:{ind:"Fashion brand · concept store",desc:"Editorial, big type, shop and lookbook."},
@@ -491,7 +496,7 @@ function card(p,i){
  const cmsUrl=BASE?BASE+"/"+cmsFile:"#";
  const clp=p.cmsLabel?p.cmsLabel.pl:"Panel CMS",cld=p.cmsLabel?p.cmsLabel.de:"CMS-Panel",cle=p.cmsLabel&&p.cmsLabel.en?p.cmsLabel.en:"CMS panel";
  el.innerHTML=`
-  <div class="pcard__top"><span class="pcard__no">${no} / ${tot}</span><span class="badge badge--live" data-pl="Gotowy" data-de="Fertig" data-en="Ready">Gotowy</span></div>
+  <div class="pcard__top"><span class="pcard__no">${no} / ${tot}</span>${p.premium?`<span class="badge" style="background:color-mix(in oklab,var(--accent) 20%,transparent);color:var(--accent);border:1px solid color-mix(in oklab,var(--accent) 45%,transparent)">Premium</span>`:`<span class="badge badge--live" data-pl="Gotowy" data-de="Fertig" data-en="Ready">Gotowy</span>`}</div>
   <a class="prevframe" href="${site}" target="_blank" rel="noopener" aria-label="${p.name}">
     <iframe loading="lazy" tabindex="-1" title="${p.name}" ${BASE?`src="${site}"`:""} sandbox="allow-scripts allow-same-origin"></iframe>
     <span class="prevframe__shade"></span>
