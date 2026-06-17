@@ -19,3 +19,6 @@ dist/
 
 # projekty wycofane z publikacji (zostaja lokalnie)
 /_private/
+
+# szkice / wpisy wstrzymane do publikacji (zostaja lokalnie, poza publicznym repo)
+/_drafts/
