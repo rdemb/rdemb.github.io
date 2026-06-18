@@ -167,6 +167,10 @@ async function main() {
     setTimeout(() => { const res = eng.monteCarlo({ trials: 2000, portfolio }); const comp = eng.compoundRisks(6); renderSim(res, comp, eng); btn.disabled = false; $('#sim-status').textContent = T`${res.trials} scenariuszy · ø ${res.expectedEvents.toFixed(1)} zakłóceń/rok`; }, 30);
   };
 
+  // Historyczne szoki (rekonstrukcja kaskady)
+  const shocksBox = $('#shocks');
+  if (shocksBox && eng.scenarios) eng.scenarios.forEach((sc) => { const chip = node('button', 'shock-chip', `<b>${sc.year}</b> ${sc[LANG] || sc.pl}`); chip.onclick = () => showScenario(sc, eng, globe); shocksBox.appendChild(chip); });
+
   // deep-link: /atlas/?focus=ghawar | ?commodity=crude_oil | ?choke=hormuz
   applyDeepLink(eng, globe);
 
@@ -262,6 +266,36 @@ function appendBriefBar(p, eng) {
   };
   bar.appendChild(btn);
   body.appendChild(bar);
+}
+
+function showScenario(sc, eng, globe) {
+  const res = eng.scenarioShock(sc.affected);
+  const tops = res.currencies.slice(0, 8);
+  const arcs = [];
+  res.origins.forEach((o) => { if (o.lat == null) return; tops.forEach((c) => arcs.push({ from: { lat: o.lat, lng: o.lng }, to: { lat: c.lat, lng: c.lng }, color: c.impact >= 0 ? '#4ADE80' : '#E8675A' })); });
+  globe.drawArcs(arcs.slice(0, 28)); globe.highlight(null);
+  if (res.origins[0] && res.origins[0].lat != null) globe.focus(res.origins[0].lat, res.origins[0].lng);
+  const L = LANG;
+  const name = sc[L] || sc.pl;
+  const summary = sc['summary_' + L] || sc.summary_pl;
+  const W = {
+    eyebrow: { pl: 'HISTORYCZNY SZOK', en: 'HISTORICAL SHOCK', de: 'HISTORISCHER SCHOCK' },
+    recon: { pl: 'REKONSTRUKCJA WYDARZENIA, NIE backtest cen. Pokazuje, jak szok tego TYPU rozszedlby sie przez uklad walut i firm; nie odtwarza historycznych cen.', en: 'EVENT RECONSTRUCTION, NOT a price backtest. Shows how a shock of this TYPE would propagate through currencies and firms; it does not replay historical prices.', de: 'EREIGNIS-REKONSTRUKTION, KEIN Preis-Backtest. Zeigt, wie sich ein Schock dieses TYPS durch Waehrungen und Firmen ausbreiten wuerde; historische Preise werden nicht nachgebildet.' },
+    shocks: { pl: 'Modelowy szok cen surowcow', en: 'Modeled commodity price shock', de: 'Modellierter Rohstoff-Preisschock' },
+    fx: { pl: 'Reakcja walut (terms of trade)', en: 'Currency reaction (terms of trade)', de: 'Waehrungsreaktion (Terms of Trade)' },
+    src: { pl: 'Zrodlo', en: 'Source', de: 'Quelle' },
+  };
+  const w = (o) => o[L] || o.pl;
+  const shockRows = res.shockArr.slice(0, 8).map((x) => `<div class="art-row"><span>${td('commodity:' + x.id + ':pl', x.pl)}</span><b class="dn">+${(x.shock * 100).toFixed(1)}%</b></div>`).join('');
+  const fxRows = res.currencies.slice(0, 8).map((c) => `<div class="art-row"><span>${c.code} \u00b7 ${td('currency:' + c.code + ':pl', c.pl)}</span><b class="${c.impact >= 0 ? 'up' : 'dn'}">${sPct(c.impact)}</b></div>`).join('');
+  $('#detail-body').innerHTML =
+    `<div class="art-hd"><span class="art-emoji">\u23f1\ufe0f</span><div><span class="d-eyebrow" style="color:var(--accent)">${w(W.eyebrow)} \u00b7 ${sc.year}</span><h3>${name}</h3></div></div>` +
+    `<p class="art-lede">${summary}</p>` +
+    `<div class="sc-recon">${w(W.recon)}</div>` +
+    `<div class="art-sec"><h4>${w(W.shocks)}</h4><div class="art-list">${shockRows || '<span class="muted">\u2014</span>'}</div></div>` +
+    `<div class="art-sec"><h4>${w(W.fx)}</h4><div class="art-list">${fxRows || '<span class="muted">\u2014</span>'}</div></div>` +
+    `<div class="art-foot">${w(W.src)}: ${sc.source}</div>`;
+  openPanel();
 }
 
 function openPanel() { $('#detail').classList.add('open'); }

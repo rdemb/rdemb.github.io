@@ -252,6 +252,15 @@ html[data-atlas-mobile] #stage,html[data-atlas-mobile] #rail,html[data-atlas-mob
 .brief-btn{width:100%;font-family:'JetBrains Mono Variable',monospace;font-size:11px;letter-spacing:.03em;padding:10px 12px;border-radius:9px;border:1px solid var(--chip-line);background:color-mix(in srgb,var(--accent) 8%,var(--surface));color:var(--accent);transition:background .18s var(--ease-out),transform .12s var(--ease-out)}
 .brief-btn:hover{background:color-mix(in srgb,var(--accent) 15%,var(--surface))}.brief-btn:active{transform:scale(.98)}
 .brief-ta{width:100%;margin-top:8px;height:130px;background:var(--surface);border:1px solid var(--line);border-radius:8px;color:var(--text);font-size:11px;line-height:1.5;font-family:'JetBrains Mono Variable',monospace;padding:9px;resize:vertical}
+
+/* HISTORYCZNE SZOKI */
+.shock-list{display:flex;flex-wrap:wrap;gap:6px}
+.shock-chip{font-family:'JetBrains Mono Variable',monospace;font-size:10.5px;letter-spacing:.02em;text-align:left;padding:7px 10px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--muted);transition:border-color .18s var(--ease-out),color .18s var(--ease-out),transform .12s var(--ease-out)}
+.shock-chip:hover{border-color:var(--chip-line);color:var(--accent)}
+.shock-chip:active{transform:scale(.96)}
+.shock-chip b{color:var(--text);font-weight:600;margin-right:4px}
+.sc-recon{font-family:'JetBrains Mono Variable',monospace;font-size:10px;line-height:1.55;color:var(--accent);border:1px solid var(--chip-line);border-radius:8px;padding:9px 11px;margin:13px 0;background:color-mix(in srgb,var(--accent) 9%,transparent);letter-spacing:.02em}
+@media (prefers-reduced-motion:reduce){.shock-chip:active{transform:none}}
 </style>
 </head>
 <body>
@@ -318,6 +327,10 @@ html[data-atlas-mobile] #stage,html[data-atlas-mobile] #rail,html[data-atlas-mob
     <button id="sim-run" class="btn-sim" data-i18n="▶ Symuluj rok świata · Monte Carlo">▶ Symuluj rok świata · Monte Carlo</button>
     <div id="sim-status" class="muted"></div>
     <div id="sim-out"></div>
+  </div>
+  <div class="rail-block">
+    <div class="rail-label"><span data-i18n="Historyczne szoki">Historyczne szoki</span> <span class="muted" data-i18n="· rekonstrukcja kaskady">· rekonstrukcja kaskady</span></div>
+    <div id="shocks" class="shock-list"></div>
   </div>
   <div class="rail-foot" data-i18n="OBSERVE_ONLY · dane skalibrowane zgrubnie + datowane · kontekst, nie wyrocznia">OBSERVE_ONLY · dane skalibrowane zgrubnie + datowane · kontekst, nie wyrocznia</div>
 </aside>

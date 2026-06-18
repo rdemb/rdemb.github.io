@@ -135,6 +135,10 @@ export class WorldEngine {
     this.ccyBeta = (P && typeof P.ccy_beta === 'number') ? P.ccy_beta : CCY_BETA;
     this.coBeta = (P && typeof P.co_beta === 'number') ? P.co_beta : CO_BETA;
 
+    // biblioteka historycznych szokow (rekonstrukcja kaskady), opcjonalna
+    this.scenarios = [];
+    try { const rs = await fetch(new URL('scenarios.json', DATA)); if (rs.ok) this.scenarios = await rs.json(); } catch (e) {}
+
     // scal + oczysc wezly
     const merged = [...energy, ...metals, ...agro, ...logistics];
     const seen = new Set();
@@ -484,6 +488,51 @@ export class WorldEngine {
     // surowce o duzym zaangazowaniu brutto, ale zhedgowane (gross duzy, net maly)
     const hedged = byGross.filter((r) => r.gross > 0 && r.oneWay < 0.35).slice(0, 2);
     return { rows: byGross, byNet, totalNet, topNet, concentration, hiddenCorr, hedged };
+  }
+
+  /*
+    SCENARIUSZ HISTORYCZNY — REKONSTRUKCJA, NIE backtest cen.
+    Dla listy dotknietych wezlow ukladu (chokepointy i/lub surowce) buduje
+    laczna utrate podazy -> szok ceny -> reakcja walut i firm (te same bety co
+    kaskada/MC). Ilustruje, jak rozszedlby sie szok danego TYPU, nie prognozuje cen.
+  */
+  scenarioShock(affected) {
+    const loss = {};
+    const origins = [];
+    for (const a of (affected || [])) {
+      const sev = clamp(+a.severity || 0.4, 0, 1);
+      if (a.kind === 'choke') {
+        const cp = this.chokepoints.find((c) => c.id === a.ref); if (!cp) continue;
+        origins.push({ lat: cp.lat, lng: cp.lng, label: cp.pl || cp.name });
+        for (const cid of (cp.commodities_at_risk || [])) loss[cid] = Math.max(loss[cid] || 0, clamp(sev * 0.3, 0, 0.9));
+      } else {
+        if (!this.commodities[a.ref]) continue;
+        loss[a.ref] = Math.max(loss[a.ref] || 0, clamp(sev * 0.5, 0, 0.9));
+        const b = this.byCommodity[a.ref];
+        if (b && b.nodes.length) { const top = b.nodes.slice().sort((x, y) => (y.share_pct || 0) - (x.share_pct || 0))[0]; origins.push({ lat: top.lat, lng: top.lng, label: this.commodities[a.ref].pl }); }
+      }
+    }
+    const shock = {};
+    for (const cid in loss) { const el = this.commodities[cid]?.elast || 0.4; shock[cid] = clamp(loss[cid] / el, 0, 0.8); }
+    const ccyMap = {};
+    for (const ccy of this.currencies) {
+      let imp = 0;
+      for (const d of (ccy.drivers || [])) if (shock[d.c]) imp += shock[d.c] * d.w * this._ccySign(ccy.role);
+      imp *= this.ccyBeta;
+      if (Math.abs(imp) > 1e-4) ccyMap[ccy.code] = { code: ccy.code, pl: ccy.pl, impact: imp, lat: ccy.lat, lng: ccy.lng };
+    }
+    const coArr = [];
+    for (const co of this.companies) {
+      let imp = 0;
+      for (const cid of (co.commodities || [])) if (shock[cid]) imp += shock[cid] * this._coSign(co.role) * this.coBeta;
+      if (Math.abs(imp) > 1e-4) coArr.push({ id: co.id, name: co.name, ticker: co.ticker, impact: imp, lat: co.hq ? co.hq[0] : null, lng: co.hq ? co.hq[1] : null });
+    }
+    const shockArr = Object.entries(shock).map(([cid, v]) => ({ id: cid, pl: this.commodities[cid]?.pl || cid, shock: v })).sort((a, b) => b.shock - a.shock);
+    return {
+      origins, shockArr,
+      currencies: Object.values(ccyMap).sort((a, b) => Math.abs(b.impact) - Math.abs(a.impact)),
+      companies: coArr.sort((a, b) => Math.abs(b.impact) - Math.abs(a.impact)),
+    };
   }
 }
 
