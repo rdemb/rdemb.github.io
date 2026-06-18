@@ -1,13 +1,13 @@
 /*
   D-LOGIC ATLAS — generator artykulow (article.js)
   ================================================
-  CZYSTO ALGORYTMICZNA generacja jezyka (NLG): gramatyka + progi danych +
-  kombinatoryka wariantow zdan. ZERO LLM. Deterministyczna (wariancja z hasha id),
-  ZAWSZE SWIEZA (statystyki silnika liczone na biezaco + dane na zywo + timestamp).
-  Zwraca {title, html} dla wezla lub chokepointu.
+  CZYSTO ALGORYTMICZNA generacja języka (NLG): gramatyka + progi danych +
+  kombinatoryka wariantów zdań. ZERO LLM. Deterministyczna (wariancja z hasha id),
+  ZAWSZE ŚWIEŻA (statystyki silnika liczone na bieżąco + dane na żywo + timestamp).
+  Zwraca {title, html} dla węzła lub chokepointu.
 */
 
-const MON = ['stycznia', 'lutego', 'marca', 'kwietnia', 'maja', 'czerwca', 'lipca', 'sierpnia', 'wrzesnia', 'pazdziernika', 'listopada', 'grudnia'];
+const MON = ['stycznia', 'lutego', 'marca', 'kwietnia', 'maja', 'czerwca', 'lipca', 'sierpnia', 'września', 'października', 'listopada', 'grudnia'];
 function hash(s) { let h = 2166136261; s = String(s); for (let i = 0; i < s.length; i++) h = Math.imul(h ^ s.charCodeAt(i), 16777619); return h >>> 0; }
 const pick = (arr, seed) => arr[hash(seed) % arr.length];
 const sPct = (v) => (v >= 0 ? '+' : '') + (v * 100).toFixed(1) + '%';
@@ -27,10 +27,10 @@ function spark(vals, { w = 200, h = 38, color = '#E8B23A', area = true } = {}) {
 }
 
 function fragBand(f) {
-  if (f >= 80) return ['ekstremalna', 'jeden kraj trzyma niemal cala zmapowana podaz, wiec pojedyncze zdarzenie potrafi wstrzasnac calym rynkiem'];
-  if (f >= 55) return ['wysoka', 'podaz jest mocno skupiona w jednym kraju, co czyni ja wrazliwa na polityke i pogode tego miejsca'];
-  if (f >= 35) return ['umiarkowana', 'podaz jest skoncentrowana, ale istnieja realne alternatywy lagodzce szok'];
-  return ['niska', 'podaz jest rozproszona geograficznie, wiec rynek latwiej amortyzuje lokalne zaklocenia'];
+  if (f >= 80) return ['ekstremalna', 'jeden kraj trzyma niemal cała zmapowana podaż, więc pojedyncze zdarzenie potrafi wstrząsnąć całym rynkiem'];
+  if (f >= 55) return ['wysoka', 'podaż jest mocno skupiona w jednym kraju, co czyni ja wrażliwa na politykę i pogodę tego miejsca'];
+  if (f >= 35) return ['umiarkowana', 'podaż jest skoncentrowana, ale istnieją realne alternatywy łagodzące szok'];
+  return ['niska', 'podaż jest rozproszona geograficznie, więc rynek łatwiej amortyzuje lokalne zakłócenia'];
 }
 
 function topCountries(stat, n = 3) {
@@ -38,14 +38,14 @@ function topCountries(stat, n = 3) {
   return Object.entries(stat.country).sort((a, b) => b[1] - a[1]).slice(0, n).map(([c, s]) => ({ c, pct: s / tot }));
 }
 
-// ---------- ARTYKUL: WEZEL ----------
+// ---------- ARTYKUL: WĘZEŁ ----------
 async function nodeArticle(node, eng, Live) {
   const com = eng.commodities[node.commodity] || { pl: node.commodity, use: '', note: '', elast: 0.4, cat: node.cat };
   const stat = eng.stat(node.commodity);
   const seed = node.id;
   const month = new Date().getMonth();
 
-  // pozycja wezla wsrod zmapowanych zloz
+  // pozycja węzła wśród zmapowanych złóż
   const ranked = stat.nodes.slice().sort((a, b) => b.share_pct - a.share_pct);
   const rank = ranked.findIndex((x) => x.id === node.id) + 1;
   const tops = topCountries(stat);
@@ -53,22 +53,22 @@ async function nodeArticle(node, eng, Live) {
   const pr = Math.round(eng.pagerank().commodity[node.commodity] || 0);
 
   // LEDE
-  const role = node.share_pct >= 4 ? pick(['filar', 'kregoslup', 'serce'], seed) : node.share_pct >= 1.5 ? pick(['wazny wezel', 'istotny element', 'znaczacy punkt'], seed) : pick(['ogniwo', 'element ukladanki', 'tryb'], seed);
-  const lede = `${pick(['Patrzysz na', 'Przed Toba', 'To'], seed)} ${node.name} (${node.region || node.country}), ${role} globalnej podazy surowca, ktory ${com.use ? com.use.toLowerCase() : 'napedza gospodarke'}. ` +
-    `Operator: ${node.operator}. Wedlug zmapowanych danych to ${rank > 0 ? `nr ${rank} wsrod ${stat.nodes.length} sledzonych zloz` : 'jedno ze sledzonych zloz'} ${com.pl.toLowerCase()}, z udzialem okolo ${node.share_pct}% w globalnej podazy.`;
+  const role = node.share_pct >= 4 ? pick(['filar', 'kręgosłup', 'serce'], seed) : node.share_pct >= 1.5 ? pick(['ważny węzeł', 'istotny element', 'znaczący punkt'], seed) : pick(['ogniwo', 'element układanki', 'tryb'], seed);
+  const lede = `${pick(['Patrzysz na', 'Przed Toba', 'To'], seed)} ${node.name} (${node.region || node.country}), ${role} globalnej podaży surowca, który ${com.use ? com.use.toLowerCase() : 'napędza gospodarkę'}. ` +
+    `Operator: ${node.operator}. Według zmapowanych danych to ${rank > 0 ? `nr ${rank} wśród ${stat.nodes.length} śledzonych złóż` : 'jedno ze śledzonych złóż'} ${com.pl.toLowerCase()}, z udziałem okolo ${node.share_pct}% w globalnej podaży.`;
 
   // GEOGRAFIA
   const geo = `<div class="art-sec"><h4>Geografia i skala</h4>` +
-    `<p>${node.name} lezy w regionie ${node.region || node.country} (${node.country}). ${node.note}. ` +
-    `Zdolnosc: <b>${node.capacity}</b>. ${com.note ? com.note + '.' : ''}</p>` +
-    `<div class="art-stats"><span>udzial globalny<b>${node.share_pct}%</b></span><span>pozycja<b>${rank > 0 ? '#' + rank : '—'}</b></span><span>operator<b>${node.operator}</b></span><span>zrodlo<b>${node.source_type} · ${node.as_of}</b></span></div></div>`;
+    `<p>${node.name} leży w regionie ${node.region || node.country} (${node.country}). ${node.note}. ` +
+    `Zdolność: <b>${node.capacity}</b>. ${com.note ? com.note + '.' : ''}</p>` +
+    `<div class="art-stats"><span>udział globalny<b>${node.share_pct}%</b></span><span>pozycja<b>${rank > 0 ? '#' + rank : '—'}</b></span><span>operator<b>${node.operator}</b></span><span>źródło<b>${node.source_type} · ${node.as_of}</b></span></div></div>`;
 
   // KONCENTRACJA / HHI / PageRank
-  const conc = `<div class="art-sec"><h4>Koncentracja i krwiobieg podazy</h4>` +
-    `<p>Kruchosc ${com.pl.toLowerCase()} jest <b style="color:var(--accent)">${fband}</b> (indeks HHI ${stat.fragility}/100): ${fexpl}. ` +
-    `Najwiekszy gracz to <b>${stat.topCountry}</b> z okolo ${sP(stat.topShare)} zmapowanej podazy${stat.spof ? ', co kwalifikuje surowiec jako <b style="color:var(--loss)">single point of failure</b>' : ''}. ` +
+  const conc = `<div class="art-sec"><h4>Koncentracja i krwiobieg podaży</h4>` +
+    `<p>Kruchość ${com.pl.toLowerCase()} jest <b style="color:var(--accent)">${fband}</b> (indeks HHI ${stat.fragility}/100): ${fexpl}. ` +
+    `Największy gracz to <b>${stat.topCountry}</b> z okolo ${sP(stat.topShare)} zmapowanej podaży${stat.spof ? ', co kwalifikuje surowiec jako <b style="color:var(--loss)">single point of failure</b>' : ''}. ` +
     `Zmapowani liderzy: ${tops.map((t) => `${t.c} (${sP(t.pct)})`).join(', ')}.</p>` +
-    `<p>W grafie zaleznosci swiata ${com.pl.toLowerCase()} ma centralnosc PageRank <b>${pr}/100</b>. ${pr >= 70 ? 'To jeden z surowcow, ktore najmocniej trzesa calym ukladem walut, firm i szlakow' : pr >= 40 ? 'To surowiec o duzym znaczeniu systemowym' : 'Jego waga systemowa jest umiarkowana, choc lokalnie istotna'}.</p>` +
+    `<p>W grafie zależności świata ${com.pl.toLowerCase()} ma centralność PageRank <b>${pr}/100</b>. ${pr >= 70 ? 'To jeden z surowców, które najmocniej trzęsą całym układem walut, firm i szlaków' : pr >= 40 ? 'To surowiec o dużym znaczeniu systemowym' : 'Jego waga systemowa jest umiarkowana, choć lokalnie istotna'}.</p>` +
     `<div class="art-bar"><i style="width:${stat.fragility}%;background:${node.fragColor}"></i></div></div>`;
 
   // KTO TRZYMA RYNEK
@@ -76,11 +76,11 @@ async function nodeArticle(node, eng, Live) {
   let metalsLine = '';
   if (node.commodity === 'gold' || node.commodity === 'silver') {
     const m = await Live.metals();
-    if (m) { const px = node.commodity === 'gold' ? m.gold : m.silver; if (px) metalsLine = `<p class="art-live">Cena spot na zywo (${m.source}): <b>${px.toLocaleString('pl-PL')} USD/oz</b>.</p>`; }
+    if (m) { const px = node.commodity === 'gold' ? m.gold : m.silver; if (px) metalsLine = `<p class="art-live">Cena spot na żywo (${m.source}): <b>${px.toLocaleString('pl-PL')} USD/oz</b>.</p>`; }
   }
   const market = `<div class="art-sec"><h4>Kto trzyma rynek</h4>` +
-    (cos.length ? `<p>Ceny i marze ${com.pl.toLowerCase()} wokol tego wezla ksztaltuja przede wszystkim:</p>` +
-      `<div class="art-list">${cos.map((c) => `<div class="art-row"><span>${c.name} <em>${c.ticker}</em></span><b>${capBn(c.mkt_cap_bn) || c.role}</b></div>`).join('')}</div>` : `<p>Rynek tego surowca jest rozproszony miedzy wielu producentow i traderow.</p>`) +
+    (cos.length ? `<p>Ceny i marżę ${com.pl.toLowerCase()} wokół tego węzła kształtują przede wszystkim:</p>` +
+      `<div class="art-list">${cos.map((c) => `<div class="art-row"><span>${c.name} <em>${c.ticker}</em></span><b>${capBn(c.mkt_cap_bn) || c.role}</b></div>`).join('')}</div>` : `<p>Rynek tego surowca jest rozproszony między wielu producentow i traderów.</p>`) +
     metalsLine + `</div>`;
 
   // WALUTY + LIVE FX
@@ -92,27 +92,27 @@ async function nodeArticle(node, eng, Live) {
       const c = eng.ccy(code); if (!c) return '';
       let live = '';
       if (fx && fx.rates && fx.rates[code]) live = `<b>1 USD = ${fx.rates[code].toLocaleString('pl-PL', { maximumFractionDigits: 4 })} ${code}</b>`;
-      const dir = c.role === 'exporter' ? 'rosnie' : c.role === 'importer' ? 'slabnie' : 'reaguje neutralnie';
-      return `<div class="art-row"><span>${code} · ${c.pl} <em>${c.role === 'exporter' ? 'eksporter' : c.role === 'importer' ? 'importer' : 'przystan'}</em></span>${live}</div>`;
+      const dir = c.role === 'exporter' ? 'rośnie' : c.role === 'importer' ? 'słabnie' : 'reaguje neutralnie';
+      return `<div class="art-row"><span>${code} · ${c.pl} <em>${c.role === 'exporter' ? 'eksporter' : c.role === 'importer' ? 'importer' : 'przystań'}</em></span>${live}</div>`;
     }).join('');
     const exp = ccyCodes.map((x) => eng.ccy(x)).filter((c) => c && c.role === 'exporter').map((c) => c.code);
     fxBlock = `<div class="art-sec"><h4>Waluty na sznurku</h4>` +
-      `<p>Gdy cena ${com.pl.toLowerCase()} idzie w gore, ${exp.length ? `umacniaja sie waluty eksporterow (${exp.join(', ')}), a slabna waluty importerow` : 'reaguja powiazane waluty surowcowe'}. Kursy ponizej sa pobierane na zywo:</p>` +
+      `<p>Gdy cena ${com.pl.toLowerCase()} idzie w górę, ${exp.length ? `umacniają się waluty eksporterów (${exp.join(', ')}), a słabną waluty importerow` : 'reagują powiązane waluty surowcowe'}. Kursy poniżej sa pobierane na żywo:</p>` +
       `<div class="art-list">${rows}</div></div>`;
   }
 
-  // LANCUCH RYZYKA (chokepointy + compound)
+  // ŁAŃCUCH RYZYKA (chokepointy + compound)
   const chokes = (stat.chokepoints || []).map((id) => eng.chokepoints.find((c) => c.id === id)).filter(Boolean);
   const compounds = eng.compoundRisks(40).filter((r) => r.a === node.name || r.b === node.name || r.commodities.includes(com.pl)).slice(0, 2);
   let riskBlock = '';
   if (chokes.length || compounds.length) {
-    riskBlock = `<div class="art-sec"><h4>Lancuch ryzyka</h4>`;
-    if (chokes.length) riskBlock += `<p>Ten surowiec przechodzi przez waskie gardla: ${chokes.map((c) => `<b>${c.pl}</b> (ryzyko ${sP(c.annual_disruption_prob)}/rok)`).join(', ')}. Zatkanie ktoregokolwiek przeklada sie na koszt i czas dostawy.</p>`;
-    if (compounds.length) riskBlock += `<p>Kombinatoryka najgorszych scenariuszy laczy to z innymi punktami zapalnymi, np. <b>${compounds[0].a} + ${compounds[0].b}</b> jednoczesnie (prawd. laczne ${(compounds[0].jointProb * 100).toFixed(2)}%/rok) uderzyloby w ${compounds[0].commodities.join(', ')}.</p>`;
+    riskBlock = `<div class="art-sec"><h4>Łańcuch ryzyka</h4>`;
+    if (chokes.length) riskBlock += `<p>Ten surowiec przechodzi przez wąskie gardła: ${chokes.map((c) => `<b>${c.pl}</b> (ryzyko ${sP(c.annual_disruption_prob)}/rok)`).join(', ')}. Zatkanie któregokolwiek przekłada się na koszt i czas dostawy.</p>`;
+    if (compounds.length) riskBlock += `<p>Kombinatoryka najgorszych scenariuszy łączy to z innymi punktami zapalnymi, np. <b>${compounds[0].a} + ${compounds[0].b}</b> jednocześnie (prawd. łączne ${(compounds[0].jointProb * 100).toFixed(2)}%/rok) uderzyłoby w ${compounds[0].commodities.join(', ')}.</p>`;
     riskBlock += `</div>`;
   }
 
-  // POGODA I SEZONOWOSC (LIVE) + sparkline
+  // POGODA I SEZONOWOŚĆ (LIVE) + sparkline
   let wxBlock = '';
   const season = eng.seasonality(node, month);
   const isAgro = node.type === 'farm-belt' || node.type === 'plantation';
@@ -120,32 +120,32 @@ async function nodeArticle(node, eng, Live) {
     const wx = await Live.weather(node.lat, node.lng);
     let inner = '';
     if (wx) {
-      inner += `<p class="art-live">Pogoda na zywo (${wx.source}, ${new Date(wx.asOf).toLocaleString('pl-PL', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}): ` +
-        `<b>${Math.round(wx.tempC)}°C</b>, opad biezacy ${wx.precip} mm, wiatr ${Math.round(wx.wind)} km/h. Suma opadow z ostatnich 10 dni: <b>${wx.recentPrecip} mm</b>.</p>`;
+      inner += `<p class="art-live">Pogoda na żywo (${wx.source}, ${new Date(wx.asOf).toLocaleString('pl-PL', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}): ` +
+        `<b>${Math.round(wx.tempC)}°C</b>, opad bieżący ${wx.precip} mm, wiatr ${Math.round(wx.wind)} km/h. Suma opadow z ostatnich 10 dni: <b>${wx.recentPrecip} mm</b>.</p>`;
       if (wx.dailyMax && wx.dailyMax.length) inner += `<div class="art-sparkwrap"><span>temp. max, 13 dni</span>${spark(wx.dailyMax, { color: '#E8675A' })}</div>`;
       if (wx.dailyPrecip && wx.dailyPrecip.length) inner += `<div class="art-sparkwrap"><span>opad dzienny, 13 dni</span>${spark(wx.dailyPrecip, { color: '#5DC7B8' })}</div>`;
-    } else inner += `<p class="muted">Dane pogodowe na zywo chwilowo niedostepne.</p>`;
-    if (season) inner += `<p>Sezonowo jestesmy ${season.active ? '<b style="color:var(--loss)">w oknie krytycznym</b>' : season.near ? 'tuz przy oknie krytycznym' : 'poza oknem krytycznym'}: ${season.label}. ${season.active ? 'To moment, w ktorym pogoda wazy najwiecej dla plonu.' : ''}</p>`;
-    wxBlock = `<div class="art-sec"><h4>Pogoda i sezonowosc <span class="art-livebadge">LIVE</span></h4>${inner}</div>`;
+    } else inner += `<p class="muted">Dane pogodowe na żywo chwilowo niedostępne.</p>`;
+    if (season) inner += `<p>Sezonowo jesteśmy ${season.active ? '<b style="color:var(--loss)">w oknie krytycznym</b>' : season.near ? 'tuz przy oknie krytycznym' : 'poza oknem krytycznym'}: ${season.label}. ${season.active ? 'To moment, w którym pogoda waży najwięcej dla plonu.' : ''}</p>`;
+    wxBlock = `<div class="art-sec"><h4>Pogoda i sezonowość <span class="art-livebadge">LIVE</span></h4>${inner}</div>`;
   }
 
   // SCENARIUSZ KASKADY
   const cas = eng.cascade(node);
   const ccyTop = cas.currencies.slice(0, 5);
   const coTop = cas.companies.slice(0, 4);
-  const cascade = `<div class="art-sec"><h4>Scenariusz kaskady „co-jesli"</h4>` +
-    `<p>Gdyby ten wezel wypadl (utrata ~50% jego udzialu), modelowy szok ceny ${com.pl.toLowerCase()} wyniosłby <b style="color:var(--loss)">${sPct(cas.shock[node.commodity] || 0)}</b> (przez elastycznosc podazy ${com.elast}). Propagacja:</p>` +
+  const cascade = `<div class="art-sec"><h4>Scenariusz kaskady „co-jeśli"</h4>` +
+    `<p>Gdyby ten węzeł wypadł (utrata ~50% jego udziału), modelowy szok ceny ${com.pl.toLowerCase()} wyniosłby <b style="color:var(--loss)">${sPct(cas.shock[node.commodity] || 0)}</b> (przez elastyczność podaży ${com.elast}). Propagacja:</p>` +
     `<div class="art-cols"><div><div class="art-mini">waluty</div>${ccyTop.map((c) => `<div class="art-row"><span>${c.code}</span><b class="${c.impact >= 0 ? 'up' : 'dn'}">${sPct(c.impact)}</b></div>`).join('') || '<span class="muted">—</span>'}</div>` +
     `<div><div class="art-mini">firmy</div>${coTop.map((c) => `<div class="art-row"><span>${c.ticker}</span><b class="${c.impact >= 0 ? 'up' : 'dn'}">${sPct(c.impact)}</b></div>`).join('') || '<span class="muted">—</span>'}</div></div></div>`;
 
   // WERDYKT
   const verdict = `<div class="art-sec"><h4>Werdykt kontekstowy</h4>` +
-    `<p>${stat.spof ? `Trzymaj ${stat.topCountry} na radarze, bo koncentracja jest tu najwiekszym ryzykiem.` : 'Rozproszenie podazy daje rynkowi poduszke, ale '} ` +
-    `${pr >= 60 ? `wysoka centralnosc systemowa oznacza, ze ruch ceny rozejdzie sie szeroko po walutach i akcjach.` : `efekty pozostana raczej lokalne dla powiazanych aktywow.`} ` +
-    `Co obserwowac: ${isAgro ? 'pogode w oknie sezonowym i raporty USDA' : chokes.length ? 'droznosc chokepointow i zapasy' : 'politykę producentów i popyt'}.</p>` +
-    `<p class="art-obs">OBSERVE_ONLY: to warstwa kontekstu i scenariuszy „co-jesli", policzona algorytmicznie z danych. Nie jest prognoza kierunku. Liczby surowcowe sa skalibrowane zgrubnie i datowane.</p></div>`;
+    `<p>${stat.spof ? `Trzymaj ${stat.topCountry} na radarze, bo koncentracja jest tu największym ryzykiem.` : 'Rozproszenie podaży daje rynkowi poduszkę, ale '} ` +
+    `${pr >= 60 ? `wysoka centralność systemowa oznacza, ze ruch ceny rozejdzie się szeroko po walutach i akcjach.` : `efekty pozostaną raczej lokalne dla powiązanych aktywów.`} ` +
+    `Co obserwować: ${isAgro ? 'pogodę w oknie sezonowym i raporty USDA' : chokes.length ? 'drożność chokepointów i zapasy' : 'politykę producentów i popyt'}.</p>` +
+    `<p class="art-obs">OBSERVE_ONLY: to warstwa kontekstu i scenariuszy „co-jeśli", policzona algorytmicznie z danych. Nie jest prognoza kierunku. Liczby surowcowe sa skalibrowane zgrubnie i datowane.</p></div>`;
 
-  const foot = `<div class="art-foot">Wygenerowano algorytmicznie (bez LLM): <b>${nowStr()}</b> · dane na zywo: Open-Meteo, ExchangeRate-API, gold-api.com · statystyki liczone na biezaco z ${eng.nodes.length} zloz.</div>`;
+  const foot = `<div class="art-foot">Wygenerowano algorytmicznie (bez LLM): <b>${nowStr()}</b> · dane na żywo: Open-Meteo, ExchangeRate-API, gold-api.com · statystyki liczone na bieżąco z ${eng.nodes.length} złóż.</div>`;
 
   const html = `<div class="art-hd"><span class="art-emoji">${node.icon || '•'}</span><div><span class="d-eyebrow" style="color:${node.color}">${com.pl.toUpperCase()} · ${node.country}</span><h3>${node.name}</h3></div></div>` +
     `<p class="art-lede">${lede}</p>` + geo + conc + market + fxBlock + riskBlock + wxBlock + cascade + verdict + foot;
@@ -164,13 +164,13 @@ async function chokeArticle(cp, eng, Live) {
     return `<div class="art-row"><span>${c.code} · ${c.pl}${live}</span><b class="${c.impact >= 0 ? 'up' : 'dn'}">${sPct(c.impact)}</b></div>`;
   }).join('');
   const html = `<div class="art-hd"><span class="art-emoji">⚠️</span><div><span class="d-eyebrow" style="color:var(--loss)">CHOKEPOINT</span><h3>${cp.pl}</h3></div></div>` +
-    `<p class="art-lede">${cp.pl} (${cp.name}) to jedno z waskich gardel swiatowego handlu. Przeplyw: ${cp.throughput}. ${cp.note}.</p>` +
-    `<div class="art-sec"><h4>Parametry ryzyka</h4><div class="art-stats"><span>prawd. zaklocenia / rok<b>${sP(cp.annual_disruption_prob)}</b></span><span>dotkliwosc<b>${sP(cp.severity)}</b></span><span>objazd<b>${(cp.alt_routes || []).join('; ') || '—'}</b></span></div></div>` +
-    `<div class="art-sec"><h4>Co przez nie plynie</h4><p>${coms.map((c) => c.pl).join(', ')}. Zatkanie przeklada sie na cene i czas dostawy tych surowcow w skali globalnej.</p></div>` +
+    `<p class="art-lede">${cp.pl} (${cp.name}) to jedno z wąskich gardeł światowego handlu. Przepływ: ${cp.throughput}. ${cp.note}.</p>` +
+    `<div class="art-sec"><h4>Parametry ryzyka</h4><div class="art-stats"><span>prawd. zakłócenia / rok<b>${sP(cp.annual_disruption_prob)}</b></span><span>dotkliwość<b>${sP(cp.severity)}</b></span><span>objazd<b>${(cp.alt_routes || []).join('; ') || '—'}</b></span></div></div>` +
+    `<div class="art-sec"><h4>Co przez nie płynie</h4><p>${coms.map((c) => c.pl).join(', ')}. Zatkanie przekłada się na cenę i czas dostawy tych surowców w skali globalnej.</p></div>` +
     `<div class="art-sec"><h4>Reakcja walut (kaskada, live FX)</h4><div class="art-list">${ccyRows || '<span class="muted">—</span>'}</div></div>` +
-    (compounds.length ? `<div class="art-sec"><h4>Kombinatoryka: scenariusze laczne</h4>${compounds.map((r) => `<div class="art-row"><span>+ ${r.a === cp.pl ? r.b : r.a}</span><b>p ${(r.jointProb * 100).toFixed(2)}%</b></div>`).join('')}<p class="muted" style="margin-top:6px">Najgrozniejsze, gdy ten punkt staje rownoczesnie z innym (ryzyko skorelowane).</p></div>` : '') +
-    `<div class="art-sec"><p class="art-obs">OBSERVE_ONLY: scenariusz, nie prognoza. Kaskada policzona deterministycznie z utraty przeplywu / elastycznosci.</p></div>` +
-    `<div class="art-foot">Wygenerowano: <b>${nowStr()}</b> · FX na zywo: ExchangeRate-API.</div>`;
+    (compounds.length ? `<div class="art-sec"><h4>Kombinatoryka: scenariusze łączne</h4>${compounds.map((r) => `<div class="art-row"><span>+ ${r.a === cp.pl ? r.b : r.a}</span><b>p ${(r.jointProb * 100).toFixed(2)}%</b></div>`).join('')}<p class="muted" style="margin-top:6px">Najgroźniejsze, gdy ten punkt staje równocześnie z innym (ryzyko skorelowane).</p></div>` : '') +
+    `<div class="art-sec"><p class="art-obs">OBSERVE_ONLY: scenariusz, nie prognoza. Kaskada policzona deterministycznie z utraty przepływu / elastyczności.</p></div>` +
+    `<div class="art-foot">Wygenerowano: <b>${nowStr()}</b> · FX na żywo: ExchangeRate-API.</div>`;
   return { title: cp.pl, html };
 }
 

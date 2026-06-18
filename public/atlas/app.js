@@ -30,7 +30,7 @@ async function main() {
   $('#stat-nodes').textContent = eng.nodes.length;
   $('#stat-commodities').textContent = Object.values(eng.byCommodity).filter((b) => b.nodes.length).length;
   $('#stat-choke').textContent = eng.chokepoints.length;
-  $('#stat-sources').textContent = eng.sources.length;
+  $('#stat-sources').textContent = eng.sources.filter((s) => s.wired).length + ' / ' + eng.sources.length;
 
   const globe = new Globe($('#atlas-canvas')).init();
   globe.enableBloom();
@@ -118,7 +118,7 @@ function tipHTML(p, eng) {
   if (p.type === 'choke') return `<b>⚠️ ${it.pl}</b><span class="t-sub">CHOKEPOINT</span><p>${it.throughput}</p><div class="t-row">prawd. zakłócenia / rok <b>${sP(it.annual_disruption_prob)}</b></div>`;
   if (p.type === 'bank') return `<b>🏛️ ${it.pl}</b><span class="t-sub">BANK CENTRALNY · ${it.ccy}</span><div class="t-row">stopa <b>${it.rate}%</b></div><div class="t-row">nastawienie <b>${it.stance}</b></div>`;
   const com = eng.commodities[it.commodity];
-  return `<b>${it.icon || ''} ${it.name}</b><span class="t-sub" style="color:${CAT_COLOR[it.cat]}">${com ? com.pl : it.commodity} · ${it.country}</span><div class="t-row">udział w globalnej podaży <b>${it.share_pct}%</b></div><div class="t-row">kruchość surowca <b style="color:${heat(it.fragility)}">${it.fragility}/100</b></div><div class="t-row muted">klik = pełne dossier</div>`;
+  return `<b>${it.icon || ''} ${it.name}</b><span class="t-sub" style="color:${CAT_COLOR[it.cat]}">${com ? com.pl : it.commodity} · ${it.country}</span><div class="t-row">udział w globalnej podaży <b>${it.share_pct}%</b></div><div class="t-row">kruchość surowca <b style="color:${heat(it.fragility)}">${it.fragility}/100</b></div><div class="t-row muted">klik otwiera pełne dossier</div>`;
 }
 
 function renderRank(box, list, val, label, eng, globe, color, frag) {

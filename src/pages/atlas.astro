@@ -136,7 +136,7 @@ input{font-family:inherit}
 .cs-row span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .cs-row em{font-family:'JetBrains Mono Variable',monospace;font-size:9.5px;color:var(--muted);font-style:normal;margin-left:7px}
 .cs-row b{font-family:'JetBrains Mono Variable',monospace;font-size:12px;font-variant-numeric:tabular-nums;flex:none}
-.d-obs{font-family:'JetBrains Mono Variable',monospace;font-size:9.5px;line-height:1.5;color:var(--muted);margin-top:16px;border:1px solid var(--line-2);border-radius:8px;padding:9px 10px;background:color-mix(in srgb,var(--accent) 5%,transparent)}
+.d-obs,.art-obs{font-family:'JetBrains Mono Variable',monospace;font-size:9.5px;line-height:1.5;color:var(--muted);margin-top:16px;border:1px solid var(--line-2);border-radius:8px;padding:9px 10px;background:color-mix(in srgb,var(--accent) 5%,transparent)}
 
 /* TOOLTIP */
 #tooltip{position:fixed;z-index:60;pointer-events:none;max-width:260px;background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--chip-line);border-radius:11px;padding:11px 13px;opacity:0;transition:opacity .14s;box-shadow:0 18px 40px -16px rgba(0,0,0,.7)}
@@ -254,7 +254,7 @@ html[data-atlas-mobile] #stage,html[data-atlas-mobile] #rail,html[data-atlas-mob
     <div class="hud-cell"><b id="stat-nodes">0</b><span>złóż / węzłów</span></div>
     <div class="hud-cell"><b id="stat-commodities">0</b><span>surowców</span></div>
     <div class="hud-cell"><b id="stat-choke">0</b><span>chokepointów</span></div>
-    <div class="hud-cell"><b id="stat-sources">0</b><span>źródeł danych</span></div>
+    <div class="hud-cell" title="wpięte na żywo z przeglądarki / skatalogowane w roadmapie źródeł"><b id="stat-sources">0</b><span>źródła (żywo / katalog)</span></div>
   </div>
   <div class="rail-block">
     <input id="search-input" type="text" placeholder="szukaj: złoże, kraj, firma..." autocomplete="off" />
