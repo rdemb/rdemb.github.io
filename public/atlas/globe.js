@@ -15,6 +15,10 @@ import { buildEarth } from './earth.js';
 const DEG = Math.PI / 180;
 const R = 100;
 const LOD_NEAR = 350;                     // camDist < => pokazuj emoji (inaczej kropki)
+const LOD_FAR = 520;                      // gestosciowy LOD: dalej niz to => tylko najwieksze wezly
+const LOD_DENSE_NEAR = 170;               // blizej niz to => wszystkie wezly
+const LOD_MINVIS = 150;                   // minimum najwiekszych wezlow widocznych z daleka
+const LOD_GLYPH = 240;                    // max wezlow z ikona-emoji (najwieksze); reszta = kropki (czytelnosc przy tysiacach)
 const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
 
 export function latLngToVec3(lat, lng, r = R) {
@@ -178,23 +182,33 @@ export class Globe {
     for (const n of nodes) addMarker(n, this.layers.nodes, R * 1.004, 1.7 + Math.sqrt(n.share_pct || 0) * 0.8, n.color || '#E0E3E8', true);
     for (const cp of chokepoints) { cp.icon = '⚠️'; addMarker(cp, this.layers.choke, R * 1.006, 3.3, '#E8675A', false); }
     for (const b of banks) { b.icon = '🏛️'; addMarker(b, this.layers.bank, R * 1.006, 2.9, '#9BD17A', false); }
+    // ranga wezlow wg udzialu (gestosciowy LOD: z daleka widac najwieksze, z bliska wszystkie)
+    this.nodeItems.slice().sort((a, b) => (b.share_pct || 0) - (a.share_pct || 0)).forEach((it, i) => { it._rank = i; });
+    this._nodeTotal = this.nodeItems.length;
     this._applyLOD(true);
   }
 
   _applyLOD(force) {
-    const near = this.camera.position.length() < LOD_NEAR;
-    if (!force && near === this._lodNear) return;
-    this._lodNear = near;
-    const setOne = (item, on) => {
+    const dist = this.camera.position.length();
+    const near = dist < LOD_NEAR;
+    // ile wezlow pokazac: daleko=tylko najwieksze (LOD_MINVIS), blisko=wszystkie (eased)
+    const nearness = clamp((LOD_FAR - dist) / (LOD_FAR - LOD_DENSE_NEAR), 0, 1);
+    const total = this._nodeTotal || this.nodeItems.length;
+    const visN = Math.round(LOD_MINVIS + Math.pow(nearness, 1.5) * Math.max(0, total - LOD_MINVIS));
+    if (!force && near === this._lodNear && visN === this._visN) return;
+    this._lodNear = near; this._visN = visN;
+    const setOne = (item, on, ranked) => {
       const sel = this._selId && item.id === this._selId;
-      const hs = (item._base) * (sel ? 1.95 : 1) * 0.65;   // mniejszy footprint poswiaty przy gestym polu
+      const show = on && (sel || !ranked || item._rank < visN);   // gestosciowe odsiewanie tylko dla wezlow
+      const hs = (item._base) * (sel ? 1.95 : 1) * 0.65;
       const gs = (item._base) * (sel ? 1.95 : 1);
-      item._halo.visible = on; item._halo.scale.set(hs, hs, 1);
-      item._glyph.visible = on && (near || sel); item._glyph.scale.set(gs, gs, 1);
+      item._halo.visible = show; item._halo.scale.set(hs, hs, 1);
+      // emoji: choke/bank gdy blisko; wezly tylko najwieksze (top rank) by nie zalac globu ikonami
+      item._glyph.visible = show && (sel || (near && (!ranked || item._rank < LOD_GLYPH))); item._glyph.scale.set(gs, gs, 1);
     };
-    for (const n of this.nodeItems) setOne(n, !this._catFilter || this._catFilter.has(n.cat));
-    for (const cp of this.chokeItems) setOne(cp, this.layers.choke.visible);
-    for (const b of this.bankItems) setOne(b, this.layers.bank.visible);
+    for (const n of this.nodeItems) setOne(n, !this._catFilter || this._catFilter.has(n.cat), true);
+    for (const cp of this.chokeItems) setOne(cp, this.layers.choke.visible, false);   // chokepointy zawsze (wazne, nieliczne)
+    for (const b of this.bankItems) setOne(b, this.layers.bank.visible, false);
   }
 
   setLayerVisible(key, v) { if (this.layers[key]) this.layers[key].visible = v; if (key === 'choke' || key === 'bank') this._applyLOD(true); }
