@@ -9,6 +9,7 @@ import WorldEngine, { CAT_COLOR, CAT_PL, DEFAULT_PORTFOLIO } from './engine.js';
 import Globe from './globe.js';
 import Live from './live.js';
 import buildArticle from './article.js';
+import { t, T, td, LANG } from './i18n.js';
 
 const $ = (s, r = document) => r.querySelector(s);
 const node = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; };
@@ -31,8 +32,8 @@ function loadPF() {
 }
 function savePF(pf) { try { localStorage.setItem(PF_KEY, JSON.stringify(pf)); } catch (e) {} }
 function pfLabel(pos, eng) {
-  if (pos.kind === 'fx') { const c = eng.ccy(pos.id); return c ? `${pos.id} · ${c.pl}` : pos.id; }
-  const c = eng.company(pos.id); return c ? `${c.name}${c.ticker ? ' ' + c.ticker : ''}` : pos.id;
+  if (pos.kind === 'fx') { const c = eng.ccy(pos.id); return c ? T`${pos.id} · ${c.pl}` : pos.id; }
+  const c = eng.company(pos.id); return c ? T`${c.name}${c.ticker ? ' ' + c.ticker : ''}` : pos.id;
 }
 
 async function main() {
@@ -50,7 +51,7 @@ async function main() {
 
   // przycisk rotacji
   const rb = $('#rotate-btn');
-  globe.onRotateChange = (v) => { rb.classList.toggle('on', v); rb.innerHTML = v ? '⏸ <span>auto-obrót</span>' : '▶ <span>zatrzymany</span>'; };
+  globe.onRotateChange = (v) => { rb.classList.toggle('on', v); rb.innerHTML = v ? t('⏸ <span>auto-obrót</span>') : t('▶ <span>zatrzymany</span>'); };
   rb.onclick = () => globe.toggleRotate();
   globe.onRotateChange(globe.autoRotate);
   // dostepnosc: nie kreci globem, gdy uzytkownik prosi o ograniczony ruch
@@ -60,7 +61,7 @@ async function main() {
   const active = new Set(CATS); const legend = $('#legend'); const counts = {};
   for (const c of CATS) counts[c] = 0; for (const n of eng.nodes) counts[n.cat] = (counts[n.cat] || 0) + 1;
   for (const c of CATS) {
-    const chip = node('button', 'lg-chip on', `<i style="background:${CAT_COLOR[c]}"></i><span>${CAT_PL[c]}</span><b>${counts[c] || 0}</b>`);
+    const chip = node('button', 'lg-chip on', T`<i style="background:${CAT_COLOR[c]}"></i><span>${t(CAT_PL[c])}</span><b>${counts[c] || 0}</b>`);
     chip.onclick = () => { chip.classList.toggle('on'); if (active.has(c)) active.delete(c); else active.add(c); globe.setCategoryFilter(active.size === CATS.length ? null : active); };
     legend.appendChild(chip);
   }
@@ -68,12 +69,12 @@ async function main() {
   // warstwy + tryb koloru
   const mkToggle = (label, on, fn) => { const b = node('button', 'tg' + (on ? ' on' : ''), label); b.onclick = () => { b.classList.toggle('on'); fn(b.classList.contains('on')); }; return b; };
   const lay = $('#layers');
-  lay.appendChild(mkToggle('Złoża', true, (v) => globe.setLayerVisible('nodes', v)));
-  lay.appendChild(mkToggle('Chokepointy', true, (v) => globe.setLayerVisible('choke', v)));
-  lay.appendChild(mkToggle('Banki', true, (v) => globe.setLayerVisible('bank', v)));
-  lay.appendChild(mkToggle('Kontury', true, (v) => globe.setLayerVisible('coast', v)));
+  lay.appendChild(mkToggle(t('Złoża'), true, (v) => globe.setLayerVisible('nodes', v)));
+  lay.appendChild(mkToggle(t('Chokepointy'), true, (v) => globe.setLayerVisible('choke', v)));
+  lay.appendChild(mkToggle(t('Banki'), true, (v) => globe.setLayerVisible('bank', v)));
+  lay.appendChild(mkToggle(t('Kontury'), true, (v) => globe.setLayerVisible('coast', v)));
   let frag = false;
-  $('#colormode').onclick = () => { frag = !frag; globe.setColorMode(frag ? 'fragility' : 'category'); $('#colormode').textContent = frag ? 'Kolor: KRUCHOŚĆ' : 'Kolor: kategoria'; $('#colormode').classList.toggle('on', frag); };
+  $('#colormode').onclick = () => { frag = !frag; globe.setColorMode(frag ? 'fragility' : 'category'); $('#colormode').textContent = frag ? t('Kolor: KRUCHOŚĆ') : t('Kolor: kategoria'); $('#colormode').classList.toggle('on', frag); };
 
   // rankingi: PageRank centralność + kruchość
   renderRank($('#rank-sys'), eng.centralityRanking().slice(0, 8), (b) => b.pr, (b) => Math.round(b.pr), eng, globe, '#E8B23A', false);
@@ -94,7 +95,7 @@ async function main() {
     globe.drawArcs(arcs); globe.highlight(o.id);
     $('#detail-body').innerHTML = dossierLoading(p); openPanel();
     try { const art = await buildArticle(p, eng, Live); if ($('#detail').classList.contains('open')) { $('#detail-body').innerHTML = art.html; appendBriefBar(p, eng); } }
-    catch (e) { console.error(e); $('#detail-body').innerHTML = '<p class="muted">Nie udało się złożyć dossier.</p>'; }
+    catch (e) { console.error(e); $('#detail-body').innerHTML = t('Nie udało się złożyć dossier.'); }
   };
 
   // wyszukiwarka
@@ -106,7 +107,7 @@ async function main() {
     for (const c of eng.chokepoints) if ((c.pl + c.name).toLowerCase().includes(q)) hits.push({ t: 'chokepoint', it: c, ic: '⚠️', ll: c, choke: true });
     for (const c of eng.companies) if ((c.name + c.ticker).toLowerCase().includes(q) && c.hq) hits.push({ t: 'firma', it: c, ic: '🏢', ll: { lat: c.hq[0], lng: c.hq[1] } });
     hits.slice(0, 14).forEach((h) => {
-      const r = node('button', 'sr-row', `<span>${h.ic} ${h.it.name || h.it.pl}</span><em>${h.t}</em>`);
+      const r = node('button', 'sr-row', T`<span>${h.ic} ${h.it.name || h.it.pl}</span><em>${h.t}</em>`);
       r.onclick = () => { globe.focus(h.ll.lat, h.ll.lng); if (h.node) globe.onSelect({ type: 'node', item: h.it }); else if (h.choke) globe.onSelect({ type: 'choke', item: h.it }); sr.innerHTML = ''; si.value = ''; };
       sr.appendChild(r);
     });
@@ -119,22 +120,22 @@ async function main() {
     const ex = eng.portfolioExposure(portfolio);
     if (!ex.rows.length) { pfExp.innerHTML = ''; return; }
     const max = Math.max(...ex.rows.map((r) => r.gross), 1);
-    const top = ex.rows.slice(0, 5).map((r) => `<div class="pf-exp-row"><span>${r.pl}</span><span class="pf-exp-bar"><i style="width:${r.gross / max * 100}%;background:${r.net >= 0 ? 'var(--live)' : 'var(--loss)'}"></i></span><b class="${r.net >= 0 ? 'up' : 'dn'}">${r.net >= 0 ? '+' : ''}${r.net.toFixed(0)}</b></div>`).join('');
-    const warn = ex.hiddenCorr ? `<div class="pf-warn">Ukryta korelacja: <b>${ex.topNet.pl}</b> to Twój największy kierunkowy zakład (netto ${ex.topNet.net >= 0 ? '+' : ''}${ex.topNet.net.toFixed(0)}, ${Math.round(ex.concentration * 100)}% ekspozycji netto, jednokierunkowy w ${Math.round(ex.topNet.oneWay * 100)}%). Te pozycje ruszają się razem, nie dywersyfikują.</div>` : '';
-    const hedge = ex.hedged.length ? `<div class="pf-hedge">Zhedgowane (duże brutto, małe netto): ${ex.hedged.map((h) => h.pl).join(', ')}.</div>` : '';
-    pfExp.innerHTML = `<div class="rail-label" style="margin-bottom:7px">Co rusza portfelem <span class="muted">· wrażliwość na +1 szok surowca</span></div>${top}${warn}${hedge}`;
+    const top = ex.rows.slice(0, 5).map((r) => T`<div class="pf-exp-row"><span>${r.pl}</span><span class="pf-exp-bar"><i style="width:${r.gross / max * 100}%;background:${r.net >= 0 ? 'var(--live)' : 'var(--loss)'}"></i></span><b class="${r.net >= 0 ? 'up' : 'dn'}">${r.net >= 0 ? '+' : ''}${r.net.toFixed(0)}</b></div>`).join('');
+    const warn = ex.hiddenCorr ? T`<div class="pf-warn">Ukryta korelacja: <b>${ex.topNet.pl}</b> to Twój największy kierunkowy zakład (netto ${ex.topNet.net >= 0 ? '+' : ''}${ex.topNet.net.toFixed(0)}, ${Math.round(ex.concentration * 100)}% ekspozycji netto, jednokierunkowy w ${Math.round(ex.topNet.oneWay * 100)}%). Te pozycje ruszają się razem, nie dywersyfikują.</div>` : '';
+    const hedge = ex.hedged.length ? T`<div class="pf-hedge">Zhedgowane (duże brutto, małe netto): ${ex.hedged.map((h) => h.pl).join(', ')}.</div>` : '';
+    pfExp.innerHTML = T`<div class="rail-label" style="margin-bottom:7px">Co rusza portfelem <span class="muted">· wrażliwość na +1 szok surowca</span></div>${top}${warn}${hedge}`;
   }
   function buildPF() {
     pfList.innerHTML = '';
     portfolio.forEach((pos, i) => {
-      const row = node('div', 'pf-row', `<span>${pfLabel(pos, eng)}</span><span class="pf-dir ${pos.dir >= 0 ? 'up' : 'dn'}">${pos.dir >= 0 ? 'long' : 'short'} ${pos.notional}</span>`);
+      const row = node('div', 'pf-row', T`<span>${pfLabel(pos, eng)}</span><span class="pf-dir ${pos.dir >= 0 ? 'up' : 'dn'}">${pos.dir >= 0 ? 'long' : 'short'} ${pos.notional}</span>`);
       const x = node('button', 'pf-x', '✕'); x.title = 'usuń';
       x.onclick = () => { portfolio.splice(i, 1); savePF(portfolio); buildPF(); };
       row.appendChild(x); pfList.appendChild(row);
     });
     if (!portfolio.length) pfList.appendChild(node('div', 'muted', '<span style="font-size:11.5px">Pusto. Dodaj pozycje albo wróć do demo.</span>'));
     const gross = portfolio.reduce((a, p) => a + (p.notional || 0), 0);
-    pfFoot.innerHTML = `<span>brutto ${gross} j. · ${portfolio.length} poz.</span>`;
+    pfFoot.innerHTML = T`<span>brutto ${gross} j. · ${portfolio.length} poz.</span>`;
     const reset = node('button', 'pf-reset', 'reset do demo');
     reset.onclick = () => { portfolio = DEFAULT_PORTFOLIO.map((p) => ({ ...p })); savePF(portfolio); buildPF(); };
     pfFoot.appendChild(reset);
@@ -150,7 +151,7 @@ async function main() {
     const fillIds = () => {
       idsel.innerHTML = '';
       const opts = kind.value === 'fx'
-        ? eng.currencies.map((c) => ({ v: c.code, t: `${c.code} · ${c.pl}` }))
+        ? eng.currencies.map((c) => ({ v: c.code, t: T`${c.code} · ${c.pl}` }))
         : eng.companies.slice().sort((a, b) => (b.mkt_cap_bn || 0) - (a.mkt_cap_bn || 0)).map((c) => ({ v: c.id, t: c.name }));
       for (const o of opts) { const e = node('option'); e.value = o.v; e.textContent = o.t; idsel.appendChild(e); }
     };
@@ -162,8 +163,8 @@ async function main() {
 
   // Monte Carlo + kombinatoryka (na bieżącym portfelu)
   $('#sim-run').onclick = () => {
-    const btn = $('#sim-run'); btn.disabled = true; $('#sim-status').textContent = 'liczenie 2000 scenariuszy + par compound...';
-    setTimeout(() => { const res = eng.monteCarlo({ trials: 2000, portfolio }); const comp = eng.compoundRisks(6); renderSim(res, comp, eng); btn.disabled = false; $('#sim-status').textContent = `${res.trials} scenariuszy · ø ${res.expectedEvents.toFixed(1)} zakłóceń/rok`; }, 30);
+    const btn = $('#sim-run'); btn.disabled = true; $('#sim-status').textContent = t('liczenie 2000 scenariuszy + par compound...');
+    setTimeout(() => { const res = eng.monteCarlo({ trials: 2000, portfolio }); const comp = eng.compoundRisks(6); renderSim(res, comp, eng); btn.disabled = false; $('#sim-status').textContent = T`${res.trials} scenariuszy · ø ${res.expectedEvents.toFixed(1)} zakłóceń/rok`; }, 30);
   };
 
   // deep-link: /atlas/?focus=ghawar | ?commodity=crude_oil | ?choke=hormuz
@@ -173,6 +174,17 @@ async function main() {
   $('#detail-close').onclick = () => closePanel(globe);
   $('#atlas-canvas').addEventListener('dblclick', () => closePanel(globe));
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closePanel(globe); });
+  document.documentElement.lang = LANG;
+  // SiteNav i mobile-gate maja data-pl/en/de -> tlumacz przez dataset[LANG]
+  document.querySelectorAll('[data-en]').forEach((el) => { const v = el.getAttribute('data-' + LANG); if (v != null) el.textContent = v; });
+  // rail Atlasu ma data-i18n (klucz=PL) -> t(); pomin elementy SiteNav (maja data-en) i brak trafienia (zostaw PL)
+  document.querySelectorAll('[data-i18n]').forEach((el) => { if (el.hasAttribute('data-en')) return; const k = el.getAttribute('data-i18n'); const v = t(k); if (v && v !== k) el.textContent = v; });
+  document.querySelectorAll('[data-i18n-ph]').forEach((el) => { const k = el.getAttribute('data-i18n-ph'); const v = t(k); if (v && v !== k) el.setAttribute('placeholder', v); });
+  const langSeg = document.getElementById('lang');
+  if (langSeg) {
+    langSeg.querySelectorAll('[data-lang]').forEach((b) => b.classList.toggle('on', b.dataset.lang === LANG));
+    langSeg.addEventListener('click', (e) => { const b = e.target.closest('[data-lang]'); if (!b) return; e.preventDefault(); try { localStorage.setItem('dlogic-lang', b.dataset.lang); } catch (err) {} location.reload(); });
+  }
   $('#loading').classList.add('done');
 }
 
@@ -180,17 +192,17 @@ function place(tip, x, y) { const w = tip.offsetWidth, h = tip.offsetHeight; tip
 
 function tipHTML(p, eng) {
   const it = p.item;
-  if (p.type === 'choke') return `<b>⚠️ ${it.pl}</b><span class="t-sub">CHOKEPOINT</span><p>${it.throughput}</p><div class="t-row">prawd. zakłócenia / rok <b>${sP(it.annual_disruption_prob)}</b></div>`;
-  if (p.type === 'bank') return `<b>🏛️ ${it.pl}</b><span class="t-sub">BANK CENTRALNY · ${it.ccy}</span><div class="t-row">stopa <b>${it.rate}%</b></div><div class="t-row">nastawienie <b>${it.stance}</b></div>`;
+  if (p.type === 'choke') return T`<b>⚠️ ${it.pl}</b><span class="t-sub">CHOKEPOINT</span><p>${it.throughput}</p><div class="t-row">prawd. zakłócenia / rok <b>${sP(it.annual_disruption_prob)}</b></div>`;
+  if (p.type === 'bank') return T`<b>🏛️ ${td('bank:' + it.id + ':pl', it.pl)}</b><span class="t-sub">BANK CENTRALNY · ${it.ccy}</span><div class="t-row">stopa <b>${it.rate}%</b></div><div class="t-row">nastawienie <b>${it.stance}</b></div>`;
   const com = eng.commodities[it.commodity];
-  return `<b>${it.icon || ''} ${it.name}</b><span class="t-sub" style="color:${CAT_COLOR[it.cat]}">${com ? com.pl : it.commodity} · ${it.country}</span><div class="t-row">udział w globalnej podaży <b>${it.share_pct}%</b></div><div class="t-row">kruchość surowca <b style="color:${heat(it.fragility)}">${it.fragility}/100</b></div><div class="t-row muted">klik otwiera pełne dossier</div>`;
+  return T`<b>${it.icon || ''} ${it.name}</b><span class="t-sub" style="color:${CAT_COLOR[it.cat]}">${com ? td('commodity:' + it.commodity + ':pl', com.pl) : it.commodity} · ${it.country}</span><div class="t-row">udział w globalnej podaży <b>${it.share_pct}%</b></div><div class="t-row">kruchość surowca <b style="color:${heat(it.fragility)}">${it.fragility}/100</b></div><div class="t-row muted">klik otwiera pełne dossier</div>`;
 }
 
 function renderRank(box, list, val, label, eng, globe, color, frag) {
   box.innerHTML = ''; const max = Math.max(...list.map(val), 1);
   for (const b of list) {
-    const row = node('button', 'rk-row', `<span class="rk-name">${b.com.pl}</span><span class="rk-bar"><i style="width:${val(b) / max * 100}%;background:${frag ? heat(b.fragility) : color}"></i></span><b>${label(b)}</b>`);
-    row.title = `${b.topCountry}: ${sP(b.topShare)} podaży · ${b.nodes.length} złóż`;
+    const row = node('button', 'rk-row', T`<span class="rk-name">${td('commodity:' + b.id + ':pl', b.com.pl)}</span><span class="rk-bar"><i style="width:${val(b) / max * 100}%;background:${frag ? heat(b.fragility) : color}"></i></span><b>${label(b)}</b>`);
+    row.title = T`${b.topCountry}: ${sP(b.topShare)} podaży · ${b.nodes.length} złóż`;
     row.onclick = () => { const top = b.nodes.slice().sort((a, c) => c.share_pct - a.share_pct)[0]; if (top) { globe.focus(top.lat, top.lng); globe.onSelect({ type: 'node', item: top }); } };
     box.appendChild(row);
   }
@@ -214,7 +226,7 @@ function applyDeepLink(eng, globe) {
 // ---- BLOK DO BRIEFU FX (twardy gard jezykowy: warunkowo, zero targetow, zero kierunku) ----
 function buildBriefText(p, eng) {
   const it = p.item, d = new Date();
-  const date = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  const date = T`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
   const cas = eng.cascade(it);
   const roleCodes = (role) => cas.currencies.filter((c) => { const cc = eng.ccy(c.code); return cc && cc.role === role; }).slice(0, 4).map((c) => c.code);
   const exp = roleCodes('exporter'), imp = roleCodes('importer');
@@ -254,23 +266,23 @@ function appendBriefBar(p, eng) {
 
 function openPanel() { $('#detail').classList.add('open'); }
 function closePanel(globe) { $('#detail').classList.remove('open'); if (globe) { globe.clearArcs(); globe.highlight(null); } }
-function dossierLoading(p) { const it = p.item; return `<div class="art-hd"><span class="art-emoji">${it.icon || (p.type === 'choke' ? '⚠️' : '•')}</span><div><span class="d-eyebrow">DOSSIER</span><h3>${it.name || it.pl}</h3></div></div><p class="muted art-loading">Kompletowanie dossier… pobieranie danych na żywo (pogoda, FX).</p>`; }
+function dossierLoading(p) { const it = p.item; return T`<div class="art-hd"><span class="art-emoji">${it.icon || (p.type === 'choke' ? '⚠️' : '•')}</span><div><span class="d-eyebrow">DOSSIER</span><h3>${it.name || it.pl}</h3></div></div><p class="muted art-loading">Kompletowanie dossier… pobieranie danych na żywo (pogoda, FX).</p>`; }
 
 function showBank(it, eng) {
   const cc = eng.ccy(it.ccy);
-  $('#detail-body').innerHTML = `<div class="art-hd"><span class="art-emoji">🏛️</span><div><span class="d-eyebrow" style="color:#9BD17A">BANK CENTRALNY · ${it.ccy}</span><h3>${it.pl}</h3></div></div>` +
-    `<p class="art-lede">${it.note}.</p>` +
-    `<div class="art-sec"><h4>Polityka</h4><div class="art-stats"><span>stopa (ostatnia znana)<b>${it.rate}%</b></span><span>nastawienie<b>${it.stance}</b></span><span>stan na<b>${it.as_of}</b></span><span>waluta<b>${it.ccy} · ${cc ? cc.role : ''}</b></span></div></div>` +
-    (cc ? `<div class="art-sec"><h4>Surowce napędzające ${it.ccy}</h4><div class="art-list">${(cc.drivers || []).map((d) => `<div class="art-row"><span>${eng.commodities[d.c]?.pl || d.c}</span><b>${sP(d.w)}</b></div>`).join('') || '<span class="muted">przystań / nabiał</span>'}</div></div>` : '') +
-    `<p class="art-obs">Stopy przybliżone, do podpięcia na żywo (FRED / EBC) wg katalogu źródeł.</p>`;
+  $('#detail-body').innerHTML = T`<div class="art-hd"><span class="art-emoji">🏛️</span><div><span class="d-eyebrow" style="color:#9BD17A">BANK CENTRALNY · ${it.ccy}</span><h3>${td('bank:' + it.id + ':pl', it.pl)}</h3></div></div>` +
+    T`<p class="art-lede">${td('bank:' + it.id + ':note', it.note)}.</p>` +
+    T`<div class="art-sec"><h4>Polityka</h4><div class="art-stats"><span>stopa (ostatnia znana)<b>${it.rate}%</b></span><span>nastawienie<b>${it.stance}</b></span><span>stan na<b>${it.as_of}</b></span><span>waluta<b>${it.ccy} · ${cc ? cc.role : ''}</b></span></div></div>` +
+    (cc ? T`<div class="art-sec"><h4>Surowce napędzające ${it.ccy}</h4><div class="art-list">${(cc.drivers || []).map((d) => T`<div class="art-row"><span>${eng.commodities[d.c]?.pl || d.c}</span><b>${sP(d.w)}</b></div>`).join('') || '<span class="muted">przystań / nabiał</span>'}</div></div>` : '') +
+    T`<p class="art-obs">Stopy przybliżone, do podpięcia na żywo (FRED / EBC) wg katalogu źródeł.</p>`;
 }
 
 function renderSim(res, compounds, eng) {
   const out = $('#sim-out');
   const maxS = Math.max(...res.topShock.map((c) => c.p95), 0.01);
-  const shocks = res.topShock.slice(0, 9).map((c) => `<div class="sm-row"><span>${c.name}</span><span class="sm-bar"><i style="width:${c.p95 / maxS * 100}%;background:${heat(c.fragility)}"></i></span><b>${sP(c.p95)}</b></div>`).join('');
+  const shocks = res.topShock.slice(0, 9).map((c) => T`<div class="sm-row"><span>${c.name}</span><span class="sm-bar"><i style="width:${c.p95 / maxS * 100}%;background:${heat(c.fragility)}"></i></span><b>${sP(c.p95)}</b></div>`).join('');
   const pf = res.portfolio;
-  const comp = compounds.map((r) => `<div class="sm-row2"><span>${r.a} <em>+</em> ${r.b}</span><b>p ${(r.jointProb * 100).toFixed(2)}%</b></div>`).join('');
+  const comp = compounds.map((r) => T`<div class="sm-row2"><span>${r.a} <em>+</em> ${r.b}</span><b>p ${(r.jointProb * 100).toFixed(2)}%</b></div>`).join('');
   out.innerHTML = `
     <div class="sm-sec"><h4>Najbardziej zagrożone surowce <span class="muted">(szok ceny P95/rok)</span></h4>${shocks}</div>
     <div class="sm-sec"><h4>Kombinatoryka: najgorsze scenariusze łączne</h4>${comp}<p class="muted" style="margin-top:5px">Pary źródeł zakłóceń wg dotkliwości łącznej (HHI×systemowość).</p></div>
