@@ -438,6 +438,44 @@ export class WorldEngine {
       portfolioPositions: portfolio,
     };
   }
+
+  /*
+    DEKOMPOZYCJA EKSPOZYCJI — który surowiec najmocniej rusza portfelem.
+    Liczy wrazliwosc P&L ksiazki na +1.0 szok ceny kazdego surowca (czyste
+    pochodne liniowe modelu, te same bety co kaskada/MC). net = kierunkowa,
+    gross = bezwzgledna. Gdy |net| ~ gross dla czolowego surowca, ksiazka to
+    skoncentrowany jednokierunkowy zaklad (ukryta korelacja surowcowa).
+  */
+  portfolioExposure(portfolio = DEFAULT_PORTFOLIO) {
+    const ccyByCode = {}; for (const c of this.currencies) ccyByCode[c.code] = c;
+    const coById = {}; for (const c of this.companies) coById[c.id] = c;
+    const net = {}, gross = {};
+    const bump = (cid, v) => { net[cid] = (net[cid] || 0) + v; gross[cid] = (gross[cid] || 0) + Math.abs(v); };
+    for (const pos of portfolio) {
+      if (pos.kind === 'fx') {
+        const ccy = ccyByCode[pos.id]; if (!ccy) continue;
+        for (const d of (ccy.drivers || [])) bump(d.c, pos.notional * pos.dir * CCY_BETA * d.w * this._ccySign(ccy.role));
+      } else {
+        const co = coById[pos.id]; if (!co) continue;
+        for (const cid of (co.commodities || [])) bump(cid, pos.notional * pos.dir * CO_BETA * this._coSign(co.role));
+      }
+    }
+    const rows = Object.keys(gross).map((cid) => ({
+      id: cid, pl: this.commodities[cid]?.pl || cid, net: net[cid], gross: gross[cid],
+      oneWay: gross[cid] ? Math.abs(net[cid]) / gross[cid] : 0,   // 1 = czysto kierunkowy, ~0 = zhedgowany
+    }));
+    const byGross = rows.slice().sort((a, b) => b.gross - a.gross);
+    const byNet = rows.slice().sort((a, b) => Math.abs(b.net) - Math.abs(a.net));   // ryzyko KIERUNKOWE
+    const totalNet = sum(rows.map((r) => Math.abs(r.net))) || 1;
+    const topNet = byNet[0];
+    // koncentracja kierunkowa: udzial najwiekszego zakladu w calej ekspozycji netto
+    const concentration = topNet ? Math.abs(topNet.net) / totalNet : 0;
+    // ukryta korelacja: czolowy zaklad jest duzy i czysto jednokierunkowy
+    const hiddenCorr = !!(topNet && topNet.oneWay > 0.85 && concentration > 0.2);
+    // surowce o duzym zaangazowaniu brutto, ale zhedgowane (gross duzy, net maly)
+    const hedged = byGross.filter((r) => r.gross > 0 && r.oneWay < 0.35).slice(0, 2);
+    return { rows: byGross, byNet, totalNet, topNet, concentration, hiddenCorr, hedged };
+  }
 }
 
 export default WorldEngine;

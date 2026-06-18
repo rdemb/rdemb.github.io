@@ -5,7 +5,7 @@
   Hover -> karta; klik -> DOSSIER (obszerny, algorytmiczny, zawsze swiezy) + kaskada;
   przycisk -> Monte Carlo + kombinatoryka compound; ⏸/▶ -> rotacja.
 */
-import WorldEngine, { CAT_COLOR, CAT_PL } from './engine.js';
+import WorldEngine, { CAT_COLOR, CAT_PL, DEFAULT_PORTFOLIO } from './engine.js';
 import Globe from './globe.js';
 import Live from './live.js';
 import buildArticle from './article.js';
@@ -22,6 +22,18 @@ function heat(f) {
   return 'rgb(232,72,58)';
 }
 const CATS = ['energy', 'precious', 'base-metal', 'battery-metal', 'grain', 'soft', 'fertilizer', 'industrial'];
+
+// ---- portfel: localStorage (lokalny what-if, zero backendu) ----
+const PF_KEY = 'atlas-portfolio';
+function loadPF() {
+  try { const j = JSON.parse(localStorage.getItem(PF_KEY)); if (Array.isArray(j) && j.length) return j; } catch (e) {}
+  return DEFAULT_PORTFOLIO.map((p) => ({ ...p }));
+}
+function savePF(pf) { try { localStorage.setItem(PF_KEY, JSON.stringify(pf)); } catch (e) {} }
+function pfLabel(pos, eng) {
+  if (pos.kind === 'fx') { const c = eng.ccy(pos.id); return c ? `${pos.id} · ${c.pl}` : pos.id; }
+  const c = eng.company(pos.id); return c ? `${c.name}${c.ticker ? ' ' + c.ticker : ''}` : pos.id;
+}
 
 async function main() {
   const eng = new WorldEngine(); await eng.load();
@@ -100,11 +112,62 @@ async function main() {
     });
   });
 
-  // Monte Carlo + kombinatoryka
+  // ---- PORTFEL (lokalny, localStorage) + dekompozycja ekspozycji ----
+  let portfolio = loadPF();
+  const pfList = $('#pf-list'), pfAdd = $('#pf-add'), pfFoot = $('#pf-foot'), pfExp = $('#pf-exposure');
+  function renderExposure() {
+    const ex = eng.portfolioExposure(portfolio);
+    if (!ex.rows.length) { pfExp.innerHTML = ''; return; }
+    const max = Math.max(...ex.rows.map((r) => r.gross), 1);
+    const top = ex.rows.slice(0, 5).map((r) => `<div class="pf-exp-row"><span>${r.pl}</span><span class="pf-exp-bar"><i style="width:${r.gross / max * 100}%;background:${r.net >= 0 ? 'var(--live)' : 'var(--loss)'}"></i></span><b class="${r.net >= 0 ? 'up' : 'dn'}">${r.net >= 0 ? '+' : ''}${r.net.toFixed(0)}</b></div>`).join('');
+    const warn = ex.hiddenCorr ? `<div class="pf-warn">Ukryta korelacja: <b>${ex.topNet.pl}</b> to Twój największy kierunkowy zakład (netto ${ex.topNet.net >= 0 ? '+' : ''}${ex.topNet.net.toFixed(0)}, ${Math.round(ex.concentration * 100)}% ekspozycji netto, jednokierunkowy w ${Math.round(ex.topNet.oneWay * 100)}%). Te pozycje ruszają się razem, nie dywersyfikują.</div>` : '';
+    const hedge = ex.hedged.length ? `<div class="pf-hedge">Zhedgowane (duże brutto, małe netto): ${ex.hedged.map((h) => h.pl).join(', ')}.</div>` : '';
+    pfExp.innerHTML = `<div class="rail-label" style="margin-bottom:7px">Co rusza portfelem <span class="muted">· wrażliwość na +1 szok surowca</span></div>${top}${warn}${hedge}`;
+  }
+  function buildPF() {
+    pfList.innerHTML = '';
+    portfolio.forEach((pos, i) => {
+      const row = node('div', 'pf-row', `<span>${pfLabel(pos, eng)}</span><span class="pf-dir ${pos.dir >= 0 ? 'up' : 'dn'}">${pos.dir >= 0 ? 'long' : 'short'} ${pos.notional}</span>`);
+      const x = node('button', 'pf-x', '✕'); x.title = 'usuń';
+      x.onclick = () => { portfolio.splice(i, 1); savePF(portfolio); buildPF(); };
+      row.appendChild(x); pfList.appendChild(row);
+    });
+    if (!portfolio.length) pfList.appendChild(node('div', 'muted', '<span style="font-size:11.5px">Pusto. Dodaj pozycje albo wróć do demo.</span>'));
+    const gross = portfolio.reduce((a, p) => a + (p.notional || 0), 0);
+    pfFoot.innerHTML = `<span>brutto ${gross} j. · ${portfolio.length} poz.</span>`;
+    const reset = node('button', 'pf-reset', 'reset do demo');
+    reset.onclick = () => { portfolio = DEFAULT_PORTFOLIO.map((p) => ({ ...p })); savePF(portfolio); buildPF(); };
+    pfFoot.appendChild(reset);
+    renderExposure();
+    $('#sim-out').classList.remove('show'); $('#sim-status').textContent = '';   // poprzedni wynik MC nieaktualny dla nowego portfela
+  }
+  (function buildAdd() {
+    const kind = node('select'); kind.innerHTML = '<option value="fx">FX</option><option value="equity">akcja</option>';
+    const idsel = node('select');
+    const dir = node('select'); dir.innerHTML = '<option value="1">long</option><option value="-1">short</option>';
+    const amt = node('input'); amt.type = 'number'; amt.value = '100'; amt.min = '1';
+    const go = node('button', 'pf-go', '+'); go.title = 'dodaj pozycję';
+    const fillIds = () => {
+      idsel.innerHTML = '';
+      const opts = kind.value === 'fx'
+        ? eng.currencies.map((c) => ({ v: c.code, t: `${c.code} · ${c.pl}` }))
+        : eng.companies.slice().sort((a, b) => (b.mkt_cap_bn || 0) - (a.mkt_cap_bn || 0)).map((c) => ({ v: c.id, t: c.name }));
+      for (const o of opts) { const e = node('option'); e.value = o.v; e.textContent = o.t; idsel.appendChild(e); }
+    };
+    kind.onchange = fillIds; fillIds();
+    go.onclick = () => { portfolio.push({ kind: kind.value, id: idsel.value, dir: +dir.value, notional: Math.max(1, Math.round(+amt.value || 100)) }); savePF(portfolio); buildPF(); };
+    pfAdd.append(kind, idsel, dir, amt, go);
+  })();
+  buildPF();
+
+  // Monte Carlo + kombinatoryka (na bieżącym portfelu)
   $('#sim-run').onclick = () => {
     const btn = $('#sim-run'); btn.disabled = true; $('#sim-status').textContent = 'liczenie 2000 scenariuszy + par compound...';
-    setTimeout(() => { const res = eng.monteCarlo({ trials: 2000 }); const comp = eng.compoundRisks(6); renderSim(res, comp, eng); btn.disabled = false; $('#sim-status').textContent = `${res.trials} scenariuszy · ø ${res.expectedEvents.toFixed(1)} zakłóceń/rok`; }, 30);
+    setTimeout(() => { const res = eng.monteCarlo({ trials: 2000, portfolio }); const comp = eng.compoundRisks(6); renderSim(res, comp, eng); btn.disabled = false; $('#sim-status').textContent = `${res.trials} scenariuszy · ø ${res.expectedEvents.toFixed(1)} zakłóceń/rok`; }, 30);
   };
+
+  // deep-link: /atlas/?focus=ghawar | ?commodity=crude_oil | ?choke=hormuz
+  applyDeepLink(eng, globe);
 
   // zamykanie
   $('#detail-close').onclick = () => closePanel(globe);
@@ -133,6 +196,21 @@ function renderRank(box, list, val, label, eng, globe, color, frag) {
   }
 }
 
+// deep-link: skok do konkretnego wezla / surowca / chokepointu z URL (spina Atlas z Quant Desk / Capital)
+function applyDeepLink(eng, globe) {
+  const q = new URLSearchParams(location.search);
+  const focus = q.get('focus'), commodity = q.get('commodity'), choke = q.get('choke');
+  const topNode = (cid) => { const b = eng.byCommodity[cid]; return b && b.nodes.length ? b.nodes.slice().sort((a, c) => c.share_pct - a.share_pct)[0] : null; };
+  let target = null, kind = 'node';
+  if (choke) { const c = eng.chokepoints.find((x) => x.id === choke); if (c) { target = c; kind = 'choke'; } }
+  if (!target && commodity) { const n = topNode(commodity); if (n) target = n; }
+  if (!target && focus) {
+    const n = eng.nodes.find((x) => x.id === focus); if (n) target = n;
+    else { const c = eng.chokepoints.find((x) => x.id === focus); if (c) { target = c; kind = 'choke'; } else { const t = topNode(focus); if (t) target = t; } }
+  }
+  if (target) { globe.focus(target.lat, target.lng); setTimeout(() => globe.onSelect({ type: kind, item: target }), 420); }
+}
+
 function openPanel() { $('#detail').classList.add('open'); }
 function closePanel(globe) { $('#detail').classList.remove('open'); if (globe) { globe.clearArcs(); globe.highlight(null); } }
 function dossierLoading(p) { const it = p.item; return `<div class="art-hd"><span class="art-emoji">${it.icon || (p.type === 'choke' ? '⚠️' : '•')}</span><div><span class="d-eyebrow">DOSSIER</span><h3>${it.name || it.pl}</h3></div></div><p class="muted art-loading">Kompletowanie dossier… pobieranie danych na żywo (pogoda, FX).</p>`; }
@@ -155,12 +233,12 @@ function renderSim(res, compounds, eng) {
   out.innerHTML = `
     <div class="sm-sec"><h4>Najbardziej zagrożone surowce <span class="muted">(szok ceny P95/rok)</span></h4>${shocks}</div>
     <div class="sm-sec"><h4>Kombinatoryka: najgorsze scenariusze łączne</h4>${comp}<p class="muted" style="margin-top:5px">Pary źródeł zakłóceń wg dotkliwości łącznej (HHI×systemowość).</p></div>
-    <div class="sm-sec"><h4>Portfel demo <span class="muted">(${pf.grossNotional} j.)</span></h4>
+    <div class="sm-sec"><h4>Twój portfel <span class="muted">(${pf.grossNotional} j.)</span></h4>
       <div class="sm-pf"><div><label>ø P&L</label><b class="${pf.mean >= 0 ? 'up' : 'dn'}">${pf.mean.toFixed(1)}</b></div>
-      <div><label>VaR 95%</label><b class="dn">${pf.var95.toFixed(1)}</b></div>
-      <div><label>najgorszy</label><b class="dn">${pf.worst.toFixed(1)}</b></div>
+      <div><label>dolne 5% (P5)</label><b class="${pf.var95 < 0 ? 'dn' : 'up'}">${pf.var95.toFixed(1)}</b></div>
+      <div><label>najgorszy</label><b class="${pf.worst < 0 ? 'dn' : 'up'}">${pf.worst.toFixed(1)}</b></div>
       <div><label>najlepszy</label><b class="up">${pf.best.toFixed(1)}</b></div></div></div>
-    <p class="art-obs">Monte Carlo: losowe zakłócenia ${eng.nodes.length} złóż + ${eng.chokepoints.length} chokepointów wg hazardu kraju/typu. Rozkład RYZYKA scenariuszowego, nie prognoza.</p>`;
+    <p class="art-obs">Monte Carlo: losowe zakłócenia ${eng.nodes.length} złóż + ${eng.chokepoints.length} chokepointów wg hazardu kraju/typu. Szoki są jednokierunkowe (podażowe, cena w górę), więc strata pojawia się tylko dla pozycji tracących na drożejącym surowcu (short eksportera, long importera). Rozkład ekspozycji scenariuszowej, nie prognoza.</p>`;
   out.classList.add('show');
 }
 

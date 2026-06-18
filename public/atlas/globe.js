@@ -113,8 +113,18 @@ export class Globe {
     M.map = tex.dayTex;
     M.specularMap = tex.specTex; M.specular = new THREE.Color(0x2e3d4d); M.shininess = 20;
     if (tex.normalTex) { M.normalMap = tex.normalTex; M.normalScale = new THREE.Vector2(0.6, 0.6); }
-    if (tex.nightTex) { M.emissiveMap = tex.nightTex; M.emissive = new THREE.Color(0xffe2a8); M.emissiveIntensity = 1.4; }  // swiatla miast na nocnej stronie
-    else { M.emissive = new THREE.Color(0x080d15); M.emissiveIntensity = 1; }
+    if (tex.nightTex) {
+      M.emissiveMap = tex.nightTex; M.emissive = new THREE.Color(0xffe2a8); M.emissiveIntensity = 1.4;  // swiatla miast
+      // BRAMKOWANIE TERMINATOREM: miasta swieca TYLKO po nieoswietlonej stronie globu.
+      // fail-safe: gdy chunk nie zostanie podmieniony, shader kompiluje sie bez zmian (stare zachowanie).
+      this._sunView = new THREE.Vector3(1, 0, 0);
+      M.onBeforeCompile = (shader) => {
+        shader.uniforms.uSunDir = { value: this._sunView };
+        shader.fragmentShader = 'uniform vec3 uSunDir;\n' + shader.fragmentShader.replace(
+          '#include <emissivemap_fragment>',
+          '#include <emissivemap_fragment>\n  totalEmissiveRadiance *= clamp(smoothstep(0.18, -0.28, dot(normalize(vNormal), uSunDir)), 0.0, 1.0);');
+      };
+    } else { M.emissive = new THREE.Color(0x080d15); M.emissiveIntensity = 1; }
     M.color = new THREE.Color(0xffffff); M.needsUpdate = true;
     this._cloudMat.map = tex.cloudTex; this._cloudMat.alphaMap = null;  // RGBA: alpha z tekstury, koniec blokowych plam
     this._cloudMat.color = new THREE.Color(0xffffff); this._cloudMat.opacity = 0.42;
@@ -259,6 +269,8 @@ export class Globe {
         if (this.autoRotate && Math.abs(this._vel.y) < 0.0006) this._rot.y += 0.0008;
       }
       this.world.rotation.set(this._rot.x, this._rot.y, 0);
+      // kierunek slonca w przestrzeni widoku (do bramkowania swiatel miast terminatorem)
+      if (this._sunView) this._sunView.copy(this._sun.position).normalize().transformDirection(this.camera.matrixWorldInverse);
       // chmury w `world` => bez osobnej rotacji; krecą sie i staja z lqdami
       const cd = this.camera.position.length();
       if (Math.abs(cd - this._zoomTarget) > 0.4) { this.camera.position.setLength(cd + (this._zoomTarget - cd) * 0.16); this._applyLOD(); }  // plynne, realne przyblizenie
