@@ -41,6 +41,8 @@ async function main() {
   globe.onRotateChange = (v) => { rb.classList.toggle('on', v); rb.innerHTML = v ? '⏸ <span>auto-obrót</span>' : '▶ <span>zatrzymany</span>'; };
   rb.onclick = () => globe.toggleRotate();
   globe.onRotateChange(globe.autoRotate);
+  // dostepnosc: nie kreci globem, gdy uzytkownik prosi o ograniczony ruch
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) globe.setAutoRotate(false);
 
   // legenda + filtr kategorii
   const active = new Set(CATS); const legend = $('#legend'); const counts = {};

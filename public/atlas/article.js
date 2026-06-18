@@ -97,7 +97,7 @@ async function nodeArticle(node, eng, Live) {
     }).join('');
     const exp = ccyCodes.map((x) => eng.ccy(x)).filter((c) => c && c.role === 'exporter').map((c) => c.code);
     fxBlock = `<div class="art-sec"><h4>Waluty na sznurku</h4>` +
-      `<p>Gdy cena ${com.pl.toLowerCase()} idzie w górę, ${exp.length ? `umacniają się waluty eksporterów (${exp.join(', ')}), a słabną waluty importerow` : 'reagują powiązane waluty surowcowe'}. Kursy poniżej sa pobierane na żywo:</p>` +
+      `<p>Gdy cena ${com.pl.toLowerCase()} idzie w górę, ${exp.length ? `umacniają się waluty eksporterów (${exp.join(', ')}), a słabną waluty importerów` : 'reagują powiązane waluty surowcowe'}. Kursy referencyjne${fx && fx.asOfLabel ? ` (aktualizacja ${fx.cadence || 'dzienna'}, stan ${fx.asOfLabel})` : ''}:</p>` +
       `<div class="art-list">${rows}</div></div>`;
   }
 
@@ -170,7 +170,7 @@ async function chokeArticle(cp, eng, Live) {
     `<div class="art-sec"><h4>Reakcja walut (kaskada, live FX)</h4><div class="art-list">${ccyRows || '<span class="muted">—</span>'}</div></div>` +
     (compounds.length ? `<div class="art-sec"><h4>Kombinatoryka: scenariusze łączne</h4>${compounds.map((r) => `<div class="art-row"><span>+ ${r.a === cp.pl ? r.b : r.a}</span><b>p ${(r.jointProb * 100).toFixed(2)}%</b></div>`).join('')}<p class="muted" style="margin-top:6px">Najgroźniejsze, gdy ten punkt staje równocześnie z innym (ryzyko skorelowane).</p></div>` : '') +
     `<div class="art-sec"><p class="art-obs">OBSERVE_ONLY: scenariusz, nie prognoza. Kaskada policzona deterministycznie z utraty przepływu / elastyczności.</p></div>` +
-    `<div class="art-foot">Wygenerowano: <b>${nowStr()}</b> · FX na żywo: ExchangeRate-API.</div>`;
+    `<div class="art-foot">Wygenerowano: <b>${nowStr()}</b> · FX referencyjny (aktualizacja dzienna): ExchangeRate-API${fx && fx.asOfLabel ? ' · stan ' + fx.asOfLabel : ''}.</div>`;
   return { title: cp.pl, html };
 }
 

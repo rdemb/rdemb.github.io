@@ -39,11 +39,11 @@ async function loadGeo() {
 
 export async function buildEarth() {
   const [dayTex, specTex, normalTex, cloudTex, nightTex, geojson] = await Promise.all([
-    loadTex(TEX + 'earth-blue-marble.jpg', true),   // NASA Blue Marble 4K = ostrzejszy przy zoomie
+    loadTex(TEX + 'earth-blue-marble.webp', true),   // NASA Blue Marble (WebP, lzejsze ~650KB)
     loadTex(TEX + 'earth_specular_2048.jpg', false),
-    loadTex(TEX + 'earth_normal_2048.jpg', false),
-    loadTex(TEX + 'earth_clouds_2048.png', true),   // RGBA: prawdziwy alpha, miekkie chmury
-    loadTex(TEX + 'earth-night.jpg', true),         // swiatla miast 4K na nocnej stronie
+    loadTex(TEX + 'earth_normal_2048.jpg', false),   // normal/specular zostaja JPG (kompresja-wrazliwe, i tak male)
+    loadTex(TEX + 'earth_clouds_2048.webp', true),   // RGBA WebP: alpha zachowane, 4.3MB -> 1.5MB
+    loadTex(TEX + 'earth-night.webp', true),         // swiatla miast (WebP ~290KB)
     loadGeo(),
   ]);
   return { dayTex, specTex, normalTex, cloudTex, nightTex, geojson, ok: !!dayTex };

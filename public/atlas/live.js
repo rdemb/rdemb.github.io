@@ -26,8 +26,11 @@ export const Live = {
     if (cache.fx) return cache.fx;
     cache.fx = (async () => {
       const j = await getJSON('https://open.er-api.com/v6/latest/USD');
-      if (!j || !j.rates) return null;
-      return { base: 'USD', rates: j.rates, asOf: j.time_last_update_utc, next: j.time_next_update_utc, source: 'ExchangeRate-API' };
+      if (!j || j.result !== 'success' || !j.rates) return null;   // er-api zwraca 200 z {result:'error'} przy limicie
+      const d = j.time_last_update_utc ? new Date(j.time_last_update_utc) : null;
+      return { base: 'USD', rates: j.rates, asOf: j.time_last_update_utc, next: j.time_next_update_utc,
+        asOfLabel: d ? d.toLocaleDateString('pl-PL', { day: 'numeric', month: 'short', year: 'numeric' }) : null,
+        cadence: 'dzienna', source: 'ExchangeRate-API' };
     })();
     return cache.fx;
   },
