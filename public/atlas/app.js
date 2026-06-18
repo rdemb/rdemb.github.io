@@ -309,6 +309,13 @@ function showBank(it, eng) {
     T`<div class="art-sec"><h4>Polityka</h4><div class="art-stats"><span>stopa (ostatnia znana)<b>${it.rate}%</b></span><span>nastawienie<b>${it.stance}</b></span><span>stan na<b>${it.as_of}</b></span><span>waluta<b>${it.ccy} · ${cc ? cc.role : ''}</b></span></div></div>` +
     (cc ? T`<div class="art-sec"><h4>Surowce napędzające ${it.ccy}</h4><div class="art-list">${(cc.drivers || []).map((d) => T`<div class="art-row"><span>${eng.commodities[d.c]?.pl || d.c}</span><b>${sP(d.w)}</b></div>`).join('') || '<span class="muted">przystań / nabiał</span>'}</div></div>` : '') +
     T`<p class="art-obs">Stopy przybliżone, do podpięcia na żywo (FRED / EBC) wg katalogu źródeł.</p>`;
+  if (it.ccy === 'EUR') Live.ecb().then((e) => {
+    if (!e || !e.rate || !$('#detail').classList.contains('open')) return;
+    const lbl = { pl: 'Oficjalny kurs referencyjny EBC', en: 'Official ECB reference rate', de: 'Offizieller EZB-Referenzkurs' }[LANG] || 'Oficjalny kurs referencyjny EBC';
+    const el = node('p', 'art-live', `${lbl}: <b>1 EUR = ${(+e.rate).toFixed(4)} USD</b> (${e.asOf})`);
+    const body = $('#detail-body'); const obs = body.querySelector('.art-obs');
+    if (obs) body.insertBefore(el, obs); else body.appendChild(el);
+  });
 }
 
 function renderSim(res, compounds, eng) {

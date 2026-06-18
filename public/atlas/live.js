@@ -5,10 +5,12 @@
     * pogoda  -> Open-Meteo            (per wspolrzedne wezla, current + 13 dni)
     * kursy FX -> open.er-api.com       (USD base, wszystkie 17 walut surowcowych)
     * metale  -> api.gold-api.com       (zloto XAU / srebro XAG, spot live)
+    * COT     -> publicreporting.cftc.gov (pozycjonowanie spekulantow non-comm, tygodniowy)
+    * EBC     -> data-api.ecb.europa.eu  (oficjalny kurs referencyjny EUR/USD)
   Cache w sesji + timeouty + graceful fallback (null). To zasila „zawsze swieze".
   Surowce poza metalami i ENSO sa CORS-blokowane => uczciwie pomijane (patrz artykul).
 */
-const cache = { fx: null, metals: null, weather: new Map() };
+const cache = { fx: null, metals: null, weather: new Map(), cot: new Map(), ecb: null };
 
 async function getJSON(url, ms = 8000) {
   try {
@@ -66,6 +68,41 @@ export const Live = {
     })();
     cache.weather.set(key, p);
     return p;
+  },
+
+  // CFTC COT: pozycjonowanie duzych spekulantow (non-commercial) dla danego kontraktu (exact name)
+  async cot(contract) {
+    if (cache.cot.has(contract)) return cache.cot.get(contract);
+    const p = (async () => {
+      const u = 'https://publicreporting.cftc.gov/resource/6dca-aqww.json?contract_market_name=' +
+        encodeURIComponent(contract) + '&$limit=1&$order=report_date_as_yyyy_mm_dd%20DESC' +
+        '&$select=report_date_as_yyyy_mm_dd,noncomm_positions_long_all,noncomm_positions_short_all,open_interest_all';
+      const j = await getJSON(u, 10000);
+      if (!Array.isArray(j) || !j.length) return null;
+      const r = j[0];
+      const L = +r.noncomm_positions_long_all || 0, S = +r.noncomm_positions_short_all || 0;
+      const d = r.report_date_as_yyyy_mm_dd ? new Date(r.report_date_as_yyyy_mm_dd) : null;
+      return { long: L, short: S, net: L - S, oi: +r.open_interest_all || 0,
+        asOf: d ? d.toLocaleDateString('pl-PL', { day: 'numeric', month: 'short', year: 'numeric' }) : null, source: 'CFTC COT' };
+    })();
+    cache.cot.set(contract, p);
+    return p;
+  },
+
+  // EBC: oficjalny kurs referencyjny EUR/USD (SDMX-JSON, keyless+CORS)
+  async ecb() {
+    if (cache.ecb) return cache.ecb;
+    cache.ecb = (async () => {
+      const j = await getJSON('https://data-api.ecb.europa.eu/service/data/EXR/D.USD.EUR.SP00.A?lastNObservations=1&format=jsondata');
+      try {
+        const series = j.dataSets[0].series; const sk = Object.keys(series)[0];
+        const obs = series[sk].observations; const ok = Object.keys(obs)[0];
+        const rate = obs[ok][0];
+        const tv = j.structure.dimensions.observation[0].values; const date = tv[tv.length - 1].id;
+        return { rate, asOf: date, source: 'ECB' };
+      } catch (e) { return null; }
+    })();
+    return cache.ecb;
   },
 };
 

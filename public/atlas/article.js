@@ -7,7 +7,10 @@
   Zwraca {title, html} dla węzła lub chokepointu.
 */
 
-import { T, t, td } from './i18n.js';
+import { T, t, td, LANG } from './i18n.js';
+
+// kuratorska mapa surowiec -> dokladny kontrakt CFTC (zweryfikowane, populated noncomm)
+const COT_MAP = { gold: 'GOLD', silver: 'SILVER', copper: 'COPPER- #1', crude_oil: 'CRUDE OIL, LIGHT SWEET-WTI', corn: 'CORN', soybean: 'SOYBEANS', wheat: 'WHEAT-SRW', platinum: 'PLATINUM', palladium: 'PALLADIUM', coffee: 'COFFEE C', sugar: 'SUGAR NO. 11', cocoa: 'COCOA', cotton: 'COTTON NO. 2' };
 
 const MON = ['stycznia','lutego','marca','kwietnia','maja','czerwca','lipca','sierpnia','września','października','listopada','grudnia'].map(t);
 function hash(s) { let h = 2166136261; s = String(s); for (let i = 0; i < s.length; i++) h = Math.imul(h ^ s.charCodeAt(i), 16777619); return h >>> 0; }
@@ -106,6 +109,28 @@ async function nodeArticle(node, eng, Live) {
       T`<div class="art-list">${rows}</div></div>`;
   }
 
+  // POZYCJONOWANIE SPEKULANTOW (CFTC COT) — kontekst kto jest po ktorej stronie, nie sygnal
+  let cotBlock = '';
+  const cotName = COT_MAP[node.commodity];
+  if (cotName) {
+    const ctp = await Live.cot(cotName);
+    if (ctp && ctp.net != null) {
+      const W = (o) => o[LANG] || o.pl;
+      const pos = ctp.net >= 0 ? { pl: 'netto LONG', en: 'net LONG', de: 'netto LONG' } : { pl: 'netto SHORT', en: 'net SHORT', de: 'netto SHORT' };
+      const LB = {
+        h: { pl: 'Pozycjonowanie spekulantow', en: 'Speculator positioning', de: 'Spekulanten-Positionierung' },
+        lead: { pl: 'Duzi spekulanci (non-commercial) sa', en: 'Large speculators (non-commercial) are', de: 'Grosse Spekulanten (non-commercial) sind' },
+        ct: { pl: 'kontraktow', en: 'contracts', de: 'Kontrakte' },
+        as: { pl: 'Stan', en: 'As of', de: 'Stand' },
+        note: { pl: 'Kontekst: kto jest po ktorej stronie, nie sygnal kierunku. Raport tygodniowy CFTC, opozniony o kilka dni.', en: 'Context: who is positioned which way, not a directional signal. Weekly CFTC report, lagged a few days.', de: 'Kontext: wer wie positioniert ist, kein Richtungssignal. Woechentlicher CFTC-Bericht, einige Tage verzoegert.' },
+      };
+      const col = ctp.net >= 0 ? 'var(--live)' : 'var(--loss)';
+      cotBlock = `<div class="art-sec"><h4>${W(LB.h)} <span class="art-livebadge">CFTC</span></h4>` +
+        `<p>${W(LB.lead)} <b style="color:${col}">${W(pos)} ${Math.abs(ctp.net).toLocaleString('pl-PL')}</b> ${W(LB.ct)} (long ${ctp.long.toLocaleString('pl-PL')} / short ${ctp.short.toLocaleString('pl-PL')}). ${W(LB.as)}: ${ctp.asOf}.</p>` +
+        `<p class="muted" style="font-size:11px">${W(LB.note)}</p></div>`;
+    }
+  }
+
   // ŁAŃCUCH RYZYKA (chokepointy + compound)
   const chokes = (stat.chokepoints || []).map((id) => eng.chokepoints.find((c) => c.id === id)).filter(Boolean);
   const compounds = eng.compoundRisks(40).filter((r) => r.a === node.name || r.b === node.name || r.commodities.includes(com.pl)).slice(0, 2);
@@ -153,7 +178,7 @@ async function nodeArticle(node, eng, Live) {
   const foot = T`<div class="art-foot">Wygenerowano algorytmicznie (bez LLM): <b>${nowStr()}</b> · dane na żywo: Open-Meteo, ExchangeRate-API, gold-api.com · statystyki liczone na bieżąco z ${eng.nodes.length} złóż.</div>`;
 
   const html = T`<div class="art-hd"><span class="art-emoji">${node.icon || '•'}</span><div><span class="d-eyebrow" style="color:${node.color}">${cName.toUpperCase()} · ${node.country}</span><h3>${node.name}</h3></div></div>` +
-    T`<p class="art-lede">${lede}</p>` + geo + conc + market + fxBlock + riskBlock + wxBlock + cascade + verdict + foot;
+    T`<p class="art-lede">${lede}</p>` + geo + conc + market + fxBlock + cotBlock + riskBlock + wxBlock + cascade + verdict + foot;
   return { title: node.name, html };
 }
 
