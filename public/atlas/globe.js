@@ -165,7 +165,7 @@ export class Globe {
     const halo = haloTexture();
     const addMarker = (item, group, r, glyphScale, haloColor, isNode) => {
       const pos = latLngToVec3(item.lat, item.lng, r); item._pos = pos;
-      const hMat = new THREE.SpriteMaterial({ map: halo, color: new THREE.Color(haloColor), transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, opacity: 0.32 });
+      const hMat = new THREE.SpriteMaterial({ map: halo, color: new THREE.Color(haloColor), transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, opacity: 0.2 });  // ciszej: gesty zbior ~1200 wezlow, mniej „confetti" z daleka
       const hSpr = new THREE.Sprite(hMat); hSpr.position.copy(pos); hSpr.userData.item = item; hSpr.userData.kind = isNode ? 'node' : (group === this.layers.choke ? 'choke' : 'bank');
       const gMat = new THREE.SpriteMaterial({ map: emojiTexture(item.icon || '•'), transparent: true, depthWrite: false });
       const gSpr = new THREE.Sprite(gMat); gSpr.position.copy(pos);
@@ -187,7 +187,7 @@ export class Globe {
     this._lodNear = near;
     const setOne = (item, on) => {
       const sel = this._selId && item.id === this._selId;
-      const hs = (item._base) * (sel ? 1.95 : 1) * 0.85;
+      const hs = (item._base) * (sel ? 1.95 : 1) * 0.65;   // mniejszy footprint poswiaty przy gestym polu
       const gs = (item._base) * (sel ? 1.95 : 1);
       item._halo.visible = on; item._halo.scale.set(hs, hs, 1);
       item._glyph.visible = on && (near || sel); item._glyph.scale.set(gs, gs, 1);
@@ -232,6 +232,7 @@ export class Globe {
     el.addEventListener('pointermove', (e) => {
       const r = el.getBoundingClientRect();
       this._pointer.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
+      this._pointerMoved = true;   // raycast hover liczymy tylko gdy mysz sie rusza (perf przy setkach wezlow)
       if (this._drag) { const dx = e.clientX - this._drag.x, dy = e.clientY - this._drag.y; this._moved += Math.abs(dx) + Math.abs(dy); this._rot.y += dx * 0.005; this._rot.x = clamp(this._rot.x + dy * 0.005, -1.3, 1.3); this._vel.y = dx * 0.005; this._vel.x = dy * 0.005; this._drag = { x: e.clientX, y: e.clientY }; }
     });
     el.addEventListener('pointerup', () => { if (this._drag && this._moved < 6) this._click(); this._drag = null; });
@@ -275,7 +276,12 @@ export class Globe {
       const cd = this.camera.position.length();
       if (Math.abs(cd - this._zoomTarget) > 0.4) { this.camera.position.setLength(cd + (this._zoomTarget - cd) * 0.16); this._applyLOD(); }  // plynne, realne przyblizenie
       for (const o of this.layers.arcs.children) if (o.userData && o.userData.n) { o.userData.t = Math.min(o.userData.n, o.userData.t + 1.7); o.geometry.setDrawRange(0, Math.floor(o.userData.t)); }
-      if (!this._drag) { const p = this._pickHit(); const id = p ? (p.item.id || p.item.code) : -1; if (id !== this._hoverId) { this._hoverId = id; if (this.onHover) this.onHover(p); this.canvas.style.cursor = p ? 'pointer' : 'grab'; } }
+      this._pickTick = (this._pickTick || 0) + 1;   // hover-pick: tylko po ruchu myszy, plus rzadki tick przy auto-obrocie (throttle dla setek wezlow)
+      if (!this._drag && (this._pointerMoved || (this.autoRotate && this._pickTick % 6 === 0))) {
+        this._pointerMoved = false;
+        const p = this._pickHit(); const id = p ? (p.item.id || p.item.code) : -1;
+        if (id !== this._hoverId) { this._hoverId = id; if (this.onHover) this.onHover(p); this.canvas.style.cursor = p ? 'pointer' : 'grab'; }
+      }
       if (this._composer) this._composer.render(); else this.renderer.render(this.scene, this.camera);
     };
     loop();

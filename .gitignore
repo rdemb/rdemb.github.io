@@ -22,3 +22,4 @@ dist/
 
 # szkice / wpisy wstrzymane do publikacji (zostaja lokalnie, poza publicznym repo)
 /_drafts/
+_i18n_corpus.json
