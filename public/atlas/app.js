@@ -93,7 +93,7 @@ async function main() {
     cas.companies.filter((c) => c.lat != null).slice(0, 5).forEach((c) => arcs.push({ from, to: { lat: c.lat, lng: c.lng }, color: '#E8B23A' }));
     globe.drawArcs(arcs); globe.highlight(o.id);
     $('#detail-body').innerHTML = dossierLoading(p); openPanel();
-    try { const art = await buildArticle(p, eng, Live); if ($('#detail').classList.contains('open')) $('#detail-body').innerHTML = art.html; }
+    try { const art = await buildArticle(p, eng, Live); if ($('#detail').classList.contains('open')) { $('#detail-body').innerHTML = art.html; appendBriefBar(p, eng); } }
     catch (e) { console.error(e); $('#detail-body').innerHTML = '<p class="muted">Nie udało się złożyć dossier.</p>'; }
   };
 
@@ -211,6 +211,47 @@ function applyDeepLink(eng, globe) {
   if (target) { globe.focus(target.lat, target.lng); setTimeout(() => globe.onSelect({ type: kind, item: target }), 420); }
 }
 
+// ---- BLOK DO BRIEFU FX (twardy gard jezykowy: warunkowo, zero targetow, zero kierunku) ----
+function buildBriefText(p, eng) {
+  const it = p.item, d = new Date();
+  const date = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  const cas = eng.cascade(it);
+  const roleCodes = (role) => cas.currencies.filter((c) => { const cc = eng.ccy(c.code); return cc && cc.role === role; }).slice(0, 4).map((c) => c.code);
+  const exp = roleCodes('exporter'), imp = roleCodes('importer');
+  const lines = [];
+  if (p.type === 'choke') {
+    const coms = (it.commodities_at_risk || []).map((c) => eng.commodities[c]?.pl || c);
+    lines.push(`**Świat fizyczny: ${it.pl}.** ${it.throughput}.`);
+    lines.push(`Scenariusz co-jeśli (nie prognoza): gdyby przepływ przez ${it.pl} został ograniczony, modelowa kaskada dotyka ${coms.join(', ')}.`);
+  } else {
+    const com = eng.commodities[it.commodity], shock = cas.shock[it.commodity] || 0;
+    lines.push(`**Świat fizyczny: ${com.pl}.** ${it.name} (${it.country}) to około ${it.share_pct}% globalnej podaży (${it.source_type} / ${it.as_of}).`);
+    lines.push(`Scenariusz co-jeśli (nie prognoza): gdyby ten węzeł wypadł, modelowy szok ceny ${com.pl.toLowerCase()} wyniósłby około ${sPct(shock)} przy elastyczności podaży ${com.elast}.`);
+  }
+  if (exp.length || imp.length) {
+    const parts = [];
+    if (exp.length) parts.push(`waluty eksporterów (${exp.join(', ')}) zyskiwałyby na drożejącym surowcu`);
+    if (imp.length) parts.push(`waluty importerów (${imp.join(', ')}) byłyby pod presją terms of trade`);
+    lines.push(`W tym hipotetycznym scenariuszu ${parts.join(', a ')}.`);
+  }
+  lines.push(`Bez celów cenowych i bez rekomendacji kierunku. Liczby kontekstowe, skalibrowane zgrubnie. OBSERVE_ONLY · ${date}.`);
+  return lines.join('\n\n');
+}
+function appendBriefBar(p, eng) {
+  if (p.type !== 'node' && p.type !== 'choke') return;
+  const body = $('#detail-body'); if (!body) return;
+  const bar = node('div', 'brief-bar');
+  const btn = node('button', 'brief-btn', '⧉ Kopiuj blok „świat fizyczny" do briefu');
+  btn.onclick = async () => {
+    const text = buildBriefText(p, eng);
+    try { await navigator.clipboard.writeText(text); btn.textContent = '✓ skopiowano (warunkowo, bez kierunku)'; }
+    catch (e) { let ta = bar.querySelector('textarea'); if (!ta) { ta = node('textarea', 'brief-ta'); bar.appendChild(ta); } ta.value = text; ta.select(); btn.textContent = '↑ zaznacz i skopiuj ręcznie'; }
+    setTimeout(() => { btn.textContent = '⧉ Kopiuj blok „świat fizyczny" do briefu'; }, 2600);
+  };
+  bar.appendChild(btn);
+  body.appendChild(bar);
+}
+
 function openPanel() { $('#detail').classList.add('open'); }
 function closePanel(globe) { $('#detail').classList.remove('open'); if (globe) { globe.clearArcs(); globe.highlight(null); } }
 function dossierLoading(p) { const it = p.item; return `<div class="art-hd"><span class="art-emoji">${it.icon || (p.type === 'choke' ? '⚠️' : '•')}</span><div><span class="d-eyebrow">DOSSIER</span><h3>${it.name || it.pl}</h3></div></div><p class="muted art-loading">Kompletowanie dossier… pobieranie danych na żywo (pogoda, FX).</p>`; }
@@ -238,7 +279,7 @@ function renderSim(res, compounds, eng) {
       <div><label>dolne 5% (P5)</label><b class="${pf.var95 < 0 ? 'dn' : 'up'}">${pf.var95.toFixed(1)}</b></div>
       <div><label>najgorszy</label><b class="${pf.worst < 0 ? 'dn' : 'up'}">${pf.worst.toFixed(1)}</b></div>
       <div><label>najlepszy</label><b class="up">${pf.best.toFixed(1)}</b></div></div></div>
-    <p class="art-obs">Monte Carlo: losowe zakłócenia ${eng.nodes.length} złóż + ${eng.chokepoints.length} chokepointów wg hazardu kraju/typu. Szoki są jednokierunkowe (podażowe, cena w górę), więc strata pojawia się tylko dla pozycji tracących na drożejącym surowcu (short eksportera, long importera). Rozkład ekspozycji scenariuszowej, nie prognoza.</p>`;
+    <p class="art-obs">Monte Carlo: losowe zakłócenia ${eng.nodes.length} złóż + ${eng.chokepoints.length} chokepointów wg hazardu kraju/typu. Szoki są jednokierunkowe (podażowe, cena w górę), więc strata pojawia się tylko dla pozycji tracących na drożejącym surowcu (short eksportera, long importera). Rozkład ekspozycji scenariuszowej, nie prognoza. Parametry modelu: ${eng.params ? eng.params.source_type + ' / ' + eng.params.as_of : 'wbudowane'}.</p>`;
   out.classList.add('show');
 }
 

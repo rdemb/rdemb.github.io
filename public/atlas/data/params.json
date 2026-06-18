@@ -1,0 +1,11 @@
+{
+  "as_of":"2025",
+  "source_type":"curated/expert",
+  "note":"Parametry modelu skalibrowane eksperckie (nie pomiar). Mnozniki ryzyka kraju, bazowy hazard typu wezla i bety reakcji walut/firm. Steruja wynikami Monte Carlo i kaskady. Kontekst, nie prognoza.",
+  "ccy_beta":0.35,
+  "ccy_beta_note":"o ile waluta rusza sie na 1% szoku ceny surowca (beta<1, scenariusz nie prognoza)",
+  "co_beta":0.6,
+  "co_beta_note":"o ile akcja firmy rusza sie na 1% szoku ceny surowca",
+  "country_risk":{"Democratic Republic of Congo":2.2,"Russia":1.8,"Iran":2.1,"Venezuela":2.2,"Ukraine":2.6,"Nigeria":1.9,"Myanmar":2.1,"Iraq":1.9,"Libya":2.3,"Belarus":2,"Ethiopia":1.9,"Zimbabwe":1.8,"Bolivia":1.6,"Mozambique":1.6,"Cote d'Ivoire":1.6,"Sri Lanka":1.6,"Uzbekistan":1.5,"Jordan":1.5,"Israel":1.5,"Taiwan":1.5,"Guinea":1.7,"Papua New Guinea":1.7,"Gabon":1.6,"New Caledonia":1.4,"Zambia":1.4,"Mongolia":1.4,"Egypt":1.4,"Ghana":1.4,"Colombia":1.4,"Argentina":1.3,"Peru":1.35,"Kazakhstan":1.3,"South Africa":1.3,"Saudi Arabia":1.3,"Dominican Republic":1.3,"Paraguay":1.4,"Trinidad and Tobago":1.3,"Guyana":1.4,"Mexico":1.2,"Indonesia":1.2,"Kuwait":1.2,"Namibia":1.2,"Morocco":1.2,"Vietnam":1.2,"Thailand":1.2,"India":1.1,"Malaysia":1.1,"South Korea":1.1,"China":1,"Brazil":1.1,"United Arab Emirates":1,"Qatar":1.1,"Japan":0.9,"Netherlands":0.85,"Germany":0.85,"Belgium":0.85,"France":0.8,"Sweden":0.8,"Singapore":0.8,"USA":0.8,"Australia":0.8,"Canada":0.75,"Norway":0.7},
+  "type_hazard":{"farm-belt":0.08,"plantation":0.07,"ammonia-plant":0.06,"export-port":0.05,"port":0.05,"pgm-mine":0.05,"smelter":0.05,"refinery":0.05,"lng-terminal":0.045,"mine":0.045,"gold-mine":0.045,"silver-mine":0.045,"uranium-mine":0.045,"coal-mine":0.045,"potash-mine":0.045,"phosphate-mine":0.045,"oilfield":0.04,"gasfield":0.04,"fab":0.035}
+}

@@ -126,6 +126,15 @@ export class WorldEngine {
     this.chokepoints = chokepoints; this.companies = companies;
     this.currencies = currencies; this.banks = banks; this.sources = sources;
 
+    // parametry modelu z proweniencja (source_type+as_of); fallback do wbudowanych
+    let P = null;
+    try { const r = await fetch(new URL('params.json', DATA)); if (r.ok) P = await r.json(); } catch (e) {}
+    this.params = P;
+    this.cRisk = (P && P.country_risk) || COUNTRY_RISK;
+    this.tHazard = (P && P.type_hazard) || TYPE_HAZARD;
+    this.ccyBeta = (P && typeof P.ccy_beta === 'number') ? P.ccy_beta : CCY_BETA;
+    this.coBeta = (P && typeof P.co_beta === 'number') ? P.co_beta : CO_BETA;
+
     // scal + oczysc wezly
     const merged = [...energy, ...metals, ...agro, ...logistics];
     const seen = new Set();
@@ -148,8 +157,8 @@ export class WorldEngine {
   }
 
   _hazard(n) {
-    const base = TYPE_HAZARD[n.type] != null ? TYPE_HAZARD[n.type] : 0.05;
-    const cr = COUNTRY_RISK[n.country] != null ? COUNTRY_RISK[n.country] : 1.2;
+    const base = this.tHazard[n.type] != null ? this.tHazard[n.type] : 0.05;
+    const cr = this.cRisk[n.country] != null ? this.cRisk[n.country] : 1.2;
     return clamp(base * cr, 0.01, 0.6);
   }
 
@@ -323,7 +332,7 @@ export class WorldEngine {
       let imp = 0;
       for (const d of (ccy.drivers || []))
         if (shock[d.c]) imp += shock[d.c] * d.w * this._ccySign(ccy.role);
-      imp *= CCY_BETA;
+      imp *= this.ccyBeta;
       if (Math.abs(imp) > 1e-4)
         ccyMap[ccy.code] = { code: ccy.code, pl: ccy.pl, impact: imp, lat: ccy.lat, lng: ccy.lng };
     }
@@ -332,7 +341,7 @@ export class WorldEngine {
     for (const co of this.companies) {
       let imp = 0;
       for (const cid of (co.commodities || []))
-        if (shock[cid]) imp += shock[cid] * this._coSign(co.role) * CO_BETA;
+        if (shock[cid]) imp += shock[cid] * this._coSign(co.role) * this.coBeta;
       if (Math.abs(imp) > 1e-4)
         coArr.push({ id: co.id, name: co.name, ticker: co.ticker, role: co.role,
           impact: imp, lat: co.hq ? co.hq[0] : null, lng: co.hq ? co.hq[1] : null });
@@ -398,10 +407,10 @@ export class WorldEngine {
         if (pos.kind === 'fx') {
           const ccy = ccyByCode[pos.id];
           if (ccy) for (const d of (ccy.drivers || [])) move += (sh[d.c] || 0) * d.w * this._ccySign(ccy.role);
-          move *= CCY_BETA;
+          move *= this.ccyBeta;
         } else {
           const co = coById[pos.id];
-          if (co) for (const cid of (co.commodities || [])) move += (sh[cid] || 0) * this._coSign(co.role) * CO_BETA;
+          if (co) for (const cid of (co.commodities || [])) move += (sh[cid] || 0) * this._coSign(co.role) * this.coBeta;
         }
         p += pos.notional * pos.dir * move;
       }
@@ -454,10 +463,10 @@ export class WorldEngine {
     for (const pos of portfolio) {
       if (pos.kind === 'fx') {
         const ccy = ccyByCode[pos.id]; if (!ccy) continue;
-        for (const d of (ccy.drivers || [])) bump(d.c, pos.notional * pos.dir * CCY_BETA * d.w * this._ccySign(ccy.role));
+        for (const d of (ccy.drivers || [])) bump(d.c, pos.notional * pos.dir * this.ccyBeta * d.w * this._ccySign(ccy.role));
       } else {
         const co = coById[pos.id]; if (!co) continue;
-        for (const cid of (co.commodities || [])) bump(cid, pos.notional * pos.dir * CO_BETA * this._coSign(co.role));
+        for (const cid of (co.commodities || [])) bump(cid, pos.notional * pos.dir * this.coBeta * this._coSign(co.role));
       }
     }
     const rows = Object.keys(gross).map((cid) => ({
