@@ -164,7 +164,7 @@ async function main() {
   // Monte Carlo + kombinatoryka (na bieżącym portfelu)
   $('#sim-run').onclick = () => {
     const btn = $('#sim-run'); btn.disabled = true; $('#sim-status').textContent = t('liczenie 2000 scenariuszy + par compound...');
-    setTimeout(() => { const res = eng.monteCarlo({ trials: 2000, portfolio }); const comp = eng.compoundRisks(6); renderSim(res, comp, eng); btn.disabled = false; $('#sim-status').textContent = T`${res.trials} scenariuszy · ø ${res.expectedEvents.toFixed(1)} zakłóceń/rok`; }, 30);
+    setTimeout(() => { const res = eng.monteCarlo({ trials: 2000, portfolio }); const comp = eng.compoundRisks(6); renderSim(res, comp, eng); btn.disabled = false; $('#sim-status').textContent = T`${res.trials} scenariuszy · ø ${res.expectedSignificant.toFixed(1)} surowców z szokiem >10%/rok`; }, 30);
   };
 
   // Historyczne szoki (rekonstrukcja kaskady)

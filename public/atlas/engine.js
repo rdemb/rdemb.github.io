@@ -370,18 +370,25 @@ export class WorldEngine {
     const cids = Object.keys(this.commodities);
     const shocks = {}; for (const c of cids) shocks[c] = [];
     const pnl = [];
-    let evSum = 0;
+    let evSum = 0, sigSum = 0;
 
     // pre-mapy do szybkiej propagacji portfela
     const ccyByCode = {}; for (const c of this.currencies) ccyByCode[c.code] = c;
     const coById = {}; for (const c of this.companies) coById[c.id] = c;
+    // korelacja: rzadki szok krajowy dotyka wielu wezlow kraju naraz -> uczciwszy (grubszy) ogon ryzyka
+    const mcCountries = this._mcCountries || (this._mcCountries = Array.from(new Set(this.nodes.map((n) => n.country))));
+    const CPROB = opts.countryProb != null ? opts.countryProb : 0.02;   // 0 => stary model niezalezny
 
     for (let t = 0; t < trials; t++) {
       const loss = {}; let events = 0;
+      const cStress = {};
+      if (CPROB > 0) for (const cc of mcCountries) if (rng() < CPROB) cStress[cc] = 0.35 + rng() * 0.55;
       for (const n of this.nodes) {
-        if (rng() < n.hazard) {
+        let sev = (rng() < n.hazard) ? (0.15 + rng() * 0.6) : 0;
+        const cs = cStress[n.country];
+        if (cs && rng() < 0.5) sev = Math.max(sev, cs * (0.4 + rng() * 0.6));   // czesc wezlow stresowanego kraju
+        if (sev > 0) {
           events++;
-          const sev = 0.15 + rng() * 0.6;
           loss[n.commodity] = clamp((loss[n.commodity] || 0) + (n.share_pct / 100) * sev, 0, 0.95);
         }
       }
@@ -396,13 +403,15 @@ export class WorldEngine {
       evSum += events;
 
       // szok ceny per surowiec w tej probie
-      const sh = {};
+      const sh = {}; let sig = 0;
       for (const c of cids) {
         const l = loss[c] || 0;
         const el = this.commodities[c].elast || 0.4;
         const s = l > 0 ? clamp(l / el, 0, 0.8) : 0;
         sh[c] = s; shocks[c].push(s);
+        if (s > 0.10) sig++;   // surowce z istotnym szokiem (interpretowalny licznik, niezalezny od granularnosci wezlow)
       }
+      sigSum += sig;
 
       // P&L portfela w tej probie
       let p = 0;
@@ -445,6 +454,7 @@ export class WorldEngine {
     return {
       trials, seed,
       expectedEvents: evSum / trials,
+      expectedSignificant: sigSum / trials,
       perCommodity,
       topShock: perCommodity.slice(0, 12),
       portfolio: portfolioStat,
