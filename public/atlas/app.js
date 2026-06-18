@@ -107,7 +107,7 @@ async function main() {
     for (const c of eng.chokepoints) if ((c.pl + c.name).toLowerCase().includes(q)) hits.push({ t: 'chokepoint', it: c, ic: '⚠️', ll: c, choke: true });
     for (const c of eng.companies) if ((c.name + c.ticker).toLowerCase().includes(q) && c.hq) hits.push({ t: 'firma', it: c, ic: '🏢', ll: { lat: c.hq[0], lng: c.hq[1] } });
     hits.slice(0, 14).forEach((h) => {
-      const r = node('button', 'sr-row', T`<span>${h.ic} ${h.it.name || h.it.pl}</span><em>${h.t}</em>`);
+      const r = node('button', 'sr-row', T`<span>${h.ic} ${h.it.name || h.it.pl}</span><em>${t(h.t)}</em>`);
       r.onclick = () => { globe.focus(h.ll.lat, h.ll.lng); if (h.node) globe.onSelect({ type: 'node', item: h.it }); else if (h.choke) globe.onSelect({ type: 'choke', item: h.it }); sr.innerHTML = ''; si.value = ''; };
       sr.appendChild(r);
     });
@@ -123,7 +123,7 @@ async function main() {
     const top = ex.rows.slice(0, 5).map((r) => T`<div class="pf-exp-row"><span>${r.pl}</span><span class="pf-exp-bar"><i style="width:${r.gross / max * 100}%;background:${r.net >= 0 ? 'var(--live)' : 'var(--loss)'}"></i></span><b class="${r.net >= 0 ? 'up' : 'dn'}">${r.net >= 0 ? '+' : ''}${r.net.toFixed(0)}</b></div>`).join('');
     const warn = ex.hiddenCorr ? T`<div class="pf-warn">Ukryta korelacja: <b>${ex.topNet.pl}</b> to Twój największy kierunkowy zakład (netto ${ex.topNet.net >= 0 ? '+' : ''}${ex.topNet.net.toFixed(0)}, ${Math.round(ex.concentration * 100)}% ekspozycji netto, jednokierunkowy w ${Math.round(ex.topNet.oneWay * 100)}%). Te pozycje ruszają się razem, nie dywersyfikują.</div>` : '';
     const hedge = ex.hedged.length ? T`<div class="pf-hedge">Zhedgowane (duże brutto, małe netto): ${ex.hedged.map((h) => h.pl).join(', ')}.</div>` : '';
-    pfExp.innerHTML = T`<div class="rail-label" style="margin-bottom:7px">Co rusza portfelem <span class="muted">· wrażliwość na +1 szok surowca</span></div>${top}${warn}${hedge}`;
+    pfExp.innerHTML = T`<div class="rail-label" style="margin-bottom:7px">${t('Co rusza portfelem')} <span class="muted">${t('· wrażliwość na +1 szok surowca')}</span></div>${top}${warn}${hedge}`;
   }
   function buildPF() {
     pfList.innerHTML = '';
@@ -151,7 +151,7 @@ async function main() {
     const fillIds = () => {
       idsel.innerHTML = '';
       const opts = kind.value === 'fx'
-        ? eng.currencies.map((c) => ({ v: c.code, t: T`${c.code} · ${c.pl}` }))
+        ? eng.currencies.map((c) => ({ v: c.code, t: `${c.code} · ${td('currency:' + c.code + ':pl', c.pl)}` }))
         : eng.companies.slice().sort((a, b) => (b.mkt_cap_bn || 0) - (a.mkt_cap_bn || 0)).map((c) => ({ v: c.id, t: c.name }));
       for (const o of opts) { const e = node('option'); e.value = o.v; e.textContent = o.t; idsel.appendChild(e); }
     };
@@ -164,7 +164,7 @@ async function main() {
   // Monte Carlo + kombinatoryka (na bieżącym portfelu)
   $('#sim-run').onclick = () => {
     const btn = $('#sim-run'); btn.disabled = true; $('#sim-status').textContent = t('liczenie 2000 scenariuszy + par compound...');
-    setTimeout(() => { const res = eng.monteCarlo({ trials: 2000, portfolio }); const comp = eng.compoundRisks(6); renderSim(res, comp, eng); btn.disabled = false; $('#sim-status').textContent = T`${res.trials} scenariuszy · ø ${res.expectedSignificant.toFixed(1)} surowców z szokiem >10%/rok`; }, 30);
+    setTimeout(() => { const res = eng.monteCarlo({ trials: 2000, portfolio }); const comp = eng.compoundRisks(6); renderSim(res, comp, eng); btn.disabled = false; $('#sim-status').textContent = T`${res.trials} ${t('scenariuszy')} · ø ${res.expectedSignificant.toFixed(1)} ${t('surowców z szokiem >10%/rok')}`; }, 30);
   };
 
   // Historyczne szoki (rekonstrukcja kaskady)
@@ -196,10 +196,10 @@ function place(tip, x, y) { const w = tip.offsetWidth, h = tip.offsetHeight; tip
 
 function tipHTML(p, eng) {
   const it = p.item;
-  if (p.type === 'choke') return T`<b>⚠️ ${it.pl}</b><span class="t-sub">CHOKEPOINT</span><p>${it.throughput}</p><div class="t-row">prawd. zakłócenia / rok <b>${sP(it.annual_disruption_prob)}</b></div>`;
-  if (p.type === 'bank') return T`<b>🏛️ ${td('bank:' + it.id + ':pl', it.pl)}</b><span class="t-sub">BANK CENTRALNY · ${it.ccy}</span><div class="t-row">stopa <b>${it.rate}%</b></div><div class="t-row">nastawienie <b>${it.stance}</b></div>`;
+  if (p.type === 'choke') return T`<b>⚠️ ${it.pl}</b><span class="t-sub">${t('CHOKEPOINT')}</span><p>${it.throughput}</p><div class="t-row">${t('prawd. zakłócenia / rok')} <b>${sP(it.annual_disruption_prob)}</b></div>`;
+  if (p.type === 'bank') return T`<b>🏛️ ${td('bank:' + it.id + ':pl', it.pl)}</b><span class="t-sub">${t('BANK CENTRALNY')} · ${it.ccy}</span><div class="t-row">${t('stopa')} <b>${it.rate}%</b></div><div class="t-row">${t('nastawienie')} <b>${it.stance}</b></div>`;
   const com = eng.commodities[it.commodity];
-  return T`<b>${it.icon || ''} ${it.name}</b><span class="t-sub" style="color:${CAT_COLOR[it.cat]}">${com ? td('commodity:' + it.commodity + ':pl', com.pl) : it.commodity} · ${it.country}</span><div class="t-row">udział w globalnej podaży <b>${it.share_pct}%</b></div><div class="t-row">kruchość surowca <b style="color:${heat(it.fragility)}">${it.fragility}/100</b></div><div class="t-row muted">klik otwiera pełne dossier</div>`;
+  return T`<b>${it.icon || ''} ${it.name}</b><span class="t-sub" style="color:${CAT_COLOR[it.cat]}">${com ? td('commodity:' + it.commodity + ':pl', com.pl) : it.commodity} · ${it.country}</span><div class="t-row">${t('udział w globalnej podaży')} <b>${it.share_pct}%</b></div><div class="t-row">${t('kruchość surowca')} <b style="color:${heat(it.fragility)}">${it.fragility}/100</b></div><div class="t-row muted">${t('klik otwiera pełne dossier')}</div>`;
 }
 
 function renderRank(box, list, val, label, eng, globe, color, frag) {
@@ -306,8 +306,8 @@ function showBank(it, eng) {
   const cc = eng.ccy(it.ccy);
   $('#detail-body').innerHTML = T`<div class="art-hd"><span class="art-emoji">🏛️</span><div><span class="d-eyebrow" style="color:#9BD17A">BANK CENTRALNY · ${it.ccy}</span><h3>${td('bank:' + it.id + ':pl', it.pl)}</h3></div></div>` +
     T`<p class="art-lede">${td('bank:' + it.id + ':note', it.note)}.</p>` +
-    T`<div class="art-sec"><h4>Polityka</h4><div class="art-stats"><span>stopa (ostatnia znana)<b>${it.rate}%</b></span><span>nastawienie<b>${it.stance}</b></span><span>stan na<b>${it.as_of}</b></span><span>waluta<b>${it.ccy} · ${cc ? cc.role : ''}</b></span></div></div>` +
-    (cc ? T`<div class="art-sec"><h4>Surowce napędzające ${it.ccy}</h4><div class="art-list">${(cc.drivers || []).map((d) => T`<div class="art-row"><span>${eng.commodities[d.c]?.pl || d.c}</span><b>${sP(d.w)}</b></div>`).join('') || '<span class="muted">przystań / nabiał</span>'}</div></div>` : '') +
+    T`<div class="art-sec"><h4>${t('Polityka')}</h4><div class="art-stats"><span>${t('stopa (ostatnia znana)')}<b>${it.rate}%</b></span><span>${t('nastawienie')}<b>${it.stance}</b></span><span>${t('stan na')}<b>${it.as_of}</b></span><span>${t('waluta')}<b>${it.ccy} · ${cc ? cc.role : ''}</b></span></div></div>` +
+    (cc ? T`<div class="art-sec"><h4>${t('Surowce napędzające')} ${it.ccy}</h4><div class="art-list">${(cc.drivers || []).map((d) => T`<div class="art-row"><span>${eng.commodities[d.c]?.pl || d.c}</span><b>${sP(d.w)}</b></div>`).join('') || '<span class="muted">' + t('przystań / nabiał') + '</span>'}</div></div>` : '') +
     T`<p class="art-obs">Stopy przybliżone, do podpięcia na żywo (FRED / EBC) wg katalogu źródeł.</p>`;
   if (it.ccy === 'EUR') Live.ecb().then((e) => {
     if (!e || !e.rate || !$('#detail').classList.contains('open')) return;
@@ -321,18 +321,18 @@ function showBank(it, eng) {
 function renderSim(res, compounds, eng) {
   const out = $('#sim-out');
   const maxS = Math.max(...res.topShock.map((c) => c.p95), 0.01);
-  const shocks = res.topShock.slice(0, 9).map((c) => T`<div class="sm-row"><span>${c.name}</span><span class="sm-bar"><i style="width:${c.p95 / maxS * 100}%;background:${heat(c.fragility)}"></i></span><b>${sP(c.p95)}</b></div>`).join('');
+  const shocks = res.topShock.slice(0, 9).map((c) => T`<div class="sm-row"><span>${td('commodity:' + c.id + ':pl', c.name)}</span><span class="sm-bar"><i style="width:${c.p95 / maxS * 100}%;background:${heat(c.fragility)}"></i></span><b>${sP(c.p95)}</b></div>`).join('');
   const pf = res.portfolio;
   const comp = compounds.map((r) => T`<div class="sm-row2"><span>${r.a} <em>+</em> ${r.b}</span><b>p ${(r.jointProb * 100).toFixed(2)}%</b></div>`).join('');
   out.innerHTML = `
-    <div class="sm-sec"><h4>Najbardziej zagrożone surowce <span class="muted">(szok ceny P95/rok)</span></h4>${shocks}</div>
-    <div class="sm-sec"><h4>Kombinatoryka: najgorsze scenariusze łączne</h4>${comp}<p class="muted" style="margin-top:5px">Pary źródeł zakłóceń wg dotkliwości łącznej (HHI×systemowość).</p></div>
-    <div class="sm-sec"><h4>Twój portfel <span class="muted">(${pf.grossNotional} j.)</span></h4>
+    <div class="sm-sec"><h4>${t('Najbardziej zagrożone surowce')} <span class="muted">${t('(szok ceny P95/rok)')}</span></h4>${shocks}</div>
+    <div class="sm-sec"><h4>${t('Kombinatoryka: najgorsze scenariusze łączne')}</h4>${comp}<p class="muted" style="margin-top:5px">${t('Pary źródeł zakłóceń wg dotkliwości łącznej (HHI×systemowość).')}</p></div>
+    <div class="sm-sec"><h4>${t('Twój portfel')} <span class="muted">(${pf.grossNotional} j.)</span></h4>
       <div class="sm-pf"><div><label>ø P&L</label><b class="${pf.mean >= 0 ? 'up' : 'dn'}">${pf.mean.toFixed(1)}</b></div>
-      <div><label>dolne 5% (P5)</label><b class="${pf.var95 < 0 ? 'dn' : 'up'}">${pf.var95.toFixed(1)}</b></div>
-      <div><label>najgorszy</label><b class="${pf.worst < 0 ? 'dn' : 'up'}">${pf.worst.toFixed(1)}</b></div>
-      <div><label>najlepszy</label><b class="up">${pf.best.toFixed(1)}</b></div></div></div>
-    <p class="art-obs">Monte Carlo: losowe zakłócenia ${eng.nodes.length} złóż + ${eng.chokepoints.length} chokepointów wg hazardu kraju/typu. Szoki są jednokierunkowe (podażowe, cena w górę), więc strata pojawia się tylko dla pozycji tracących na drożejącym surowcu (short eksportera, long importera). Rozkład ekspozycji scenariuszowej, nie prognoza. Parametry modelu: ${eng.params ? eng.params.source_type + ' / ' + eng.params.as_of : 'wbudowane'}.</p>`;
+      <div><label>${t('dolne 5% (P5)')}</label><b class="${pf.var95 < 0 ? 'dn' : 'up'}">${pf.var95.toFixed(1)}</b></div>
+      <div><label>${t('najgorszy')}</label><b class="${pf.worst < 0 ? 'dn' : 'up'}">${pf.worst.toFixed(1)}</b></div>
+      <div><label>${t('najlepszy')}</label><b class="up">${pf.best.toFixed(1)}</b></div></div></div>
+    <p class="art-obs">${t('Monte Carlo: losowe zakłócenia')} ${eng.nodes.length} ${t('złóż +')} ${eng.chokepoints.length} ${t('chokepointów wg hazardu kraju/typu.')} ${t('Szoki są jednokierunkowe (podażowe, cena w górę), więc strata pojawia się tylko dla pozycji tracących na drożejącym surowcu (short eksportera, long importera). Rozkład ekspozycji scenariuszowej, nie prognoza.')} ${t('Parametry modelu:')} ${eng.params ? eng.params.source_type + ' / ' + eng.params.as_of : t('wbudowane')}.</p>`;
   out.classList.add('show');
 }
 
