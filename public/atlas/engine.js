@@ -539,10 +539,34 @@ export class WorldEngine {
     }
     const shockArr = Object.entries(shock).map(([cid, v]) => ({ id: cid, pl: this.commodities[cid]?.pl || cid, shock: v })).sort((a, b) => b.shock - a.shock);
     return {
-      origins, shockArr,
+      origins, shockArr, shock,
       currencies: Object.values(ccyMap).sort((a, b) => Math.abs(b.impact) - Math.abs(a.impact)),
       companies: coArr.sort((a, b) => Math.abs(b.impact) - Math.abs(a.impact)),
     };
+  }
+
+  /*
+    STRESS-TEST PORTFELA pod zadanym wektorem szokow cen (np. z historycznego scenariusza).
+    Te same bety co MC/kaskada. Zwraca P&L laczny i per pozycja. OBSERVE_ONLY (rekonstrukcja).
+  */
+  shockPortfolio(portfolio, shock) {
+    const ccyByCode = {}; for (const c of this.currencies) ccyByCode[c.code] = c;
+    const coById = {}; for (const c of this.companies) coById[c.id] = c;
+    const rows = []; let total = 0;
+    for (const pos of (portfolio || [])) {
+      let move = 0;
+      if (pos.kind === 'fx') {
+        const ccy = ccyByCode[pos.id];
+        if (ccy) { for (const d of (ccy.drivers || [])) move += (shock[d.c] || 0) * d.w * this._ccySign(ccy.role); move *= this.ccyBeta; }
+      } else {
+        const co = coById[pos.id];
+        if (co) for (const cid of (co.commodities || [])) move += (shock[cid] || 0) * this._coSign(co.role) * this.coBeta;
+      }
+      const pnl = pos.notional * pos.dir * move;
+      total += pnl;
+      rows.push({ id: pos.id, kind: pos.kind, label: pos.label || pos.id, pnl });
+    }
+    return { total, rows: rows.sort((a, b) => Math.abs(b.pnl) - Math.abs(a.pnl)) };
   }
 }
 

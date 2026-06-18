@@ -284,8 +284,20 @@ function showScenario(sc, eng, globe) {
     shocks: { pl: 'Modelowy szok cen surowcow', en: 'Modeled commodity price shock', de: 'Modellierter Rohstoff-Preisschock' },
     fx: { pl: 'Reakcja walut (terms of trade)', en: 'Currency reaction (terms of trade)', de: 'Waehrungsreaktion (Terms of Trade)' },
     src: { pl: 'Zrodlo', en: 'Source', de: 'Quelle' },
+    pf: { pl: 'Wpływ na Twój portfel', en: 'Impact on your portfolio', de: 'Auswirkung auf dein Portfolio' },
+    pfnone: { pl: 'Twój portfel nie reaguje na ten szok.', en: 'Your portfolio does not react to this shock.', de: 'Dein Portfolio reagiert nicht auf diesen Schock.' },
+    pfnote: { pl: 'Liczone na Twoim lokalnym portfelu (te same bety co kaskada). Rekonstrukcja, nie prognoza P&L.', en: 'Computed on your local portfolio (same betas as the cascade). Reconstruction, not a P&L forecast.', de: 'Berechnet auf deinem lokalen Portfolio (gleiche Betas wie die Kaskade). Rekonstruktion, keine P&L-Prognose.' },
   };
   const w = (o) => o[L] || o.pl;
+  // stress-test lokalnego portfela pod tym szokiem
+  const imp = eng.shockPortfolio(loadPF(), res.shock);
+  const impRows = imp.rows.filter((r) => Math.abs(r.pnl) > 0.01).slice(0, 8).map((r) => {
+    const nm = r.kind === 'fx' ? r.id : (eng.company(r.id) ? eng.company(r.id).name : r.id);
+    return `<div class="art-row"><span>${nm}</span><b class="${r.pnl >= 0 ? 'up' : 'dn'}">${r.pnl >= 0 ? '+' : ''}${r.pnl.toFixed(1)}</b></div>`;
+  }).join('');
+  const impSection = `<div class="art-sec"><h4>${w(W.pf)} <b style="color:${imp.total >= 0 ? 'var(--live)' : 'var(--loss)'}">${imp.total >= 0 ? '+' : ''}${imp.total.toFixed(1)}</b></h4>` +
+    `<div class="art-list">${impRows || '<span class="muted">' + w(W.pfnone) + '</span>'}</div>` +
+    `<p class="muted" style="font-size:11px">${w(W.pfnote)}</p></div>`;
   const shockRows = res.shockArr.slice(0, 8).map((x) => `<div class="art-row"><span>${td('commodity:' + x.id + ':pl', x.pl)}</span><b class="dn">+${(x.shock * 100).toFixed(1)}%</b></div>`).join('');
   const fxRows = res.currencies.slice(0, 8).map((c) => `<div class="art-row"><span>${c.code} \u00b7 ${td('currency:' + c.code + ':pl', c.pl)}</span><b class="${c.impact >= 0 ? 'up' : 'dn'}">${sPct(c.impact)}</b></div>`).join('');
   $('#detail-body').innerHTML =
@@ -294,6 +306,7 @@ function showScenario(sc, eng, globe) {
     `<div class="sc-recon">${w(W.recon)}</div>` +
     `<div class="art-sec"><h4>${w(W.shocks)}</h4><div class="art-list">${shockRows || '<span class="muted">\u2014</span>'}</div></div>` +
     `<div class="art-sec"><h4>${w(W.fx)}</h4><div class="art-list">${fxRows || '<span class="muted">\u2014</span>'}</div></div>` +
+    impSection +
     `<div class="art-foot">${w(W.src)}: ${sc.source}</div>`;
   openPanel();
 }
